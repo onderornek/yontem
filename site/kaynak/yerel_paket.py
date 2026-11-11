@@ -49,10 +49,10 @@ def baglantilar(s, kok):
         s = s.replace(f'href="{a}', f'href="{kok}{b}')
     yol = {
         '/': 'index.html', '/dene': 'dene/index.html', '/kitaplar/': 'kitaplar/index.html',
-        '/kitaplar': 'kitaplar/index.html', '/ogren': 'kitaplar/programlamaya-giris.html',
-        '/gomulu': 'kitaplar/kurulum.html#b05', '/belgeler': 'kitaplar/index.html',
-        '/indir': 'kurulum.html', '/ogretmen': 'yakinda.html', '/topluluk': 'yakinda.html',
-        '/blog': 'yakinda.html', '/gizlilik': 'yakinda.html',
+        '/kitaplar': 'kitaplar/index.html', '/kurulum': 'kurulum.html', '/indir': 'kurulum.html',
+        '/ogren': 'ogren.html', '/belgeler': 'belgeler.html', '/ogretmen': 'ogretmen.html',
+        '/gomulu': 'gomulu.html', '/topluluk': 'topluluk.html', '/gizlilik': 'gizlilik.html',
+        '/blog': 'blog/index.html', '/blog/yontem-0-5-0': 'blog/yontem-0-5-0.html',
     }
 
     def degistir(m):
@@ -67,7 +67,8 @@ def baglantilar(s, kok):
 
 # ------------------------------------------------------------------ tasarım dosyasını düz HTML'e çevirme
 ANAHTAR = {'program', 'fonksiyon', 'prosedür', 'başla', 'bitir', 'eğer', 'ise', 'değilse', 'dön', 'kullan',
-           'değişken', 'sabit', 'için', 'her', 'kadar', 'iken', 'tekrarla', 'değil', 've', 'veya', 'doğru', 'yanlış'}
+           'değişken', 'sabit', 'için', 'her', 'kadar', 'iken', 'tekrarla', 'değil', 've', 'veya', 'doğru', 'yanlış',
+           'tip', 'kayıt', 'sınıf', 'birim', 'dene', 'yakala', 'sonunda', 'fırlat', 'içindeki', 'böl', 'mod'}
 RENK = {'k': 'color: #5EEAD4; font-weight: 600', 's': 'color: #FBBF77', 'c': 'color: #94A3B8; font-style: italic',
         'n': 'color: #F9A8D4', 'd': 'color: #E2E8F0'}
 
@@ -216,27 +217,87 @@ def sayfa(baslik, head_ic, govde, betik=''):
 '''
 
 
-YAKINDA = '''<!doctype html>
+# ------------------------------------------------------------------ içerik sayfaları (site/sayfalar)
+LOGO = ('<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/>'
+        '<path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+        '<path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>')
+MENU = [('ogren', '/ogren', 'Öğren'), ('belgeler', '/belgeler', 'Belgeler'), ('kitaplar', '/kitaplar/', 'Kitaplar'),
+        ('kurulum', '/kurulum', 'Kurulum'), ('ogretmen', '/ogretmen', 'Öğretmenler'),
+        ('github', 'https://github.com/onderornek/yontem', 'GitHub')]
+
+
+def kod_blogu(kaynak, yontem):
+    kaynak = kaynak.strip('\n')
+    if yontem:
+        ic = '\n'.join(satir_parcala(s) if s else '' for s in kaynak.split('\n'))
+    else:
+        ic = kaynak          # kabuk blokları: içinde yalnızca <span class="a"> açıklamaları olabilir
+    return f'<pre class="kod" tabindex="0"><code>{ic}</code></pre>'
+
+
+def icerik_sayfasi(yol):
+    ham = open(yol, encoding='utf-8').read()
+    bas = re.match(r'<!--\n(.*?)\n-->\n', ham, flags=re.S)
+    alan = dict(s.split(': ', 1) if ': ' in s else (s.rstrip(':'), '') for s in bas.group(1).split('\n'))
+    govde = ham[bas.end():]
+    klasor = os.path.dirname(yol)
+    govde = re.sub(r'<yontem dosya="([^"]+)"></yontem>',
+                   lambda m: kod_blogu(open(os.path.join(SITE, 'sayfalar', m.group(1)), encoding='utf-8').read(), True), govde)
+    govde = re.sub(r'<yontem>\n(.*?)</yontem>', lambda m: kod_blogu(m.group(1), True), govde, flags=re.S)
+    govde = re.sub(r'<kabuk>\n(.*?)</kabuk>', lambda m: kod_blogu(m.group(1), False), govde, flags=re.S)
+    menu = ''.join(f'<a href="{h}"{" aria-current=\"page\"" if a == alan.get("menu") else ""}>{ad}</a>' for a, h, ad in MENU)
+    kok = '../' * alan['dosya'].count('/')
+    html_ = f"""<!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Yakında · yontem.pro</title>
-<link rel="stylesheet" href="kitaplar/stil.css">
+<title>{html.escape(alan['baslik'])}</title>
+<meta name="description" content="{html.escape(alan['ozet'])}">
+<link rel="stylesheet" href="/fontlar/fontlar.css">
+<link rel="stylesheet" href="/sayfa.css">
 </head>
 <body>
-<header class="ust"><nav aria-label="Ana menü">
-  <a class="logo" href="index.html"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg><span>yöntem</span></a>
-  <div class="menu"><a href="kitaplar/index.html">Kitaplar</a><a class="dugme" href="dene/index.html">Tarayıcıda dene</a></div>
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust"><nav class="sinir" aria-label="Ana menü">
+  <a class="logo" href="/">{LOGO}<span>yöntem</span></a>
+  <div class="menu">{menu}<a class="dugme" href="/dene">Tarayıcıda dene</a></div>
 </nav></header>
-<main class="kitaplik-ana">
-  <h1>Bu sayfa hazırlanıyor</h1>
-  <p class="ozet">Öğretmen sayfası, topluluk, blog ve gizlilik metni yakında burada olacak. O zamana kadar kitapları okuyabilir ya da oyun alanında Yöntem'i deneyebilirsin.</p>
-  <p style="margin-top: 32px"><a class="birincil" href="kitaplar/index.html">Kitaplara git</a></p>
-</main>
+<div class="baslik"><div class="sinir">
+  <span class="ustyazi">{html.escape(alan['ustyazi'])}</span>
+  <h1>{html.escape(alan['h1'])}</h1>
+  <p>{html.escape(alan['ozet'])}</p>
+</div></div>
+<div class="sinir govde">
+{govde.strip()}
+</div>
+<footer class="alt"><div class="sinir">
+  <span>Telif hakkı © 2026 Önder Örnek · yontem.pro</span>
+  <div><a href="/belgeler">Belgeler</a><a href="/topluluk">Topluluk</a><a href="/blog">Blog</a><a href="/gizlilik">Gizlilik</a></div>
+</div></footer>
 </body>
 </html>
-'''
+"""
+    html_ = html_.replace('href="/fontlar/fontlar.css"', f'href="{kok}fontlar/fontlar.css"').replace('href="/sayfa.css"', f'href="{kok}sayfa.css"')
+    return alan['dosya'], baglantilar(html_, kok)
+
+
+GOOGLE_FONT = re.compile(r'<link[^>]*fonts\.(?:googleapis|gstatic)\.com[^>]*>\s*')
+
+
+def fontlari_yerellestir(s, kok):
+    """Google Fonts bağlantılarını sitenin kendi yazı tipi dosyalarıyla değiştirir (dış istek kalmaz)."""
+    if not GOOGLE_FONT.search(s):
+        return s
+    ilk = [True]
+
+    def degis(m):
+        if ilk[0]:
+            ilk[0] = False
+            return f'<link rel="stylesheet" href="{kok}fontlar/fontlar.css">\n'
+        return ''
+    return GOOGLE_FONT.sub(degis, s)
+
 
 BENIOKU = '''yontem.pro — yerel deneme kopyası
 ==================================
@@ -258,10 +319,12 @@ Kopyayı iki yoldan biriyle açabilirsiniz:
   kitaplar/index.html        Kitaplık
   kitaplar/<kitap>.html      Her kitap tek dosya (bölümler arasında sol menüyle gezilir)
   kitaplar/<kitap>/          Aynı kitap bölüm bölüm sayfalar ve isteğe bağlı PDF
-  yakinda.html               Henüz hazır olmayan sayfalar
+  ogren.html, belgeler.html, ogretmen.html, gomulu.html, topluluk.html, gizlilik.html, blog/
+                             İçerik sayfaları
+  fontlar/                   Yazı tipleri (site içinden sunulur)
 
 Notlar
-  - Yazı tipleri Google Fonts'tan yüklenir; internet yoksa sistem yazı tipi kullanılır.
+  - Yazı tipleri fontlar/ klasöründen yüklenir; site hiçbir dış sunucuya istek göndermez.
   - "GitHub" bağlantısı https://github.com/onderornek/yontem adresine gider; depo herkese açılana kadar
     bağlantı yalnızca depo sahibine çalışır.
 
@@ -286,7 +349,15 @@ if __name__ == '__main__':
     open(os.path.join(CIKTI, 'index.html'), 'w', encoding='utf-8').write(baglantilar(ana, ''))
     kur = kurulum_sayfasi(open(os.path.join(tasarim, 'Kurulum.dc.html'), encoding='utf-8').read())
     open(os.path.join(CIKTI, 'kurulum.html'), 'w', encoding='utf-8').write(baglantilar(kur, ''))
-    open(os.path.join(CIKTI, 'yakinda.html'), 'w', encoding='utf-8').write(YAKINDA)
+    sayfalar = os.path.join(SITE, 'sayfalar')
+    for kok_, _, dosyalar in os.walk(sayfalar):
+        for f in sorted(dosyalar):
+            if f.endswith('.html'):
+                hedef, icerik = icerik_sayfasi(os.path.join(kok_, f))
+                os.makedirs(os.path.dirname(os.path.join(CIKTI, hedef)) or CIKTI, exist_ok=True)
+                open(os.path.join(CIKTI, hedef), 'w', encoding='utf-8').write(icerik)
+    shutil.copy(os.path.join(sayfalar, 'sayfa.css'), os.path.join(CIKTI, 'sayfa.css'))
+    shutil.copytree(os.path.join(SITE, 'fontlar'), os.path.join(CIKTI, 'fontlar'))
     open(os.path.join(CIKTI, 'BENIOKU.txt'), 'w', encoding='utf-8').write(BENIOKU)
     shutil.copy(os.path.join(KOK, 'LICENSE'), os.path.join(CIKTI, 'LICENSE'))
     os.makedirs(os.path.join(CIKTI, 'dene'))
@@ -306,6 +377,14 @@ if __name__ == '__main__':
             # dizin bağlantıları dosya olarak açılınca da çalışsın
             s = re.sub(r'href="((?:\.\./)*)kitaplar/"', r'href="\1kitaplar/index.html"', s)
             open(yol, 'w', encoding='utf-8').write(s)
+    for kok_, _, dosyalar in os.walk(CIKTI):
+        for f in dosyalar:
+            if f.endswith('.html'):
+                yol = os.path.join(kok_, f)
+                s = open(yol, encoding='utf-8').read()
+                y = fontlari_yerellestir(s, '../' * os.path.relpath(yol, CIKTI).count(os.sep))
+                if y != s:
+                    open(yol, 'w', encoding='utf-8').write(y)
     zip_yolu = os.path.join(SITE, 'yerel', 'yontem-site.zip')
     with zipfile.ZipFile(zip_yolu, 'w', zipfile.ZIP_DEFLATED) as z:
         for kok, _, dosyalar in os.walk(CIKTI):

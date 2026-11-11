@@ -9,6 +9,8 @@ uyumsuz değişiklik içerebilir.
 ### Değişenler
 
 - Kurulum belgeleri npm paketine göre güncellendi: `npm install -g yontem`.
+- Site: Öğren, Belgeler, Öğretmenler, Gömülü, Topluluk, Blog ve Gizlilik sayfaları yazıldı (`site/sayfalar/`);
+  yazı tipleri site içinden sunuluyor, sayfalar hiçbir dış sunucuya istek göndermiyor.
 - Derleme aracı esbuild 0.28'e yükseltildi (yalnızca geliştirme bağımlılığı).
 
 ## 0.5.0 — 2026-11-11

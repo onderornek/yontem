@@ -1,0 +1,101 @@
+<!--
+dosya: ogren.html
+menu: ogren
+baslik: Yöntem'i öğrenin
+ustyazi: Öğren · Sıfırdan başlayanlar için yol haritası
+h1: İlk satırdan kendi modelinize.
+ozet: Daha önce hiç program yazmamış olabilirsiniz; sorun değil. Aşağıdaki dört adım sizi ilk programdan sinir ağlarına, web uygulamalarına ve ESP32 kartına kadar götürür. Her adımı kendi hızınızda ilerleyebilirsiniz.
+-->
+<aside class="icindekiler" aria-label="Bu sayfada">
+  <span>Bu sayfada</span>
+  <a href="#ilk">İlk programınız</a>
+  <a href="#yol">Dört adımlık yol</a>
+  <a href="#konular">Konuya göre başlangıç</a>
+  <a href="#takilinca">Takıldığınızda</a>
+</aside>
+<main id="icerik">
+  <section id="ilk">
+    <h2>İlk programınız</h2>
+    <p>Yöntem'de bir program <code>program</code> sözcüğüyle başlar, komutlar <code>başla</code> ile <code>bitir.</code> arasına yazılır. Anahtar sözcükler Türkçedir; döngüler ve koşullar konuştuğunuz gibi okunur.</p>
+<yontem>
+program Merhaba
+değişken
+  ad: metin
+başla
+  ad := 'Dünya'
+  1'den 3'e kadar her i için
+    yaz('Merhaba, ' + ad + '! ' + i, 1)
+bitir.
+</yontem>
+    <p>Bu programı hiçbir şey kurmadan, tarayıcınızdaki oyun alanında çalıştırabilirsiniz. Oyun alanında yüzden fazla hazır örnek de bulunur; birini seçip değiştirerek denemek, öğrenmenin en hızlı yoludur.</p>
+    <div class="dugmeler">
+      <a class="birincil" href="/dene">Oyun alanı</a>
+      <a class="ikincil" href="/kurulum">Kurulum</a>
+    </div>
+  </section>
+
+  <section id="yol">
+    <h2>Dört adımlık yol</h2>
+    <ol class="adimlar">
+      <li>
+        <h3>Oyun alanında ilk denemeler</h3>
+        <p>Önce dilin nasıl göründüğüne bakmanızı öneririz. Oyun alanı tarayıcıda çalışır; hesap açmanız ya da bir şey kurmanız gerekmez. Yazdığınız program bilgisayarınızdan dışarı çıkmaz.</p>
+        <p><a href="/dene">Oyun alanına git →</a></p>
+      </li>
+      <li>
+        <h3>Temeller: Programlamaya Giriş kitabı</h3>
+        <p><em>Yöntem ile Programlamaya Giriş</em>, programlamayı hiç bilmeyenler için yazılmıştır. İlk on bir bölüm değişkenleri, koşulları, döngüleri, fonksiyonları, listeleri, sınıfları, hata yönetimini ve birimleri anlatır. Her bölümün sonunda alıştırmalar, kitabın sonunda da çözümleri bulunur.</p>
+        <p><a href="/kitaplar/programlamaya-giris.html">Kitabın çevrim içi sürümü →</a></p>
+      </li>
+      <li>
+        <h3>Kurulum ve araçlar</h3>
+        <p>Kendi dosyalarınızla çalışmaya başladığınızda Yöntem'i tek komutla kurabilirsiniz: <code>npm install -g yontem</code>. <code>yontem yeni</code> ile proje açabilir, <code>yontem test</code> ile programlarınızı sınayabilir, <code>yontem ayikla</code> ile adım adım izleyebilirsiniz.</p>
+        <p><a href="/kurulum">Kurulum sayfası →</a> · <a href="/kitaplar/birimler.html">Birimler ve Araçlar Kılavuzu →</a></p>
+      </li>
+      <li>
+        <h3>İlginizi çeken alan</h3>
+        <p>Temelleri öğrendikten sonra yolunuzu kendiniz seçebilirsiniz: makine öğrenmesi, dil modelleri, web uygulamaları ya da gömülü sistemler. Aşağıdaki bölüm her biri için nereden başlayacağınızı gösterir.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="konular">
+    <h2>Konuya göre başlangıç</h2>
+    <div class="kartlar">
+      <a class="kart" href="/kitaplar/makine-ogrenmesi.html">
+        <span class="tur">Makine öğrenmesi</span>
+        <strong>Yirmi algoritma, çalışan yirmi program.</strong>
+        <span class="aciklama">Doğrusal regresyondan dikkat mekanizmasına; her algoritma sıfırdan yazılır ve çıktısıyla birlikte verilir.</span>
+        <span class="git">Kitaba git →</span>
+      </a>
+      <a class="kart" href="/kitaplar/sifirdan-dil-modeli.html">
+        <span class="tur">Dil modelleri</span>
+        <strong>Küçük bir GPT'yi kendiniz eğitebilirsiniz.</strong>
+        <span class="aciklama">Simgeleştirmeden öz-dikkate, Transformer bloğundan metin üretmeye on bölüm.</span>
+        <span class="git">Kitaba git →</span>
+      </a>
+      <a class="kart" href="/kitaplar/birimler.html">
+        <span class="tur">Uygulama geliştirme</span>
+        <strong>Arayüz, veritabanı, web sunucusu.</strong>
+        <span class="aciklama">Pencere ve Mobil ile arayüz, Veritabanı ve Sunucu ile üç katmanlı bir uygulama.</span>
+        <span class="git">Kılavuza git →</span>
+      </a>
+      <a class="kart" href="/gomulu">
+        <span class="tur">Gömülü sistemler</span>
+        <strong>Aynı kod ESP32 kartında.</strong>
+        <span class="aciklama">Önce bilgisayarınızdaki benzetimde deneyebilir, sonra karta yükleyebilirsiniz.</span>
+        <span class="git">Gömülü sayfası →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="takilinca">
+    <h2>Takıldığınızda</h2>
+    <ul>
+      <li>Hata mesajları Türkçedir ve hatanın satırını gösterir; önce mesajı dikkatle okumanızı öneririz.</li>
+      <li>Giriş kitabının <a href="/kitaplar/programlamaya-giris.html">Ek B: Sık yapılan hatalar</a> bölümü en yaygın sorunları ve çözümlerini listeler.</li>
+      <li>Programı <code>yontem ayikla program.y</code> ile adım adım çalıştırıp değişkenlerin değerlerini izleyebilirsiniz.</li>
+      <li>Çözemediğiniz bir sorun olursa <a href="/topluluk">topluluk sayfasındaki</a> yollarla sorabilirsiniz.</li>
+    </ul>
+  </section>
+</main>

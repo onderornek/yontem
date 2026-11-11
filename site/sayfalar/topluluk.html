@@ -1,0 +1,65 @@
+<!--
+dosya: topluluk.html
+menu:
+baslik: Yöntem topluluğu
+ustyazi: Topluluk · Açık kaynak
+h1: Yöntem'i birlikte geliştirelim.
+ozet: Yöntem açık kaynaklı bir projedir. Soru sorabilir, hata bildirebilir, yazdığınız birimleri paylaşabilir ya da doğrudan koda ve kitaplara katkıda bulunabilirsiniz. Projenin buluşma yeri GitHub deposudur.
+-->
+<aside class="icindekiler" aria-label="Bu sayfada">
+  <span>Bu sayfada</span>
+  <a href="#sor">Soru sormak ve hata bildirmek</a>
+  <a href="#katki">Katkıda bulunmak</a>
+  <a href="#paket">Biriminizi paylaşmak</a>
+  <a href="#guvenlik">Güvenlik açığı bildirmek</a>
+  <a href="#davranis">Birbirimize nasıl davranırız</a>
+</aside>
+<main id="icerik">
+  <section id="sor">
+    <h2>Soru sormak ve hata bildirmek</h2>
+    <p>Sorularınızı, önerilerinizi ve karşılaştığınız hataları GitHub'da bir konu (issue) açarak iletebilirsiniz. Daha önce açılmış konulara göz atmanız, aynı sorunun yanıtını hemen bulmanızı sağlayabilir.</p>
+    <p>Bir hata bildirirken şunları eklemeniz, sorunun hızla anlaşılmasına yardımcı olur:</p>
+    <ul>
+      <li>Hatayı gösteren en kısa program,</li>
+      <li>beklediğiniz çıktı ile aldığınız çıktı ya da hata mesajının tamamı,</li>
+      <li><code>yontem --surum</code> ve <code>node --version</code> komutlarının çıktısı ile işletim sisteminiz.</li>
+    </ul>
+    <div class="dugmeler">
+      <a class="birincil" href="https://github.com/onderornek/yontem/issues">Açık konular</a>
+      <a class="ikincil" href="https://github.com/onderornek/yontem/issues/new">Yeni konu</a>
+    </div>
+  </section>
+
+  <section id="katki">
+    <h2>Katkıda bulunmak</h2>
+    <p>Katkı yalnızca derleyici kodu demek değildir. Aşağıdakilerin hepsi değerlidir:</p>
+    <ul>
+      <li><strong>Belgeler ve kitaplar:</strong> yazım hataları, anlaşılmayan paragraflar, eksik örnekler.</li>
+      <li><strong>Örnek programlar:</strong> bir konuyu iyi anlatan kısa ve çalışan programlar.</li>
+      <li><strong>Hata düzeltmeleri ve yeni özellikler:</strong> derleyici, yorumlayıcı, birimler ve araçlar.</li>
+      <li><strong>Sınama:</strong> Yöntem'i farklı işletim sistemlerinde ve kartlarda deneyip sonucu bildirmek.</li>
+    </ul>
+    <p>Yöntem'in iki uygulaması vardır (JavaScript derleyicisi ve Python yorumlayıcısı) ve ikisinin de aynı çıktıyı vermesi beklenir; bir değişiklik gönderirken test takımlarının hepsinin geçmesi gerekir. Geliştirme ortamının kurulumu, kod düzeni ve değişiklik gönderme adımları katkı rehberinde anlatılır.</p>
+    <p><a href="https://github.com/onderornek/yontem/blob/main/CONTRIBUTING.md">Katkı rehberi →</a></p>
+  </section>
+
+  <section id="paket">
+    <h2>Biriminizi paylaşmak</h2>
+    <p>Yazdığınız bir birimi başkalarının kullanmasını istiyorsanız onu herkese açık bir Git deposuna koyup bir sürüm etiketi vermeniz yeterlidir. Merkezî bir paket deposu yoktur; paketler doğrudan kaynağından kurulur.</p>
+<kabuk>
+yontem paket ekle github:kullanici/depo@v1.0.0
+</kabuk>
+    <p>Kurulum yalnızca dosya kopyalar; paketteki hiçbir kod kurulum sırasında çalışmaz. Yine de bir paket, programınızla birlikte çalışacak koddur: güvenmediğiniz bir kaynaktan paket kurmamanızı öneririz. Ayrıntıları <a href="/kitaplar/birimler.html">Birimler ve Araçlar Kılavuzu</a>'nun "Paketler" bölümünde bulabilirsiniz.</p>
+  </section>
+
+  <section id="guvenlik">
+    <h2>Güvenlik açığı bildirmek</h2>
+    <p>Bir güvenlik açığı bulduğunuzu düşünüyorsanız bunu herkese açık bir konu olarak yazmak yerine özel olarak bildirmenizi rica ederiz; böylece düzeltme yayımlanmadan önce açık kötüye kullanılamaz. Bunun için deponun GitHub sayfasındaki <strong>Security → Report a vulnerability</strong> yolunu kullanabilirsiniz; bildirimin alındığı bir hafta içinde yanıtlanmaya çalışılır.</p>
+    <p><a href="https://github.com/onderornek/yontem/blob/main/SECURITY.md">Güvenlik politikası →</a></p>
+  </section>
+
+  <section id="davranis">
+    <h2>Birbirimize nasıl davranırız</h2>
+    <p>Yöntem'in kullanıcılarının önemli bir bölümü programlamaya yeni başlayanlardır. Sorulara sabırla yanıt vermek, eleştiriyi kişiye değil koda yöneltmek ve herkesin bir zamanlar yeni başlayan olduğunu hatırlamak, bu topluluğun temel kuralıdır.</p>
+  </section>
+</main>

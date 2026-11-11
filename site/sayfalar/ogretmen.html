@@ -1,0 +1,91 @@
+<!--
+dosya: ogretmen.html
+menu: ogretmen
+baslik: Öğretmenler için Yöntem
+ustyazi: Öğretmenler · Sınıfta Yöntem
+h1: Programlamayı öğrencilerinizin ana dilinde anlatabilirsiniz.
+ozet: Yöntem'de anahtar sözcükler ve hata mesajları Türkçedir; öğrenciler İngilizce sözcükleri ezberlemek yerine algoritmayı düşünmeye odaklanabilir. Bu sayfa dersinizde Yöntem'i kullanmak için gerekenleri bir araya getirir.
+-->
+<aside class="icindekiler" aria-label="Bu sayfada">
+  <span>Bu sayfada</span>
+  <a href="#neden">Derste neden Yöntem?</a>
+  <a href="#ortam">Kurulumsuz sınıf ortamı</a>
+  <a href="#akis">Örnek ders akışı</a>
+  <a href="#odev">Ödevleri denetlemek</a>
+  <a href="#lisans">Malzemeleri kullanma izni</a>
+  <a href="#eksikler">Henüz olmayanlar</a>
+</aside>
+<main id="icerik">
+  <section id="neden">
+    <h2>Derste neden Yöntem?</h2>
+    <ul>
+      <li><strong>Türkçe okunur.</strong> <code>eğer not >= 50 ise yaz('Geçti', 1)</code> satırını öğrenciler ilk gördüklerinde okuyabilir.</li>
+      <li><strong>Hata mesajları Türkçedir</strong> ve hatanın satırını gösterir; öğrenci hatasını kendisi bulmayı öğrenir.</li>
+      <li><strong>Yapısı açıktır.</strong> Pascal geleneğinden gelen <code>başla … bitir</code> blokları ve açık tip bildirimleri, programın yapısını görünür kılar.</li>
+      <li><strong>Öğrenilen kavramlar başka dillere taşınır.</strong> Değişken, döngü, fonksiyon, sınıf ve modül kavramları Python, JavaScript ya da C ile aynıdır.</li>
+      <li><strong>İleri konulara aynı dille geçilir.</strong> Sinir ağları, dil modelleri ve ESP32 programlama için ayrı bir dil öğrenmek gerekmez.</li>
+    </ul>
+  </section>
+
+  <section id="ortam">
+    <h2>Kurulumsuz sınıf ortamı</h2>
+    <p>Okul bilgisayarlarına program kurmak çoğu zaman mümkün olmaz. Oyun alanı bu yüzden tümüyle tarayıcıda çalışır: hesap açmak, bir şey kurmak ya da yönetici izni almak gerekmez. Öğrencinin yazdığı program bilgisayardan dışarı gönderilmez; taslak yalnızca o tarayıcıda saklanır.</p>
+    <p>İnternetin olmadığı sınıflar için oyun alanı tek bir HTML dosyası olarak da kullanılabilir: Yöntem deposundaki <code>oyun_alani/index.html</code> dosyasını bilgisayarlara kopyalayıp çift tıklayarak açmanız yeterlidir.</p>
+    <div class="dugmeler">
+      <a class="birincil" href="/dene">Oyun alanı</a>
+      <a class="ikincil" href="/kurulum">Kurulum seçenekleri</a>
+    </div>
+  </section>
+
+  <section id="akis">
+    <h2>Örnek ders akışı</h2>
+    <p>Aşağıdaki on iki haftalık akış bir öneridir; <em>Yöntem ile Programlamaya Giriş</em> kitabının bölümlerini izler. Her bölümün sonundaki alıştırmaları sınıf içi çalışma ya da ödev olarak kullanabilir, süreyi sınıfınızın düzeyine göre uzatıp kısaltabilirsiniz.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Örnek ders akışı tablosu">
+      <table>
+        <thead><tr><th>Hafta</th><th>Konu</th><th>Kitap bölümü</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Program yapısı, ilk program, <code>yaz</code></td><td>Bölüm 1</td></tr>
+          <tr><td>2</td><td>Değişkenler, tipler, işleçler</td><td>Bölüm 2</td></tr>
+          <tr><td>3</td><td>Giriş ve çıkış, biçimlendirme</td><td>Bölüm 3</td></tr>
+          <tr><td>4</td><td>Karar vermek: <code>eğer</code>, <code>değerine göre</code></td><td>Bölüm 4</td></tr>
+          <tr><td>5</td><td>Döngüler; sayı tahmin oyunu</td><td>Bölüm 5</td></tr>
+          <tr><td>6</td><td>Prosedürler ve fonksiyonlar</td><td>Bölüm 6</td></tr>
+          <tr><td>7</td><td>Metinler, listeler, sözlükler</td><td>Bölüm 7</td></tr>
+          <tr><td>8</td><td>Fonksiyonlar değer olarak; boru işleci</td><td>Bölüm 8</td></tr>
+          <tr><td>9</td><td>Kayıtlar ve sınıflar</td><td>Bölüm 9</td></tr>
+          <tr><td>10</td><td>Hata yönetimi</td><td>Bölüm 10</td></tr>
+          <tr><td>11</td><td>Birimler: programı parçalara bölmek</td><td>Bölüm 11</td></tr>
+          <tr><td>12</td><td>Dönem projesi ve sunumlar</td><td>Bölüm 12–15'ten seçmeler</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Kitabın son dört bölümü (tensörler, sinir ağları, klasik yapay zekâ, kuantum programlama) ilgili öğrenciler için proje konusu ya da seçmeli ders içeriği olarak kullanılabilir.</p>
+    <p><a href="/kitaplar/programlamaya-giris.html">Kitabın çevrim içi sürümü →</a> · <a href="/kitaplar/programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf">PDF sürümü →</a></p>
+  </section>
+
+  <section id="odev">
+    <h2>Ödevleri denetlemek</h2>
+    <p>Yöntem'de test, çıktısı bilinen bir programdır. Beklediğiniz çıktıyı programla aynı adı taşıyan bir <code>.beklenen</code> dosyasına yazarsınız; program girdi okuyorsa girdiyi de <code>.girdi</code> dosyasına koyarsınız. <code>yontem test</code> komutu klasördeki bütün programları çalıştırır ve çıktısı beklenenle uyuşmayanları ilk farklı satırıyla birlikte listeler.</p>
+<kabuk>
+odevler/
+  ayse/faktoriyel.y
+  ayse/faktoriyel.beklenen
+  mert/faktoriyel.y
+  mert/faktoriyel.beklenen
+
+yontem test odevler      <span class="a"># hepsini çalıştırır, geçenleri ve kalanları yazar</span>
+</kabuk>
+    <p>Öğrencilerden programlarının başına <code>{$katı}</code> yazmalarını isterseniz derleyici tip hatalarını program çalışmadan önce listeler; <code>yontem bicimle</code> da teslim edilen kodun girintisini tek biçime getirir.</p>
+    <div class="not"><p>Bu komutlar bilgisayara kurulan Yöntem ile gelir; oyun alanında bulunmaz. Öğretmen bilgisayarına kurulum için <a href="/kurulum">kurulum sayfasına</a> bakabilirsiniz.</p></div>
+  </section>
+
+  <section id="lisans">
+    <h2>Malzemeleri kullanma izni</h2>
+    <p>Kitap ve kılavuz metinleri <a href="https://creativecommons.org/licenses/by/4.0/deed.tr">Creative Commons Atıf 4.0 (CC BY 4.0)</a> ile lisanslıdır. Kaynak göstermeniz koşuluyla metinleri çoğaltabilir, ders notlarınıza alabilir, kısaltıp uyarlayabilir ve öğrencilerinize dağıtabilirsiniz. Yöntem yazılımının kendisi MIT lisanslıdır; okulunuzda ücretsiz kullanabilirsiniz.</p>
+  </section>
+
+  <section id="eksikler">
+    <h2>Henüz olmayanlar</h2>
+    <p>Beklentinizi doğru kurabilmeniz için açıkça belirtmek isteriz: hazır sunum dosyaları, sınav soru bankası ve öğrenci hesaplarıyla çalışan bir sınıf yönetim ekranı şu an yoktur. Derste Yöntem kullanıyorsanız neye ihtiyaç duyduğunuzu <a href="/topluluk">topluluk sayfasındaki</a> yollarla bize iletmeniz, bundan sonra neyin hazırlanacağını belirlememize yardımcı olur.</p>
+  </section>
+</main>

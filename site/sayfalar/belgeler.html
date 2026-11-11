@@ -1,0 +1,113 @@
+<!--
+dosya: belgeler.html
+menu: belgeler
+baslik: Yöntem belgeleri
+ustyazi: Belgeler · Yöntem 0.5.0
+h1: Aradığınız belgeyi buradan bulabilirsiniz.
+ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu sayfada toplanmıştır. Aşağıda ayrıca dilin temel yazımını tek bakışta gösteren bir hızlı başvuru yer alır.
+-->
+<aside class="icindekiler" aria-label="Bu sayfada">
+  <span>Bu sayfada</span>
+  <a href="#kilavuzlar">Kılavuzlar</a>
+  <a href="#hizli">Hızlı başvuru</a>
+  <a href="#tipler">Tipler</a>
+  <a href="#komutlar">Komutlar</a>
+  <a href="#birimler">Birimler</a>
+</aside>
+<main id="icerik">
+  <section id="kilavuzlar">
+    <h2>Kılavuzlar</h2>
+    <div class="kartlar">
+      <a class="kart" href="/kurulum">
+        <span class="tur">Başlangıç</span>
+        <strong>Kurulum</strong>
+        <span class="aciklama">Windows, macOS ve Linux için adım adım kurulum; ESP32 araçları ve sık karşılaşılan sorunlar.</span>
+        <span class="git">Kurulum sayfası →</span>
+      </a>
+      <a class="kart" href="/kitaplar/birimler.html">
+        <span class="tur">Kılavuz</span>
+        <strong>Birimler ve Araçlar</strong>
+        <span class="aciklama">Pencere, Mobil, Güvenlik, Takvim, Desen, Ağ, Veritabanı ve Sunucu birimleri; test, katı kip, hata ayıklama, paketler.</span>
+        <span class="git">Kılavuza git →</span>
+      </a>
+      <a class="kart" href="https://github.com/onderornek/yontem#readme">
+        <span class="tur">Başvuru</span>
+        <strong>Dil başvurusu</strong>
+        <span class="aciklama">Sözcük yapısı, tipler, işleçler, denetim yapıları, sınıflar, birimler ve standart kütüphanenin tamamı.</span>
+        <span class="git">GitHub'daki sayfa →</span>
+      </a>
+      <a class="kart" href="https://github.com/onderornek/yontem/blob/main/CHANGELOG.md">
+        <span class="tur">Sürümler</span>
+        <strong>Değişiklik günlüğü</strong>
+        <span class="aciklama">Her sürümde eklenenler, değişenler ve düzeltilenler.</span>
+        <span class="git">GitHub'daki sayfa →</span>
+      </a>
+    </div>
+    <p>Dili baştan öğrenmek istiyorsanız belgeler yerine <a href="/ogren">Öğren</a> sayfasından başlamanızı öneririz.</p>
+  </section>
+
+  <section id="hizli">
+    <h2>Hızlı başvuru</h2>
+    <p>Aşağıdaki program dilin en sık kullanılan yapılarını bir arada gösterir: sabit, kayıt tipi, tipli liste ve sözlük, fonksiyon, döngüler, koşul ve hata yakalama. Program olduğu gibi çalışır.</p>
+<yontem dosya="ornekler/hizli_basvuru.y"></yontem>
+    <div class="not"><p><strong>Gövde kuralı:</strong> Döngü ve koşulların gövdesi tek bir komuttur. Birden çok komut için gövdeyi <code>başla … bitir</code> arasına almanız gerekir. Açıklamalar <code>{ süslü ayraç }</code> içine ya da <code>//</code> işaretinden sonra yazılır.</p></div>
+  </section>
+
+  <section id="tipler">
+    <h2>Tipler</h2>
+    <div class="tablo" tabindex="0" role="region" aria-label="Tipler tablosu">
+      <table>
+        <thead><tr><th>Tip</th><th>Örnek değer</th><th>Not</th></tr></thead>
+        <tbody>
+          <tr><td><code>tamsayı</code></td><td><code>42</code>, <code>-7</code></td><td>Masaüstünde büyüklük sınırı yoktur; ESP32'de 64 bittir</td></tr>
+          <tr><td><code>ondalık</code></td><td><code>3.14</code></td><td>Çift duyarlıklı kayan nokta</td></tr>
+          <tr><td><code>metin</code></td><td><code>'Merhaba'</code></td><td>Karakterler 1'den numaralanır</td></tr>
+          <tr><td><code>mantıksal</code></td><td><code>doğru</code>, <code>yanlış</code></td><td></td></tr>
+          <tr><td><code>tamsayı listesi</code></td><td><code>[1, 2, 3]</code></td><td>Öğeler 0'dan numaralanır; tipsiz biçimi <code>liste</code></td></tr>
+          <tr><td><code>metin sözlüğü</code></td><td><code>['a': 'x', 'b': 'y']</code></td><td>Boş sözlük <code>[:]</code>; tipsiz biçimi <code>sözlük</code></td></tr>
+          <tr><td><code>ondalık dizisi[1..12]</code></td><td></td><td>Sabit boyutlu, sınırları sizin belirlediğiniz dizi</td></tr>
+          <tr><td><code>herhangi</code></td><td></td><td>Tipi çalışma anında belli olan değer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Dosyanın başına <code>{$katı}</code> yazdığınızda derleyici tipleri program çalışmadan önce denetler ve bütün tip hatalarını bir arada listeler.</p>
+  </section>
+
+  <section id="komutlar">
+    <h2>Komutlar</h2>
+    <div class="tablo" tabindex="0" role="region" aria-label="Komutlar tablosu">
+      <table>
+        <thead><tr><th>Komut</th><th>Ne yapar</th></tr></thead>
+        <tbody>
+          <tr><td><code>yontem program.y</code></td><td>Programı derleyip çalıştırır</td></tr>
+          <tr><td><code>yontem yeni ad</code></td><td>Yeni proje klasörü oluşturur</td></tr>
+          <tr><td><code>yontem test</code></td><td>Programları çalıştırıp çıktılarını <code>.beklenen</code> dosyalarıyla karşılaştırır</td></tr>
+          <tr><td><code>yontem bicimle dosya.y</code></td><td>Girintiyi ve boşlukları düzenler</td></tr>
+          <tr><td><code>yontem denetle --kati</code></td><td>Programı çalıştırmadan sözdizimi ve tip hatalarını listeler</td></tr>
+          <tr><td><code>yontem ayikla program.y</code></td><td>Hata ayıklayıcı: kesme noktaları, adım adım çalıştırma, değişkenler</td></tr>
+          <tr><td><code>yontem paket ekle kaynak</code></td><td>Başkalarının birimlerini projenize kurar</td></tr>
+          <tr><td><code>yontem paketle program.y</code></td><td>Arayüzlü programı web uygulamasına çevirir</td></tr>
+          <tr><td><code>yontem gomulu program.y</code></td><td>ESP32 için C++ projesi üretir</td></tr>
+          <tr><td><code>yontem derle program.y</code></td><td>Yalnızca JavaScript çıktısı üretir</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Komutların ayrıntılarını <a href="/kitaplar/birimler.html">Birimler ve Araçlar Kılavuzu</a>'nun "Araçlar" bölümünde bulabilirsiniz.</p>
+  </section>
+
+  <section id="birimler">
+    <h2>Birimler</h2>
+    <p>Birimler <code>kullan</code> ile programa eklenir. Aşağıdakilerin hepsi Yöntem ile birlikte gelir.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Birimler tablosu">
+      <table>
+        <thead><tr><th>Alan</th><th>Birimler</th></tr></thead>
+        <tbody>
+          <tr><td>Temel</td><td><code>Matematik</code>, <code>Sistem</code>, <code>Veri</code>, <code>Takvim</code>, <code>Desen</code></td></tr>
+          <tr><td>Yapay zekâ</td><td><code>YZ</code>, <code>Meşale</code>, <code>Sinir</code>, <code>MakineÖğrenmesi</code>, <code>Arama</code>, <code>Uzman</code>, <code>Dil</code>, <code>İstatistik</code></td></tr>
+          <tr><td>Uygulama</td><td><code>Pencere</code>, <code>Mobil</code>, <code>Ağ</code>, <code>Veritabanı</code>, <code>Sunucu</code>, <code>Güvenlik</code></td></tr>
+          <tr><td>Donanım ve kuantum</td><td><code>Donanım</code>, <code>Kuantum</code>, <code>KuantumAlgoritmaları</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,95 @@
+<!--
+dosya: gomulu.html
+menu:
+baslik: Yöntem ile gömülü sistemler
+ustyazi: Gömülü sistemler · ESP32
+h1: Aynı program ekranda ve ESP32 kartında.
+ozet: Yöntem programları, tipleri derleme anında bilinen bir alt kümeye uyduğunda C++'a derlenir ve ESP32'de çalışır. Kartınız olmasa da programı bilgisayarınızdaki benzetimde deneyebilirsiniz.
+-->
+<aside class="icindekiler" aria-label="Bu sayfada">
+  <span>Bu sayfada</span>
+  <a href="#led">İlk program: LED</a>
+  <a href="#calistir">Benzetimde çalıştırma</a>
+  <a href="#yukle">Karta yükleme</a>
+  <a href="#donanim">Donanım birimi</a>
+  <a href="#altkume">Alt küme kuralları</a>
+  <a href="#model">Modeli karta taşımak</a>
+  <a href="#sinirlar">Sınırlar</a>
+</aside>
+<main id="icerik">
+  <section id="led">
+    <h2>İlk program: yanıp sönen LED</h2>
+    <p>Aşağıdaki program kartın üzerindeki LED'i yarım saniye arayla yakıp söndürür. Pin işlemleri ve bekleme, <code>Donanım</code> biriminden gelir.</p>
+<yontem dosya="ornekler/led.y"></yontem>
+  </section>
+
+  <section id="calistir">
+    <h2>Benzetimde çalıştırma</h2>
+    <p>Kartı bağlamadan önce programı bilgisayarınızda deneyebilirsiniz. <code>--calistir</code> seçeneği programı C++'a derler ve sanal saatli bir benzetimde çalıştırır; <code>Bekle(500)</code> gerçekten beklemez, çıktı hemen gelir.</p>
+<kabuk>
+yontem gomulu led.y --calistir
+    0 ms  LED yanık
+  500 ms  LED sönük
+ 1000 ms  LED yanık
+ …
+Bitti.
+</kabuk>
+    <p>Bunun için Yöntem'in yanında bir C++17 derleyicisi (g++ ya da clang++) gerekir. Aynı programı oyun alanında da çalıştırabilirsiniz; oradaki "Pin izi" seçeneği pin değişikliklerini zaman damgasıyla gösterir.</p>
+  </section>
+
+  <section id="yukle">
+    <h2>Karta yükleme</h2>
+    <p><code>yontem gomulu led.y</code> komutu <code>led/</code> adında bir proje klasörü üretir. Klasörde Arduino için bir <code>.ino</code> dosyası, PlatformIO için hazır bir <code>platformio.ini</code> ve kısa bir <code>BENIOKU.txt</code> bulunur. Üç yoldan birini seçebilirsiniz:</p>
+    <ul>
+      <li><strong>Arduino IDE:</strong> Espressif'in "esp32" çekirdeğini (3.x önerilir) kurduktan sonra <code>.ino</code> dosyasını açıp kartınızı ve portu seçerek yükleyebilirsiniz.</li>
+      <li><strong>arduino-cli:</strong> <code>arduino-cli compile</code> ve <code>arduino-cli upload</code> komutlarıyla.</li>
+      <li><strong>PlatformIO:</strong> klasörün içinde <code>pio run -t upload</code> komutuyla.</li>
+    </ul>
+    <p>Programın <code>yaz</code> çıktısı ve <code>oku</code> girdisi seri port üzerinden, 115200 baud hızında akar. Adımların ayrıntılarını <a href="/kurulum">kurulum sayfasının</a> gömülü bölümünde bulabilirsiniz.</p>
+  </section>
+
+  <section id="donanim">
+    <h2>Donanım birimi</h2>
+    <div class="tablo" tabindex="0" role="region" aria-label="Donanım birimi tablosu">
+      <table>
+        <thead><tr><th>Grup</th><th>Adlar</th></tr></thead>
+        <tbody>
+          <tr><td>Pinler</td><td><code>PinKipi</code>, <code>PinYaz</code>, <code>PinOku</code>, <code>AnalogOku</code>, <code>PWMYaz</code>, <code>YerleşikLED</code></td></tr>
+          <tr><td>Zaman</td><td><code>Bekle</code>, <code>BekleMikro</code>, <code>Milisaniye</code>, <code>Mikrosaniye</code></td></tr>
+          <tr><td>Kesmeler</td><td><code>KesmeBağla</code>, <code>KesmeÇöz</code></td></tr>
+          <tr><td>Zamanlayıcılar</td><td><code>ZamanlayıcıKur</code>, <code>ZamanlayıcıTek</code>, <code>ZamanlayıcıDurdur</code></td></tr>
+          <tr><td>Seri</td><td><code>SeriBaşlat</code>, <code>SeriVarMı</code>, <code>SeriBaytOku</code>, <code>SeriBaytYaz</code></td></tr>
+          <tr><td>I2C ve SPI</td><td><code>I2CBaşlat</code>, <code>I2CYaz</code>, <code>I2COku</code>, <code>I2CYazOku</code>, <code>SPIBaşlat</code>, <code>SPIAktar</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>Benzetim</code> sabiti bilgisayarda <code>doğru</code>, kartta <code>yanlış</code> değerini alır; böylece aynı programın içinde benzetime özel sınama kodu yazabilirsiniz. Kesme ve zamanlayıcı prosedürleri ESP32'de ayrı bir görevde sırayla çalışır; bu prosedürleri kısa tutmanız gerekir.</p>
+  </section>
+
+  <section id="altkume">
+    <h2>Alt küme kuralları</h2>
+    <p>Gömülü arka uç, her değerin tipini derleme anında bilmek ister. Kurala uymayan her kullanım derleme sırasında açık bir hata mesajıyla bildirilir.</p>
+    <ul>
+      <li><code>tamsayı</code> 64 bittir, <code>ondalık</code> çift duyarlıklıdır.</li>
+      <li><code>liste</code>, <code>sözlük</code> ve <code>herhangi</code> olarak bildirilen değişkenlerin tipi ilk kullanımdan çıkarılır. Çıkarılamadığında tipi açıkça yazmanız gerekir: <code>tamsayı listesi</code>.</li>
+      <li>Lambdalar dış değişkenleri kopyalar; lambda içinden dış değişkene atama yapılamaz.</li>
+      <li>Yerleşik birimlerden yalnızca <code>Matematik</code>, <code>YZ</code> (eğitilmiş modelle tahmin için) ve <code>Donanım</code> kullanılabilir; Yöntem ile yazdığınız kendi birimleriniz de derlenir. Öteki yerleşik birimler, otomatik türev ve model eğitimi kartta desteklenmez.</li>
+    </ul>
+  </section>
+
+  <section id="model">
+    <h2>Eğitilmiş modeli karta taşımak</h2>
+    <p>Model eğitimi kartta yapılmaz; modeli bilgisayarınızda eğitir, sonra karta taşırsınız. <code>ModeliDışaAktar(model, 'XorModeli.y')</code> çağrısı, ağırlıkları içinde taşıyan saf bir Yöntem birimi yazar. Kart programında <code>kullan XorModeli</code> deyip <code>Tahmin(…)</code> fonksiyonunu çağırmanız yeterlidir.</p>
+    <p>Hazır örnekleri Yöntem deposunun <a href="https://github.com/onderornek/yontem/tree/main/gomulu_ornekler"><code>gomulu_ornekler</code></a> klasöründe bulabilirsiniz: düğme kesmesi, zamanlayıcılar, I2C sıcaklık algılayıcısı, seri konsol ve XOR modelinin kartta çalıştırılması.</p>
+  </section>
+
+  <section id="sinirlar">
+    <h2>Sınırlar</h2>
+    <ul>
+      <li>Gömülü arka uç şimdilik yalnızca ESP32'yi hedefler.</li>
+      <li>Wi-Fi ve Bluetooth birimleri henüz yoktur.</li>
+      <li>Masaüstü benzetimi Windows'ta henüz sınanmamıştır.</li>
+      <li>Örnekler ESP32 için derlenmiş ve Espressif'in QEMU öykünücüsünde doğrulanmıştır; kendi kartınızda ilk kez çalıştırırken basit bir programla başlamanızı öneririz.</li>
+    </ul>
+  </section>
+</main>

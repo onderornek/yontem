@@ -1,0 +1,62 @@
+<!--
+dosya: blog/yontem-0-5-0.html
+menu:
+baslik: Yöntem 0.5.0: ilk açık sürüm
+ustyazi: Blog · 11 Kasım 2026 · Önder Örnek
+h1: Yöntem 0.5.0: ilk açık sürüm.
+ozet: Türkçe anahtar sözcüklü programlama dili Yöntem, bugünden itibaren herkese açık. Tek komutla kurabilir ya da hiçbir şey kurmadan tarayıcınızda deneyebilirsiniz.
+-->
+<main id="icerik">
+  <section>
+    <h2>Yöntem nedir?</h2>
+    <p>Yöntem; anahtar sözcükleri Türkçe olan, Pascal geleneğinden gelen, nesne tabanlı ve modüler bir programlama dilidir. Amacı, programlamayı öğrenen birinin önce İngilizce sözcüklerle değil, doğrudan algoritmanın kendisiyle uğraşabilmesidir. Bir döngü şöyle yazılır:</p>
+<yontem>
+1'den 10'a kadar her i için
+  yaz(i * i, 1)
+</yontem>
+    <p>Yöntem yalnızca bir başlangıç dili olarak tasarlanmadı. Dilin çekirdeğinde otomatik türev alan tensörler bulunur; aynı dille sinir ağı eğitebilir, küçük bir dil modeli yazabilir, bir web sunucusu kurabilir ya da programınızı ESP32 kartında çalıştırabilirsiniz.</p>
+  </section>
+
+  <section>
+    <h2>Bu sürümde neler var?</h2>
+    <ul>
+      <li><strong>Üç çalışma ortamı:</strong> JavaScript derleyicisi, aynı çıktıyı veren bir Python yorumlayıcısı ve ESP32 için C++ arka ucu.</li>
+      <li><strong>Birimler:</strong> Matematik, Sistem, Veri, Takvim, Desen, Güvenlik, Ağ, Veritabanı, Sunucu, Pencere, Mobil, YZ, Meşale ve Kuantum.</li>
+      <li><strong>Araçlar:</strong> test, biçimlendirme, isteğe bağlı katı tip denetimi, hata ayıklayıcı, paket yöneticisi, dil sunucusu ve VS Code eklentisi.</li>
+      <li><strong>Oyun alanı:</strong> tarayıcıda çalışan derleyici ve yüzden fazla hazır örnek.</li>
+      <li><strong>Beş kitap ve kılavuz:</strong> <em>Programlamaya Giriş</em>, <em>Makine Öğrenmesi</em>, <em>Sıfırdan Dil Modeli</em>, <em>Kurulum Kılavuzu</em> ve <em>Birimler ve Araçlar Kılavuzu</em>. Hepsini çevrim içi okuyabilir ya da PDF olarak indirebilirsiniz.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Nasıl başlanır?</h2>
+    <p>Bilgisayarınızda Node.js 18 ya da üstü varsa kurulum tek komuttur:</p>
+<kabuk>
+npm install -g yontem
+yontem merhaba.y
+</kabuk>
+    <p>Kurulum yapmak istemezseniz oyun alanını açıp bir örnek seçmeniz yeterlidir.</p>
+    <div class="dugmeler">
+      <a class="birincil" href="/dene">Oyun alanı</a>
+      <a class="ikincil" href="/ogren">Öğrenme yol haritası</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bilinen sınırlar</h2>
+    <p>0.5.0 bir ilk sürümdür ve bazı sınırları vardır; bunları baştan bilmenizi isteriz:</p>
+    <ul>
+      <li><code>Sunucu</code> birimi istekleri sırayla işler ve HTTPS sunmaz; internete açılacak bir uygulamanın önüne ters vekil konması gerekir.</li>
+      <li><code>Veritabanı</code> birimi SQLite için Node.js 22.5 ya da üstünü ister.</li>
+      <li><code>Güvenlik</code> birimi bağımsız bir güvenlik denetiminden geçmemiştir.</li>
+      <li>Gömülü arka uç yalnızca ESP32'yi hedefler; masaüstü benzetimi Windows'ta henüz sınanmamıştır.</li>
+      <li>Python yorumlayıcısı JavaScript derleyicisinden çok daha yavaştır; asıl kullanım alanı etkileşimli kabuktur.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Açık kaynak</h2>
+    <p>Yöntem yazılımı MIT, kitaplar ise Creative Commons Atıf 4.0 lisanslıdır. Kaynak kodunu inceleyebilir, hata bildirebilir ve katkıda bulunabilirsiniz.</p>
+    <p><a href="https://github.com/onderornek/yontem">GitHub deposu →</a> · <a href="/topluluk">Topluluk sayfası →</a> · <a href="/blog">Bütün yazılar →</a></p>
+  </section>
+</main>

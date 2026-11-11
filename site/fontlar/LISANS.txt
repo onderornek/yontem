@@ -1,0 +1,8 @@
+Bu klasördeki yazı tipleri SIL Open Font License, Version 1.1 ile lisanslıdır
+(https://openfontlicense.org). Dosyalar Fontsource paketlerinden alınmıştır (https://fontsource.org).
+
+Inter                 Copyright The Inter Project Authors (https://github.com/rsms/inter)
+JetBrains Mono        Copyright The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+Space Grotesk         Copyright The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+Bricolage Grotesque   Copyright The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)
+IBM Plex Sans / Mono  Copyright IBM Corp. (https://github.com/IBM/plex)
