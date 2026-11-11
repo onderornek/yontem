@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Yöntem komut satırı: yontem program.y [argümanlar] | yontem derle program.y [-o çıktı.js]
+import './dugum_hazirlik';
 import { paketDizinleri, projeKoku } from './paket';
 import * as fs from 'fs';
 import * as path from 'path';

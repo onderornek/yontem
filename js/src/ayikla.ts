@@ -2,6 +2,7 @@
 // Program hata ayıklama kipinde derlenir: her deyimden önce $.A(), her gövdenin başında $.gir() çağrılır.
 // Ayiklayici bu çağrılarda kesme noktalarını ve adımlamayı denetler; duracaksa 'durdu' geri çağrısını
 // eşzamanlı çağırır. Uçbirim arayüzü komutları standart girdiden, VS Code arayüzü (ayikla_dap.ts) DAP'tan alır.
+import './dugum_hazirlik';
 import * as fs from 'fs';
 import * as path from 'path';
 import { $, sifirla, Konak, temsil } from './calisma/cekirdek';

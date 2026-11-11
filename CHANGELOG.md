@@ -99,4 +99,6 @@ Henüz değişiklik yok.
 - Lisans: yazılım MIT, kitaplar ve kılavuzlar CC BY 4.0.
 
 ### Düzeltilenler
+- `Güvenlik` birimi Node.js 18'de de çalışır (Web Crypto, genel ad olarak tanımlı olmadığında
+  `crypto` modülünden alınır).
 - `yontem derle` ile üretilen dosyalar artık doğrudan `node` ile çalışır.

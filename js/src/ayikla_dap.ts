@@ -5,6 +5,7 @@
 // parçacığı DAP iletilerini karşılar. İşçi duraklayınca Atomics.wait ile bekler; ana iş parçacığı iletiyi
 // kanala koyup bayrağı artırır. İşçi çalışırken de her deyimde bayrağa bakar: kesme noktası değişiklikleri
 // ve 'duraklat' isteği program sürerken de işlenir.
+import './dugum_hazirlik';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Worker, isMainThread, parentPort, workerData, MessageChannel, MessagePort, receiveMessageOnPort } from 'worker_threads';
