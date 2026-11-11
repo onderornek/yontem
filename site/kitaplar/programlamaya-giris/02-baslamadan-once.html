@@ -31,7 +31,7 @@
     <details open>
       <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html" aria-current="page">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 223 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -40,12 +40,11 @@
 <h3 id="kurulum">Kurulum</h3>
 <p>Hiçbir şey kurmadan başlamak isterseniz programları tarayıcıdaki <strong>oyun alanında</strong> yazıp çalıştırabilirsiniz. Kendi bilgisayarınızda çalışmak için önerilen yol, <strong>JavaScript derleyicisini</strong> kurmaktır; bunun için <strong>Node.js 18 veya üstü</strong> gerekir.</p>
 <ol type="1">
-<li>Önce Yöntem klasörünü bilgisayarınıza alabilirsiniz: <code>git clone https://github.com/onderornek/yontem.git</code></li>
-<li>Ardından derleyiciyi bir kez derleyip <code>yontem</code> komutunu bağlayabilirsiniz: <code>cd yontem/js &amp;&amp; npm install &amp;&amp; npm run build &amp;&amp; npm link</code></li>
-<li>Son olarak kurulumu sınayabilirsiniz: <code>yontem --surum</code></li>
+<li>Önce derleyiciyi kurabilirsiniz: <code>npm install -g yontem</code></li>
+<li>Ardından kurulumu sınayabilirsiniz: <code>yontem --surum</code></li>
 </ol>
-<p>Adımların ayrıntılarını ve işletim sisteminize özgü notları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz.</p>
-<p><strong>Node.js kuramıyorsanız</strong> Yöntem’in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı yalnızca <strong>Python 3.8 veya üstünü</strong> ister ve kurulum gerektirmez: bu kitapta <code>yontem program.y</code> yazan her yerde, Yöntem klasöründe <code>python3 yontem.py program.y</code> yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.</p>
+<p>Adımların ayrıntılarını ve işletim sisteminize özgü notları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz. Kitaptaki örnek programlar Yöntem’in deposundadır: <code>git clone https://github.com/onderornek/yontem.git</code></p>
+<p><strong>Node.js kuramıyorsanız</strong> Yöntem’in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı, Yöntem’in deposuyla gelir, yalnızca <strong>Python 3.8 veya üstünü</strong> ister ve kurulum gerektirmez: bu kitapta <code>yontem program.y</code> yazan her yerde, depo klasöründe <code>python3 yontem.py program.y</code> yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.</p>
 <p>Yöntem programları <code>.y</code> uzantılı düz metin dosyalarıdır. Herhangi bir metin düzenleyicisiyle (VS Code, Not Defteri, TextEdit) yazabilirsiniz. Türkçe karakterlerin bozulmaması için dosyayı <strong>UTF-8</strong> olarak kaydetmeniz gerekir.</p>
 <h3 id="ilk-program">İlk program</h3>
 <p><code>ilk.y</code> adında bir dosya oluşturup şunu yazalım:</p>
@@ -68,7 +67,7 @@ Yöntem ile programlamaya hoş geldiniz.</code></pre></div>
 <li>Her komut kendi satırına yazılır. Noktalı virgül (<code>;</code>) yalnızca aynı satıra birden çok komut yazıldığında gerekir.</li>
 </ul>
 <h3 id="etkileşimli-kabuk">Etkileşimli kabuk</h3>
-<p>Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: Yöntem klasöründe <code>python3 yontem.py</code> komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:</p>
+<p>Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: depo klasöründe <code>python3 yontem.py</code> komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:</p>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>y&gt; 6 * 7
 42
 y&gt; 'Yöntem'.BüyükHarf

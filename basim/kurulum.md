@@ -4,12 +4,12 @@ Nov 9, 2026 · @Önder Örnek
 
 ## Hangi kurulum size uygun?
 
-Çoğu kullanıcı için yalnızca **JavaScript derleyicisi** yeterlidir: Node.js 18 veya üstünü kurup Yöntem klasörünü bir kez derledikten sonra programlarınızı `yontem program.y` ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.
+Çoğu kullanıcı için yalnızca **JavaScript derleyicisi** yeterlidir: Node.js 18 veya üstünü kurduktan sonra tek bir komutla (`npm install -g yontem`) kurabilir, programlarınızı `yontem program.y` ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.
 
 | Bileşen | Ne işe yarar | Gereken | Ne zaman kurulur |
 | --- | --- | --- | --- |
 | JavaScript derleyicisi (önerilen) | `.y` programlarını derleyip çalıştırır; en hızlı yol | Node.js 18+ (npm ile birlikte gelir) | Her zaman |
-| Python yorumlayıcısı | Başvuru uygulaması ve etkileşimli kabuk (REPL) | Python 3.8+, dış bağımlılık yok | Kabuk isterseniz ya da Node.js kuramıyorsanız |
+| Python yorumlayıcısı | Başvuru uygulaması ve etkileşimli kabuk (REPL) | Python 3.8+ ve Yöntem'in kaynak klasörü | Kabuk isterseniz ya da Node.js kuramıyorsanız |
 | Gömülü arka uç: masaüstü benzetimi | Programı C++'a derleyip bilgisayarda çalıştırır | JavaScript derleyicisi + C++17 derleyicisi (g++ ya da clang++) | ESP32 programı yazacaksanız |
 | Gömülü arka uç: ESP32'ye yükleme | Üretilen projeyi karta yükler | Arduino IDE, `arduino-cli` ya da PlatformIO; ESP32 Arduino çekirdeği 3.x | Kartınız varsa |
 
@@ -48,19 +48,15 @@ Dağıtımınızın paket deposundaki Node.js 18'den eskiyse (örneğin Ubuntu 2
 
 ## 2. JavaScript derleyicisini kurma
 
-Bu adımda Yöntem klasörünü alıp `js` klasöründe bir kez derleyecek ve `npm link` ile `yontem` komutunu her yerden kullanılabilir yapacaksınız. Yöntem henüz npm paket deposunda yayımlanmadığı için kurulum kaynak klasörden yapılır.
-
-1. Önce Yöntem klasörünü edinmeniz gerekir. Bunu `git clone https://github.com/onderornek/yontem.git` komutuyla yapabilirsiniz. Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere (örneğin Belgeler klasörüne) açmanız yeterlidir.
-2. Ardından derleyiciyi derleyip komutu bağlayabilirsiniz:
+Yöntem, npm paket deposunda `yontem` adıyla yayımlanır. Kurulum tek bir komuttur:
 
 ```bash
-cd yontem/js
-npm install       # TypeScript ve esbuild'i indirir (yalnızca derleme için)
-npm run build     # derleyiciyi, tarayıcı paketini ve oyun alanını üretir
-npm link          # "yontem" komutunu tüm sisteme ekler
+npm install -g yontem
 ```
 
-3. Artık ilk programınızı çalıştırabilirsiniz. Bunun için `merhaba.y` adlı bir dosya oluşturalım:
+Komut, derleyiciyi, çalışma zamanını, Yöntem ile yazılmış kitaplığı ve `yontem` komutunu kurar; ayrıca bir şey indirmeniz ya da derlemeniz gerekmez.
+
+Artık ilk programınızı çalıştırabilirsiniz. Bunun için `merhaba.y` adlı bir dosya oluşturalım:
 
 ```
 program Merhaba
@@ -78,15 +74,26 @@ yontem --yardim                    # tüm komutlar
 
 **Notlar**
 
-- `npm link` Linux'ta "EACCES" hatası verirse Node.js'i nvm ile kurabilir ya da komutu `sudo npm link` ile çalıştırabilirsiniz.
-- `npm link` kullanmak istemezseniz her yerde `node yontem/js/dist/cli.js program.y` yazabilirsiniz.
-- `yontem` komutu Yöntem klasörüne bağlıdır; klasörü taşırsanız `npm link` adımını yeni yerde tekrarlamanız gerekir.
-- Birimler (`kullan Matematik` gibi) programın klasöründe, onun `kutuphane` alt klasöründe ve Yöntem'in kendi `kutuphane` klasöründe aranır. Başka klasörler için `YONTEM_YOL` ortam değişkenine yolları ekleyebilirsiniz (yollar Linux ve macOS'ta `:`, Windows'ta `;` ile ayrılır).
-- Oyun alanını çevrim dışı kullanmak için `yontem/oyun_alani/index.html` dosyasını tarayıcıda açmanız yeterlidir.
+- `npm install -g` Linux ya da macOS'ta "EACCES" hatası verirse Node.js'i nvm ile kurmanızı öneririz; nvm ile kurulan Node.js'te genel paketler yönetici izni istemez.
+- Yöntem'i genel olarak kurmak istemezseniz bir proje klasöründe `npm install yontem` yazıp `npx yontem program.y` ile çalıştırabilirsiniz.
+- Birimler (`kullan Matematik` gibi) programın klasöründe, onun `kutuphane` alt klasöründe ve Yöntem'in kendi kitaplığında aranır. Başka klasörler için `YONTEM_YOL` ortam değişkenine yolları ekleyebilirsiniz (yollar Linux ve macOS'ta `:`, Windows'ta `;` ile ayrılır).
+- `Veritabanı` birimi SQLite için Node.js 22.5 ya da üstünü ister. PostgreSQL ve MySQL sürücüleri projeye ayrıca kurulur: `npm install pg` ya da `npm install mysql2`.
+
+**Kaynaktan kurma.** Örnek programları, testleri, Python yorumlayıcısını ya da derleyicinin kaynağını da istiyorsanız Yöntem'in deposunu alıp derleyiciyi kendiniz derleyebilirsiniz:
+
+```bash
+git clone https://github.com/onderornek/yontem.git
+cd yontem/js
+npm install       # TypeScript ve esbuild'i indirir (yalnızca derleme için)
+npm run build     # derleyiciyi, tarayıcı paketini ve oyun alanını üretir
+npm link          # "yontem" komutunu bu klasöre bağlar
+```
+
+Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere açmanız yeterlidir. Bu yolla kurulan `yontem` komutu klasöre bağlıdır; klasörü taşırsanız `npm link` adımını yeni yerde tekrarlamanız gerekir. Oyun alanını çevrim dışı kullanmak için de `yontem/oyun_alani/index.html` dosyasını tarayıcıda açmanız yeterlidir.
 
 ## 3. Python yorumlayıcısı
 
-Python yorumlayıcısı kurulum gerektirmez: Yöntem klasöründeki `yontem.py` dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.
+Python yorumlayıcısı npm paketinde yer almaz; Yöntem'in kaynak klasörüyle gelir (2. adımdaki "Kaynaktan kurma" bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki `yontem.py` dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.
 
 ```bash
 cd yontem
@@ -124,30 +131,34 @@ yontem gomulu led.y -o projem     # klasör adını siz verin
 - **arduino-cli:** `arduino-cli compile --fqbn esp32:esp32:esp32 led` ve `arduino-cli upload -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32 led` komutları kullanılır (port adı sisteminize göre değişir; Windows'ta örneğin `COM3`).
 - **PlatformIO:** klasörün içinde `pio run -t upload`, ardından seri çıktı için `pio device monitor -b 115200` komutu çalıştırılır.
 
-Programın `yaz` çıktısı ve `oku` girdisi seri port üzerinden, 115200 baud hızında akışır. Hazır örnekler `yontem/gomulu_ornekler/` klasöründedir.
+Programın `yaz` çıktısı ve `oku` girdisi seri port üzerinden, 115200 baud hızında akışır. Hazır örnekleri Yöntem deposunun `gomulu_ornekler/` klasöründe bulabilirsiniz.
 
 ## 5. Doğrulama, güncelleme ve sorunlar
 
-Kurulumun tamamlandığını Yöntem'in kendi testleriyle doğrulayabilirsiniz; testlerin hepsi "geçti" demelidir.
+Kurulumu doğrulamak için `yontem --surum` komutunun sürüm numarasını yazması ve 2. adımdaki `merhaba.y` programının çalışması yeterlidir.
+
+Yöntem'i kaynaktan kurduysanız kendi testlerini de çalıştırabilirsiniz; testlerin hepsi "geçti" demelidir.
 
 ```bash
 cd yontem
-node js/betikler/test.js          # JavaScript derleyicisi: 94/94 dosya geçti
+node js/betikler/test.js          # JavaScript derleyicisi
 python3 testler/calistir.py       # Python yorumlayıcısı
 node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)
 ```
 
-**Güncelleme.** Yeni sürümü aldıktan sonra (`git pull` ya da yeni klasör kopyası) `yontem/js` klasöründe `npm install` ve `npm run build` komutlarını yeniden çalıştırmanız yeterlidir. Klasörün yeri değiştiyse `npm link` adımını da tekrarlamanız gerekir.
+**Güncelleme.** Yeni sürüme geçmek için `npm install -g yontem@latest` yazmanız yeterlidir; kurulu sürümü `yontem --surum` ile görebilirsiniz. Kaynaktan kurduysanız yeni sürümü aldıktan sonra (`git pull`) `yontem/js` klasöründe `npm install` ve `npm run build` komutlarını yeniden çalıştırmanız gerekir.
+
+**Kaldırma.** `npm uninstall -g yontem` komutu Yöntem'i kaldırır.
 
 **Sık karşılaşılan sorunlar**
 
 | Belirti | Olası neden | Çözüm |
 | --- | --- | --- |
 | `node`, `npm` ya da `python3` komutu bulunamadı | Kurulumdan sonra terminal yeniden açılmadı; Windows'ta PATH seçeneği işaretlenmedi | Terminali yeniden açabilirsiniz; Windows'ta `py` komutunu deneyebilir ya da Python'u PATH seçeneğiyle yeniden kurabilirsiniz |
-| `yontem` komutu bulunamadı | `npm link` çalıştırılmadı ya da npm'in genel klasörü PATH'te değil | `yontem/js` içinde `npm link` çalıştırılır; olmazsa `node yontem/js/dist/cli.js` ile çalıştırabilirsiniz |
-| `npm run build` sırasında `tsc` ya da `esbuild` bulunamadı | `npm install` atlandı | Önce `npm install`, sonra `npm run build` çalıştırılır |
+| `yontem` komutu bulunamadı | Kurulum tamamlanmadı ya da npm'in genel klasörü PATH'te değil | Terminali yeniden açıp `npm install -g yontem` komutunu yineleyebilirsiniz; olmazsa `npx yontem program.y` ile çalıştırabilirsiniz |
+| Kaynaktan kurarken `npm run build` sırasında `tsc` ya da `esbuild` bulunamadı | `npm install` atlandı | Önce `npm install`, sonra `npm run build` çalıştırılır |
 | Derleyici beklenmedik sözdizimi hatasıyla çöküyor | Node.js 18'den eski | `node --version` ile sürüme bakıp Node.js'i güncelleyebilirsiniz |
-| `npm link` "EACCES" veriyor (Linux, macOS) | Genel klasöre yazma izni yok | Node.js'i nvm ile kurabilir ya da `sudo npm link` kullanabilirsiniz |
+| `npm install -g` "EACCES" veriyor (Linux, macOS) | Genel klasöre yazma izni yok | Node.js'i nvm ile kurabilir ya da `npx yontem` kullanabilirsiniz |
 | Türkçe karakterler bozuk görünüyor (Windows) | Komut istemi UTF-8 değil | `chcp 65001` yazabilir ya da Windows Terminal kullanabilirsiniz |
 | `kullan` ile açılan birim bulunamadı | Birim dosyası aranan klasörlerde değil | Dosyayı programın yanına ya da `kutuphane` alt klasörüne koyabilir veya `YONTEM_YOL`'a ekleyebilirsiniz |
 | `--calistir` C++ derleyicisini bulamıyor | g++ kurulu değil ya da PATH'te değil | 4. adımdaki tabloya göre kurabilir ya da `CXX` ile derleyiciyi gösterebilirsiniz |

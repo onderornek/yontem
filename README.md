@@ -63,7 +63,14 @@ python3 testler/calistir.py                 # tüm testleri ve örnekleri sına
 
 Kaynak dosyaların uzantısı `.y`'dir.
 
-**Paket olarak kurma.** Komutu her klasörden `yontem` adıyla çağırmak için:
+**Paket olarak kurma.** JavaScript derleyicisi npm'de `yontem` adıyla yayımlanır:
+
+```bash
+npm install -g yontem     # 'yontem' komutu (Node.js 18+)
+yontem merhaba.y
+```
+
+Depodan kurmak için:
 
 ```bash
 cd js && npm install && npm run build && npm install -g .   # 'yontem' komutu (JavaScript derleyicisi)

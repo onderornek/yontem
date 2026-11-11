@@ -224,7 +224,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
     <details open>
       <summary><a href="#b01">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="#b01">Önsöz</a></li><li><a href="#b02">Başlamadan önce</a></li><li><a href="#b03">Bölüm 1 — Program yapısı</a></li><li><a href="#b04">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="#b05">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="#b06">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="#b07">Bölüm 5 — Döngüler</a></li><li><a href="#b08">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="#b09">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="#b10">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="#b11">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="#b12">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="#b13">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="#b14">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="#b15">Bölüm 13 — Sinir ağları</a></li><li><a href="#b16">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="#b17">Bölüm 15 — Kuantum programlama</a></li><li><a href="#b18">Ek A — Anahtar sözcükler</a></li><li><a href="#b19">Ek B — Sık yapılan hatalar</a></li><li><a href="#b20">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" download>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+      <a class="pdf" href="programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" download>PDF indir <small>(isteğe bağlı, 223 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -250,12 +250,11 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <h3 id="kurulum">Kurulum</h3>
 <p>Hiçbir şey kurmadan başlamak isterseniz programları tarayıcıdaki <strong>oyun alanında</strong> yazıp çalıştırabilirsiniz. Kendi bilgisayarınızda çalışmak için önerilen yol, <strong>JavaScript derleyicisini</strong> kurmaktır; bunun için <strong>Node.js 18 veya üstü</strong> gerekir.</p>
 <ol type="1">
-<li>Önce Yöntem klasörünü bilgisayarınıza alabilirsiniz: <code>git clone https://github.com/onderornek/yontem.git</code></li>
-<li>Ardından derleyiciyi bir kez derleyip <code>yontem</code> komutunu bağlayabilirsiniz: <code>cd yontem/js &amp;&amp; npm install &amp;&amp; npm run build &amp;&amp; npm link</code></li>
-<li>Son olarak kurulumu sınayabilirsiniz: <code>yontem --surum</code></li>
+<li>Önce derleyiciyi kurabilirsiniz: <code>npm install -g yontem</code></li>
+<li>Ardından kurulumu sınayabilirsiniz: <code>yontem --surum</code></li>
 </ol>
-<p>Adımların ayrıntılarını ve işletim sisteminize özgü notları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz.</p>
-<p><strong>Node.js kuramıyorsanız</strong> Yöntem’in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı yalnızca <strong>Python 3.8 veya üstünü</strong> ister ve kurulum gerektirmez: bu kitapta <code>yontem program.y</code> yazan her yerde, Yöntem klasöründe <code>python3 yontem.py program.y</code> yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.</p>
+<p>Adımların ayrıntılarını ve işletim sisteminize özgü notları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz. Kitaptaki örnek programlar Yöntem’in deposundadır: <code>git clone https://github.com/onderornek/yontem.git</code></p>
+<p><strong>Node.js kuramıyorsanız</strong> Yöntem’in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı, Yöntem’in deposuyla gelir, yalnızca <strong>Python 3.8 veya üstünü</strong> ister ve kurulum gerektirmez: bu kitapta <code>yontem program.y</code> yazan her yerde, depo klasöründe <code>python3 yontem.py program.y</code> yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.</p>
 <p>Yöntem programları <code>.y</code> uzantılı düz metin dosyalarıdır. Herhangi bir metin düzenleyicisiyle (VS Code, Not Defteri, TextEdit) yazabilirsiniz. Türkçe karakterlerin bozulmaması için dosyayı <strong>UTF-8</strong> olarak kaydetmeniz gerekir.</p>
 <h3 id="ilk-program">İlk program</h3>
 <p><code>ilk.y</code> adında bir dosya oluşturup şunu yazalım:</p>
@@ -278,7 +277,7 @@ Yöntem ile programlamaya hoş geldiniz.</code></pre></div>
 <li>Her komut kendi satırına yazılır. Noktalı virgül (<code>;</code>) yalnızca aynı satıra birden çok komut yazıldığında gerekir.</li>
 </ul>
 <h3 id="etkileşimli-kabuk">Etkileşimli kabuk</h3>
-<p>Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: Yöntem klasöründe <code>python3 yontem.py</code> komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:</p>
+<p>Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: depo klasöründe <code>python3 yontem.py</code> komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:</p>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>y&gt; 6 * 7
 42
 y&gt; 'Yöntem'.BüyükHarf

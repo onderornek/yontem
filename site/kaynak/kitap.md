@@ -21,13 +21,12 @@ Bu kitap, programlamayı hiç bilmeyenlere ve Yöntem dilini öğrenmek isteyen 
 
 Hiçbir şey kurmadan başlamak isterseniz programları tarayıcıdaki **oyun alanında** yazıp çalıştırabilirsiniz. Kendi bilgisayarınızda çalışmak için önerilen yol, **JavaScript derleyicisini** kurmaktır; bunun için **Node.js 18 veya üstü** gerekir.
 
-1. Önce Yöntem klasörünü bilgisayarınıza alabilirsiniz: `git clone https://github.com/onderornek/yontem.git`
-2. Ardından derleyiciyi bir kez derleyip `yontem` komutunu bağlayabilirsiniz: `cd yontem/js && npm install && npm run build && npm link`
-3. Son olarak kurulumu sınayabilirsiniz: `yontem --surum`
+1. Önce derleyiciyi kurabilirsiniz: `npm install -g yontem`
+2. Ardından kurulumu sınayabilirsiniz: `yontem --surum`
 
-Adımların ayrıntılarını ve işletim sisteminize özgü notları *Yöntem Kurulum Kılavuzu*'nda bulabilirsiniz.
+Adımların ayrıntılarını ve işletim sisteminize özgü notları *Yöntem Kurulum Kılavuzu*'nda bulabilirsiniz. Kitaptaki örnek programlar Yöntem'in deposundadır: `git clone https://github.com/onderornek/yontem.git`
 
-**Node.js kuramıyorsanız** Yöntem'in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı yalnızca **Python 3.8 veya üstünü** ister ve kurulum gerektirmez: bu kitapta `yontem program.y` yazan her yerde, Yöntem klasöründe `python3 yontem.py program.y` yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.
+**Node.js kuramıyorsanız** Yöntem'in Python yorumlayıcısını kullanabilirsiniz. Yorumlayıcı, Yöntem'in deposuyla gelir, yalnızca **Python 3.8 veya üstünü** ister ve kurulum gerektirmez: bu kitapta `yontem program.y` yazan her yerde, depo klasöründe `python3 yontem.py program.y` yazmanız yeterlidir. İki uygulama aynı çıktıyı verir; yorumlayıcı yalnızca daha yavaştır.
 
 Yöntem programları `.y` uzantılı düz metin dosyalarıdır. Herhangi bir metin düzenleyicisiyle (VS Code, Not Defteri, TextEdit) yazabilirsiniz. Türkçe karakterlerin bozulmaması için dosyayı **UTF-8** olarak kaydetmeniz gerekir.
 
@@ -62,7 +61,7 @@ Satır satır inceleyelim:
 
 ### Etkileşimli kabuk
 
-Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: Yöntem klasöründe `python3 yontem.py` komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:
+Kısa denemeler için dosya yazmanız gerekmez. Etkileşimli kabuk Python yorumlayıcısıyla gelir: depo klasöründe `python3 yontem.py` komutunu tek başına çalıştırınca kabuk açılır. Bir ifade yazdığınızda değeri hemen gösterilir:
 
 ```
 y> 6 * 7

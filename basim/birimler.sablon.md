@@ -337,7 +337,7 @@ Katman sınırını dil zorlamaz: sunum katmanının `kullan ÜrünDeposu` yazı
 
 ## 10. Araçlar
 
-Araçlar JavaScript derleyicisinin `yontem` komutuyla gelir. Komutu her klasörden çağırabilmek için depoda bir kez `cd js && npm install && npm run build && npm install -g .` komutunu çalıştırmanız gerekir (ayrıntıları *Yöntem Kurulum Kılavuzu*'nda bulabilirsiniz).
+Araçlar JavaScript derleyicisinin `yontem` komutuyla gelir. Komutu kurmak için `npm install -g yontem` yazmanız yeterlidir (ayrıntıları *Yöntem Kurulum Kılavuzu*'nda bulabilirsiniz).
 
 **Yeni proje: `yontem yeni`**
 

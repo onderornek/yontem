@@ -31,24 +31,16 @@
     <details open>
       <summary><a href="index.html">Yöntem Kurulum Kılavuzu</a></summary>
       <ol><li><a href="01-hangi-kurulum-size-uygun.html">Hangi kurulum size uygun?</a></li><li><a href="02-1-hazirlik-node-js-ve-python.html">1. Hazırlık: Node.js ve Python</a></li><li><a href="03-2-javascript-derleyicisini-kurma.html" aria-current="page">2. JavaScript derleyicisini kurma</a></li><li><a href="04-3-python-yorumlayicisi.html">3. Python yorumlayıcısı</a></li><li><a href="05-4-gomulu-arka-uc-esp32.html">4. Gömülü arka uç (ESP32)</a></li><li><a href="06-5-dogrulama-guncelleme-ve-sorunlar.html">5. Doğrulama, güncelleme ve sorunlar</a></li></ol>
-      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 71 KB)</small></a>
+      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 72 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
     <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Kurulum Kılavuzu</a> / Bölüm 3 / 6</p>
     <h2 id="javascript-derleyicisini-kurma">2. JavaScript derleyicisini kurma</h2>
-<p>Bu adımda Yöntem klasörünü alıp <code>js</code> klasöründe bir kez derleyecek ve <code>npm link</code> ile <code>yontem</code> komutunu her yerden kullanılabilir yapacaksınız. Yöntem henüz npm paket deposunda yayımlanmadığı için kurulum kaynak klasörden yapılır.</p>
-<ol type="1">
-<li>Önce Yöntem klasörünü edinmeniz gerekir. Bunu <code>git clone https://github.com/onderornek/yontem.git</code> komutuyla yapabilirsiniz. Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere (örneğin Belgeler klasörüne) açmanız yeterlidir.</li>
-<li>Ardından derleyiciyi derleyip komutu bağlayabilirsiniz:</li>
-</ol>
-<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem/js
-npm install       # TypeScript ve esbuild'i indirir (yalnızca derleme için)
-npm run build     # derleyiciyi, tarayıcı paketini ve oyun alanını üretir
-npm link          # &quot;yontem&quot; komutunu tüm sisteme ekler</code></pre></div>
-<ol start="3" type="1">
-<li>Artık ilk programınızı çalıştırabilirsiniz. Bunun için <code>merhaba.y</code> adlı bir dosya oluşturalım:</li>
-</ol>
+<p>Yöntem, npm paket deposunda <code>yontem</code> adıyla yayımlanır. Kurulum tek bir komuttur:</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>npm install -g yontem</code></pre></div>
+<p>Komut, derleyiciyi, çalışma zamanını, Yöntem ile yazılmış kitaplığı ve <code>yontem</code> komutunu kurar; ayrıca bir şey indirmeniz ya da derlemeniz gerekmez.</p>
+<p>Artık ilk programınızı çalıştırabilirsiniz. Bunun için <code>merhaba.y</code> adlı bir dosya oluşturalım:</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Merhaba
 <span class="ya">başla</span>
   yaz(<span class="ym">'Merhaba, Yöntem!'</span>, <span class="ys">1</span>)
@@ -59,12 +51,18 @@ yontem --surum                     # Yöntem 0.5.0 (JavaScript)
 yontem --yardim                    # tüm komutlar</code></pre></div>
 <p><strong>Notlar</strong></p>
 <ul>
-<li><code>npm link</code> Linux’ta “EACCES” hatası verirse Node.js’i nvm ile kurabilir ya da komutu <code>sudo npm link</code> ile çalıştırabilirsiniz.</li>
-<li><code>npm link</code> kullanmak istemezseniz her yerde <code>node yontem/js/dist/cli.js program.y</code> yazabilirsiniz.</li>
-<li><code>yontem</code> komutu Yöntem klasörüne bağlıdır; klasörü taşırsanız <code>npm link</code> adımını yeni yerde tekrarlamanız gerekir.</li>
-<li>Birimler (<code>kullan Matematik</code> gibi) programın klasöründe, onun <code>kutuphane</code> alt klasöründe ve Yöntem’in kendi <code>kutuphane</code> klasöründe aranır. Başka klasörler için <code>YONTEM_YOL</code> ortam değişkenine yolları ekleyebilirsiniz (yollar Linux ve macOS’ta <code>:</code>, Windows’ta <code>;</code> ile ayrılır).</li>
-<li>Oyun alanını çevrim dışı kullanmak için <code>yontem/oyun_alani/index.html</code> dosyasını tarayıcıda açmanız yeterlidir.</li>
+<li><code>npm install -g</code> Linux ya da macOS’ta “EACCES” hatası verirse Node.js’i nvm ile kurmanızı öneririz; nvm ile kurulan Node.js’te genel paketler yönetici izni istemez.</li>
+<li>Yöntem’i genel olarak kurmak istemezseniz bir proje klasöründe <code>npm install yontem</code> yazıp <code>npx yontem program.y</code> ile çalıştırabilirsiniz.</li>
+<li>Birimler (<code>kullan Matematik</code> gibi) programın klasöründe, onun <code>kutuphane</code> alt klasöründe ve Yöntem’in kendi kitaplığında aranır. Başka klasörler için <code>YONTEM_YOL</code> ortam değişkenine yolları ekleyebilirsiniz (yollar Linux ve macOS’ta <code>:</code>, Windows’ta <code>;</code> ile ayrılır).</li>
+<li><code>Veritabanı</code> birimi SQLite için Node.js 22.5 ya da üstünü ister. PostgreSQL ve MySQL sürücüleri projeye ayrıca kurulur: <code>npm install pg</code> ya da <code>npm install mysql2</code>.</li>
 </ul>
+<p><strong>Kaynaktan kurma.</strong> Örnek programları, testleri, Python yorumlayıcısını ya da derleyicinin kaynağını da istiyorsanız Yöntem’in deposunu alıp derleyiciyi kendiniz derleyebilirsiniz:</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>git clone https://github.com/onderornek/yontem.git
+cd yontem/js
+npm install       # TypeScript ve esbuild'i indirir (yalnızca derleme için)
+npm run build     # derleyiciyi, tarayıcı paketini ve oyun alanını üretir
+npm link          # &quot;yontem&quot; komutunu bu klasöre bağlar</code></pre></div>
+<p>Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere açmanız yeterlidir. Bu yolla kurulan <code>yontem</code> komutu klasöre bağlıdır; klasörü taşırsanız <code>npm link</code> adımını yeni yerde tekrarlamanız gerekir. Oyun alanını çevrim dışı kullanmak için de <code>yontem/oyun_alani/index.html</code> dosyasını tarayıcıda açmanız yeterlidir.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="02-1-hazirlik-node-js-ve-python.html"><small>Önceki</small>1. Hazırlık: Node.js ve Python</a><a class="sonraki" href="04-3-python-yorumlayicisi.html"><small>Sonraki</small>3. Python yorumlayıcısı</a></nav>
   </main>

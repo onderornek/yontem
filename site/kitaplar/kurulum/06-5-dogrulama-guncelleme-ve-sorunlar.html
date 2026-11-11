@@ -31,18 +31,20 @@
     <details open>
       <summary><a href="index.html">Yöntem Kurulum Kılavuzu</a></summary>
       <ol><li><a href="01-hangi-kurulum-size-uygun.html">Hangi kurulum size uygun?</a></li><li><a href="02-1-hazirlik-node-js-ve-python.html">1. Hazırlık: Node.js ve Python</a></li><li><a href="03-2-javascript-derleyicisini-kurma.html">2. JavaScript derleyicisini kurma</a></li><li><a href="04-3-python-yorumlayicisi.html">3. Python yorumlayıcısı</a></li><li><a href="05-4-gomulu-arka-uc-esp32.html">4. Gömülü arka uç (ESP32)</a></li><li><a href="06-5-dogrulama-guncelleme-ve-sorunlar.html" aria-current="page">5. Doğrulama, güncelleme ve sorunlar</a></li></ol>
-      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 71 KB)</small></a>
+      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 72 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
     <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Kurulum Kılavuzu</a> / Bölüm 6 / 6</p>
     <h2 id="doğrulama-güncelleme-ve-sorunlar">5. Doğrulama, güncelleme ve sorunlar</h2>
-<p>Kurulumun tamamlandığını Yöntem’in kendi testleriyle doğrulayabilirsiniz; testlerin hepsi “geçti” demelidir.</p>
+<p>Kurulumu doğrulamak için <code>yontem --surum</code> komutunun sürüm numarasını yazması ve 2. adımdaki <code>merhaba.y</code> programının çalışması yeterlidir.</p>
+<p>Yöntem’i kaynaktan kurduysanız kendi testlerini de çalıştırabilirsiniz; testlerin hepsi “geçti” demelidir.</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem
-node js/betikler/test.js          # JavaScript derleyicisi: 94/94 dosya geçti
+node js/betikler/test.js          # JavaScript derleyicisi
 python3 testler/calistir.py       # Python yorumlayıcısı
 node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)</code></pre></div>
-<p><strong>Güncelleme.</strong> Yeni sürümü aldıktan sonra (<code>git pull</code> ya da yeni klasör kopyası) <code>yontem/js</code> klasöründe <code>npm install</code> ve <code>npm run build</code> komutlarını yeniden çalıştırmanız yeterlidir. Klasörün yeri değiştiyse <code>npm link</code> adımını da tekrarlamanız gerekir.</p>
+<p><strong>Güncelleme.</strong> Yeni sürüme geçmek için <code>npm install -g yontem@latest</code> yazmanız yeterlidir; kurulu sürümü <code>yontem --surum</code> ile görebilirsiniz. Kaynaktan kurduysanız yeni sürümü aldıktan sonra (<code>git pull</code>) <code>yontem/js</code> klasöründe <code>npm install</code> ve <code>npm run build</code> komutlarını yeniden çalıştırmanız gerekir.</p>
+<p><strong>Kaldırma.</strong> <code>npm uninstall -g yontem</code> komutu Yöntem’i kaldırır.</p>
 <p><strong>Sık karşılaşılan sorunlar</strong></p>
 <div class="tablo">
 <table>
@@ -66,11 +68,11 @@ node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)
 </tr>
 <tr class="even">
 <td><code>yontem</code> komutu bulunamadı</td>
-<td><code>npm link</code> çalıştırılmadı ya da npm’in genel klasörü PATH’te değil</td>
-<td><code>yontem/js</code> içinde <code>npm link</code> çalıştırılır; olmazsa <code>node yontem/js/dist/cli.js</code> ile çalıştırabilirsiniz</td>
+<td>Kurulum tamamlanmadı ya da npm’in genel klasörü PATH’te değil</td>
+<td>Terminali yeniden açıp <code>npm install -g yontem</code> komutunu yineleyebilirsiniz; olmazsa <code>npx yontem program.y</code> ile çalıştırabilirsiniz</td>
 </tr>
 <tr class="odd">
-<td><code>npm run build</code> sırasında <code>tsc</code> ya da <code>esbuild</code> bulunamadı</td>
+<td>Kaynaktan kurarken <code>npm run build</code> sırasında <code>tsc</code> ya da <code>esbuild</code> bulunamadı</td>
 <td><code>npm install</code> atlandı</td>
 <td>Önce <code>npm install</code>, sonra <code>npm run build</code> çalıştırılır</td>
 </tr>
@@ -80,9 +82,9 @@ node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)
 <td><code>node --version</code> ile sürüme bakıp Node.js’i güncelleyebilirsiniz</td>
 </tr>
 <tr class="odd">
-<td><code>npm link</code> “EACCES” veriyor (Linux, macOS)</td>
+<td><code>npm install -g</code> “EACCES” veriyor (Linux, macOS)</td>
 <td>Genel klasöre yazma izni yok</td>
-<td>Node.js’i nvm ile kurabilir ya da <code>sudo npm link</code> kullanabilirsiniz</td>
+<td>Node.js’i nvm ile kurabilir ya da <code>npx yontem</code> kullanabilirsiniz</td>
 </tr>
 <tr class="even">
 <td>Türkçe karakterler bozuk görünüyor (Windows)</td>

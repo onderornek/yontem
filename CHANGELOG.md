@@ -6,7 +6,10 @@ uyumsuz değişiklik içerebilir.
 
 ## Yayımlanmamış
 
-Henüz değişiklik yok.
+### Değişenler
+
+- Kurulum belgeleri npm paketine göre güncellendi: `npm install -g yontem`.
+- Derleme aracı esbuild 0.28'e yükseltildi (yalnızca geliştirme bağımlılığı).
 
 ## 0.5.0 — 2026-11-11
 

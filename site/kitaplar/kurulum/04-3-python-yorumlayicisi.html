@@ -31,13 +31,13 @@
     <details open>
       <summary><a href="index.html">Yöntem Kurulum Kılavuzu</a></summary>
       <ol><li><a href="01-hangi-kurulum-size-uygun.html">Hangi kurulum size uygun?</a></li><li><a href="02-1-hazirlik-node-js-ve-python.html">1. Hazırlık: Node.js ve Python</a></li><li><a href="03-2-javascript-derleyicisini-kurma.html">2. JavaScript derleyicisini kurma</a></li><li><a href="04-3-python-yorumlayicisi.html" aria-current="page">3. Python yorumlayıcısı</a></li><li><a href="05-4-gomulu-arka-uc-esp32.html">4. Gömülü arka uç (ESP32)</a></li><li><a href="06-5-dogrulama-guncelleme-ve-sorunlar.html">5. Doğrulama, güncelleme ve sorunlar</a></li></ol>
-      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 71 KB)</small></a>
+      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 72 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
     <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Kurulum Kılavuzu</a> / Bölüm 4 / 6</p>
     <h2 id="python-yorumlayıcısı">3. Python yorumlayıcısı</h2>
-<p>Python yorumlayıcısı kurulum gerektirmez: Yöntem klasöründeki <code>yontem.py</code> dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.</p>
+<p>Python yorumlayıcısı npm paketinde yer almaz; Yöntem’in kaynak klasörüyle gelir (2. adımdaki “Kaynaktan kurma” bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki <code>yontem.py</code> dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem
 python3 yontem.py merhaba.y   # programı çalıştırır (Windows'ta: py yontem.py merhaba.y)
 python3 yontem.py             # etkileşimli kabuk; çıkmak için: çıkış
