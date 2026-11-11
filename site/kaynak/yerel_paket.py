@@ -39,6 +39,8 @@ def baglantilar(s, kok):
     for kimlik, kisa in KITAP_SAYFASI.items():
         s = s.replace(f'https://claude.ai/artifact/{kimlik}', f'{kok}kitaplar/{kisa}.html')
     esle = [
+        ('https://yontem.pro/gizlilik.html', 'gizlilik.html'),
+        ('https://yontem.pro/kunye.html', 'kunye.html'),
         ('https://yontem.pro/kitaplar/', 'kitaplar/index.html'),
         ('https://yontem.pro/dene', 'dene/index.html'),
         ('https://yontem.pro/', 'index.html'),
@@ -51,7 +53,7 @@ def baglantilar(s, kok):
         '/': 'index.html', '/dene': 'dene/index.html', '/kitaplar/': 'kitaplar/index.html',
         '/kitaplar': 'kitaplar/index.html', '/kurulum': 'kurulum.html', '/indir': 'kurulum.html',
         '/ogren': 'ogren.html', '/belgeler': 'belgeler.html', '/ogretmen': 'ogretmen.html',
-        '/gomulu': 'gomulu.html', '/topluluk': 'topluluk.html', '/gizlilik': 'gizlilik.html',
+        '/gomulu': 'gomulu.html', '/topluluk': 'topluluk.html', '/gizlilik': 'gizlilik.html', '/kunye': 'kunye.html',
         '/blog': 'blog/index.html', '/blog/yontem-0-5-0': 'blog/yontem-0-5-0.html',
     }
 
@@ -261,7 +263,7 @@ def icerik_sayfasi(yol):
 <a class="atla" href="#icerik">İçeriğe geç</a>
 <header class="ust"><nav class="sinir" aria-label="Ana menü">
   <a class="logo" href="/">{LOGO}<span>yöntem</span></a>
-  <div class="menu">{menu}<a class="dugme" href="/dene">Tarayıcıda dene</a></div>
+  <div class="menu">{menu}<a class="dugme" href="/dene">Oyun alanı</a></div>
 </nav></header>
 <div class="baslik"><div class="sinir">
   <span class="ustyazi">{html.escape(alan['ustyazi'])}</span>
@@ -273,7 +275,7 @@ def icerik_sayfasi(yol):
 </div>
 <footer class="alt"><div class="sinir">
   <span>Telif hakkı © 2026 Önder Örnek · yontem.pro</span>
-  <div><a href="/belgeler">Belgeler</a><a href="/topluluk">Topluluk</a><a href="/blog">Blog</a><a href="/gizlilik">Gizlilik</a></div>
+  <div><a href="/belgeler">Belgeler</a><a href="/topluluk">Topluluk</a><a href="/blog">Blog</a><a href="/gizlilik">Gizlilik</a><a href="/kunye">Künye</a></div>
 </div></footer>
 </body>
 </html>
@@ -334,6 +336,8 @@ Yöntem yazılımı MIT lisanslıdır (LICENSE). Kitap ve kılavuz metinleri: te
 
 
 def tek_dosya_yerel(s):
+    s = s.replace('href="https://yontem.pro/gizlilik.html"', 'href="../gizlilik.html"')
+    s = s.replace('href="https://yontem.pro/kunye.html"', 'href="../kunye.html"')
     s = s.replace('href="https://yontem.pro/kitaplar/"', 'href="index.html"')
     s = s.replace('href="https://yontem.pro/dene"', 'href="../dene/index.html"')
     s = s.replace('href="https://yontem.pro/"', 'href="../index.html"')

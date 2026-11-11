@@ -142,14 +142,14 @@ def sayfa(baslik, aciklama, govde, kok, sinif=''):
       <a href="/ogren">Öğren</a>
       <a href="{kok}index.html" aria-current="{'page' if sinif == 'kitaplik' else 'true'}">Kitaplar</a>
       <a href="{kok}kurulum/index.html">Kurulum</a>
-      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
     </div>
   </nav>
 </header>
 {govde}
 <footer class="alt">
   <span>{TELIF}</span>
-  <span><a href="/">yontem.pro</a></span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
 </footer>
 <script>
 if (window.matchMedia('(max-width: 860px)').matches) {{
@@ -182,7 +182,7 @@ def pdf_dugmesi(k, kok_pdf):
     boyut = k['pdf_boyut']
     return (f'<a class="pdf" href="{kok_pdf}{k["pdf"]}" download>'
             f'<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-            f'PDF indir <small>(isteğe bağlı, {boyut})</small></a>')
+            f'PDF sürümü <small>(isteğe bağlı, {boyut})</small></a>')
 
 
 def kitap_uret(k):
@@ -213,7 +213,7 @@ def kitap_uret(k):
       <p class="ozet">{e(k["alt"])}</p>
       <p class="yazar">Önder Örnek</p>
       <div class="eylemler">
-        <a class="birincil" href="{bolumler[0]["dosya"]}">Çevrim içi okumaya başla</a>
+        <a class="birincil" href="{bolumler[0]["dosya"]}">Çevrim içi sürüm</a>
         {pdf_dugmesi(k, '')}
       </div>
     </div>
@@ -237,7 +237,7 @@ def kitap_uret(k):
         gezinti += (f'<a class="onceki" href="{onceki["dosya"]}"><small>Önceki</small>{onceki["baslik_html"]}</a>'
                     if onceki else '<span></span>')
         gezinti += (f'<a class="sonraki" href="{sonraki["dosya"]}"><small>Sonraki</small>{sonraki["baslik_html"]}</a>'
-                    if sonraki else f'<a class="sonraki" href="index.html"><small>Bitti</small>İçindekilere dön</a>')
+                    if sonraki else f'<a class="sonraki" href="index.html"><small>Bitti</small>İçindekiler</a>')
         gezinti += '</nav>'
         govde = f'''<div class="okuma">
   <aside class="yan" aria-label="Kitabın bölümleri">
@@ -352,7 +352,7 @@ def tek_dosya(k, bolumler):
             return f'src="data:image/png;base64,{veri}"'
         ic = re.sub(r'src="([^"/:]+\.png)"', gom, ic)
         bloklar.append(f'<section class="bolum-blok" id="{bid}" data-baslik="{e(b["baslik"])}">{ic}</section>')
-    pdf = (f'<a class="pdf" href="{k["kisa"]}/{k["pdf"]}" download>PDF indir <small>(isteğe bağlı, {k["pdf_boyut"]})</small></a>'
+    pdf = (f'<a class="pdf" href="{k["kisa"]}/{k["pdf"]}" download>PDF sürümü <small>(isteğe bağlı, {k["pdf_boyut"]})</small></a>'
            if k.get('pdf_var') else '')
     return f'''<!doctype html>
 <html lang="tr">
@@ -378,7 +378,7 @@ def tek_dosya(k, bolumler):
     </a>
     <div class="menu">
       <a href="https://yontem.pro/kitaplar/">Kitaplar</a>
-      <a class="dugme" href="https://yontem.pro/dene">Tarayıcıda dene</a>
+      <a class="dugme" href="https://yontem.pro/dene">Oyun alanı</a>
     </div>
   </nav>
 </header>
@@ -408,7 +408,7 @@ def tek_dosya(k, bolumler):
 </div>
 <footer class="alt">
   <span>{TELIF}</span>
-  <span><a href="https://yontem.pro/">yontem.pro</a></span>
+  <span><a href="https://yontem.pro/">yontem.pro</a> · <a href="https://yontem.pro/gizlilik.html">Gizlilik</a> · <a href="https://yontem.pro/kunye.html">Künye</a></span>
 </footer>
 <script>
 {TEK_JS}
@@ -428,7 +428,7 @@ def kitaplik():
         <h2><a href="{k["kisa"]}/index.html">{e(k["baslik"])}</a></h2>
         <p>{e(k["alt"])}</p>
         <div class="eylemler">
-          <a class="birincil" href="{k["kisa"]}.html">Çevrim içi oku</a>
+          <a class="birincil" href="{k["kisa"]}.html">Çevrim içi sürüm</a>
           {pdf_dugmesi(k, k["kisa"] + "/")}
         </div>
       </div>

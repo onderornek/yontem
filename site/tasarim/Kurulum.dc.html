@@ -34,7 +34,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
         <a href="Kurulum.dc.html" aria-current="page" style="color: #0F1B2D; text-decoration: none; padding: 12px 0; font-weight: 600; border-bottom: 2px solid {{accent}}">Kurulum</a>
         <a href="/ogretmen" style="color: #334155; text-decoration: none; padding: 12px 0">Öğretmenler</a>
         <a href="https://github.com/onderornek/yontem" style="color: #334155; text-decoration: none; padding: 12px 0">GitHub</a>
-        <a href="/dene" style="background: #0F1B2D; color: #FFFFFF; text-decoration: none; padding: 12px 18px; border-radius: 10px; font-weight: 600">Tarayıcıda dene</a>
+        <a href="/dene" style="background: #0F1B2D; color: #FFFFFF; text-decoration: none; padding: 12px 18px; border-radius: 10px; font-weight: 600">Oyun alanı</a>
       </div>
     </nav>
   </header>
@@ -44,8 +44,8 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
     <div style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 64px 24px 56px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end">
       <div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
         <span style="font-size: 14px; font-weight: 600; color: #07514D">Kurulum kılavuzu · Yöntem 0.5.0</span>
-        <h1 style="margin: 0; font-size: 52px; line-height: 1.06; letter-spacing: -0.035em">Yöntem'i bilgisayarına kur.</h1>
-        <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #475569; max-width: 560px">Çoğu kullanıcı için Node.js ve tek bir komut yeterli. Python yorumlayıcısı ve ESP32 desteği isteğe bağlıdır. Hiçbir şey kurmadan denemek istersen <a href="/dene">oyun alanını</a> aç.</p>
+        <h1 style="margin: 0; font-size: 52px; line-height: 1.06; letter-spacing: -0.035em">Yöntem'i bilgisayarınıza kurabilirsiniz.</h1>
+        <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #475569; max-width: 560px">Çoğu kullanıcı için Node.js ve tek bir komut yeterlidir. Python yorumlayıcısı ve ESP32 desteği isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz <a href="/dene">oyun alanını</a> kullanabilirsiniz.</p>
       </div>
       <div style="flex: 1 1 380px; min-width: 0; background: #0F1B2D; border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px">
         <span style="font-size: 13px; font-weight: 600; color: #94A3B8; letter-spacing: 0.04em; text-transform: uppercase">Kısa yol (Node.js 18+ kuruluysa)</span>
@@ -61,7 +61,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
     <!-- İçindekiler -->
     <aside aria-label="Bu sayfada" style="flex: 1 1 220px; max-width: 260px; display: flex; flex-direction: column; gap: 4px; font-size: 15px">
       <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #475569; padding-bottom: 8px">Bu sayfada</span>
-      <a href="#hangisi" style="color: #334155; text-decoration: none; padding: 8px 0">Hangi kurulum sana uygun?</a>
+      <a href="#hangisi" style="color: #334155; text-decoration: none; padding: 8px 0">Hangi kurulum size uygun?</a>
       <a href="#hazirlik" style="color: #334155; text-decoration: none; padding: 8px 0">1. Node.js ve Python</a>
       <a href="#derleyici" style="color: #334155; text-decoration: none; padding: 8px 0">2. JavaScript derleyicisi</a>
       <a href="#python" style="color: #334155; text-decoration: none; padding: 8px 0">3. Python yorumlayıcısı</a>
@@ -73,7 +73,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
 
       <!-- Hangisi -->
       <section id="hangisi" style="display: flex; flex-direction: column; gap: 16px">
-        <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">Hangi kurulum sana uygun?</h2>
+        <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">Hangi kurulum size uygun?</h2>
         <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Program yazıp çalıştırmak için yalnızca <strong>JavaScript derleyicisi</strong> yeterlidir. Diğerleri belirli işler için eklenir. Kaynak dosyaların uzantısı <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">.y</code>'dir.</p>
         <div style="overflow-x: auto; border: 1px solid #E3E8EF; border-radius: 12px">
           <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 15px; line-height: 1.5">
@@ -84,7 +84,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
             </tr></thead>
             <tbody>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px; font-weight: 600">JavaScript derleyicisi <span style="font-size: 12px; font-weight: 600; color: #07514D; background: #E7F4F3; padding: 2px 8px; border-radius: 999px; margin-left: 4px">önerilen</span></td><td style="padding: 12px 16px; color: #334155">Programları derleyip çalıştırır; en hızlı yol</td><td style="padding: 12px 16px; color: #334155">Node.js 18+</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px; font-weight: 600">Python yorumlayıcısı</td><td style="padding: 12px 16px; color: #334155">Başvuru uygulaması ve etkileşimli kabuk</td><td style="padding: 12px 16px; color: #334155">Python 3.8+, dış bağımlılık yok</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px; font-weight: 600">Python yorumlayıcısı</td><td style="padding: 12px 16px; color: #334155">Başvuru uygulaması ve etkileşimli kabuk</td><td style="padding: 12px 16px; color: #334155">Python 3.8+ ve Yöntem'in kaynak klasörü</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px; font-weight: 600">Masaüstü benzetimi</td><td style="padding: 12px 16px; color: #334155">ESP32 programını C++ olarak bilgisayarda çalıştırır</td><td style="padding: 12px 16px; color: #334155">JavaScript derleyicisi + C++17 derleyicisi</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px; font-weight: 600">ESP32'ye yükleme</td><td style="padding: 12px 16px; color: #334155">Üretilen projeyi karta yükler</td><td style="padding: 12px 16px; color: #334155">Arduino IDE, arduino-cli ya da PlatformIO</td></tr>
             </tbody>
@@ -95,7 +95,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
       <!-- 1. Hazırlık -->
       <section id="hazirlik" style="display: flex; flex-direction: column; gap: 16px">
         <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">1. Node.js ve Python</h2>
-        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Önce kurulu olup olmadıklarına bak. <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">node --version</code> v18 ya da üstünü göstermeli. Python yalnızca yorumlayıcıyı kullanacaksan gerekir.</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Önce bunların kurulu olup olmadığına bakabilirsiniz. <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">node --version</code> v18 ya da üstünü göstermelidir. Python yalnızca yorumlayıcıyı kullanacaksanız gerekir.</p>
         <div style="border: 1px solid #E3E8EF; border-radius: 14px; overflow: hidden">
           <div role="tablist" aria-label="İşletim sistemi" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 8px 0; background: #F5F7FA; border-bottom: 1px solid #E3E8EF">
             <sc-for list="{{sistemler}}" as="s" hint-placeholder-count="3">
@@ -105,22 +105,22 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
           <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
             <sc-if value="{{windows}}" hint-placeholder-val="{{ true }}">
               <ul style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.7; color: #334155">
-                <li><strong>Node.js:</strong> <a href="https://nodejs.org">nodejs.org</a> adresinden LTS sürümünü kur ya da PowerShell'de <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">winget install OpenJS.NodeJS.LTS</code> yaz.</li>
-                <li><strong>Python:</strong> <a href="https://www.python.org/downloads/">python.org</a> adresinden kur; kurulumda <strong>Add python.exe to PATH</strong> kutusunu işaretle.</li>
-                <li>Kurulumdan sonra terminali kapatıp yeniden aç. Komutlarda <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">python3</code> yerine <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">py</code> yaz.</li>
+                <li><strong>Node.js:</strong> <a href="https://nodejs.org">nodejs.org</a> adresinden LTS sürümünü kurabilir ya da PowerShell'de <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">winget install OpenJS.NodeJS.LTS</code> yazabilirsiniz.</li>
+                <li><strong>Python:</strong> <a href="https://www.python.org/downloads/">python.org</a> adresinden kurabilirsiniz; kurulumda <strong>Add python.exe to PATH</strong> kutusunu işaretlemeniz gerekir.</li>
+                <li>Kurulumdan sonra terminali kapatıp yeniden açmanız gerekir. Komutlarda <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">python3</code> yerine <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">py</code> yazabilirsiniz.</li>
               </ul>
             </sc-if>
             <sc-if value="{{macos}}" hint-placeholder-val="{{ false }}">
               <ul style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.7; color: #334155">
                 <li><a href="https://brew.sh">Homebrew</a> kuruluysa: <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">brew install node</code> ve <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">brew install python</code>.</li>
-                <li>Değilse <a href="https://nodejs.org">nodejs.org</a> ve <a href="https://www.python.org/downloads/">python.org</a> kurulum paketlerini kullan.</li>
+                <li>Değilse <a href="https://nodejs.org">nodejs.org</a> ve <a href="https://www.python.org/downloads/">python.org</a> kurulum paketlerini kullanabilirsiniz.</li>
               </ul>
             </sc-if>
             <sc-if value="{{linux}}" hint-placeholder-val="{{ false }}">
               <pre style="margin: 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">sudo apt update
 sudo apt install nodejs npm python3
 node --version</pre>
-              <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #475569">Dağıtımının Node.js sürümü 18'den eskiyse (örneğin Ubuntu 22.04) <a href="https://github.com/nvm-sh/nvm">nvm</a> ile kur: <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">nvm install --lts</code>.</p>
+              <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #475569">Dağıtımınızın Node.js sürümü 18'den eskiyse (örneğin Ubuntu 22.04) <a href="https://github.com/nvm-sh/nvm">nvm</a> ile kurabilirsiniz: <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">nvm install --lts</code>.</p>
             </sc-if>
           </div>
         </div>
@@ -129,12 +129,12 @@ node --version</pre>
       <!-- 2. Derleyici -->
       <section id="derleyici" style="display: flex; flex-direction: column; gap: 16px">
         <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">2. JavaScript derleyicisi</h2>
-        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Yöntem, npm paket deposunda <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem</code> adıyla yayımlanır. Kurulum tek komuttur; ayrıca bir şey indirmen ya da derlemen gerekmez.</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Yöntem, npm paket deposunda <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem</code> adıyla yayımlanır. Kurulum tek komuttur; ayrıca bir şey indirmeniz ya da derlemeniz gerekmez.</p>
         <ol style="margin: 0; padding-left: 22px; font-size: 16px; line-height: 1.7; color: #334155; display: flex; flex-direction: column; gap: 14px">
-          <li>Derleyiciyi kur:
+          <li>Önce derleyiciyi kurabilirsiniz:
             <pre style="margin: 10px 0 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">npm install -g yontem   <span style="color: #94A3B8"># derleyici, kitaplık ve "yontem" komutu</span></pre>
           </li>
-          <li>İlk programını yaz ve çalıştır. <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">merhaba.y</code>:
+          <li>Ardından ilk programınızı yazıp çalıştırabilirsiniz. <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">merhaba.y</code>:
             <pre style="margin: 10px 0 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto"><span style="color: #5EEAD4; font-weight: 600">program</span> Merhaba
 <span style="color: #5EEAD4; font-weight: 600">başla</span>
   yaz(<span style="color: #FBBF77">'Merhaba, Yöntem!'</span>, <span style="color: #F9A8D4">1</span>)
@@ -145,14 +145,14 @@ yontem --surum                   <span style="color: #94A3B8"># Yöntem 0.5.0 (J
           </li>
         </ol>
         <div style="background: #E7F4F3; border-radius: 12px; padding: 16px 20px; font-size: 15px; line-height: 1.65; color: #0F1B2D">
-          <strong>İpucu:</strong> Genel kurulum istemezsen proje klasöründe <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">npm install yontem</code> yazıp <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">npx yontem program.y</code> ile çalıştır. Örnek programlar, testler ve Python yorumlayıcısı için depoyu al: <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">git clone https://github.com/onderornek/yontem.git</code>. Birimler programın klasöründe, onun <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">kutuphane</code> alt klasöründe ve Yöntem'in kendi kitaplığında aranır.
+          <strong>İpucu:</strong> Genel kurulum istemezseniz proje klasöründe <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">npm install yontem</code> yazıp <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">npx yontem program.y</code> ile çalıştırabilirsiniz. Örnek programlar, testler ve Python yorumlayıcısı için depoyu alabilirsiniz: <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">git clone https://github.com/onderornek/yontem.git</code>. Birimler programın klasöründe, onun <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">kutuphane</code> alt klasöründe ve Yöntem'in kendi kitaplığında aranır.
         </div>
       </section>
 
       <!-- 3. Python -->
       <section id="python" style="display: flex; flex-direction: column; gap: 16px">
         <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">3. Python yorumlayıcısı</h2>
-        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Kurulum gerekmez: Yöntem klasöründeki <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem.py</code> dosyasını çalıştır. Aynı çıktıyı verir ama daha yavaştır; asıl gücü etkileşimli kabuktur.</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Yorumlayıcı Yöntem'in deposuyla gelir ve ayrı bir kurulum gerektirmez: depo klasöründeki <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem.py</code> dosyasını çalıştırmanız yeterlidir. Aynı çıktıyı verir ama daha yavaştır; asıl gücü etkileşimli kabuktur.</p>
         <pre style="margin: 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">python3 yontem.py merhaba.y   <span style="color: #94A3B8"># programı çalıştırır (Windows: py yontem.py)</span>
 python3 yontem.py             <span style="color: #94A3B8"># etkileşimli kabuk; çıkmak için: çıkış</span></pre>
       </section>
@@ -168,14 +168,14 @@ python3 yontem.py             <span style="color: #94A3B8"># etkileşimli kabuk;
         </div>
         <pre style="margin: 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">yontem gomulu led.y --calistir   <span style="color: #94A3B8"># C++'a derler, bilgisayarda çalıştırır</span>
 yontem gomulu led.y              <span style="color: #94A3B8"># ESP32 projesi üretir: led/ klasörü</span></pre>
-        <p style="margin: 0; font-size: 16px; line-height: 1.65; color: #334155"><strong>Karta yükleme.</strong> Üretilen klasörü Arduino IDE'de aç (kart: "ESP32 Dev Module", Espressif'in esp32 çekirdeği 3.x önerilir), ya da klasörde <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">pio run -t upload</code> çalıştır. arduino-cli komutları klasördeki <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">BENIOKU.txt</code> dosyasında. Seri hız 115200 baud.</p>
+        <p style="margin: 0; font-size: 16px; line-height: 1.65; color: #334155"><strong>Karta yükleme.</strong> Üretilen klasörü Arduino IDE'de açabilir (kart: "ESP32 Dev Module", Espressif'in esp32 çekirdeği 3.x önerilir) ya da klasörde <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">pio run -t upload</code> komutunu çalıştırabilirsiniz. arduino-cli komutları klasördeki <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px">BENIOKU.txt</code> dosyasında yer alır. Seri hız 115200 baud'dur.</p>
       </section>
 
       <!-- 5. Sorunlar -->
       <section id="sorunlar" style="display: flex; flex-direction: column; gap: 16px">
         <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">5. Doğrulama ve sorunlar</h2>
-        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Kurulumu Yöntem'in kendi testleriyle doğrula; hepsi "geçti" demeli. Güncellemeden sonra <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem/js</code> içinde <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">npm install</code> ve <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">npm run build</code> komutlarını yeniden çalıştır.</p>
-        <pre style="margin: 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">node js/betikler/test.js          <span style="color: #94A3B8"># 94/94 dosya geçti</span>
+        <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Kurulumu doğrulamak için <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem --surum</code> komutunun sürüm numarasını yazması yeterlidir; güncellemek için <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">npm install -g yontem@latest</code> yazabilirsiniz. Yöntem'i kaynaktan kurduysanız kendi testlerini de çalıştırabilirsiniz; hepsi "geçti" demelidir. Kaynaktan kurulumda güncellemeden sonra <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem/js</code> içinde <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">npm install</code> ve <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">npm run build</code> komutlarını yeniden çalıştırmanız gerekir.</p>
+        <pre style="margin: 0; background: #0F1B2D; color: #E2E8F0; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: auto">node js/betikler/test.js          <span style="color: #94A3B8"># JavaScript derleyicisi</span>
 python3 testler/calistir.py       <span style="color: #94A3B8"># Python yorumlayıcısı</span>
 node js/betikler/gomulu_test.js   <span style="color: #94A3B8"># gömülü arka uç</span></pre>
         <div style="overflow-x: auto; border: 1px solid #E3E8EF; border-radius: 12px">
@@ -185,15 +185,15 @@ node js/betikler/gomulu_test.js   <span style="color: #94A3B8"># gömülü arka 
               <th scope="col" style="padding: 12px 16px; font-weight: 600">Çözüm</th>
             </tr></thead>
             <tbody>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">node, npm ya da python3 bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden aç; Windows'ta py komutunu dene ya da Python'u PATH seçeneğiyle yeniden kur</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">yontem komutu bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden aç ve npm install -g yontem komutunu yinele; olmazsa npx yontem</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">npm run build: tsc ya da esbuild bulunamadı</td><td style="padding: 12px 16px; color: #334155">Önce npm install, sonra npm run build</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Derleyici sözdizimi hatasıyla çöküyor</td><td style="padding: 12px 16px; color: #334155">Node.js 18'den eski; node --version ile bak ve güncelle</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">npm install -g "EACCES" veriyor</td><td style="padding: 12px 16px; color: #334155">Node.js'i nvm ile kur ya da npx yontem kullan</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Türkçe karakterler bozuk (Windows)</td><td style="padding: 12px 16px; color: #334155">chcp 65001 yaz ya da Windows Terminal kullan</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">kullan ile açılan birim bulunamadı</td><td style="padding: 12px 16px; color: #334155">Dosyayı programın yanına ya da kutuphane alt klasörüne koy, veya YONTEM_YOL'a ekle</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">--calistir C++ derleyicisini bulamıyor</td><td style="padding: 12px 16px; color: #334155">g++ kur ya da CXX ortam değişkeniyle derleyiciyi göster</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Kart yüklemede port bulunamadı</td><td style="padding: 12px 16px; color: #334155">USB-seri sürücüsünü (CP210x ya da CH340) kur, veri kablosu kullan</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">node, npm ya da python3 bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden açabilirsiniz; Windows'ta py komutunu deneyebilir ya da Python'u PATH seçeneğiyle yeniden kurabilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">yontem komutu bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden açıp npm install -g yontem komutunu yineleyebilirsiniz; olmazsa npx yontem kullanılabilir</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Kaynaktan kurarken npm run build: tsc ya da esbuild bulunamadı</td><td style="padding: 12px 16px; color: #334155">Önce npm install, sonra npm run build çalıştırılır</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Derleyici sözdizimi hatasıyla çöküyor</td><td style="padding: 12px 16px; color: #334155">Node.js 18'den eskidir; node --version ile sürüme bakıp güncelleyebilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">npm install -g "EACCES" veriyor</td><td style="padding: 12px 16px; color: #334155">Node.js'i nvm ile kurabilir ya da npx yontem kullanabilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Türkçe karakterler bozuk (Windows)</td><td style="padding: 12px 16px; color: #334155">chcp 65001 yazabilir ya da Windows Terminal kullanabilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">kullan ile açılan birim bulunamadı</td><td style="padding: 12px 16px; color: #334155">Dosyayı programın yanına ya da kutuphane alt klasörüne koyabilir veya YONTEM_YOL'a ekleyebilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">--calistir C++ derleyicisini bulamıyor</td><td style="padding: 12px 16px; color: #334155">g++ kurabilir ya da CXX ortam değişkeniyle derleyiciyi gösterebilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Kart yüklemede port bulunamadı</td><td style="padding: 12px 16px; color: #334155">USB-seri sürücüsünü (CP210x ya da CH340) kurmanız ve bir veri kablosu kullanmanız gerekir</td></tr>
             </tbody>
           </table>
         </div>
@@ -210,6 +210,7 @@ node js/betikler/gomulu_test.js   <span style="color: #94A3B8"># gömülü arka 
         <a href="/topluluk" style="color: #475569; padding: 10px 0">Topluluk</a>
         <a href="/blog" style="color: #475569; padding: 10px 0">Blog</a>
         <a href="/gizlilik" style="color: #475569; padding: 10px 0">Gizlilik</a>
+        <a href="/kunye" style="color: #475569; padding: 10px 0">Künye</a>
       </div>
     </div>
   </footer>
