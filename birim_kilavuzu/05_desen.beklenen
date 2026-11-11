@@ -1,0 +1,9 @@
+Sipariş no : #A-1042
+Adetler    : ['3 adet', '12 adet']
+  çay × 3
+  simit × 12
+E-posta    : zeynep@ornek.com
+Telefon mu : doğru
+Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 *** ** 67
+Parçalar   : ['çay', 'simit', 'peynir']
+Harf ayrımı: yanlış, "i" ile: doğru

@@ -1,0 +1,47 @@
+program Hatalı
+{$katı}
+kullan Araç
+
+sabit
+  SINIR = 10
+  ORAN: ondalık = 0.5
+
+değişken
+  sayı: tamsayı
+  oran: ondalık
+  ad: metin
+  tamam: mantıksal
+  serbest := Maks(1, 2)
+  uzun := Min(1, 2)
+
+fonksiyon Topla(a, b: tamsayı): tamsayı
+başla
+  dön 'toplam'
+bitir
+
+fonksiyon Tipsiz(x)
+başla
+  dön x
+bitir
+
+başla
+  sayı := 'on'
+  oran := 3
+  sayı := oran
+  ad := sayı
+  tamam := sayı
+  eğer sayı ise yaz('a', 1)
+  yaz(ad - 1, 1)
+  yaz(tamam + 1, 1)
+  yaz(Topla(1, 'iki'), 1)
+  yaz(Topla(1), 1)
+  yaz(Topla(1, 2, 3), 1)
+  yaz(İkiKat(oran), 1)
+  yaz(Araç.Birleştir('a', 5), 1)
+  yaz(Birleştir('a'), 1)
+  yaz(yokBöyleBirAd, 1)
+  değişken yerel := 5
+  yerel := 'beş'
+  sayı := Uzunluk(ad)
+  ad := 'x' + sayı
+bitir.

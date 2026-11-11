@@ -1,0 +1,1 @@
+Kullanım: yontem vt_testi.y <veritabanı adresi>

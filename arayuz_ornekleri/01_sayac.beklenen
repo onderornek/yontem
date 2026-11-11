@@ -1,0 +1,7 @@
+Sayı: 2
+Pencere "Sayaç"
+  Etiket "Sayı: 2"
+  Yatay
+    Düğme "Azalt"
+    Düğme "Artır"
+  Düğme "Sıfırla"

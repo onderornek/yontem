@@ -1,0 +1,33 @@
+özet argüman: 'Özet' 1 argüman bekler, 0 verildi
+imza anahtar sayı: 'anahtar' metin bekler, tamsayı verildi
+parola sayı: 'parola' metin bekler, tamsayı verildi
+tekrar az: 'tekrar' 1000 ile 10000000 arasında olmalı, 10 verildi
+tekrar ondalık: 'tekrar' tamsayı bekler, ondalık verildi
+tuz sıfır: 'bayt sayısı' 1 ile 1024 arasında olmalı, 0 verildi
+belirteç çok: 'bayt sayısı' 1 ile 1024 arasında olmalı, 2000 verildi
+rastgele ters: 'GüvenliRastgele': alt sınır üst sınırdan büyük olamaz
+rastgele ondalık: 'GüvenliRastgele' iki tamsayı bekler
+base64 bozuk: 'Base64Çöz' geçerli Base64 metin bekler
+base64 utf8 değil: 'Base64Çöz': çözülen veri geçerli UTF-8 metin değil
+şifreli bozuk: 'ŞifreÇöz': şifreli veri bozuk
+şifreli kısa: 'ŞifreÇöz': şifreli veri doğrulanamadı (anahtar yanlış ya da veri değiştirilmiş)
+anahtar hex değil: 'Şifrele' 64 onaltılık karakterlik (256 bit) bir anahtar bekler; 'AnahtarÜret' ya da 'ParoladanAnahtar' ile üret
+sql boş karakter: 'SqlMetni': metinde boş karakter (\0) olamaz
+yol sayı: 'yol' metin bekler, tamsayı verildi
+maskele negatif: 'görünür' 0 ile 1000 arasında olmalı, -1 verildi
+sınırlayıcı süre: 'Sınırlayıcı': süre sıfırdan büyük olmalı
+sınırlayıcı sayı: 'en çok' 1 ile 1000000 arasında olmalı, 0 verildi
+belirteç ömür: 'ömür' 1 ile 315360000 arasında olmalı, 0 verildi
+Sınırlayıcı(2 / 1.5 sn)
+2 1.5
+sınırlayıcı üye: Sınırlayıcı nesnesinde 'bilinmeyen' üyesi yok
+sınırlayıcı atama: Sınırlayıcı nesnesinin 'encok' üyesine atama yapılamaz
+yanlış yanlış doğru
+7 doğru doğru doğru doğru
+doğru 4
+42 '3.5' ****56 ZG/En3J1
+dosya yanlış yanlış doğru
+10.5
+[Güvenlik] yalnız olay
+[Güvenlik] kontrol karakteri: a	b\x1bc\\d
+['[Güvenlik] yalnız olay', '[Güvenlik] kontrol karakteri: a	b\x1bc\\d']

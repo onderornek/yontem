@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 7 — Transformer bloğu · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html" aria-current="page">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 8 / 14</p>
+    <h2 id="bölüm-7-transformer-bloğu">Bölüm 7 — Transformer bloğu</h2>
+<p>Öz-dikkat tek başına bir dil modeli değildir. Onu gerçek bir modele çeviren dört parça daha vardır. Bu parçalar bir <strong>Transformer bloğu</strong> oluşturur ve bloklar üst üste dizilir. Bizim modelimizde iki blok vardır; büyük modellerde ise onlarca, hatta yüzden fazla blok bulunur.</p>
+<figure>
+<img src="sekil2.png" alt="Küçük GPT’nin katmanları: iki Transformer bloğu" />
+<figcaption aria-hidden="true">Küçük GPT’nin katmanları: iki Transformer bloğu</figcaption>
+</figure>
+<h3 id="çok-kafalı-dikkat">Çok kafalı dikkat</h3>
+<p>Tek bir dikkat “kafası” bir tür bakış deseni öğrenebilir: örneğin “bir önceki harfe bak”. Ama bir karakterin aynı anda birkaç şeye bakması gerekebilir: bir önceki harfe, sözcüğün başına, bir önceki sözcüğün son ünlüsüne. Çözüm, birkaç küçük kafayı yan yana çalıştırmaktır. Modelimizde 32 boyutu 4 kafaya bölüyoruz; her kafanın sorgu, anahtar ve değer vektörleri 8 boyutludur. Kafaların çıktıları birer çıkış matrisiyle (<code>Wo</code>) yeniden 32 boyuta taşınıp toplanır.</p>
+<h3 id="ileri-besleme-ağı">İleri besleme ağı</h3>
+<p>Dikkat, karakterler arasında bilgi taşır ama bu bilgiyi işlemez; yalnızca ağırlıklı ortalama alır. Her dikkat katmanından sonra her karakter, kendi vektörünü küçük bir sinir ağından geçirir: 32 sayıyı 128’e genişletir, ReLU uygular, yeniden 32’ye indirir. Bu ağ her karakter için aynıdır ve karakterler arasında bilgi alışverişi yapmaz. Bazen şöyle özetlenir: dikkat “iletişim”, ileri besleme ise “düşünme”dir.</p>
+<h3 id="artık-bağlantı">Artık bağlantı</h3>
+<p>Her alt katmanın sonucu, girdisinin <strong>üstüne eklenir</strong>: <code>x := x + Dikkat(x)</code>. Buna <strong>artık bağlantı</strong> (residual connection) denir. İki yararı vardır. Birincisi, bir katman hiçbir şey öğrenmese bile girdiyi bozmaz; en kötü ihtimalle sıfır ekler. İkincisi, gradyan eğitim sırasında toplama işlemlerinin üzerinden kısalmadan geriye akar; derin modellerin eğitilebilmesinin sırrı büyük ölçüde budur.</p>
+<h3 id="katman-normalleştirme">Katman normalleştirme</h3>
+<p>Vektörlerdeki sayılar katmandan katmana büyüyüp küçülebilir; bu da eğitimi dengesizleştirir. <strong>Katman normalleştirme</strong>, her karakterin vektörünü ortalaması 0, standart sapması 1 olacak şekilde ölçekler. Ardından öğrenilen iki vektörle (g ve b) yeniden ölçekleyip kaydırır. Bizim modelimizde (GPT-2’de olduğu gibi) normalleştirme her alt katmanın <em>önünde</em> durur.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">KatmanNorm</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>g</mi><mo>⋅</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi></mrow><msqrt><mrow><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ϵ</mi></mrow></msqrt></mfrac><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">\text{KatmanNorm}(x) = g \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + b</annotation></semantics></math></p>
+<h3 id="kitabın-modeli-kucukgpt-birimi">Kitabın modeli: KucukGPT birimi</h3>
+<p>Anlattığımız her şey <code>KucukGPT</code> biriminde, <code>GPT</code> adında bir sınıfta toplanıyor. Birim ayrıca 8. bölümde kullanacağımız iki yardımcıyı da içeriyor: <strong>bırakma</strong> (<code>Bırak</code>) ile ağırlıkları dosyaya kaydedip geri yükleyen <code>Kaydet</code> ve <code>Yükle</code>.</p>
+<p>Verimlilik için bir hile kullanıyoruz. Bir yığındaki 8 pencereyi ayrı ayrı işlemek yerine alt alta koyup 128 satırlık tek bir matris yapıyoruz. Maske, her karakterin yalnızca <em>kendi</em> penceresindeki önceki karakterlere bakmasını sağlıyor. Böylece pencereler birbirine karışmıyor.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> KucukGPT
+<span class="yy">{ Kitabın küçük GPT'si: karakter düzeyinde, yalnızca kod çözücüden (decoder-only)
+  oluşan bir Transformer. 6. ve 7. bölümde parça parça kurduğumuz her şey burada
+  tek bir sınıfta toplanır.
+
+  Yığın (batch) düzeni: B dizinin her biri t karakter uzunluğundadır. Hepsini alt alta
+  koyup (B·t) × D boyutlu tek bir matrisle çalışırız. Dikkat maskesi, bir karakterin
+  yalnızca KENDİ dizisindeki ve KENDİSİNDEN ÖNCEKİ karakterlere bakmasına izin verir. }</span>
+<span class="ya">kullan</span> YZ, Matematik, Sistem
+
+<span class="ya">arayüz</span>
+
+<span class="ya">tip</span>
+  GPT = <span class="ya">sınıf</span>
+    sözlükBoyu, bağlam, boyut, kafaSayısı, katmanSayısı, kafaBoyu: <span class="ya">tamsayı</span>
+    Gömme, Konum, Wç, bç, sonG, sonB: <span class="ya">tensör</span>   <span class="yy">{ karakter ve konum gömmeleri, çıkış katmanı, son normalleştirme }</span>
+    Wq, Wk, Wv, Wo: <span class="ya">liste</span>               <span class="yy">{ [katman * kafaSayısı + kafa] → tensör }</span>
+    g1, b1, g2, b2: <span class="ya">liste</span>               <span class="yy">{ katman normalleştirme parametreleri, katman başına }</span>
+    İ1, İb1, İ2, İb2: <span class="ya">liste</span>             <span class="yy">{ ileri besleme ağı, katman başına }</span>
+    maskeler: <span class="ya">sözlük</span>                    <span class="yy">{ hazırlanmış maskeler, yeniden kurmamak için }</span>
+    bırakma: <span class="ya">ondalık</span>                    <span class="yy">{ eğitimde rastgele sıfırlanan değerlerin oranı (dropout) }</span>
+    eğitimde: <span class="ya">mantıksal</span>                 <span class="yy">{ doğruysa bırakma uygulanır }</span>
+    <span class="ya">kurucu</span> Oluştur(sB, bU, bD, kH, kL: <span class="ya">tamsayı</span>)
+    <span class="ya">fonksiyon</span> Parametreler: <span class="ya">liste</span>
+    <span class="ya">fonksiyon</span> ParametreAdedi: <span class="ya">tamsayı</span>
+    <span class="ya">fonksiyon</span> İleri(numaralar: <span class="ya">tamsayı</span> dizisi; diziSayısı, uzunluk: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+    <span class="ya">fonksiyon</span> Bırak(x: <span class="ya">tensör</span>): <span class="ya">tensör</span>
+    <span class="ya">prosedür</span> Kaydet(yol: <span class="ya">metin</span>)
+    <span class="ya">prosedür</span> Yükle(yol: <span class="ya">metin</span>)
+  <span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> KatmanNorm(x, g, b: <span class="ya">tensör</span>): <span class="ya">tensör</span>
+<span class="ya">fonksiyon</span> Maske(diziSayısı, uzunluk: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+
+<span class="ya">uygulama</span>
+
+<span class="ya">fonksiyon</span> KatmanNorm(x, g, b: <span class="ya">tensör</span>): <span class="ya">tensör</span>
+<span class="yy">{ Her satırı (her karakterin vektörünü) ortalaması 0, sapması 1 olacak biçimde
+  ölçekler; sonra öğrenilen g ile çarpar, b ile kaydırır. }</span>
+<span class="ya">değişken</span> satır: <span class="ya">tamsayı</span>; m, xm, s: <span class="ya">tensör</span>
+<span class="ya">başla</span>
+  satır := x.Şekil[<span class="ys">0</span>]
+  m := x.Ortalama(<span class="ys">1</span>).Yeniden(satır, <span class="ys">1</span>)
+  xm := x - m
+  s := ((xm ** <span class="ys">2</span>).Ortalama(<span class="ys">1</span>) + <span class="ys">0.00001</span>).Kök.Yeniden(satır, <span class="ys">1</span>)
+  <span class="ya">dön</span> xm / s * g + b
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Maske(diziSayısı, uzunluk: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+<span class="yy">{ Nedensel maske: i. satır j. sütuna bakabiliyorsa 0, bakamıyorsa çok büyük bir
+  negatif sayı. Softmaks bu negatif puanları sıfır olasılığa çevirir. }</span>
+<span class="ya">değişken</span> n, i, j: <span class="ya">tamsayı</span>; satırlar: <span class="ya">liste</span>; satır1: <span class="ya">ondalık</span> dizisi
+<span class="ya">başla</span>
+  n := diziSayısı * uzunluk
+  satırlar := []
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    satır1 := []
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+      <span class="ya">eğer</span> (i <span class="ya">böl</span> uzunluk = j <span class="ya">böl</span> uzunluk) <span class="ya">ve</span> j &lt;= i <span class="ya">ise</span> satır1.Ekle(<span class="ys">0.0</span>) <span class="ya">değilse</span> satır1.Ekle(-<span class="ys">1000000000.0</span>)
+    satırlar.Ekle(satır1)
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> Tensör(satırlar)
+<span class="ya">bitir</span>
+
+<span class="ya">kurucu</span> GPT.Oluştur(sB, bU, bD, kH, kL: <span class="ya">tamsayı</span>)
+<span class="ya">değişken</span> l, h: <span class="ya">tamsayı</span>; ölçek: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sözlükBoyu := sB; bağlam := bU; boyut := bD; kafaSayısı := kH; katmanSayısı := kL
+  kafaBoyu := boyut <span class="ya">böl</span> kafaSayısı
+  ölçek := <span class="ys">1</span> / Kök(boyut)
+  Gömme := RastgeleTensör(sözlükBoyu, boyut, <span class="ys">0.5</span>, <span class="ya">doğru</span>)
+  Konum := RastgeleTensör(bağlam, boyut, <span class="ys">0.1</span>, <span class="ya">doğru</span>)
+  Wq := []; Wk := []; Wv := []; Wo := []
+  g1 := []; b1 := []; g2 := []; b2 := []
+  İ1 := []; İb1 := []; İ2 := []; İb2 := []
+  <span class="ys">0</span>'dan katmanSayısı - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> l <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="ys">0</span>'dan kafaSayısı - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> h <span class="ya">için</span>
+    <span class="ya">başla</span>
+      Wq.Ekle(RastgeleTensör(boyut, kafaBoyu, ölçek, <span class="ya">doğru</span>))
+      Wk.Ekle(RastgeleTensör(boyut, kafaBoyu, ölçek, <span class="ya">doğru</span>))
+      Wv.Ekle(RastgeleTensör(boyut, kafaBoyu, ölçek, <span class="ya">doğru</span>))
+      Wo.Ekle(RastgeleTensör(kafaBoyu, boyut, ölçek / Kök(<span class="ys">2</span> * katmanSayısı), <span class="ya">doğru</span>))
+    <span class="ya">bitir</span>
+    g1.Ekle(Birler(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>)); b1.Ekle(Sıfırlar(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>))
+    g2.Ekle(Birler(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>)); b2.Ekle(Sıfırlar(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>))
+    İ1.Ekle(RastgeleTensör(boyut, <span class="ys">4</span> * boyut, ölçek, <span class="ya">doğru</span>)); İb1.Ekle(Sıfırlar(<span class="ys">4</span> * boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>))
+    İ2.Ekle(RastgeleTensör(<span class="ys">4</span> * boyut, boyut, <span class="ys">0.5</span> / Kök(<span class="ys">4</span> * boyut * <span class="ys">2</span> * katmanSayısı), <span class="ya">doğru</span>)); İb2.Ekle(Sıfırlar(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>))
+  <span class="ya">bitir</span>
+  maskeler := [:]
+  bırakma := <span class="ys">0.0</span>
+  eğitimde := <span class="ya">yanlış</span>
+  sonG := Birler(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>); sonB := Sıfırlar(boyut, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+  Wç := RastgeleTensör(boyut, sözlükBoyu, <span class="ys">0.1</span>, <span class="ya">doğru</span>); bç := Sıfırlar(sözlükBoyu, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> GPT.Parametreler: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> [Gömme, Konum] + Wq + Wk + Wv + Wo + g1 + b1 + g2 + b2 + İ1 + İb1 + İ2 + İb2 + [sonG, sonB, Wç, bç]
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> GPT.ParametreAdedi: <span class="ya">tamsayı</span>
+<span class="ya">değişken</span> p: <span class="ya">tensör</span>
+<span class="ya">başla</span>
+  sonuç := <span class="ys">0</span>
+  Parametreler <span class="ya">içindeki</span> <span class="ya">her</span> p <span class="ya">için</span>
+    sonuç := sonuç + İndirge(p.Şekil, <span class="ya">fonksiyon</span>(a, c: <span class="ya">tamsayı</span>) =&gt; a * c, <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> GPT.İleri(numaralar: <span class="ya">tamsayı</span> dizisi; diziSayısı, uzunluk: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+<span class="yy">{ numaralar: diziSayısı × uzunluk karakter, alt alta. Dönüş: her konum için sözlükBoyu logit. }</span>
+<span class="ya">değişken</span> x, n1, dikkat, k, q, v, ağırlık, m: <span class="ya">tensör</span>; l, h, i: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="yy">{ maske her boyut için bir kez kurulur, sonra hazır olan kullanılır }</span>
+  <span class="ya">eğer</span> <span class="ya">değil</span> maskeler.İçerir(Biçimle(<span class="ym">'{}x{}'</span>, diziSayısı, uzunluk)) <span class="ya">ise</span>
+    maskeler[Biçimle(<span class="ym">'{}x{}'</span>, diziSayısı, uzunluk)] := Maske(diziSayısı, uzunluk)
+  m := maskeler[Biçimle(<span class="ym">'{}x{}'</span>, diziSayısı, uzunluk)]
+  <span class="yy">{ karakter gömmesi + konum gömmesi }</span>
+  x := BirSıcak(numaralar, sözlükBoyu) @ Gömme +
+       BirSıcak(Eşle(Aralık(diziSayısı * uzunluk), <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; j <span class="ya">mod</span> uzunluk), bağlam) @ Konum
+  x := Bırak(x)
+  <span class="ys">0</span>'dan katmanSayısı - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> l <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="yy">{ 1) çok kafalı öz-dikkat, artık bağlantıyla }</span>
+    n1 := KatmanNorm(x, g1[l], b1[l])
+    dikkat := <span class="ya">boş</span>
+    <span class="ys">0</span>'dan kafaSayısı - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> h <span class="ya">için</span>
+    <span class="ya">başla</span>
+      i := l * kafaSayısı + h
+      q := n1 @ Wq[i]; k := n1 @ Wk[i]; v := n1 @ Wv[i]
+      ağırlık := Softmaks(q @ k.T / Kök(kafaBoyu) + m)
+      <span class="ya">eğer</span> dikkat = <span class="ya">boş</span> <span class="ya">ise</span> dikkat := ağırlık @ v @ Wo[i] <span class="ya">değilse</span> dikkat := dikkat + ağırlık @ v @ Wo[i]
+    <span class="ya">bitir</span>
+    x := x + Bırak(dikkat)
+    <span class="yy">{ 2) ileri besleme ağı, artık bağlantıyla }</span>
+    n1 := KatmanNorm(x, g2[l], b2[l])
+    x := x + Bırak((n1 @ İ1[l] + İb1[l]).ReLU @ İ2[l] + İb2[l])
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> KatmanNorm(x, sonG, sonB) @ Wç + bç
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> GPT.Bırak(x: <span class="ya">tensör</span>): <span class="ya">tensör</span>
+<span class="yy">{ Bırakma (dropout): eğitim sırasında değerlerin rastgele bir kısmını sıfırlar, kalanları
+  1 / (1 - oran) ile büyütür. Model tek bir yola güvenmemeyi öğrenir; ezberleme azalır. }</span>
+<span class="ya">değişken</span> r, c, i, j: <span class="ya">tamsayı</span>; satırlar: <span class="ya">liste</span>; s: <span class="ya">ondalık</span> dizisi; kalan: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> <span class="ya">değil</span> eğitimde <span class="ya">veya</span> bırakma &lt;= <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">dön</span> x
+  r := x.Şekil[<span class="ys">0</span>]; c := x.Şekil[<span class="ys">1</span>]; kalan := <span class="ys">1</span> / (<span class="ys">1</span> - bırakma)
+  satırlar := []
+  <span class="ys">0</span>'dan r - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    s := []
+    <span class="ys">0</span>'dan c - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">eğer</span> Rastgele &lt; bırakma <span class="ya">ise</span> s.Ekle(<span class="ys">0.0</span>) <span class="ya">değilse</span> s.Ekle(kalan)
+    satırlar.Ekle(s)
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> x * Tensör(satırlar)
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> GPT.Kaydet(yol: <span class="ya">metin</span>)
+<span class="yy">{ Her parametre bir satır: sayılar boşlukla ayrılmış }</span>
+<span class="ya">değişken</span> p: <span class="ya">tensör</span>; satırlar: <span class="ya">metin</span> dizisi; adet: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  satırlar := []
+  Parametreler <span class="ya">içindeki</span> <span class="ya">her</span> p <span class="ya">için</span>
+  <span class="ya">başla</span>
+    adet := İndirge(p.Şekil, <span class="ya">fonksiyon</span>(a, c: <span class="ya">tamsayı</span>) =&gt; a * c, <span class="ys">1</span>)
+    satırlar.Ekle(Birleştir(Eşle(p.Yeniden(adet).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Metne(z)), <span class="ym">' '</span>))
+  <span class="ya">bitir</span>
+  Sistem.DosyaYaz(yol, Birleştir(satırlar, Karakter(<span class="ys">10</span>)))
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> GPT.Yükle(yol: <span class="ya">metin</span>)
+<span class="ya">değişken</span> satırlar, sayılar: <span class="ya">metin</span> dizisi; p: <span class="ya">tensör</span>; i, j, sütun: <span class="ya">tamsayı</span>; ps: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  satırlar := Sistem.DosyaOku(yol).Ayır(Karakter(<span class="ys">10</span>))
+  ps := Parametreler
+  <span class="ys">0</span>'dan Uzunluk(ps) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    p := ps[i]
+    sayılar := satırlar[i].Ayır(<span class="ym">' '</span>)
+    <span class="ya">eğer</span> Uzunluk(p.Şekil) = <span class="ys">1</span> <span class="ya">ise</span>
+      <span class="ys">0</span>'dan Uzunluk(sayılar) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> p[j] := Ondalığa(sayılar[j])
+    <span class="ya">değilse</span>
+    <span class="ya">başla</span>
+      sütun := p.Şekil[<span class="ys">1</span>]
+      <span class="ys">0</span>'dan Uzunluk(sayılar) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> p[j <span class="ya">böl</span> sütun, j <span class="ya">mod</span> sütun] := Ondalığa(sayılar[j])
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<h3 id="parçaları-sınamak">Parçaları sınamak</h3>
+<p>Büyük bir modeli eğitmeden önce parçalarını sınamak iyi bir alışkanlıktır. Aşağıdaki program üç şey yapıyor. Katman normalleştirmenin gerçekten ortalama 0, sapma 1 verdiğini gösteriyor. Parametrelerin nerede olduğunu elle sayarak <code>ParametreAdedi</code> ile karşılaştırıyor. Son olarak modelin tek bir küçük yığını ezberleyebildiğini doğruluyor. Bu son sınama çok değerlidir: model iki pencereyi bile ezberleyemiyorsa kodda bir hata vardır ve uzun bir eğitime başlamak boşuna olur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> TransformerBloğu
+<span class="yy">{ Bir Transformer bloğu dört parçadan oluşur:
+     n = KatmanNorm(x);  x = x + ÇokKafalıDikkat(n)   (karakterler birbirine bakar)
+     n = KatmanNorm(x);  x = x + İleriBesleme(n)      (her karakter kendi başına işlenir)
+  &quot;x = x + ...&quot; biçimine artık bağlantı denir: her blok girdiyi silmez, üstüne ekler.
+  Bu program parçaları KucukGPT biriminden alıp tek tek sınar:
+  A) Katman normalleştirme ne yapar?
+  B) Küçük GPT'nin parametreleri nerede?
+  C) Bir hata ayıklama alışkanlığı: model tek bir yığını ezberleyebiliyor mu? }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, KucukGPT, YZ
+
+<span class="ya">değişken</span>
+  x, y, kayıp: <span class="ya">tensör</span>
+  model: GPT
+  opt: <span class="ya">herhangi</span>
+  harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  akış, g, h: <span class="ya">tamsayı</span> dizisi
+  i, adım, D, gömme, dikkat, ileri, norm, çıkış: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">5</span>)
+  <span class="yy">{ A) Katman normalleştirme }</span>
+  x := Tensör([[<span class="ys">2.0</span>, <span class="ys">4.0</span>, <span class="ys">6.0</span>, <span class="ys">8.0</span>], [<span class="ys">100.0</span>, <span class="ys">101.0</span>, <span class="ys">99.0</span>, <span class="ys">100.0</span>], [-<span class="ys">3.0</span>, <span class="ys">0.0</span>, <span class="ys">0.0</span>, <span class="ys">3.0</span>]])
+  y := KucukGPT.KatmanNorm(x, Birler(<span class="ys">4</span>), Sıfırlar(<span class="ys">4</span>))
+  yaz(<span class="ym">'A) Katman normalleştirme öncesi ve sonrası:'</span>, <span class="ys">1</span>)
+  <span class="ys">0</span>'dan <span class="ys">2</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'   {}  →  {}   (ortalama {:.2}, sapma {:.2})'</span>, x.Satır(i).Veri,
+      Eşle(y.Satır(i).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Yuvarla(z, <span class="ys">2</span>)),
+      y.Satır(i).Ortalama.Değer, ((y.Satır(i) ** <span class="ys">2</span>).Ortalama.Değer) ** <span class="ys">0.5</span>), <span class="ys">1</span>)
+
+  <span class="yy">{ B) Parametreler }</span>
+  harfler := DilAraclari.Harfler
+  numara := DilAraclari.Numaralar(harfler)
+  model := GPT.Oluştur(Uzunluk(harfler), <span class="ys">16</span>, <span class="ys">32</span>, <span class="ys">4</span>, <span class="ys">2</span>)
+  D := <span class="ys">32</span>
+  gömme := Uzunluk(harfler) * D + <span class="ys">16</span> * D
+  dikkat := <span class="ys">2</span> * (<span class="ys">4</span> * D * D)
+  ileri := <span class="ys">2</span> * (D * <span class="ys">4</span> * D + <span class="ys">4</span> * D + <span class="ys">4</span> * D * D + D)
+  norm := <span class="ys">2</span> * (<span class="ys">4</span> * D) + <span class="ys">2</span> * D
+  çıkış := D * Uzunluk(harfler) + Uzunluk(harfler)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'B) Küçük GPT (2 katman, 4 kafa, 32 boyut, 16 karakter bağlam):'</span>, <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   Karakter ve konum gömmeleri : {:6}'</span>, gömme), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   Dikkat (Q, K, V, çıkış)     : {:6}'</span>, dikkat), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   İleri besleme ağları        : {:6}'</span>, ileri), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   Katman normalleştirmeler    : {:6}'</span>, norm), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   Çıkış katmanı               : {:6}'</span>, çıkış), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'   Toplam                      : {:6}   (model.ParametreAdedi = {})'</span>,
+    gömme + dikkat + ileri + norm + çıkış, model.ParametreAdedi), <span class="ys">1</span>)
+
+  <span class="yy">{ C) Tek yığını ezberleme sınaması }</span>
+  akış := DilAraclari.Kodla(<span class="ym">'.damlaya damlaya göl olur.acele işe şeytan karışır.'</span>, numara)
+  g := Dilim(akış, <span class="ys">0</span>, <span class="ys">16</span>) + Dilim(akış, <span class="ys">20</span>, <span class="ys">36</span>)
+  h := Dilim(akış, <span class="ys">1</span>, <span class="ys">17</span>) + Dilim(akış, <span class="ys">21</span>, <span class="ys">37</span>)
+  opt := Adam(model.Parametreler, <span class="ys">0.01</span>)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'C) İki pencerelik tek bir yığını ezberleme:'</span>, <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">150</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(model.İleri(g, <span class="ys">2</span>, <span class="ys">16</span>), h)
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">30</span> = <span class="ys">0</span> <span class="ya">ise</span> yaz(Biçimle(<span class="ym">'   Adım {:3}: kayıp {:.4}'</span>, adım, kayıp.Değer), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>A) Katman normalleştirme öncesi ve sonrası:
+   [2.0, 4.0, 6.0, 8.0]  →  [-1.34, -0.45, 0.45, 1.34]   (ortalama 0.00, sapma 1.00)
+   [100.0, 101.0, 99.0, 100.0]  →  [0.0, 1.41, -1.41, 0.0]   (ortalama 0.00, sapma 1.00)
+   [-3.0, 0.0, 0.0, 3.0]  →  [-1.41, 0.0, 0.0, 1.41]   (ortalama 0.00, sapma 1.00)
+
+B) Küçük GPT (2 katman, 4 kafa, 32 boyut, 16 karakter bağlam):
+   Karakter ve konum gömmeleri :   1472
+   Dikkat (Q, K, V, çıkış)     :   8192
+   İleri besleme ağları        :  16704
+   Katman normalleştirmeler    :    320
+   Çıkış katmanı               :    990
+   Toplam                      :  27678   (model.ParametreAdedi = 27678)
+
+C) İki pencerelik tek bir yığını ezberleme:
+   Adım   1: kayıp 3.4682
+   Adım  30: kayıp 0.0085
+   Adım  60: kayıp 0.0020
+   Adım  90: kayıp 0.0014
+   Adım 120: kayıp 0.0011
+   Adım 150: kayıp 0.0008</code></pre></div>
+<h3 id="çıktıyı-okumak-3">Çıktıyı okumak</h3>
+<p>Normalleştirme, çok farklı ölçeklerdeki üç satırı (2–8, 99–101, −3–3) aynı ölçeğe getiriyor. Burada dikkat çeken nokta şudur: ikinci satırdaki 100 civarındaki sayıların büyüklüğü kayboluyor, yalnızca aralarındaki fark kalıyor.</p>
+<p>Parametre dökümü ilginç bir gerçeği gösteriyor: modelin yıldızı dikkat olsa da parametrelerin yarıdan fazlası (16 704 / 27 678) ileri besleme ağlarındadır. Büyük modellerde de oran benzerdir.</p>
+<p>Ezberleme sınamasında kayıp 3,47’den 30 adımda 0,01’in altına iniyor. Model, iki pencere için her konumda doğru harfi neredeyse kesinlikle tahmin ediyor. Kod doğru çalışıyor; artık gerçek eğitime geçebiliriz.</p>
+<p><strong>Alıştırma.</strong> <code>GPT.İleri</code> içinde iki artık bağlantıyı kaldırınız (<code>x := x + Bırak(dikkat)</code> yerine <code>x := Bırak(dikkat)</code> yazınız, ileri beslemede de aynısını yapınız) ve ezberleme sınamasını yeniden çalıştırınız. Kayıp ne kadar hızlı düşüyor?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="07-bolum-6-oz-dikkat.html"><small>Önceki</small>Bölüm 6 — Öz-dikkat</a><a class="sonraki" href="09-bolum-8-kucuk-gptyi-egitmek.html"><small>Sonraki</small>Bölüm 8 — Küçük GPT’yi eğitmek</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#çok-kafalı-dikkat">Çok kafalı dikkat</a></li><li><a href="#ileri-besleme-ağı">İleri besleme ağı</a></li><li><a href="#artık-bağlantı">Artık bağlantı</a></li><li><a href="#katman-normalleştirme">Katman normalleştirme</a></li><li><a href="#kitabın-modeli-kucukgpt-birimi">Kitabın modeli: KucukGPT birimi</a></li><li><a href="#parçaları-sınamak">Parçaları sınamak</a></li><li><a href="#çıktıyı-okumak-3">Çıktıyı okumak</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

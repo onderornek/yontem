@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. Sunucu: web servisleri · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html" aria-current="page">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 9 / 12</p>
+    <h2 id="sunucu-web-servisleri">8. Sunucu: web servisleri</h2>
+<p><code>Sunucu</code> birimi HTTP isteklerini karşılar: bir adrese gelen isteği sizin yazdığınız bir fonksiyona verir, fonksiyonun döndürdüğünü yanıt olarak gönderir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SunucuÖrneği
+<span class="yy">{ Sunucu birimi: yollar, yol parametreleri, JSON yanıtı.
+  İstekİşle isteği ağ olmadan işler; gerçek sunucu için sondaki Dinle satırını açın. }</span>
+<span class="ya">kullan</span> Sunucu
+
+<span class="ya">değişken</span>
+  y: <span class="ya">sözlük</span>
+
+<span class="ya">fonksiyon</span> AnaSayfa(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'&lt;h1&gt;Merhaba, '</span> + istek[<span class="ym">'sorgu'</span>].Al(<span class="ym">'ad'</span>, <span class="ym">'dünya'</span>) + <span class="ym">'!&lt;/h1&gt;'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Kare(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">değişken</span> n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  n := Tamsayı(istek[<span class="ym">'parametreler'</span>][<span class="ym">'n'</span>])
+  <span class="ya">dön</span> JsonYanıt([<span class="ym">'sayı'</span>: n, <span class="ym">'kare'</span>: n * n])
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/'</span>, AnaSayfa)
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/kare/:n'</span>, Kare)
+
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/?ad=Ay%C5%9Fe'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/kare/12'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'başlıklar'</span>][<span class="ym">'content-type'</span>] + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/kare/on'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/kare/3'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/yok'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+
+  <span class="yy">{ Dinle(8080)      tarayıcıda http://127.0.0.1:8080/kare/12 }</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>200 &lt;h1&gt;Merhaba, Ayşe!&lt;/h1&gt;
+200 application/json; charset=utf-8 {&quot;sayı&quot;: 12, &quot;kare&quot;: 144}
+500 Sunucu hatası
+405 Bu yöntem desteklenmiyor
+404 Bulunamadı</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>İşlev</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Yol(yöntem, yol, işleyici)</code></td>
+<td><code>'GET'</code>, <code>'POST'</code>, <code>'PUT'</code>, <code>'PATCH'</code>, <code>'DELETE'</code> ya da <code>'*'</code> (hepsi) için bir yol tanımlar. <code>:ad</code> ile başlayan parça parametredir</td>
+</tr>
+<tr class="even">
+<td><code>Statik(önEk, klasör)</code></td>
+<td>Klasördeki dosyaları (HTML, CSS, resim) sunar; klasörün dışına çıkılamaz</td>
+</tr>
+<tr class="odd">
+<td><code>Dinle(port [, adres])</code></td>
+<td>İstekleri dinlemeye başlar ve program durdurulana kadar bekler</td>
+</tr>
+<tr class="even">
+<td><code>Yanıt(durum, gövde [, tür])</code></td>
+<td>Durum kodu ve düz metinle yanıt; <code>tür</code> içerik tipidir</td>
+</tr>
+<tr class="odd">
+<td><code>JsonYanıt(değer [, durum])</code></td>
+<td>Sözlük ya da listeyi JSON olarak gönderir</td>
+</tr>
+<tr class="even">
+<td><code>Yönlendir(adres [, durum])</code></td>
+<td>Başka bir adrese yönlendirir (302)</td>
+</tr>
+<tr class="odd">
+<td><code>İstekİşle(yöntem, yol [, gövde, başlıklar])</code></td>
+<td>İsteği ağ olmadan işler ve yanıtı döndürür; test için</td>
+</tr>
+<tr class="even">
+<td><code>SunucuyuDurdur</code></td>
+<td>Bir işleyicinin içinden çağrılır; yanıt gittikten sonra <code>Dinle</code> sona erer</td>
+</tr>
+<tr class="odd">
+<td><code>GövdeSınırı(bayt)</code></td>
+<td>Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code> ya da <code>Yönlendir</code> kullanılır.</p>
+<p>Sunucunun kendiliğinden yaptıkları şunlardır:</p>
+<ul>
+<li>Tanımlı olmayan yola <code>404</code>, yolu olup yöntemi olmayan isteğe <code>405</code>, bozuk adrese <code>400</code>, sınırdan büyük gövdeye <code>413</code> döner.</li>
+<li>İşleyicide yakalanmayan bir hata olursa istemciye yalnızca <code>500 Sunucu hatası</code> gider; hatanın ayrıntısı sunucunun kendi çıktısına yazılır, dışarı sızmaz.</li>
+<li><code>Dinle</code> adres verilmezse yalnızca bu bilgisayardan gelen istekleri kabul eder (<code>127.0.0.1</code>). Başka cihazlardan erişim için <code>Dinle(8080, '0.0.0.0')</code> yazabilirsiniz.</li>
+<li>İstekler sırayla işlenir: bir işleyici bitmeden sonraki başlamaz. Bu, işleyicilerin birbirinin verisini bozamayacağı anlamına gelir; ama uzun süren bir işleyici diğer istekleri bekletir.</li>
+</ul>
+<p>Sunucu doğrudan internete açılacak biçimde tasarlanmamıştır: HTTPS, sıkıştırma ve aynı anda çok sayıda bağlantı için önüne nginx ya da Caddy gibi bir ters vekil koymanız gerekir. Oturum belirteçleri, parola özeti ve istek sınırlama için <code>Güvenlik</code> birimi (3. bölüm) hazırdır.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-7-veritabani-sql-veritabanlari.html"><small>Önceki</small>7. Veritabanı: SQL veritabanları</a><a class="sonraki" href="10-9-uc-katmanli-bir-uygulama.html"><small>Sonraki</small>9. Üç katmanlı bir uygulama</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

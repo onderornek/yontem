@@ -1,0 +1,49 @@
+— XSS
+  &lt;script&gt;alert(&quot;ele geçirildi&quot;)&lt;/script&gt;
+  &lt;img src=x onerror=&#39;çal()&#39;&gt; &amp; Co.
+— SQL
+  SELECT * FROM kullanicilar WHERE ad = 'ayşe'
+  SELECT * FROM kullanicilar WHERE ad = 'x'' OR ''1''=''1'
+— Yol geçişi
+  "raporlar/2026/ocak.pdf" → doğru
+  "resim.png" → doğru
+  "../../etc/passwd" → yanlış
+  "a/../../b" → yanlış
+  "/etc/passwd" → yanlış
+  "C:\Windows\win.ini" → yanlış
+  "..\gizli.txt" → yanlış
+  "%2e%2e/gizli" → yanlış
+  "" → yanlış
+— Dosya adı temizleme
+  "../../etc/passwd" → passwd
+  "Özgeçmiş (son hali).pdf" → Özgeçmiş _son hali_.pdf
+  "kötü<adı>|?.txt" → kötü_adı_.txt
+  "...gizli" → gizli
+  "CON.txt" → _CON.txt
+  "C:\Users\ali\foto.jpg" → foto.jpg
+  "///" → dosya
+— E-posta
+  ayse@ornek.com.tr → doğru
+  ali.veli+bulten@posta.org → doğru
+  eksik@alan → yanlış
+  iki..nokta@ornek.com → yanlış
+  boşluk var@ornek.com → yanlış
+  @ornek.com → yanlış
+— Bağlantılar
+  https://yontem.pro/kitaplar → doğru
+  http://ornek.com → doğru
+  /profil?id=5 → doğru
+  javascript:alert(1) → yanlış
+  //saldirgan.com → yanlış
+  data:text/html;base64,PHNjcmlwdD4= → yanlış
+  https://yontem.pro@saldirgan.com → yanlış
+   JAVASCRIPT:alert(1) → yanlış
+— Beyaz liste
+  ayşe_42 → doğru
+  ali.veli → doğru
+  robert'); DROP TABLE-- → yanlış
+  emoji🙂 → yanlış
+— Maskeleme
+  Kart: ************1111
+  Telefon: *********67
+  Kısa: ab / hepsi gizli: *****

@@ -1,0 +1,11 @@
+1 iş kaldı
+Saklanan: [doğru, doğru, yanlış]
+Pencere "Yapılacaklar"
+  Yatay
+    GirişKutusu "" (ipucu "Yeni iş")
+    Düğme "Ekle"
+  Dikey
+    OnayKutusu [x] "Ekmek al"
+    OnayKutusu [x] "Kitabın 5. bölümünü oku"
+    OnayKutusu [ ] "ESP32 kartını bağla"
+  Etiket "1 iş kaldı"

@@ -1,0 +1,60 @@
+program Listeler
+{$katı}
+
+değişken
+  sayılar: tamsayı listesi
+  adlar: metin dizisi
+  oranlar: ondalık listesi
+  yaşlar: tamsayı sözlüğü
+  tablo: tamsayı listesi listesi
+  serbest: liste
+  n: tamsayı
+  ad: metin
+  uzun := Uzunluk('abc')
+  parçalar := Ayır('a b', ' ')
+
+fonksiyon İlk(l: tamsayı listesi): tamsayı
+başla
+  dön l[0]
+bitir
+
+fonksiyon Adlar: metin listesi
+başla
+  dön ['a', 'b']
+bitir
+
+başla
+  sayılar := [1, 2, 3]
+  oranlar := [1, 2.5]
+  oranlar := sayılar
+  serbest := sayılar
+  sayılar := serbest
+  tablo := [[1, 2], [3]]
+  n := sayılar[0]
+  n := tablo[0][1]
+  n := yaşlar['Ali']
+  ad := adlar[0]
+  ad := parçalar[0]
+  n := uzun + İlk(sayılar)
+  sayılar.Ekle(4)
+  sayılar[0] := 5
+  sayılar içindeki her n için yaz(n, 1)
+  adlar := Adlar
+  { --- hatalar --- }
+  sayılar := [1, 'iki', 3]
+  sayılar := adlar
+  ad := sayılar[0]
+  n := adlar[0]
+  n := tablo[0]
+  sayılar.Ekle('dört')
+  Ekle(adlar, 5)
+  sayılar[1] := 2.5
+  adlar içindeki her n için yaz(n, 1)
+  n := İlk(adlar)
+  n := Uzunluk(ad) + ad
+  ad := Uzunluk(ad)
+  eğer Uzunluk(ad) ise yaz('x', 1)
+  n := parçalar[0]
+  yaşlar['Veli'] := 'on'
+  sayılar := Adlar
+bitir.

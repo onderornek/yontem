@@ -1,0 +1,8 @@
+ekle → 201 {"no": 1, "ad": "defter", "fiyat": 12.5, "adet": 40}
+ekle → 201 {"no": 2, "ad": "kalem", "fiyat": 4.0, "adet": 3}
+aynı ad → 400 {"hata": "Bu adda bir ürün zaten var: defter"}
+kötü fiyat → 400 {"hata": "Fiyat sıfırdan büyük olmalı"}
+sat → 200 {"ürün": "defter", "adet": 4, "tutar": 50.0, "kalan": 36}
+stok yetersiz → 400 {"hata": "Stok yetersiz: 3 adet var"}
+ürün yok → 404 {"hata": "Böyle bir ürün yok"}
+liste → 200 {"ürünler": [{"no": 1, "ad": "defter", "fiyat": 12.5, "adet": 36}, {"no": 2, "ad": "kalem", "fiyat": 4.0, "adet": 3}], "stokDeğeri": 462.0}

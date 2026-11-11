@@ -1,0 +1,11 @@
+Model           boyut  katman   parametre
+GPT-2 küçük       768      12       124.4 milyon
+GPT-2 orta       1024      24       354.8 milyon
+GPT-2 büyük      1280      36       774.0 milyon
+GPT-2 XL         1600      48      1557.6 milyon
+
+Küçük GPT: 27678 parametre, eğitimde 384000 karakter işlendi
+  eğitim hesabı ≈ 6 · N · simge = 6.4 × 10^10 işlem
+GPT-2 küçük, parametre başına 20 simgeyle eğitilseydi:
+  2.5 × 10^9 simge, 1.9 × 10^18 işlem
+  Küçük GPT modelinden 29139543 kat fazla hesap

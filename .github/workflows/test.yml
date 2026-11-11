@@ -1,0 +1,73 @@
+name: Testler
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  javascript:
+    name: JavaScript derleyicisi (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+      - name: Kur ve derle
+        working-directory: js
+        run: npm ci && npm run build
+      - name: Dil testleri ve örnekler
+        working-directory: js
+        run: npm test
+      - name: Dil sunucusu (LSP)
+        working-directory: js
+        run: npm run test:dil
+      - name: Hata ayıklayıcı (uçbirim ve DAP)
+        working-directory: js
+        run: npm run test:ayikla
+      - name: Sunucu birimi (yerel portlarda, JavaScript ve Python)
+        working-directory: js
+        run: npm run test:sunucu
+      - name: Veritabanı birimi (SQLite)
+        if: matrix.node >= 22
+        working-directory: js
+        run: npm run test:vt
+      - name: Katı kip (derleme zamanı tip denetimi)
+        working-directory: js
+        run: npm run test:kati
+      - name: Paket yöneticisi (yerel sınama sunucusuyla)
+        working-directory: js
+        run: npm run test:paket
+      - name: Ağ birimi (yerel sınama sunucusuyla, JavaScript ve Python)
+        working-directory: js
+        run: npm run test:ag
+      - name: Gömülü arka uç (C++ masaüstü benzetimi)
+        if: matrix.node == 20
+        working-directory: js
+        run: npm run test:gomulu
+
+  python:
+    name: Python yorumlayıcısı (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.8', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Dil testleri ve örnekler
+        run: python3 testler/calistir.py
+      - name: pip ile kurulum
+        run: |
+          pip install .
+          cd "$RUNNER_TEMP" && yontem-py --surum

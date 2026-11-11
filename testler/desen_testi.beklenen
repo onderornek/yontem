@@ -1,0 +1,31 @@
+[''] ['', '', ''] -a-b- ['ab']
+[''] boş doğru 0
+['aaa', 'a', 'aa'] ['aaa', 'aaa', ''] ['aaa', '', 'aaa']
+['a', 'a', boş] ['b', boş, 'b'] ['abab', 'a', 'b']
+['b22', 'c333'] ['x-y_z'] [']', '^'] ['.'] ['a', '-']
+['çay', 'şeker', 'ığdır'] ['b', 'i', 'ü'] ['']
+['a{2}', 'a{,3}', 'a{x}'] doğru doğru yanlış doğru
+yanlış doğru doğru [' + ', ' = '] ['a', 'b'] [' ', '!']
+['İ', 'I', 'ı', 'i'] ['a', 'B', 'c'] ['a', 'c'] doğru yanlış
+baab$ a$c a[]c -a-a-a- AxAx
+['a', 'b', 'c'] ['', 'a', ''] ['abc'] ['']
+a\.b\*c\\d\[e\]\{f\}\|g\^h\$ doğru yanlış yanlış
+65534 65534 65534 32767 65534 32767
+felaket deseni: Desen bu metinde çok fazla adım gerektiriyor; deseni sadeleştirin (iç içe tekrarlar: (a+)+ gibi)
+kapanmamış grup: Desen hatası (3. karakter): kapanmamış '('
+fazla ayraç: Desen hatası (2. karakter): eşi olmayan ')'
+kapanmamış küme: Desen hatası (3. karakter): kapanmamış '['
+boş tekrar: Desen hatası (2. karakter): '*' öncesinde tekrarlanacak bir şey yok
+aaa
+çift tekrar: hata yok
+ters aralık: Desen hatası (5. karakter): ters aralık: z-a
+ters sayı: Desen hatası (7. karakter): ters tekrar aralığı: {3,1}
+ileri bakış: Desen hatası (3. karakter): '(?' sonrası yalnızca ':' desteklenir (yakalamayan grup)
+geri başvuru: Desen hatası (6. karakter): geri başvurular (\1) desteklenmez
+sonda ters bölü: Desen hatası (3. karakter): desen '\' ile bitemez
+konum tekrarı: Desen hatası (3. karakter): konum belirteçleri (^ $ \b) tekrarlanamaz
+seçenek: Bilinmeyen desen seçeneği: 'g' (yalnızca 'i' desteklenir)
+olmayan grup: 'DesenDeğiştir': desende 1. grup yok ($1)
+sayı metin: 'metin' metin bekler, tamsayı verildi
+desen sayı: 'desen' metin bekler, tamsayı verildi
+argüman: 'Bul' 2..3 argüman bekler, 1 verildi

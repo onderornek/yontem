@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Doğrulama, güncelleme ve sorunlar · Yöntem Kurulum Kılavuzu</title>
+<meta name="description" content="Windows, macOS ve Linux&#x27;ta kurulum, ESP32 desteği ve sık karşılaşılan sorunlar">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Kurulum Kılavuzu</a></summary>
+      <ol><li><a href="01-hangi-kurulum-size-uygun.html">Hangi kurulum size uygun?</a></li><li><a href="02-1-hazirlik-node-js-ve-python.html">1. Hazırlık: Node.js ve Python</a></li><li><a href="03-2-javascript-derleyicisini-kurma.html">2. JavaScript derleyicisini kurma</a></li><li><a href="04-3-python-yorumlayicisi.html">3. Python yorumlayıcısı</a></li><li><a href="05-4-gomulu-arka-uc-esp32.html">4. Gömülü arka uç (ESP32)</a></li><li><a href="06-5-dogrulama-guncelleme-ve-sorunlar.html" aria-current="page">5. Doğrulama, güncelleme ve sorunlar</a></li></ol>
+      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 71 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Kurulum Kılavuzu</a> / Bölüm 6 / 6</p>
+    <h2 id="doğrulama-güncelleme-ve-sorunlar">5. Doğrulama, güncelleme ve sorunlar</h2>
+<p>Kurulumun tamamlandığını Yöntem’in kendi testleriyle doğrulayabilirsiniz; testlerin hepsi “geçti” demelidir.</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem
+node js/betikler/test.js          # JavaScript derleyicisi: 94/94 dosya geçti
+python3 testler/calistir.py       # Python yorumlayıcısı
+node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)</code></pre></div>
+<p><strong>Güncelleme.</strong> Yeni sürümü aldıktan sonra (<code>git pull</code> ya da yeni klasör kopyası) <code>yontem/js</code> klasöründe <code>npm install</code> ve <code>npm run build</code> komutlarını yeniden çalıştırmanız yeterlidir. Klasörün yeri değiştiyse <code>npm link</code> adımını da tekrarlamanız gerekir.</p>
+<p><strong>Sık karşılaşılan sorunlar</strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Belirti</th>
+<th>Olası neden</th>
+<th>Çözüm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>node</code>, <code>npm</code> ya da <code>python3</code> komutu bulunamadı</td>
+<td>Kurulumdan sonra terminal yeniden açılmadı; Windows’ta PATH seçeneği işaretlenmedi</td>
+<td>Terminali yeniden açabilirsiniz; Windows’ta <code>py</code> komutunu deneyebilir ya da Python’u PATH seçeneğiyle yeniden kurabilirsiniz</td>
+</tr>
+<tr class="even">
+<td><code>yontem</code> komutu bulunamadı</td>
+<td><code>npm link</code> çalıştırılmadı ya da npm’in genel klasörü PATH’te değil</td>
+<td><code>yontem/js</code> içinde <code>npm link</code> çalıştırılır; olmazsa <code>node yontem/js/dist/cli.js</code> ile çalıştırabilirsiniz</td>
+</tr>
+<tr class="odd">
+<td><code>npm run build</code> sırasında <code>tsc</code> ya da <code>esbuild</code> bulunamadı</td>
+<td><code>npm install</code> atlandı</td>
+<td>Önce <code>npm install</code>, sonra <code>npm run build</code> çalıştırılır</td>
+</tr>
+<tr class="even">
+<td>Derleyici beklenmedik sözdizimi hatasıyla çöküyor</td>
+<td>Node.js 18’den eski</td>
+<td><code>node --version</code> ile sürüme bakıp Node.js’i güncelleyebilirsiniz</td>
+</tr>
+<tr class="odd">
+<td><code>npm link</code> “EACCES” veriyor (Linux, macOS)</td>
+<td>Genel klasöre yazma izni yok</td>
+<td>Node.js’i nvm ile kurabilir ya da <code>sudo npm link</code> kullanabilirsiniz</td>
+</tr>
+<tr class="even">
+<td>Türkçe karakterler bozuk görünüyor (Windows)</td>
+<td>Komut istemi UTF-8 değil</td>
+<td><code>chcp 65001</code> yazabilir ya da Windows Terminal kullanabilirsiniz</td>
+</tr>
+<tr class="odd">
+<td><code>kullan</code> ile açılan birim bulunamadı</td>
+<td>Birim dosyası aranan klasörlerde değil</td>
+<td>Dosyayı programın yanına ya da <code>kutuphane</code> alt klasörüne koyabilir veya <code>YONTEM_YOL</code>’a ekleyebilirsiniz</td>
+</tr>
+<tr class="even">
+<td><code>--calistir</code> C++ derleyicisini bulamıyor</td>
+<td>g++ kurulu değil ya da PATH’te değil</td>
+<td>4. adımdaki tabloya göre kurabilir ya da <code>CXX</code> ile derleyiciyi gösterebilirsiniz</td>
+</tr>
+<tr class="odd">
+<td>Kart yüklemede port bulunamadı</td>
+<td>USB sürücüsü eksik ya da kablo yalnızca şarj kablosu</td>
+<td>Kartın USB-seri sürücüsünü (CP210x ya da CH340) kurmanız ve bir veri kablosu kullanmanız gerekir</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sorun devam ederse hata mesajının tamamını, <code>node --version</code> ve <code>yontem --surum</code> çıktılarıyla birlikte paylaşabilirsiniz.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-4-gomulu-arka-uc-esp32.html"><small>Önceki</small>4. Gömülü arka uç (ESP32)</a><a class="sonraki" href="index.html"><small>Bitti</small>İçindekilere dön</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

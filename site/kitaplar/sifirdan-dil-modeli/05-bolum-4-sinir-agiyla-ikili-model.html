@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 4 — Sinir ağıyla ikili model · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html" aria-current="page">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 5 / 14</p>
+    <h2 id="bölüm-4-sinir-ağıyla-ikili-model">Bölüm 4 — Sinir ağıyla ikili model</h2>
+<p>Saymak küçük bir pencere için işe yarar ama pencere büyüdükçe imkânsızlaşır. Son 10 karaktere bakan bir model için 30¹⁰, yani yaklaşık 590 trilyon satırlık bir tablo gerekirdi ve bu satırların neredeyse hepsi veride hiç görülmemiş olurdu. Çıkış yolu, tabloyu doldurmak yerine olasılıkları <strong>hesaplayan</strong> bir fonksiyon öğrenmektir: bir sinir ağı.</p>
+<p>Bu bölümde aynı ikili modeli sinir ağıyla kurup sayarak bulduğumuz sonuca ulaşıp ulaşamadığımıza bakacağız. Bu, sonraki bölümlerde kullanacağımız tüm parçaların en sade halidir.</p>
+<h3 id="dört-adım">Dört adım</h3>
+<ol type="1">
+<li><strong>Tek-sıcak kodlama.</strong> Karakter numarası 3 ise, 30 sayılık bir vektörün 3. yeri 1, geri kalanı 0 olur. <code>BirSıcak</code> fonksiyonu bunu yapar.</li>
+<li><strong>Logitler.</strong> Bu vektörü 30 × 30’luk bir ağırlık matrisi W ile çarparız. Sonuç 30 sayıdır; her biri, o karakterin sırada gelme ihtimali için ham bir puandır. Bu puanlara <strong>logit</strong> denir. Logitler eksi de olabilir, toplamları 1 olmak zorunda değildir.</li>
+<li><strong>Softmaks.</strong> Logitleri olasılığa çevirir: her birinin üstelini alır, toplama böler.</li>
+<li><strong>Çapraz entropi.</strong> Doğru karaktere verilen olasılığın eksi logaritmasıdır; 3. bölümdeki kayıpla aynı şeydir.</li>
+</ol>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>b</mi><mo>∣</mo><mi>a</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><msup><mi>e</mi><msub><mi>W</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></msup><mrow><munder><mo>∑</mo><mi>x</mi></munder><msup><mi>e</mi><msub><mi>W</mi><mrow><mi>a</mi><mi>x</mi></mrow></msub></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">P(b \mid a) = \frac{e^{W_{ab}}}{\sum_{x} e^{W_{ax}}}</annotation></semantics></math></p>
+<p>Bu formülün sürpriz bir sonucu vardır. Tek-sıcak bir vektörü W ile çarpmak, W’nin bir satırını seçmekten başka bir şey değildir. Yani ağ, her karakter için bir satır sayı öğreniyor. Bu satıra o karakterin <strong>gömmesi</strong> (embedding) denir. Büyük dil modellerinin ilk katmanı da tam olarak budur: her simge için bir gömme satırı olan dev bir tablo.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SinirAğıylaİkiliModel
+<span class="yy">{ Aynı ikili modeli bu kez sinir ağıyla kuruyoruz. Saymak yerine bir ağırlık
+  matrisi W öğreniriz:
+     girdi   : önceki karakterin tek-sıcak vektörü x (30 sayı, biri 1, kalanı 0)
+     logit   : x @ W        (30 puan, her olası sonraki karakter için bir tane)
+     olasılık: softmaks(logit)
+  Kayıp çapraz entropidir: doğru sonraki karaktere verilen olasılığın -log'u.
+  x tek-sıcak olduğu için x @ W, W'nin bir satırını seçer; bu satıra o karakterin
+  &quot;gömmesi&quot; (embedding) denir. Büyük dil modellerinin ilk katmanı tam olarak budur. }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, YZ
+
+<span class="ya">değişken</span>
+  veri, harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  girdiler, hedefler: <span class="ya">tamsayı</span> dizisi
+  a, kar: <span class="ya">metin</span>
+  i, j, n, önceki, adım: <span class="ya">tamsayı</span>
+  X, W, kayıp, P: <span class="ya">tensör</span>
+  opt: <span class="ya">herhangi</span>
+  sözcük: <span class="ya">metin</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">42</span>)
+  veri := Atasozleri.Hepsi
+  harfler := DilAraclari.Harfler
+  n := Uzunluk(harfler)
+  numara := DilAraclari.Numaralar(harfler)
+
+  <span class="yy">{ Eğitim çiftleri: (önceki karakter, sonraki karakter) }</span>
+  girdiler := []; hedefler := []
+  veri <span class="ya">içindeki</span> <span class="ya">her</span> a <span class="ya">için</span>
+  <span class="ya">başla</span>
+    önceki := <span class="ys">0</span>
+    (a + <span class="ym">'.'</span>).Karakterler <span class="ya">içindeki</span> <span class="ya">her</span> kar <span class="ya">için</span>
+    <span class="ya">başla</span>
+      girdiler.Ekle(önceki); hedefler.Ekle(numara[kar]); önceki := numara[kar]
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'{} eğitim çifti'</span>, Uzunluk(girdiler)), <span class="ys">1</span>)
+
+  X := BirSıcak(girdiler, n)                   <span class="yy">{ 5282 × 30 }</span>
+  W := RastgeleTensör(n, n, <span class="ys">0.1</span>, <span class="ya">doğru</span>)        <span class="yy">{ öğrenilecek 900 ağırlık }</span>
+  opt := Adam([W], <span class="ys">0.1</span>)
+  <span class="ys">1</span>'den <span class="ys">300</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(X @ W, hedefler)
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">50</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:3}: kayıp {:.4}'</span>, adım, kayıp.Değer), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'Sinir ağının ürettiği &quot;atasözleri&quot;:'</span>, <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">8</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sözcük := <span class="ym">''</span>; i := <span class="ys">0</span>
+    <span class="ya">tekrarla</span>
+      P := Softmaks(BirSıcak([i], n) @ W)       <span class="yy">{ 1 × 30 olasılık }</span>
+      i := DilAraclari.Örnekle(P.Satır(<span class="ys">0</span>).Veri)
+      <span class="ya">eğer</span> i &lt;&gt; <span class="ys">0</span> <span class="ya">ise</span> sözcük := sözcük + harfler[i]
+    i = <span class="ys">0</span> <span class="ya">olana</span> <span class="ya">dek</span>
+    yaz(<span class="ym">'  '</span> + sözcük, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>5282 eğitim çifti
+Adım   1: kayıp 3.4135
+Adım  50: kayıp 2.3569
+Adım 100: kayıp 2.3475
+Adım 150: kayıp 2.3449
+Adım 200: kayıp 2.3436
+Adım 250: kayıp 2.3429
+Adım 300: kayıp 2.3424
+
+Sinir ağının ürettiği &quot;atasözleri&quot;:
+  n ayekacu suşi n a baker
+  k sttin klazü
+  tükolde dör
+  an hvar
+  yaven çi mazarüşen sa paye yağ hanevademaserırgere ktademaşmen seyvu dü yema dışiştakomağır bacayliltlezan dancayağadi yoll inden muş
+  sugöz umir ban k
+  sır
+  itanı yolürar</code></pre></div>
+<h3 id="çıktıyı-okumak-1">Çıktıyı okumak</h3>
+<p>Kayıp 3,41’den başlıyor; bu, 3. bölümde hesapladığımız “hiçbir şey bilmeyen model” değerine (ln 30 ≈ 3,40) çok yakındır. Ağırlıklar küçük ve rastgele olduğu için model başta tüm karakterlere hemen hemen eşit olasılık veriyor.</p>
+<p>300 adımda kayıp 2,3424’e iniyor. Düzleştirmesiz saymanın kaybı 2,3408 idi. Sinir ağı neredeyse aynı yere vardı ve vardığı yer bir rastlantı değildir: ikili bir model için en iyi olasılıklar, sayımdan çıkan oranlardır. Gradyan inişi bu oranları kendi başına buldu. Üretilen metnin 3. bölümdekine bu kadar benzemesinin nedeni de budur.</p>
+<p>Değişen şey yöntemdir. Artık elimizde kayıp fonksiyonunu otomatik olarak küçülten bir düzenek vardır: <code>kayıp.GeriYay</code> her ağırlığın kayba etkisini (gradyanını) hesaplıyor, <code>opt.Adım</code> da ağırlıkları kaybı azaltacak yöne biraz kaydırıyor. Bu düzenek ağ ne kadar karmaşık olursa olsun aynı kalacak. Kitabın geri kalanında yalnızca <code>X @ W</code> kısmını daha akıllı bir fonksiyonla değiştireceğiz.</p>
+<h3 id="neden-çaprazentropiye-logit-veriyoruz">Neden ÇaprazEntropi’ye logit veriyoruz?</h3>
+<p>Dikkat ederseniz eğitimde <code>ÇaprazEntropi(X @ W, hedefler)</code> yazıyoruz; araya <code>Softmaks</code> koymuyoruz. <code>ÇaprazEntropi</code> softmaksı kendisi uygular ve bunu sayısal olarak daha güvenli bir yolla yapar. Metin üretirken ise olasılıkları kendimiz istediğimiz için <code>Softmaks</code>’ı elle çağırıyoruz.</p>
+<p><strong>Alıştırma.</strong> Eğitimden sonra “ş” harfinin satırına softmaks uygulayınız: <code>Softmaks(BirSıcak([numara['ş']], n) @ W)</code>. En büyük beş olasılığı 3. bölümdeki “ş harfinden sonra en sık gelenler” listesiyle karşılaştırınız.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="04-bolum-3-sayarak-dil-modeli.html"><small>Önceki</small>Bölüm 3 — Sayarak dil modeli</a><a class="sonraki" href="06-bolum-5-baglami-buyutmek.html"><small>Sonraki</small>Bölüm 5 — Bağlamı büyütmek</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#dört-adım">Dört adım</a></li><li><a href="#çıktıyı-okumak-1">Çıktıyı okumak</a></li><li><a href="#neden-çaprazentropiye-logit-veriyoruz">Neden ÇaprazEntropi’ye logit veriyoruz?</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

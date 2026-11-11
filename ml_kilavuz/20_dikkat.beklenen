@@ -1,0 +1,22 @@
+--- A) "kedi sütü içti çünkü o acıkmıştı" ---
+Dikkat ağırlıkları (satır: bakan kelime, sütun: bakılan kelime)
+                  kedi      sütü      içti     çünkü         o acıkmıştı
+       kedi       0.17      0.17      0.17      0.17      0.17      0.17
+       sütü       0.17      0.17      0.17      0.17      0.17      0.17
+       içti       0.13      0.13      0.22      0.16      0.13      0.22
+      çünkü       0.16      0.16      0.18      0.16      0.16      0.18
+          o       0.87      0.01      0.01      0.01      0.04      0.06
+  acıkmıştı       0.13      0.13      0.22      0.16      0.13      0.22
+"o" en çok şuna bakıyor: kedi
+
+--- B) Dikkati öğrenmek: "her konum bir sonraki konuma baksın" ---
+Adım   1: kayıp 7.1553  1. örneğin çıktıları [3.73, 4.06, 3.93, 3.99]
+Adım 100: kayıp 0.0001  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+Adım 200: kayıp 0.0000  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+Adım 300: kayıp 0.0000  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+1. örneğin hedefi [1, 7, 3, 5]. Öğrenilen dikkat ağırlıkları:
+  konum 0 →   0.00  1.00  0.00  0.00
+  konum 1 →   0.00  0.00  1.00  0.00
+  konum 2 →   0.01  0.01  0.00  0.99
+  konum 3 →   1.00  0.00  0.00  0.00
+Yeni değerler [10, 20, 30, 40] → [20.0, 30.0, 39.7, 10.0]

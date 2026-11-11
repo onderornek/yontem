@@ -1,0 +1,12 @@
+λ = 0.0, γ = 0.0
+  Tur 1: x < 26.5 | kazanç 2.722 | yapraklar -2.000 /  1.111 | kayıp 0.5110
+  Tur 2: x < 33.0 | kazanç 1.252 | yapraklar -1.023 /  0.957 | kayıp 0.4290
+  Tur 3: x < 26.5 | kazanç 0.493 | yapraklar -1.221 /  0.439 | kayıp 0.3962
+  Tur 4: x < 52.5 | kazanç 0.318 | yapraklar -0.208 /  1.285 | kayıp 0.3755
+λ = 5.0, γ = 0.0
+  Tur 1: x < 33.0 | kazanç 0.580 | yapraklar -0.240 /  0.370 | kayıp 0.6428
+  Tur 2: x < 26.5 | kazanç 0.476 | yapraklar -0.245 /  0.309 | kayıp 0.6023
+  Tur 3: x < 33.0 | kazanç 0.395 | yapraklar -0.214 /  0.285 | kayıp 0.5696
+  Tur 4: x < 26.5 | kazanç 0.324 | yapraklar -0.217 /  0.239 | kayıp 0.5431
+λ = 5.0, γ = 0.8
+  Tur 1: hiçbir bölme γ cezasını karşılamıyor, ağaç büyümüyor

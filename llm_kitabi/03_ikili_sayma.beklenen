@@ -1,0 +1,25 @@
+Atasözleri en sık şu harflerle başlar:
+  "a"  olasılık 0.106
+  "b"  olasılık 0.091
+  "d"  olasılık 0.087
+  "k"  olasılık 0.077
+  "s"  olasılık 0.062
+"ş" harfinden sonra en sık gelenler:
+  " "  olasılık 0.164
+  "e"  olasılık 0.119
+  "ı"  olasılık 0.119
+  "a"  olasılık 0.090
+  "i"  olasılık 0.067
+
+Modelin ürettiği "atasözleri":
+  p ayekacu suşl ol a dene mavminaker yı
+  uz
+  siladesi bi hz olz
+  tin çi mazhoğıllat asese ydücekerun hectatıri or
+  ktademaşmin shzuz
+  dü yema dışlır domağıraccaktlkayolır hacin vağadokuter
+  giraparyı
+  suboğrmayolale k
+
+Ortalama kayıp (karakter başına): 2.4175
+Şaşkınlık (perplexity): 11.22   (rastgele tahmin: 30)

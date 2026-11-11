@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 8 — Küçük GPT’yi eğitmek · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html" aria-current="page">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 9 / 14</p>
+    <h2 id="bölüm-8-küçük-gptyi-eğitmek">Bölüm 8 — Küçük GPT’yi eğitmek</h2>
+<p>Artık tüm parçalar hazırdır. Bu bölümde küçük GPT’yi atasözleriyle eğitiyoruz. Program 5. bölümdeki eğitim döngüsüne dört yenilik ekliyor.</p>
+<p><strong>Akış ve pencereler.</strong> Eğitim atasözleri, aralarına nokta konularak tek uzun bir metne (akış) dönüştürülür. Her adımda bu metinden rastgele 8 pencere alınır; her pencere 16 karakterdir. Hedef, pencerenin bir karakter kaydırılmışıdır. Model bir pencerede 16 konumun hepsi için aynı anda tahmin yapar; maske sayesinde her konum yalnızca kendinden öncekileri görür. Böylece tek bir yığından 128 eğitim örneği çıkar.</p>
+<p><strong>Bırakma.</strong> 5. bölümde MLP’nin veriyi ezberlediğini görmüştük. Burada <code>model.bırakma := 0.2</code> ile eğitim sırasında gömmelerin, dikkat ve ileri besleme çıktılarının %20’sini her adımda rastgele sıfırlıyoruz. Model tek bir yola güvenemediği için daha genel kurallar öğrenir. Değerlendirmede ve metin üretirken bırakma kapalıdır (<code>model.eğitimde := yanlış</code>).</p>
+<p><strong>Öğrenme oranı takvimi.</strong> Eğitimin başında büyük adımlar hızlı ilerletir; sona doğru küçük adımlar ince ayar yapar. Öğrenme oranını bir kosinüs eğrisiyle 0,003’ten sıfıra indiriyoruz. Büyük modellerin çoğu benzer bir takvimle eğitilir.</p>
+<p><strong>Erken durdurma.</strong> Her 250 adımda eğitim ve doğrulama kaybı ölçülür. Doğrulama kaybı o ana kadarki en iyi değerse ağırlıklar <code>kucuk_gpt.agirlik</code> dosyasına kaydedilir. Eğitim bitince en iyi ağırlıklar geri yüklenir. Model sonradan ezberlemeye başlasa bile elimizde en iyi hali kalır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> KüçükGPTEğitimi
+<span class="yy">{ Kitabın asıl modeli: 2 katmanlı, 4 kafalı, 32 boyutlu, 16 karakterlik bağlama
+  bakan küçük bir GPT. Atasözlerinin %90'ıyla eğitilir, %10'uyla sınanır.
+  Eğitim verisi, atasözlerinin araya '.' konularak art arda dizildiği uzun bir
+  metindir. Her adımda bu metinden rastgele 8 pencere seçeriz; her pencerede model,
+  her konumda bir sonraki karakteri tahmin etmeye çalışır.
+  Eğitimden sonra ağırlıklar 'kucuk_gpt.agirlik' dosyasına kaydedilir;
+  9. bölümün programı bu dosyayı kullanır. }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, KucukGPT, YZ, Sistem, Matematik
+
+<span class="ya">sabit</span>
+  BAĞLAM: <span class="ya">tamsayı</span> = <span class="ys">16</span>
+  YIĞINBOYU: <span class="ya">tamsayı</span> = <span class="ys">8</span>
+  ADIMSAYISI: <span class="ya">tamsayı</span> = <span class="ys">3000</span>
+  ENYÜKSEKORAN: <span class="ya">ondalık</span> = <span class="ys">0.003</span>
+
+<span class="ya">değişken</span>
+  veri, harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  eğitim, doğrulama: <span class="ya">tamsayı</span> dizisi
+  model: GPT
+  opt: <span class="ya">herhangi</span>
+  kayıp: <span class="ya">tensör</span>
+  adım, i, k, ayrım: <span class="ya">tamsayı</span>
+  süre: <span class="ya">ondalık</span>
+  sözcük: <span class="ya">metin</span>
+  bağ: <span class="ya">tamsayı</span> dizisi
+  P: <span class="ya">tensör</span>
+  yığın: <span class="ya">liste</span>
+  enİyi, eğitimKaybı, doğrulamaKaybı: <span class="ya">ondalık</span>
+  işaret: <span class="ya">metin</span>
+
+<span class="ya">fonksiyon</span> Pencereler(akış: <span class="ya">tamsayı</span> dizisi; adet: <span class="ya">tamsayı</span>): <span class="ya">liste</span>
+<span class="yy">{ Akıştan rastgele 'adet' pencere: [girdiler, hedefler]. Hedef, girdinin bir kaydırılmışı. }</span>
+<span class="ya">değişken</span> s, b: <span class="ya">tamsayı</span>; g, h: <span class="ya">tamsayı</span> dizisi
+<span class="ya">başla</span>
+  g := []; h := []
+  <span class="ys">1</span>'den adet'e <span class="ya">kadar</span> <span class="ya">her</span> b <span class="ya">için</span>
+  <span class="ya">başla</span>
+    s := Rastgele(Uzunluk(akış) - BAĞLAM - <span class="ys">1</span>)
+    g := g + Dilim(akış, s, s + BAĞLAM)
+    h := h + Dilim(akış, s + <span class="ys">1</span>, s + BAĞLAM + <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> [g, h]
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> OrtalamaKayıp(akış: <span class="ya">tamsayı</span> dizisi): <span class="ya">ondalık</span>
+<span class="yy">{ Akışın ilk 512 karakterini üst üste binmeyen pencerelerle tarar ve ortalama kaybı
+  verir. (Tüm akışı taramak daha doğru ama yavaştır; tahmin için bu kadarı yeter.) }</span>
+<span class="ya">değişken</span> s, adet: <span class="ya">tamsayı</span>; g, h: <span class="ya">tamsayı</span> dizisi; top: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  top := <span class="ys">0</span>; adet := <span class="ys">0</span>; s := <span class="ys">0</span>
+  s + BAĞLAM + <span class="ys">1</span> &lt;= Min(Uzunluk(akış), <span class="ys">512</span>) <span class="ya">iken</span>
+  <span class="ya">başla</span>
+    g := Dilim(akış, s, s + BAĞLAM); h := Dilim(akış, s + <span class="ys">1</span>, s + BAĞLAM + <span class="ys">1</span>)
+    top := top + ÇaprazEntropi(model.İleri(g, <span class="ys">1</span>, BAĞLAM), h).Değer
+    adet := adet + <span class="ys">1</span>; s := s + BAĞLAM
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> top / adet
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Akış(parçalar: <span class="ya">metin</span> dizisi; numara: <span class="ya">sözlük</span>): <span class="ya">tamsayı</span> dizisi
+<span class="ya">başla</span>
+  <span class="ya">dön</span> DilAraclari.Kodla(<span class="ym">'.'</span> + Birleştir(parçalar, <span class="ym">'.'</span>) + <span class="ym">'.'</span>, numara)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">2026</span>)
+  veri := Atasozleri.Hepsi
+  harfler := DilAraclari.Harfler
+  numara := DilAraclari.Numaralar(harfler)
+  ayrım := Uzunluk(veri) * <span class="ys">9</span> <span class="ya">böl</span> <span class="ys">10</span>
+  eğitim := Akış(Dilim(veri, <span class="ys">0</span>, ayrım), numara)
+  doğrulama := Akış(Dilim(veri, ayrım, Uzunluk(veri)), numara)
+  yaz(Biçimle(<span class="ym">'Eğitim akışı {} karakter, doğrulama akışı {} karakter'</span>, Uzunluk(eğitim), Uzunluk(doğrulama)), <span class="ys">1</span>)
+
+  model := GPT.Oluştur(Uzunluk(harfler), BAĞLAM, <span class="ys">32</span>, <span class="ys">4</span>, <span class="ys">2</span>)
+  model.bırakma := <span class="ys">0.2</span>
+  yaz(Biçimle(<span class="ym">'Model: 2 katman, 4 kafa, 32 boyut, {} parametre'</span>, model.ParametreAdedi), <span class="ys">1</span>)
+  opt := Adam(model.Parametreler, ENYÜKSEKORAN)
+  süre := Sistem.Zaman
+
+  enİyi := <span class="ys">1000.0</span>
+  <span class="ys">1</span>'den ADIMSAYISI'na <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yığın := Pencereler(eğitim, YIĞINBOYU)
+    <span class="yy">{ öğrenme oranı takvimi: kosinüs eğrisiyle en yüksek orandan sıfıra doğru azalır }</span>
+    opt.oran := ENYÜKSEKORAN * <span class="ys">0.5</span> * (<span class="ys">1</span> + Cos(Matematik.pi * adım / ADIMSAYISI))
+    model.eğitimde := <span class="ya">doğru</span>
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(model.İleri(yığın[<span class="ys">0</span>], YIĞINBOYU, BAĞLAM), yığın[<span class="ys">1</span>])
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">250</span> = <span class="ys">0</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      <span class="yy">{ değerlendirirken bırakma kapalı olmalı }</span>
+      model.eğitimde := <span class="ya">yanlış</span>
+      eğitimKaybı := OrtalamaKayıp(eğitim)
+      doğrulamaKaybı := OrtalamaKayıp(doğrulama)
+      işaret := <span class="ym">''</span>
+      <span class="ya">eğer</span> doğrulamaKaybı &lt; enİyi <span class="ya">ise</span>
+      <span class="ya">başla</span>
+        <span class="yy">{ erken durdurma: en iyi doğrulama kaybındaki ağırlıkları sakla }</span>
+        enİyi := doğrulamaKaybı; işaret := <span class="ym">'  ← en iyi, kaydedildi'</span>
+        model.Kaydet(<span class="ym">'kucuk_gpt.agirlik'</span>)
+      <span class="ya">bitir</span>
+      yaz(Biçimle(<span class="ym">'Adım {:4}: eğitim kaybı {:.3}   doğrulama kaybı {:.3}{}'</span>, adım,
+        eğitimKaybı, doğrulamaKaybı, işaret), <span class="ys">1</span>)
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'Eğitim süresi: {:.0} saniye'</span>, Sistem.Zaman - süre), <span class="ys">1</span>)
+  model.Yükle(<span class="ym">'kucuk_gpt.agirlik'</span>)
+  model.eğitimde := <span class="ya">yanlış</span>
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'Küçük GPT modelinin ürettiği &quot;atasözleri&quot; (yeni olanlar * ile işaretli):'</span>, <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">12</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> k <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sözcük := <span class="ym">''</span>; bağ := [<span class="ys">0</span>]
+    <span class="ya">tekrarla</span>
+      P := Softmaks(model.İleri(bağ, <span class="ys">1</span>, Uzunluk(bağ)))
+      i := DilAraclari.Örnekle(P.Satır(Uzunluk(bağ) - <span class="ys">1</span>).Veri)
+      <span class="ya">eğer</span> i &lt;&gt; <span class="ys">0</span> <span class="ya">ise</span> sözcük := sözcük + harfler[i]
+      bağ := bağ + [i]
+      <span class="ya">eğer</span> Uzunluk(bağ) &gt; BAĞLAM <span class="ya">ise</span> bağ := Dilim(bağ, <span class="ys">1</span>, Uzunluk(bağ))
+    i = <span class="ys">0</span> <span class="ya">veya</span> Uzunluk(sözcük) &gt; <span class="ys">80</span> <span class="ya">olana</span> <span class="ya">dek</span>
+    <span class="ya">eğer</span> veri.İçerir(sözcük) <span class="ya">ise</span> yaz(<span class="ym">'    '</span> + sözcük, <span class="ys">1</span>) <span class="ya">değilse</span> yaz(<span class="ym">'  * '</span> + sözcük, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir (eğitim süresi bilgisayarınıza göre değişir):</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Eğitim akışı 4725 karakter, doğrulama akışı 559 karakter
+Model: 2 katman, 4 kafa, 32 boyut, 27678 parametre
+Adım    1: eğitim kaybı 3.318   doğrulama kaybı 3.413  ← en iyi, kaydedildi
+Adım  250: eğitim kaybı 2.327   doğrulama kaybı 2.410  ← en iyi, kaydedildi
+Adım  500: eğitim kaybı 2.210   doğrulama kaybı 2.393  ← en iyi, kaydedildi
+Adım  750: eğitim kaybı 2.081   doğrulama kaybı 2.314  ← en iyi, kaydedildi
+Adım 1000: eğitim kaybı 2.035   doğrulama kaybı 2.299  ← en iyi, kaydedildi
+Adım 1250: eğitim kaybı 1.996   doğrulama kaybı 2.259  ← en iyi, kaydedildi
+Adım 1500: eğitim kaybı 1.976   doğrulama kaybı 2.221  ← en iyi, kaydedildi
+Adım 1750: eğitim kaybı 1.923   doğrulama kaybı 2.228
+Adım 2000: eğitim kaybı 1.910   doğrulama kaybı 2.213  ← en iyi, kaydedildi
+Adım 2250: eğitim kaybı 1.896   doğrulama kaybı 2.226
+Adım 2500: eğitim kaybı 1.860   doğrulama kaybı 2.214
+Adım 2750: eğitim kaybı 1.856   doğrulama kaybı 2.210  ← en iyi, kaydedildi
+Adım 3000: eğitim kaybı 1.854   doğrulama kaybı 2.207  ← en iyi, kaydedildi
+Eğitim süresi: 576 saniye
+
+Küçük GPT modelinin ürettiği &quot;atasözleri&quot; (yeni olanlar * ile işaretli):
+  * kükünsen günül seyi yacar
+  * dağıp daşmun dirindene billen tıktır
+  * ayıcız her oğrolar sönürünü zeçen beli dör kerdimi domnuna yesin yünü eve karder
+  * ağen yalak vırık
+  * gelilecece ayığı öy verit kişerin anlt biş gele olstmaz
+  * harakttılda hirlin teden herdeğri firini göle konuşmazsun çoran balanır yır biğil
+  * işi söden idemin bil binden sötüğrüne tavardar
+  * surt yeyokt a çtalut
+  * götürdür
+  * ağla ayırı kersen mur
+  * yoğşta yolur kidi güş kakmana sende yosut dit keçtind kadır
+  * sere terendi yok çundi bülür ker içinde hapatamapa</code></pre></div>
+<h3 id="çıktıyı-okumak-4">Çıktıyı okumak</h3>
+<figure>
+<img src="sekil3.png" alt="Küçük GPT’nin eğitimi: her 250 adımda ölçülen eğitim ve doğrulama kaybı" />
+<figcaption aria-hidden="true">Küçük GPT’nin eğitimi: her 250 adımda ölçülen eğitim ve doğrulama kaybı</figcaption>
+</figure>
+<p>Doğrulama kaybı eğitim boyunca düşmeye devam ediyor ve 2,207’de bitiyor. Bu, 5. bölümdeki MLP’nin en iyi değerinden (2,40) belirgin biçimde iyi. Eğitim ve doğrulama kayıpları arasındaki fark da daha küçük: 1,85’e karşı 2,21. MLP’de bu fark 1,26’ya karşı 2,88’e kadar açılmıştı. Bırakma ve daha uzun bağlam birlikte işe yarıyor.</p>
+<p>Üretilen metne bakalım. On iki örneğin hepsi yeni (yıldızlı): model hiçbir atasözünü birebir kopyalamıyor. “göle”, “götürdür”, “içinde”, “konuşmaz” gibi gerçek sözcükler ve “-ar”, “-maz”, “-dır” gibi Türkçe ekler doğru yerlerde görünüyor. Ama cümleler henüz anlamlı değildir.</p>
+<p>Bu, dürüst bir sonuçtur ve dil modelleri hakkında önemli bir şey öğretir. Modelimizin gördüğü tüm metin 4725 karakterdir, yani bu sayfanın birkaç paragrafı kadardır. Bir çocuk bile konuşmayı öğrenirken milyonlarca sözcük duyar. Mimari doğru, eğitim düzgün işliyor; eksik olan veri ve ölçektir. 10. bölümde bu farkı sayılarla göreceğiz. 9. bölümde ise aynı modelden metni nasıl seçtiğimizin sonucu ne kadar değiştirdiğini inceleyeceğiz.</p>
+<p>Değerlendirme hakkında bir not: program kaybı hız için akışların yalnızca ilk 512 karakteri üzerinde ölçüyor. Bu, eğilimi görmek için yeterlidir ama kesin bir ölçüm değildir.</p>
+<p><strong>Alıştırma.</strong> <code>model.bırakma := 0.2</code> satırını silip programı yeniden çalıştırınız. Doğrulama kaybı hangi adımda en düşük değerine ulaşıyor ve ondan sonra ne oluyor? Ardından <code>Atasozleri.y</code> dosyasına kendi bildiğiniz atasözlerini ekleyiniz; veri büyüdükçe doğrulama kaybı nasıl değişiyor?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-bolum-7-transformer-blogu.html"><small>Önceki</small>Bölüm 7 — Transformer bloğu</a><a class="sonraki" href="10-bolum-9-metin-uretmek.html"><small>Sonraki</small>Bölüm 9 — Metin üretmek</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#çıktıyı-okumak-4">Çıktıyı okumak</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

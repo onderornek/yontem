@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ek A — Kavram sözlüğü · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html" aria-current="page">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 12 / 14</p>
+    <h2 id="ek-a-kavram-sözlüğü">Ek A — Kavram sözlüğü</h2>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Terim</th>
+<th>İngilizcesi</th>
+<th>Kısa açıklama</th>
+<th>Bölüm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dil modeli</td>
+<td>language model</td>
+<td>Bir metnin ardından gelecek simgenin olasılık dağılımını hesaplayan model</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Simge</td>
+<td>token</td>
+<td>Modelin işlediği en küçük birim: bir harf, bir hece ya da bir sözcük parçası</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Simgeleştirme</td>
+<td>tokenization</td>
+<td>Metni simgelere, simgeleri sayılara çevirme</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>BPE</td>
+<td>byte pair encoding</td>
+<td>En sık yan yana gelen iki simgeyi tekrar tekrar birleştirerek sözlük kurma yöntemi</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>İkili model</td>
+<td>bigram model</td>
+<td>Yalnızca bir önceki simgeye bakan dil modeli</td>
+<td>3, 4</td>
+</tr>
+<tr class="even">
+<td>Kayıp</td>
+<td>loss</td>
+<td>Modelin doğru simgeye verdiği olasılığın negatif logaritmasının ortalaması</td>
+<td>1, 3</td>
+</tr>
+<tr class="odd">
+<td>Şaşkınlık</td>
+<td>perplexity</td>
+<td>eˣ (x: kayıp); modelin her adımda kaç seçenek arasında kararsız kaldığı</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>Softmaks</td>
+<td>softmax</td>
+<td>Ham puanları toplamı 1 olan olasılıklara çeviren fonksiyon</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>Çapraz entropi</td>
+<td>cross-entropy</td>
+<td>Sınıflandırma kaybı; softmaksı kendisi uygular</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>Gömme</td>
+<td>embedding</td>
+<td>Bir simgeyi temsil eden, öğrenilen sayı vektörü</td>
+<td>4, 5</td>
+</tr>
+<tr class="odd">
+<td>Bağlam penceresi</td>
+<td>context window</td>
+<td>Modelin bir tahmin yaparken bakabildiği önceki simge sayısı</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Aşırı uyum</td>
+<td>overfitting</td>
+<td>Modelin eğitim verisini ezberleyip yeni veride kötüleşmesi</td>
+<td>5, 8</td>
+</tr>
+<tr class="odd">
+<td>Öz-dikkat</td>
+<td>self-attention</td>
+<td>Her simgenin önceki simgelere ne kadar bakacağına kendisinin karar verdiği işlem</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>Sorgu, anahtar, değer</td>
+<td>query, key, value</td>
+<td>Dikkatte “ne arıyorum”, “bende ne var”, “ne aktarırım” vektörleri</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>Nedensel maske</td>
+<td>causal mask</td>
+<td>Bir simgenin kendinden sonraki simgeleri görmesini engelleyen maske</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>Konum gömmesi</td>
+<td>positional embedding</td>
+<td>Simgenin dizideki sırasını modele bildiren vektör</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>Çok kafalı dikkat</td>
+<td>multi-head attention</td>
+<td>Farklı ilişkilere bakan birkaç dikkatin paralel çalışması</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Artık bağlantı</td>
+<td>residual connection</td>
+<td>Bir alt katmanın çıktısını girdisinin üstüne ekleme</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>Katman normalleştirme</td>
+<td>layer normalization</td>
+<td>Her vektörü ortalaması 0, varyansı 1 olacak şekilde ölçekleme</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Bırakma</td>
+<td>dropout</td>
+<td>Eğitimde değerlerin bir kısmını rastgele sıfırlayarak ezberlemeyi azaltma</td>
+<td>7, 8</td>
+</tr>
+<tr class="odd">
+<td>Erken durdurma</td>
+<td>early stopping</td>
+<td>Doğrulama kaybı en iyiyken ağırlıkları saklama</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td>Sıcaklık</td>
+<td>temperature</td>
+<td>Örneklemeden önce puanları bölerek dağılımı sivrilten ya da yayan sayı</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>Top-k</td>
+<td>top-k sampling</td>
+<td>Yalnızca en olası k simge arasından örnekleme</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>Ön eğitim</td>
+<td>pretraining</td>
+<td>Büyük metin yığınında sonraki simgeyi tahmin ederek eğitim</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>İnce ayar</td>
+<td>fine-tuning</td>
+<td>Eğitilmiş modeli küçük ve özel bir veriyle eğitmeyi sürdürme</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="11-bolum-10-kucukten-buyuge.html"><small>Önceki</small>Bölüm 10 — Küçükten büyüğe</a><a class="sonraki" href="13-ek-b-sik-yapilan-hatalar.html"><small>Sonraki</small>Ek B — Sık yapılan hatalar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+Anahtar uzunluğu: 64 onaltılık karakter (256 bit)
+Şifreli metin uzunluğu: 94
+Çözülen: Hesap no: TR12 3456 7890, bakiye 15.000 TL
+Aynı metin iki kez şifrelenince farklı mı? doğru
+Değiştirilmiş veri: 'ŞifreÇöz': şifreli veri doğrulanamadı (anahtar yanlış ya da veri değiştirilmiş)
+Yanlış anahtar: 'ŞifreÇöz': şifreli veri doğrulanamadı (anahtar yanlış ya da veri değiştirilmiş)
+Kısa anahtar: 'Şifrele' 64 onaltılık karakterlik (256 bit) bir anahtar bekler; 'AnahtarÜret' ya da 'ParoladanAnahtar' ile üret
+
+Paroladan anahtar: 20bbc4855027a963afff389301899f058b3b26009d6c954651b196294e93cc40
+Aynı girdi aynı anahtar: doğru
+Başka tuz başka anahtar: doğru
+Paroladan anahtarla gidiş-dönüş: merhaba
+
+Sabit örnek: Gizli toplantı saat 15:00’te, Kadıköy’de.

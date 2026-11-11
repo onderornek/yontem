@@ -1,0 +1,5 @@
+Ateşlendi: K1 => yağmur olası
+Ateşlendi: K2 => şemsiye al
+Şemsiye önerisinin güveni: 0.80
+Neden? şemsiye al <- K2 [yağmur olası <- K1 [bulutlu (verilen olgu); nem yüksek (verilen olgu)]]
+Şapka gerekli mi? yanlış

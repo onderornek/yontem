@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 2 — Metni sayılara çevirmek · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html" aria-current="page">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 3 / 14</p>
+    <h2 id="bölüm-2-metni-sayılara-çevirmek">Bölüm 2 — Metni sayılara çevirmek</h2>
+<p>Sinir ağları harflerle değil sayılarla çalışır. Bu yüzden ilk iş metni bir sayı dizisine çevirmektir. Bu işe <strong>simgeleştirme</strong> (tokenization), metnin parçalarına da <strong>simge</strong> (token) denir.</p>
+<h3 id="karakter-düzeyinde-simgeleştirme">Karakter düzeyinde simgeleştirme</h3>
+<p>En basit yol her karaktere bir numara vermektir. Veri kümemizdeki 178 atasözünde 28 farklı harf ve boşluk geçiyor. Bunlara bir de nokta ekliyoruz. Nokta, “atasözü burada bitti” ya da “yeni atasözü başlıyor” anlamına gelen özel bir simgedir. Böylece sözlüğümüz 30 simgeden oluşur.</p>
+<p>İki işlem birbirinin tersidir: <strong>kodlama</strong> metni sayılara, <strong>çözme</strong> sayıları metne çevirir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Simgeleştirme
+<span class="yy">{ Bir dil modeli harfleri değil sayıları işler. Bu program:
+  1) Veri kümesindeki tüm karakterlerden bir sözlük kurar (karakter → numara).
+  2) Bir cümleyi sayılara çevirir (kodlama) ve geri çevirir (çözme).
+  3) Bayt çifti kodlamasının (BPE) fikrini gösterir: en sık yan yana gelen
+     iki simgeyi birleştirip yeni bir simge yapar, bunu birkaç kez tekrarlar. }</span>
+<span class="ya">kullan</span> Atasozleri
+
+<span class="ya">değişken</span>
+  veri: <span class="ya">metin</span> dizisi
+  harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  kodlar: <span class="ya">tamsayı</span> dizisi
+  simgeler: <span class="ya">metin</span> dizisi
+  çiftSay: <span class="ya">sözlük</span>
+  enÇift, çift: <span class="ya">metin</span>
+  i, tur, karakterSayısı: <span class="ya">tamsayı</span>
+  yeni: <span class="ya">metin</span> dizisi
+
+<span class="ya">fonksiyon</span> Kodla(s: <span class="ya">metin</span>): <span class="ya">tamsayı</span> dizisi
+<span class="ya">başla</span>
+  sonuç := Eşle(s.Karakterler, <span class="ya">fonksiyon</span>(c: <span class="ya">metin</span>) =&gt; numara[c])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Çöz(k: <span class="ya">tamsayı</span> dizisi): <span class="ya">metin</span>
+<span class="ya">başla</span>
+  sonuç := Birleştir(Eşle(k, <span class="ya">fonksiyon</span>(n: <span class="ya">tamsayı</span>) =&gt; harfler[n]), <span class="ym">''</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  veri := Atasozleri.Hepsi
+  <span class="yy">{ Sözlük: '.' cümle sonu (ve başı) işaretidir; ardından görülen tüm karakterler, sıralı }</span>
+  harfler := [<span class="ym">'.'</span>] + Sırala(Benzersiz(Birleştir(veri, <span class="ym">''</span>).Karakterler))
+  numara := [:]
+  <span class="ys">0</span>'dan Uzunluk(harfler) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> numara[harfler[i]] := i
+  karakterSayısı := Toplam(Eşle(veri, <span class="ya">fonksiyon</span>(a: <span class="ya">metin</span>) =&gt; Uzunluk(a) + <span class="ys">1</span>))
+  yaz(Biçimle(<span class="ym">'{} atasözü, toplam {} karakter'</span>, Uzunluk(veri), karakterSayısı), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'Sözlük boyutu: {}'</span>, Uzunluk(harfler)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Sözlük: '</span> + Birleştir(harfler, <span class="ym">''</span>), <span class="ys">2</span>)
+
+  kodlar := Kodla(<span class="ym">'damlaya damlaya göl olur'</span>)
+  yaz(<span class="ym">'Kodlanmış : '</span> + kodlar, <span class="ys">1</span>)
+  yaz(<span class="ym">'Çözülmüş  : '</span> + Çöz(kodlar), <span class="ys">2</span>)
+
+  <span class="yy">{ BPE: başlangıçta her karakter bir simgedir }</span>
+  simgeler := Birleştir(Eşle(Dilim(veri, <span class="ys">0</span>, <span class="ys">40</span>), <span class="ya">fonksiyon</span>(a: <span class="ya">metin</span>) =&gt; a + <span class="ym">'.'</span>), <span class="ym">''</span>).Karakterler
+  yaz(Biçimle(<span class="ym">'BPE başlangıcı: {} simge'</span>, Uzunluk(simgeler)), <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">6</span>'ya <span class="ya">kadar</span> <span class="ya">her</span> tur <span class="ya">için</span>
+  <span class="ya">başla</span>
+    çiftSay := [:]
+    <span class="ys">0</span>'dan Uzunluk(simgeler) - <span class="ys">2</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">başla</span>
+      çift := simgeler[i] + <span class="ym">'|'</span> + simgeler[i + <span class="ys">1</span>]
+      <span class="ya">eğer</span> çiftSay.İçerir(çift) <span class="ya">ise</span> çiftSay[çift] := çiftSay[çift] + <span class="ys">1</span> <span class="ya">değilse</span> çiftSay[çift] := <span class="ys">1</span>
+    <span class="ya">bitir</span>
+    enÇift := Sırala(çiftSay.Anahtarlar, <span class="ya">fonksiyon</span>(k: <span class="ya">metin</span>) =&gt; -çiftSay[k])[<span class="ys">0</span>]
+    <span class="yy">{ en sık çifti tek simgeye birleştir }</span>
+    yeni := []
+    i := <span class="ys">0</span>
+    i &lt; Uzunluk(simgeler) <span class="ya">iken</span>
+    <span class="ya">başla</span>
+      <span class="ya">eğer</span> i &lt; Uzunluk(simgeler) - <span class="ys">1</span> <span class="ya">ve</span> simgeler[i] + <span class="ym">'|'</span> + simgeler[i + <span class="ys">1</span>] = enÇift <span class="ya">ise</span>
+      <span class="ya">başla</span>
+        yeni.Ekle(simgeler[i] + simgeler[i + <span class="ys">1</span>]); i := i + <span class="ys">2</span>
+      <span class="ya">bitir</span>
+      <span class="ya">değilse</span>
+      <span class="ya">başla</span>
+        yeni.Ekle(simgeler[i]); i := i + <span class="ys">1</span>
+      <span class="ya">bitir</span>
+    <span class="ya">bitir</span>
+    simgeler := yeni
+    yaz(Biçimle(<span class="ym">'  {}. birleştirme: &quot;{}&quot; ({} kez)  →  {} simge'</span>, tur,
+      enÇift.Değiştir(<span class="ym">'|'</span>, <span class="ym">''</span>), çiftSay[enÇift], Uzunluk(simgeler)), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Simgelere bölünmüş ilk satırlar: '</span> + Birleştir(Dilim(simgeler, <span class="ys">0</span>, <span class="ys">45</span>), <span class="ym">'|'</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>178 atasözü, toplam 5282 karakter
+Sözlük boyutu: 30
+Sözlük: . abcdefghiklmnoprstuvyzçöüğış
+
+Kodlanmış : [5, 2, 13, 12, 2, 22, 2, 1, 5, 2, 13, 12, 2, 22, 2, 1, 8, 25, 12, 1, 15, 12, 20, 17]
+Çözülmüş  : damlaya damlaya göl olur
+
+BPE başlangıcı: 1140 simge
+  1. birleştirme: &quot;n &quot; (43 kez)  →  1097 simge
+  2. birleştirme: &quot;r.&quot; (24 kez)  →  1073 simge
+  3. birleştirme: &quot;an &quot; (19 kez)  →  1054 simge
+  4. birleştirme: &quot;de&quot; (15 kez)  →  1039 simge
+  5. birleştirme: &quot;i &quot; (14 kez)  →  1025 simge
+  6. birleştirme: &quot;ma&quot; (13 kez)  →  1012 simge
+Simgelere bölünmüş ilk satırlar: d|a|m|l|a|y|a| |d|a|m|l|a|y|a| |g|ö|l| |o|l|u|r.|a|c|e|l|e| |i|ş|e| |ş|e|y|t|an |k|a|r|ı|ş|ı</code></pre></div>
+<p>Sözlükteki ikinci simge boşluk karakteridir; bu yüzden çıktıda “.” ile “a” arasında bir boşluk görünür. Kodlanmış dizide sıkça geçen 1 sayısı, boşluğun numarasıdır.</p>
+<h3 id="daha-büyük-parçalar-bayt-çifti-kodlaması">Daha büyük parçalar: bayt çifti kodlaması</h3>
+<p>Karakter düzeyinde çalışmanın bir bedeli vardır: model “an” ya da “ler” gibi çok sık görülen parçaları her seferinde harf harf kurmak zorundadır. Büyük dil modelleri bu yüzden <strong>bayt çifti kodlaması</strong> (BPE, byte pair encoding) kullanır. Fikir şudur: metinde en sık yan yana gelen iki simge bulunur ve bunlar yeni, tek bir simgeyle değiştirilir. Bu işlem binlerce kez tekrarlanır.</p>
+<p>Programın ikinci yarısı bu birleştirmeyi ilk 40 atasözü üzerinde altı kez yapıyor. İlk birleştirme “n” ile boşluğu birleştiriyor, çünkü Türkçede pek çok sözcük “n” ile biter (“şeytan”, “yaşken”, “akıldan”). Üçüncü turda “a” bu yeni simgeye eklenerek “an” oluşuyor. Altı birleştirmeden sonra aynı metin 1140 yerine 1012 simgeyle yazılabiliyor.</p>
+<p>Gerçek modellerde sözlük on binlerce, hatta yüz binlerce simgeden oluşur. Sık sözcükler tek simgedir; nadir sözcükler birkaç parçaya bölünür. Türkçe gibi eklemeli dillerde “gidemeyeceklermiş” gibi uzun bir sözcük genellikle birden çok simgeye ayrılır.</p>
+<p>Bu kitapta karakter düzeyinde kalacağız. Sözlük küçük olduğu için modelimiz de küçük kalır; üstelik kayıp ve olasılıkları harf harf görmek öğrenmeyi kolaylaştırır. Bir dil modelinin geri kalanı simgelerin karakter mi, sözcük parçası mı olduğunu umursamaz; hepsi yalnızca birer numaradır.</p>
+<p><strong>Alıştırma.</strong> BPE döngüsünü 6 yerine 30 kez çalıştırınız. Hangi Türkçe ekler ve sözcükler tek simge haline geliyor?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="02-bolum-1-dil-modeli-nedir.html"><small>Önceki</small>Bölüm 1 — Dil modeli nedir?</a><a class="sonraki" href="04-bolum-3-sayarak-dil-modeli.html"><small>Sonraki</small>Bölüm 3 — Sayarak dil modeli</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#karakter-düzeyinde-simgeleştirme">Karakter düzeyinde simgeleştirme</a></li><li><a href="#daha-büyük-parçalar-bayt-çifti-kodlaması">Daha büyük parçalar: bayt çifti kodlaması</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 5 — Döngüler · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html" aria-current="page">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 7 / 20</p>
+    <h2 id="bölüm-5-döngüler">Bölüm 5 — Döngüler</h2>
+<p>Döngüler bir işi tekrar tekrar yapar. Yöntem’de beş döngü vardır ve hepsi Türkçe cümle düzenine uyar: önce neyin üzerinde dönüleceği, en sonda eylem gelir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Döngü</th>
+<th>Ne zaman kullanılır?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1'den 10'a kadar her i için …</code></td>
+<td>Bir sayaç belli bir aralıkta dolaşacaksa</td>
+</tr>
+<tr class="even">
+<td><code>liste içindeki her x için …</code></td>
+<td>Bir listenin, metnin ya da sözlüğün her öğesi için</td>
+</tr>
+<tr class="odd">
+<td><code>5 kez tekrarla …</code></td>
+<td>Bir iş belli sayıda yapılacaksa</td>
+</tr>
+<tr class="even">
+<td><code>koşul iken …</code></td>
+<td>Koşul doğru olduğu sürece; hiç çalışmayabilir</td>
+</tr>
+<tr class="odd">
+<td><code>tekrarla … koşul olana dek</code></td>
+<td>Koşul doğru olana dek; en az bir kez çalışır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Ekler.</strong> Sayaçlı döngüde başlangıç değeri ayrılma ekiyle (<code>1'den</code>, <code>3'ten</code>, <code>n'den</code>), bitiş değeri yönelme ekiyle (<code>10'a</code>, <code>7'ye</code>, <code>n'e</code>) yazılır. Ek, kesme işaretiyle sayıya, ada ya da kapanış parantezine bitişik yazılır: <code>(n - 1)'e</code>. Yöntem ses uyumunu denetlemez, ama doğru eki yazmak programı okunur kılar.</p>
+<p><strong>Gövde kuralı.</strong> Döngü başlığından sonra gelen tek komut döngünün gövdesidir. Birden çok komut tekrarlanacaksa <code>başla … bitir</code> arasına alınır. <code>tekrarla … olana dek</code> kendi sınırlarını taşıdığı için <code>başla</code> istemez.</p>
+<h3 id="sayaçlı-döngü-kadar-her-i-için">Sayaçlı döngü: <code>… kadar her i için</code></h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÇarpımTablosu
+<span class="ya">değişken</span>
+  i, j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den <span class="ys">5</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="ys">1</span>'den <span class="ys">5</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+      yaz(Biçimle(<span class="ym">'{:4}'</span>, i * j))
+    yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Geri sayım: '</span>)
+  <span class="ys">10</span>'dan <span class="ys">0</span>'a <span class="ya">azalarak</span> adım <span class="ys">2</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(i + <span class="ym">' '</span>)
+  yaz(<span class="ym">'Ateş!'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>   1   2   3   4   5
+   2   4   6   8  10
+   3   6   9  12  15
+   4   8  12  16  20
+   5  10  15  20  25
+Geri sayım: 10 8 6 4 2 0 Ateş!</code></pre></div>
+<p>İç içe iki döngü bir tablo üretti. <code>{:4}</code> her sayıyı 4 karakterlik alana sağa yaslayarak yazdı. <code>azalarak</code> geriye doğru sayar, <code>adım 2</code> ikişer atlar.</p>
+<h3 id="iken-döngüsü-sayı-tahmin-oyunu"><code>iken</code> döngüsü: sayı tahmin oyunu</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SayıTahmini
+<span class="ya">değişken</span>
+  gizli, tahmin, deneme: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  Rastgeleştir(<span class="ys">7</span>)              <span class="yy">// her çalıştırmada aynı sayı (deneme için)</span>
+  gizli := Rastgele(<span class="ys">1</span>, <span class="ys">100</span>)
+  deneme := <span class="ys">0</span>
+  tahmin := -<span class="ys">1</span>
+  tahmin &lt;&gt; gizli <span class="ya">iken</span>
+  <span class="ya">başla</span>
+    yaz(<span class="ym">'Tahmininiz: '</span>)
+    oku(tahmin, <span class="ys">1</span>)
+    deneme += <span class="ys">1</span>
+    <span class="ya">eğer</span> tahmin &lt; gizli <span class="ya">ise</span> yaz(<span class="ym">'Daha büyük.'</span>, <span class="ys">1</span>)
+    <span class="ya">değilse</span> <span class="ya">eğer</span> tahmin &gt; gizli <span class="ya">ise</span> yaz(<span class="ym">'Daha küçük.'</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Bildiniz! '</span> + deneme + <span class="ym">' denemede.'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tahmininiz: 50
+Daha küçük.
+Tahmininiz: 25
+Daha büyük.
+Tahmininiz: 37
+Daha büyük.
+Tahmininiz: 43
+Daha küçük.
+Tahmininiz: 40
+Daha büyük.
+Tahmininiz: 42
+Bildiniz! 6 denemede.</code></pre></div>
+<p><code>Rastgele(1, 100)</code> 1 ile 100 arasında bir tam sayı üretir. <code>Rastgeleştir(7)</code> üreteci sabit bir tohumla başlatır; böylece program her seferinde aynı sayıyı seçer. Gerçek oyunda bu satırı <code>Rastgeleştir;</code> yapabilirsiniz.</p>
+<h3 id="tekrarla-her-kır-ve-devam"><code>tekrarla</code>, <code>her</code>, <code>kır</code> ve <code>devam</code></h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Döngüler2
+<span class="ya">değişken</span>
+  n, toplam, i: <span class="ya">tamsayı</span>
+  meyve: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="yy">// tekrarla: gövde en az bir kez çalışır</span>
+  n := <span class="ys">9875</span>
+  toplam := <span class="ys">0</span>
+  <span class="ya">tekrarla</span>
+    toplam := toplam + n <span class="ya">mod</span> <span class="ys">10</span>
+    n := n <span class="ya">böl</span> <span class="ys">10</span>
+  n = <span class="ys">0</span> <span class="ya">olana</span> <span class="ya">dek</span>
+  yaz(<span class="ym">'9875 sayısının basamakları toplamı: '</span> + toplam, <span class="ys">1</span>)
+
+  <span class="yy">// her: bir koleksiyonun öğeleri üzerinde dolaşır</span>
+  [<span class="ym">'elma'</span>, <span class="ym">'armut'</span>, <span class="ym">'kiraz'</span>] <span class="ya">içindeki</span> <span class="ya">her</span> meyve <span class="ya">için</span>
+    yaz(meyve.BüyükHarf + <span class="ym">' '</span>)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+
+  <span class="yy">// kır ve devam</span>
+  <span class="ys">1</span>'den <span class="ys">20</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="ya">eğer</span> i <span class="ya">mod</span> <span class="ys">3</span> = <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">devam</span>    <span class="yy">// 3'ün katlarını atla</span>
+    <span class="ya">eğer</span> i &gt; <span class="ys">10</span> <span class="ya">ise</span> <span class="ya">kır</span>           <span class="yy">// 10'u geçince döngüden çık</span>
+    yaz(i + <span class="ym">' '</span>)
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>9875 sayısının basamakları toplamı: 29
+ELMA ARMUT KİRAZ
+1 2 4 5 7 8 10</code></pre></div>
+<ul>
+<li><code>tekrarla … olana dek</code> gövdesinde birden çok komut olabilir, <code>başla … bitir</code> gerekmez.</li>
+<li><code>devam</code> döngünün o turunu atlayıp bir sonrakine geçer; <code>kır</code> döngüyü tamamen bitirir.</li>
+<li><code>BüyükHarf</code> Türkçe kurallarını bilir: <code>kiraz</code> → <code>KİRAZ</code>.</li>
+</ul>
+<h3 id="belirli-sayıda-tekrar-kez-tekrarla">Belirli sayıda tekrar: <code>kez tekrarla</code></h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Yıldızlar
+<span class="ya">değişken</span>
+  satır: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> satır <span class="ya">için</span>
+  <span class="ya">başla</span>
+    satır <span class="ya">kez</span> <span class="ya">tekrarla</span> yaz(<span class="ym">'*'</span>)
+    yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>*
+**
+***
+****</code></pre></div>
+<p><code>satır kez tekrarla yaz('*')</code> yıldızı satırın numarası kadar yazar. Bir sayaca ihtiyacınız yoksa en kısa ve en doğal biçim budur.</p>
+<h3 id="alıştırmalar-1">Alıştırmalar</h3>
+<ol type="1">
+<li>1’den 100’e kadar sayıları yazan, ama 3’ün katları yerine <code>Fizz</code>, 5’in katları yerine <code>Buzz</code>, ikisinin de katları yerine <code>FizzBuzz</code> yazan bir program yazınız.</li>
+<li>Kullanıcıdan 0 girilene kadar sayılar okuyup en sonda toplamı ve ortalamayı yazan bir program yazınız.</li>
+</ol>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html"><small>Önceki</small>Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a><a class="sonraki" href="08-bolum-6-prosedurler-ve-fonksiyonlar.html"><small>Sonraki</small>Bölüm 6 — Prosedürler ve fonksiyonlar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#sayaçlı-döngü-kadar-her-i-için">Sayaçlı döngü: … kadar her i için</a></li><li><a href="#iken-döngüsü-sayı-tahmin-oyunu">iken döngüsü: sayı tahmin oyunu</a></li><li><a href="#tekrarla-her-kır-ve-devam">tekrarla, her, kır ve devam</a></li><li><a href="#belirli-sayıda-tekrar-kez-tekrarla">Belirli sayıda tekrar: kez tekrarla</a></li><li><a href="#alıştırmalar-1">Alıştırmalar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+Kayıtlar:
+  geçersiz kullanıcı adı
+  geçersiz e-posta
+  parola zayıf: 12 karakter ya da daha uzun olması önerilir, büyük harf yok, simge yok
+[Güvenlik] kayıt: kullanıcı=ayşe, e-posta=****@ornek.com
+  kayıt tamam
+  bu ad alınmış
+  geçersiz kullanıcı adı
+
+Girişler:
+[Güvenlik] giriş başarılı: kullanıcı=ayşe
+  doğru parola → belirteç alındı
+  → <h1>Hoş geldin, ayşe</h1>
+[Güvenlik] giriş başarısız: kullanıcı=mehmet
+  olmayan kullanıcı → reddedildi
+[Güvenlik] giriş başarısız: kullanıcı=ayşe
+  yanlış parola 1 → reddedildi
+[Güvenlik] giriş başarısız: kullanıcı=ayşe
+  yanlış parola 2 → reddedildi
+[Güvenlik] giriş başarısız: kullanıcı=ayşe
+  yanlış parola 3 → reddedildi
+[Güvenlik] çok fazla deneme: kullanıcı=ayşe
+  yanlış parola 4 → çok fazla deneme, 300 sn sonra tekrar dene
+[Güvenlik] çok fazla deneme: kullanıcı=ayşe
+  doğru parola bile şimdi reddedilir → çok fazla deneme, 300 sn sonra tekrar dene
+[Güvenlik] giriş başarılı: kullanıcı=ayşe
+  5 dakika sonra doğru parola → belirteç alındı
+
+İstekler:
+  → <h1>Hoş geldin, ayşe</h1>
+  → 401: oturum geçersiz ya da süresi dolmuş, giriş sayfasına yönlendir
+  → 401: oturum geçersiz ya da süresi dolmuş, giriş sayfasına yönlendir
+  → 401: oturum geçersiz ya da süresi dolmuş, giriş sayfasına yönlendir

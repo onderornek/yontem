@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 1 — Denetimli öğrenmenin temelleri · Yöntem ile Makine Öğrenmesi</title>
+<meta name="description" content="20 algoritma, her biri baştan sona okunabilen bir programla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Makine Öğrenmesi</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-giris.html">Giriş</a></li><li><a href="03-bolum-1-denetimli-ogrenmenin-temelleri.html" aria-current="page">Bölüm 1 — Denetimli öğrenmenin temelleri</a></li><li><a href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></li><li><a href="05-bolum-3-denetimsiz-ogrenme.html">Bölüm 3 — Denetimsiz öğrenme</a></li><li><a href="06-bolum-4-derin-ogrenme.html">Bölüm 4 — Derin öğrenme</a></li><li><a href="07-ek-a-hangi-algoritma-ne-zaman.html">Ek A — Hangi algoritma ne zaman?</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Makine_Ogrenmesi.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 251 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Makine Öğrenmesi</a> / Bölüm 3 / 7</p>
+    <h2 id="bölüm-1-denetimli-öğrenmenin-temelleri">Bölüm 1 — Denetimli öğrenmenin temelleri</h2>
+<p>Denetimli öğrenmede elimizde doğru cevabı bilinen örnekler vardır; model bu örneklerden genel bir kural çıkarır. Cevap bir sayıysa (fiyat) <strong>regresyon</strong>, bir sınıfsa (geçti/kaldı) <strong>sınıflandırma</strong> yapıyoruz demektir.</p>
+<h3 id="doğrusal-regresyon">1. Doğrusal regresyon</h3>
+<p><strong>Fikir.</strong> Veriye en iyi uyan düz çizgiyi buluruz. “En iyi”, tahminlerle gerçek değerler arasındaki farkların karelerinin ortalamasının (OKH, ortalama kare hata) en küçük olduğu çizgidir. Eğimi ve kesişimi gradyan inişiyle adım adım düzeltiriz: hatayı artıran yönün tersine küçük bir adım.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>,</mo><mspace width="2.0em"></mspace><mtext mathvariant="normal">OKH</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munder><mo>∑</mo><mi>i</mi></munder><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\hat{y} = a x + b, \qquad \text{OKH} = \frac{1}{n}\sum_i (\hat{y}_i - y_i)^2</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> DoğrusalRegresyon
+<span class="yy">{ Ev büyüklüğünden (m²) fiyatı (bin TL) tahmin eden doğrusal model: ŷ = a·x + b
+  Parametreler gradyan inişiyle öğrenilir, sonra kapalı form çözümüyle karşılaştırılır. }</span>
+
+<span class="ya">değişken</span>
+  X, Y: <span class="ya">ondalık</span> dizisi
+  a, b, ga, gb, hata, okh, oran: <span class="ya">ondalık</span>
+  i, adım, n: <span class="ya">tamsayı</span>
+  ox, oy, pay, payda: <span class="ya">ondalık</span>
+
+<span class="ya">fonksiyon</span> Ölçekle(m2: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sonuç := m2 / <span class="ys">100</span>      <span class="yy">{ 100 m² = 1 birim: sayılar küçük kalınca iniş kararlı olur }</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  X := [<span class="ys">50</span>, <span class="ys">65</span>, <span class="ys">80</span>, <span class="ys">95</span>, <span class="ys">110</span>, <span class="ys">130</span>, <span class="ys">150</span>]
+  Y := [<span class="ys">1450</span>, <span class="ys">1900</span>, <span class="ys">2250</span>, <span class="ys">2700</span>, <span class="ys">3100</span>, <span class="ys">3600</span>, <span class="ys">4150</span>]
+  n := Uzunluk(X)
+  a := <span class="ys">0</span>; b := <span class="ys">0</span>; oran := <span class="ys">0.1</span>
+
+  <span class="ys">1</span>'den <span class="ys">3000</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    ga := <span class="ys">0</span>; gb := <span class="ys">0</span>; okh := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">başla</span>
+      hata := a * Ölçekle(X[i]) + b - Y[i]
+      ga := ga + <span class="ys">2</span> * hata * Ölçekle(X[i]) / n
+      gb := gb + <span class="ys">2</span> * hata / n
+      okh := okh + hata * hata / n
+    <span class="ya">bitir</span>
+    a := a - oran * ga
+    b := b - oran * gb
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">1000</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:5}  OKH = {:12.2}'</span>, adım, okh), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'Gradyan inişi: fiyat ≈ {:.2} × m² + {:.2}'</span>, a / <span class="ys">100</span>, b), <span class="ys">1</span>)
+
+  <span class="yy">{ Kapalı form (en küçük kareler): a = Σ(x-x̄)(y-ȳ) / Σ(x-x̄)² }</span>
+  ox := Toplam(X) / n; oy := Toplam(Y) / n
+  pay := <span class="ys">0</span>; payda := <span class="ys">0</span>
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    pay := pay + (X[i] - ox) * (Y[i] - oy)
+    payda := payda + (X[i] - ox) ** <span class="ys">2</span>
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'Kapalı form:   fiyat ≈ {:.2} × m² + {:.2}'</span>, pay / payda, oy - pay / payda * ox), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'120 m² için tahmin: {:.0} bin TL'</span>, a * Ölçekle(<span class="ys">120</span>) + b), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Adım     1  OKH =   8265357.14
+Adım  1000  OKH =       424.67
+Adım  2000  OKH =       424.67
+Adım  3000  OKH =       424.67
+Gradyan inişi: fiyat ≈ 26.83 × m² + 129.40
+Kapalı form:   fiyat ≈ 26.83 × m² + 129.40
+120 m² için tahmin: 3349 bin TL</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Gradyan inişi, formülün doğrudan verdiği çözüme 1000 adımda ulaştı. OKH sıfıra inmez, çünkü gerçek fiyatlar tam bir doğru üzerinde durmaz. Sık yapılan hata şudur: girdileri ölçeklemeden (100’e bölmeden) aynı öğrenme oranını kullanmak; adımlar çok büyük olur ve hata patlar.</p>
+<p><strong>Alıştırma.</strong> <code>Ölçekle</code> fonksiyonunu <code>sonuç := m2</code> yapıp programı çalıştırınız. OKH ne oluyor? Hangi <code>oran</code> değeriyle yeniden yakınsıyor?</p>
+<h3 id="lojistik-regresyon">2. Lojistik regresyon</h3>
+<p><strong>Fikir.</strong> Doğrusal bir puanı sigmoid fonksiyonundan geçirip 0 ile 1 arasında bir olasılığa çeviririz. Olasılık 0,5’i geçerse sınıf 1 deriz. Kayıp olarak çapraz entropi kullanılır: emin olduğu bir tahminde yanılan modeli çok ağır cezalandırır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>y</mi><mo>=</mo><mn>1</mn><mo>∣</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>w</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>w</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">P(y=1 \mid x) = \sigma(w x + b) = \frac{1}{1 + e^{-(w x + b)}}</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> LojistikRegresyon
+<span class="yy">{ Çalışma saatinden sınavı geçme olasılığını tahmin eder: P(geçer) = σ(w·x + b)
+  σ(z) = 1 / (1 + e^(-z)) her sayıyı 0 ile 1 arasına sıkıştırır. Kayıp: çapraz entropi. }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  saat: <span class="ya">ondalık</span> dizisi
+  geçti: <span class="ya">tamsayı</span> dizisi
+  w, b, p, gw, gb, kayıp: <span class="ya">ondalık</span>
+  i, adım, n, isabet: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  saat := [<span class="ys">0.5</span>, <span class="ys">1.0</span>, <span class="ys">1.5</span>, <span class="ys">2.0</span>, <span class="ys">2.5</span>, <span class="ys">3.0</span>, <span class="ys">3.5</span>, <span class="ys">4.0</span>, <span class="ys">4.5</span>, <span class="ys">5.0</span>, <span class="ys">5.5</span>, <span class="ys">6.0</span>]
+  geçti := [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>]
+  n := Uzunluk(saat)
+  w := <span class="ys">0</span>; b := <span class="ys">0</span>
+
+  <span class="ys">1</span>'den <span class="ys">2000</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    gw := <span class="ys">0</span>; gb := <span class="ys">0</span>; kayıp := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">başla</span>
+      p := Sigmoid(w * saat[i] + b)
+      kayıp := kayıp - (geçti[i] * Ln(p) + (<span class="ys">1</span> - geçti[i]) * Ln(<span class="ys">1</span> - p)) / n
+      gw := gw + (p - geçti[i]) * saat[i] / n     <span class="yy">{ çapraz entropinin türevi şaşırtıcı biçimde basittir }</span>
+      gb := gb + (p - geçti[i]) / n
+    <span class="ya">bitir</span>
+    w := w - <span class="ys">0.5</span> * gw
+    b := b - <span class="ys">0.5</span> * gb
+    <span class="ya">eğer</span> adım <span class="ya">mod</span> <span class="ys">500</span> = <span class="ys">0</span> <span class="ya">ise</span> yaz(Biçimle(<span class="ym">'Adım {:4}  kayıp = {:.4}'</span>, adım, kayıp), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  yaz(Biçimle(<span class="ym">'Model: P(geçer) = σ({:.3} × saat {} {:.3})'</span>, w, <span class="ya">eğer</span> b &lt; <span class="ys">0</span> <span class="ya">ise</span> <span class="ym">'-'</span> <span class="ya">değilse</span> <span class="ym">'+'</span>, Mutlak(b)), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'Karar sınırı (P = 0,5): {:.2} saat'</span>, -b / w), <span class="ys">1</span>)
+  isabet := <span class="ys">0</span>
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    p := Sigmoid(w * saat[i] + b)
+    <span class="ya">eğer</span> (p &gt;= <span class="ys">0.5</span>) = (geçti[i] = <span class="ys">1</span>) <span class="ya">ise</span> isabet := isabet + <span class="ys">1</span>
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Eğitim doğruluğu: '</span> + isabet + <span class="ym">'/'</span> + n, <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'2 saat çalışan için olasılık: {:.2}'</span>, Sigmoid(w * <span class="ys">2</span> + b)), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'5 saat çalışan için olasılık: {:.2}'</span>, Sigmoid(w * <span class="ys">5</span> + b)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Adım  500  kayıp = 0.3650
+Adım 1000  kayıp = 0.3649
+Adım 1500  kayıp = 0.3649
+Adım 2000  kayıp = 0.3649
+Model: P(geçer) = σ(1.424 × saat - 4.630)
+Karar sınırı (P = 0,5): 3.25 saat
+Eğitim doğruluğu: 10/12
+2 saat çalışan için olasılık: 0.14
+5 saat çalışan için olasılık: 0.92</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Model 3,25 saati bir eşik olarak öğrendi. 12 öğrenciden 2’si (2,5 saatte geçen, 4 saatte kalan) bu eşiğe uymuyor; hiçbir düz sınır onları doğru ayıramaz. Adı “regresyon” olsa da bu bir <strong>sınıflandırma</strong> yöntemidir.</p>
+<p><strong>Alıştırma.</strong> Veriye ikinci bir öznitelik ekleyiniz (örneğin uyku saati) ve modeli <code>w1·saat + w2·uyku + b</code> biçimine genişletiniz.</p>
+<h3 id="k-en-yakın-komşu-k-nn">3. K-en yakın komşu (k-NN)</h3>
+<p><strong>Fikir.</strong> “Bana arkadaşını söyle, sana kim olduğunu söyleyeyim.” Yeni bir örneğin sınıfını, ona en yakın k eğitim örneğinin oy çokluğu belirler. Model eğitilmez; tüm iş tahmin anında yapılır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msqrt><mrow><munder><mo>∑</mo><mi>j</mi></munder><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>p</mi><mi>j</mi></msub><mo>−</mo><msub><mi>q</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">d(p, q) = \sqrt{\sum_j (p_j - q_j)^2}</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> KEnYakınKomşu
+<span class="yy">{ Meyveyi ağırlığına (g) ve kabuk pürüzlülüğüne (0-10) bakarak sınıflandırır.
+  Yeni bir meyvenin sınıfı, ona en yakın k eğitim örneğinin oy çokluğuyla belirlenir. }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  veri: <span class="ya">ondalık</span> dizisi dizisi
+  etiket: <span class="ya">metin</span> dizisi
+  yeniler: <span class="ya">ondalık</span> dizisi dizisi
+  i: <span class="ya">tamsayı</span>
+  s: <span class="ya">ondalık</span> dizisi
+
+<span class="ya">fonksiyon</span> Uzaklık(p, q: <span class="ya">ondalık</span> dizisi): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="yy">{ Öklid uzaklığı; ağırlık 100 g ölçeğinde, pürüzlülük 1 ölçeğinde olsun diye ağırlığı 20'ye bölüyoruz }</span>
+  sonuç := Kök(((p[<span class="ys">0</span>] - q[<span class="ys">0</span>]) / <span class="ys">20</span>) ** <span class="ys">2</span> + (p[<span class="ys">1</span>] - q[<span class="ys">1</span>]) ** <span class="ys">2</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Sınıflandır(x: <span class="ya">ondalık</span> dizisi; k: <span class="ya">tamsayı</span>): <span class="ya">metin</span>
+<span class="ya">değişken</span>
+  sıra: <span class="ya">tamsayı</span> dizisi
+  oyElma, oyPortakal, j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sıra := Sırala(Aralık(Uzunluk(veri)), <span class="ya">fonksiyon</span>(n: <span class="ya">tamsayı</span>) =&gt; Uzaklık(veri[n], x))
+  oyElma := <span class="ys">0</span>; oyPortakal := <span class="ys">0</span>
+  <span class="ys">0</span>'dan k - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+    <span class="ya">eğer</span> etiket[sıra[j]] = <span class="ym">'elma'</span> <span class="ya">ise</span> oyElma := oyElma + <span class="ys">1</span> <span class="ya">değilse</span> oyPortakal := oyPortakal + <span class="ys">1</span>
+  sonuç := <span class="ya">eğer</span> oyElma &gt; oyPortakal <span class="ya">ise</span> <span class="ym">'elma'</span> <span class="ya">değilse</span> <span class="ym">'portakal'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  <span class="yy">{ [186, 7] alışılmadık, portakala benzeyen bir elma: k=1 bu tek örneğe kanar }</span>
+  veri := [[<span class="ys">150</span>, <span class="ys">2</span>], [<span class="ys">170</span>, <span class="ys">1</span>], [<span class="ys">140</span>, <span class="ys">3</span>], [<span class="ys">130</span>, <span class="ys">2</span>], [<span class="ys">180</span>, <span class="ys">2</span>], [<span class="ys">186</span>, <span class="ys">7</span>],
+           [<span class="ys">160</span>, <span class="ys">7</span>], [<span class="ys">200</span>, <span class="ys">8</span>], [<span class="ys">190</span>, <span class="ys">6</span>], [<span class="ys">210</span>, <span class="ys">7</span>], [<span class="ys">175</span>, <span class="ys">9</span>]]
+  etiket := [<span class="ym">'elma'</span>, <span class="ym">'elma'</span>, <span class="ym">'elma'</span>, <span class="ym">'elma'</span>, <span class="ym">'elma'</span>, <span class="ym">'elma'</span>,
+             <span class="ym">'portakal'</span>, <span class="ym">'portakal'</span>, <span class="ym">'portakal'</span>, <span class="ym">'portakal'</span>, <span class="ym">'portakal'</span>]
+  yeniler := [[<span class="ys">155</span>, <span class="ys">3</span>], [<span class="ys">185</span>, <span class="ys">7</span>], [<span class="ys">165</span>, <span class="ys">5</span>], [<span class="ys">200</span>, <span class="ys">3</span>]]
+  <span class="ys">0</span>'dan Uzunluk(yeniler) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    s := yeniler[i]
+    yaz(Biçimle(<span class="ym">'{} g, pürüzlülük {} → k=1: {:9}  k=3: {:9}  k=5: {}'</span>,
+      s[<span class="ys">0</span>], s[<span class="ys">1</span>], Sınıflandır(s, <span class="ys">1</span>), Sınıflandır(s, <span class="ys">3</span>), Sınıflandır(s, <span class="ys">5</span>)), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>155 g, pürüzlülük 3 → k=1:      elma  k=3:      elma  k=5: elma
+185 g, pürüzlülük 7 → k=1:      elma  k=3:  portakal  k=5: portakal
+165 g, pürüzlülük 5 → k=1:  portakal  k=3:  portakal  k=5: portakal
+200 g, pürüzlülük 3 → k=1:      elma  k=3:      elma  k=5: elma</code></pre></div>
+<p><strong>Ne öğrendik.</strong> k=1 iken model, 185 g’lık meyveyi tek bir tuhaf örnek yüzünden elma sandı; k=3’te çoğunluk bu gürültüyü bastırdı. Özniteliklerin ölçeği çok önemlidir: ağırlığı 20’ye bölmeseydik uzaklığı neredeyse yalnızca gramlar belirlerdi.</p>
+<p><strong>Alıştırma.</strong> <code>Uzaklık</code> içindeki <code>/ 20</code> bölümünü kaldırınız. Hangi tahminler değişiyor, neden?</p>
+<h3 id="naif-bayes">4. Naif Bayes</h3>
+<p><strong>Fikir.</strong> Her sınıfta hangi sözcüklerin ne sıklıkta geçtiğini sayarız. Yeni bir metin geldiğinde Bayes kuralıyla “bu sözcükleri hangi sınıf üretmiş olabilir?” diye sorarız. “Naif” denmesinin nedeni, sözcüklerin birbirinden bağımsız olduğunu varsaymasıdır; bu varsayım yanlış olsa da yöntem şaşırtıcı derecede iyi çalışır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo>∣</mo><msub><mi>w</mi><mn>1</mn></msub><mi>…</mi><msub><mi>w</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><munder><mo>∏</mo><mi>i</mi></munder><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>w</mi><mi>i</mi></msub><mo>∣</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(c \mid w_1 \ldots w_n) \propto P(c) \prod_i P(w_i \mid c)</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> NaifBayes
+<span class="yy">{ E-postaları 'istenmeyen' ya da 'normal' diye sınıflandırır.
+  Bayes kuralı: P(sınıf | sözcükler) ∝ P(sınıf) × Π P(sözcük | sınıf)
+  &quot;Naif&quot; varsayım: sözcükler, sınıf bilindiğinde birbirinden bağımsızdır. }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  metinler, sınıflar, sınıfAdları, denemeler: <span class="ya">metin</span> dizisi
+  sayım: <span class="ya">sözlük</span>            <span class="yy">{ sınıf → (sözcük → kaç kez) }</span>
+  belgeSayısı, toplamSözcük: <span class="ya">sözlük</span>
+  sözlükçe: <span class="ya">sözlük</span>         <span class="yy">{ görülen tüm farklı sözcükler }</span>
+  i: <span class="ya">tamsayı</span>
+  s, c: <span class="ya">metin</span>
+
+<span class="ya">fonksiyon</span> Sözcükler(m: <span class="ya">metin</span>): <span class="ya">metin</span> dizisi
+<span class="ya">başla</span>
+  sonuç := KüçükHarf(m).Ayır
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Puan(m: <span class="ya">metin</span>; sınıfAdı: <span class="ya">metin</span>): <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  w: <span class="ya">metin</span>
+  p: <span class="ya">ondalık</span>
+  sayaç: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  <span class="yy">{ Olasılıkları çarpmak yerine logaritmalarını topluyoruz: küçük sayılar sıfıra yuvarlanmasın }</span>
+  p := Ln(belgeSayısı[sınıfAdı] / Uzunluk(metinler))
+  sayaç := sayım[sınıfAdı]
+  Sözcükler(m) <span class="ya">içindeki</span> <span class="ya">her</span> w <span class="ya">için</span>
+    <span class="yy">{ Laplace düzeltmesi (+1): hiç görülmemiş sözcük olasılığı sıfırlamasın }</span>
+    p := p + Ln((sayaç.Al(w, <span class="ys">0</span>) + <span class="ys">1</span>) / (toplamSözcük[sınıfAdı] + Uzunluk(sözlükçe)))
+  sonuç := p
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  metinler := [<span class="ym">'bedava para kazan hemen tıkla'</span>, <span class="ym">'kazan büyük ödül bedava'</span>,
+               <span class="ym">'hemen tıkla indirim kampanya'</span>, <span class="ym">'toplantı yarın saat onda'</span>,
+               <span class="ym">'rapor ekte toplantı notları'</span>, <span class="ym">'yarın öğle yemeği var mı'</span>,
+               <span class="ym">'proje raporu yarın teslim'</span>]
+  sınıflar := [<span class="ym">'istenmeyen'</span>, <span class="ym">'istenmeyen'</span>, <span class="ym">'istenmeyen'</span>, <span class="ym">'normal'</span>, <span class="ym">'normal'</span>, <span class="ym">'normal'</span>, <span class="ym">'normal'</span>]
+  sınıfAdları := [<span class="ym">'istenmeyen'</span>, <span class="ym">'normal'</span>]
+  sayım := [:]; belgeSayısı := [:]; toplamSözcük := [:]; sözlükçe := [:]
+  sınıfAdları <span class="ya">içindeki</span> <span class="ya">her</span> c <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sayım[c] := [:]; belgeSayısı[c] := <span class="ys">0</span>; toplamSözcük[c] := <span class="ys">0</span>
+  <span class="ya">bitir</span>
+
+  <span class="yy">{ Eğitim: her sınıfta her sözcüğün kaç kez geçtiğini say }</span>
+  <span class="ys">0</span>'dan Uzunluk(metinler) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    c := sınıflar[i]
+    belgeSayısı[c] := belgeSayısı[c] + <span class="ys">1</span>
+    Sözcükler(metinler[i]) <span class="ya">içindeki</span> <span class="ya">her</span> s <span class="ya">için</span>
+    <span class="ya">başla</span>
+      sayım[c][s] := sayım[c].Al(s, <span class="ys">0</span>) + <span class="ys">1</span>
+      toplamSözcük[c] := toplamSözcük[c] + <span class="ys">1</span>
+      sözlükçe[s] := <span class="ys">1</span>
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Sözlükçe: '</span> + Uzunluk(sözlükçe) + <span class="ym">' farklı sözcük'</span>, <span class="ys">1</span>)
+
+  denemeler := [<span class="ym">'bedava ödül kazan'</span>, <span class="ym">'yarın toplantı var'</span>, <span class="ym">'hemen rapor teslim'</span>, <span class="ym">'indirim kampanya yarın'</span>]
+  denemeler <span class="ya">içindeki</span> <span class="ya">her</span> s <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'{:24} → {:10} (log puanlar: istenmeyen {:.2}, normal {:.2})'</span>, <span class="ym">'&quot;'</span> + s + <span class="ym">'&quot;'</span>,
+      <span class="ya">eğer</span> Puan(s, <span class="ym">'istenmeyen'</span>) &gt; Puan(s, <span class="ym">'normal'</span>) <span class="ya">ise</span> <span class="ym">'istenmeyen'</span> <span class="ya">değilse</span> <span class="ym">'normal'</span>,
+      Puan(s, <span class="ym">'istenmeyen'</span>), Puan(s, <span class="ym">'normal'</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Sözlükçe: 23 farklı sözcük
+     &quot;bedava ödül kazan&quot; → istenmeyen (log puanlar: istenmeyen -8.71, normal -11.63)
+    &quot;yarın toplantı var&quot; →     normal (log puanlar: istenmeyen -11.60, normal -8.45)
+    &quot;hemen rapor teslim&quot; →     normal (log puanlar: istenmeyen -10.50, normal -10.24)
+&quot;indirim kampanya yarın&quot; → istenmeyen (log puanlar: istenmeyen -10.21, normal -10.24)</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Son örnekte “indirim kampanya” istenmeyene, “yarın” normale çekti; puanlar çok yakın çıktı. Logaritma kullanmak şarttır: yüzlerce küçük olasılığı çarpmak bilgisayarda sıfıra yuvarlanır. <code>+1</code> eklenmezse eğitimde görülmemiş tek bir sözcük tüm olasılığı sıfır yapardı.</p>
+<p><strong>Alıştırma.</strong> Eğitim verisine iki istenmeyen ileti daha ekleyiniz ve son örneğin kararının nasıl değiştiğine bakınız. Hazır sürüm için <code>kullan Dil</code> ile gelen <code>NaifBayes</code> birimine göz atınız.</p>
+<h3 id="karar-ağaçları">5. Karar ağaçları</h3>
+<p><strong>Fikir.</strong> Veriyi evet/hayır sorularıyla tekrar tekrar ikiye (ya da daha fazla parçaya) böleriz. Her adımda, oluşan grupları en “saf” yapan soru seçilir. Saflığı Gini ölçüsü verir: tek sınıflı bir grupta 0, yarı yarıya karışık bir grupta 0,5.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Gini</mtext><mo>=</mo><mn>1</mn><mo>−</mo><munder><mo>∑</mo><mi>k</mi></munder><msubsup><mi>p</mi><mi>k</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\text{Gini} = 1 - \sum_k p_k^2</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> KararAğacı
+<span class="yy">{ Hava durumuna bakarak &quot;tenis oynanır mı?&quot; sorusunu yanıtlayan bir karar ağacı kurar.
+  Her düğümde, veriyi en &quot;saf&quot; gruplara ayıran öznitelik seçilir (Gini safsızlığı en düşük olan).
+  Gini = 1 − Σ p², p: gruptaki her sınıfın oranı. Tek sınıflı grupta Gini = 0. }</span>
+
+<span class="ya">değişken</span>
+  satırlar: <span class="ya">metin</span> dizisi dizisi      <span class="yy">{ son sütun: sınıf (evet / hayır) }</span>
+  öznitelikler: <span class="ya">metin</span> dizisi
+  tümü: <span class="ya">tamsayı</span> dizisi
+  i: <span class="ya">tamsayı</span>
+
+<span class="ya">fonksiyon</span> Gini(sıra: <span class="ya">tamsayı</span> dizisi): <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  evet, j: <span class="ya">tamsayı</span>
+  p: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  evet := <span class="ys">0</span>
+  sıra <span class="ya">içindeki</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">eğer</span> satırlar[j][<span class="ys">4</span>] = <span class="ym">'evet'</span> <span class="ya">ise</span> evet := evet + <span class="ys">1</span>
+  p := evet / Uzunluk(sıra)
+  sonuç := <span class="ys">1</span> - p * p - (<span class="ys">1</span> - p) * (<span class="ys">1</span> - p)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Değerler(sıra: <span class="ya">tamsayı</span> dizisi; sütun: <span class="ya">tamsayı</span>): <span class="ya">metin</span> dizisi
+<span class="ya">değişken</span> j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sonuç := []
+  sıra <span class="ya">içindeki</span> <span class="ya">her</span> j <span class="ya">için</span>
+    <span class="ya">eğer</span> <span class="ya">değil</span> (satırlar[j][sütun] içinde sonuç) <span class="ya">ise</span> sonuç.Ekle(satırlar[j][sütun])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Süzgeç(sıra: <span class="ya">tamsayı</span> dizisi; sütun: <span class="ya">tamsayı</span>; d: <span class="ya">metin</span>): <span class="ya">tamsayı</span> dizisi
+<span class="ya">başla</span>
+  sonuç := Süz(sıra, <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; satırlar[j][sütun] = d)
+<span class="ya">bitir</span>
+
+<span class="yy">{ Ağırlıklı Gini: bölünmeden sonra çocukların Gini değerlerinin, büyüklükleriyle ağırlıklı ortalaması }</span>
+<span class="ya">fonksiyon</span> BölünmeGinisi(sıra: <span class="ya">tamsayı</span> dizisi; sütun: <span class="ya">tamsayı</span>): <span class="ya">ondalık</span>
+<span class="ya">değişken</span> d: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  sonuç := <span class="ys">0</span>
+  Değerler(sıra, sütun) <span class="ya">içindeki</span> <span class="ya">her</span> d <span class="ya">için</span>
+    sonuç := sonuç + Uzunluk(Süzgeç(sıra, sütun, d)) / Uzunluk(sıra) * Gini(Süzgeç(sıra, sütun, d))
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Kur(sıra: <span class="ya">tamsayı</span> dizisi; kullanılmış: <span class="ya">tamsayı</span> dizisi; girinti: <span class="ya">metin</span>)
+<span class="ya">değişken</span>
+  en, s: <span class="ya">tamsayı</span>
+  enIyi: <span class="ya">ondalık</span>
+  d: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> Gini(sıra) = <span class="ys">0</span> <span class="ya">veya</span> Uzunluk(kullanılmış) = <span class="ys">4</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    yaz(girinti + <span class="ym">'→ '</span> + satırlar[sıra[<span class="ys">0</span>]][<span class="ys">4</span>] + <span class="ym">' ('</span> + Uzunluk(sıra) + <span class="ym">' örnek)'</span>, <span class="ys">1</span>)
+    <span class="ya">dön</span>
+  <span class="ya">bitir</span>
+  en := -<span class="ys">1</span>; enIyi := <span class="ys">2</span>
+  <span class="ys">0</span>'dan <span class="ys">3</span>'e <span class="ya">kadar</span> <span class="ya">her</span> s <span class="ya">için</span>
+    <span class="ya">eğer</span> <span class="ya">değil</span> (s içinde kullanılmış) <span class="ya">ve</span> BölünmeGinisi(sıra, s) &lt; enIyi <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      enIyi := BölünmeGinisi(sıra, s); en := s
+    <span class="ya">bitir</span>
+  Değerler(sıra, en) <span class="ya">içindeki</span> <span class="ya">her</span> d <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yaz(Biçimle(<span class="ym">'{}{} = {}?  (Gini {:.3} → {:.3})'</span>, girinti, öznitelikler[en], d, Gini(sıra), enIyi), <span class="ys">1</span>)
+    Kur(Süzgeç(sıra, en, d), kullanılmış + [en], girinti + <span class="ym">'    '</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  öznitelikler := [<span class="ym">'Hava'</span>, <span class="ym">'Sıcaklık'</span>, <span class="ym">'Nem'</span>, <span class="ym">'Rüzgâr'</span>]
+  satırlar := [
+    [<span class="ym">'güneşli'</span>, <span class="ym">'sıcak'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'yok'</span>, <span class="ym">'hayır'</span>], [<span class="ym">'güneşli'</span>, <span class="ym">'sıcak'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'var'</span>, <span class="ym">'hayır'</span>],
+    [<span class="ym">'bulutlu'</span>, <span class="ym">'sıcak'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>],  [<span class="ym">'yağmurlu'</span>, <span class="ym">'ılık'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>],
+    [<span class="ym">'yağmurlu'</span>, <span class="ym">'serin'</span>, <span class="ym">'normal'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>], [<span class="ym">'yağmurlu'</span>, <span class="ym">'serin'</span>, <span class="ym">'normal'</span>, <span class="ym">'var'</span>, <span class="ym">'hayır'</span>],
+    [<span class="ym">'bulutlu'</span>, <span class="ym">'serin'</span>, <span class="ym">'normal'</span>, <span class="ym">'var'</span>, <span class="ym">'evet'</span>],  [<span class="ym">'güneşli'</span>, <span class="ym">'ılık'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'yok'</span>, <span class="ym">'hayır'</span>],
+    [<span class="ym">'güneşli'</span>, <span class="ym">'serin'</span>, <span class="ym">'normal'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>],  [<span class="ym">'yağmurlu'</span>, <span class="ym">'ılık'</span>, <span class="ym">'normal'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>],
+    [<span class="ym">'güneşli'</span>, <span class="ym">'ılık'</span>, <span class="ym">'normal'</span>, <span class="ym">'var'</span>, <span class="ym">'evet'</span>],   [<span class="ym">'bulutlu'</span>, <span class="ym">'ılık'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'var'</span>, <span class="ym">'evet'</span>],
+    [<span class="ym">'bulutlu'</span>, <span class="ym">'sıcak'</span>, <span class="ym">'normal'</span>, <span class="ym">'yok'</span>, <span class="ym">'evet'</span>],  [<span class="ym">'yağmurlu'</span>, <span class="ym">'ılık'</span>, <span class="ym">'yüksek'</span>, <span class="ym">'var'</span>, <span class="ym">'hayır'</span>]]
+  tümü := Aralık(Uzunluk(satırlar))
+  yaz(Biçimle(<span class="ym">'Kökün Gini değeri: {:.3}'</span>, Gini(tümü)), <span class="ys">2</span>)
+  <span class="ys">0</span>'dan <span class="ys">3</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'{:9} ile bölünürse ağırlıklı Gini: {:.3}'</span>, öznitelikler[i], BölünmeGinisi(tümü, i)), <span class="ys">1</span>)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  Kur(tümü, [], <span class="ym">''</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Kökün Gini değeri: 0.459
+
+     Hava ile bölünürse ağırlıklı Gini: 0.343
+ Sıcaklık ile bölünürse ağırlıklı Gini: 0.440
+      Nem ile bölünürse ağırlıklı Gini: 0.367
+   Rüzgâr ile bölünürse ağırlıklı Gini: 0.429
+
+Hava = güneşli?  (Gini 0.459 → 0.343)
+    Nem = yüksek?  (Gini 0.480 → 0.000)
+        → hayır (3 örnek)
+    Nem = normal?  (Gini 0.480 → 0.000)
+        → evet (2 örnek)
+Hava = bulutlu?  (Gini 0.459 → 0.343)
+    → evet (4 örnek)
+Hava = yağmurlu?  (Gini 0.459 → 0.343)
+    Rüzgâr = yok?  (Gini 0.480 → 0.000)
+        → evet (3 örnek)
+    Rüzgâr = var?  (Gini 0.480 → 0.000)
+        → hayır (2 örnek)</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Ağaç, 14 günü yalnızca üç öznitelikle hatasız ayırdı ve Sıcaklığı hiç kullanmadı. Sonuç bir insanın okuyabileceği kurallardır: “güneşliyse neme bak, yağmurluysa rüzgâra bak”. Tehlikesi şudur: derin ağaçlar eğitim verisini ezberler (aşırı uyum). Bir sonraki bölümdeki orman ve artırma yöntemleri bu sorunu çözer.</p>
+<p><strong>Alıştırma.</strong> <code>Kur</code> prosedürüne bir derinlik sınırı ekleyiniz: derinlik 1’de durunca yapraktaki çoğunluk sınıfını yazdırınız. Bu tek katlı ağaca “karar kütüğü” denir ve AdaBoost’ta tekrar karşımıza çıkacak.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="02-giris.html"><small>Önceki</small>Giriş</a><a class="sonraki" href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html"><small>Sonraki</small>Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#doğrusal-regresyon">1. Doğrusal regresyon</a></li><li><a href="#lojistik-regresyon">2. Lojistik regresyon</a></li><li><a href="#k-en-yakın-komşu-k-nn">3. K-en yakın komşu (k-NN)</a></li><li><a href="#naif-bayes">4. Naif Bayes</a></li><li><a href="#karar-ağaçları">5. Karar ağaçları</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

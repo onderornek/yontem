@@ -1,0 +1,23 @@
+--- 1) Yerleşik katmanlar ---
+  Epok     1/500   kayıp = 0.704415
+  Epok   100/500   kayıp = 0.001678
+  Epok   200/500   kayıp = 0.000737
+  Epok   300/500   kayıp = 0.000424
+  Epok   400/500   kayıp = 0.000279
+  Epok   500/500   kayıp = 0.000200
+Tahminler: tensör([[0.0001],
+        [0.9999],
+        [0.9997],
+        [0.0002]])
+Doğruluk : %100.0
+
+--- 2) Özel katman + elle eğitim döngüsü ---
+  epok  100  kayıp = 0.00182
+  epok  200  kayıp = 0.00115
+  epok  300  kayıp = 0.00085
+  epok  400  kayıp = 0.00068
+  [0.0, 0.0] -> 0.000
+  [0.0, 1.0] -> 1.000
+  [1.0, 0.0] -> 0.999
+  [1.0, 1.0] -> 0.001
+Parametre sayısı: 25

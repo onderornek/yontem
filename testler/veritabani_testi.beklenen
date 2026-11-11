@@ -1,0 +1,40 @@
+Bağlantı(sqlite)
+sqlite doğru
+0
+1
+1
+3
+2
+['no': 1, 'ad': 'defter', 'fiyat': 12.5, 'adet': 40, 'not_': boş]
+['no': 3, 'ad': 'çanta; DROP TABLE urun; --', 'fiyat': 349.9, 'adet': 3, 'not_': boş]
+kalem: 480.0 (ondalık)
+boş
+3
+tamsayı ondalık metin
+Türkçe çğıöşü
+1
+9007199254740993
+boş
+2
+0
+0
+0
+183
+2
+"urun" "ürün_adı"
+2
+tablo yok → Veritabanı hatası: no such table: yok
+sözdizimi → Veritabanı hatası: near "SELEKT": syntax error
+benzersizlik → Veritabanı hatası: UNIQUE constraint failed: urun.ad
+parametre tipi → 'Sorgula': 1. parametre liste olamaz (tamsayı, ondalık, metin, mantıksal ya da boş olmalı)
+parametre liste değil → 'Sorgula': parametreler liste olmalı, tamsayı verildi
+sql metin değil → 'Sorgula' SQL metni bekler, tamsayı verildi
+boş sql → 'Çalıştır': SQL metni boş
+kötü ad → Geçersiz tablo ya da sütun adı: 'urun; DROP' (harfle başlamalı; harf, rakam ve alt çizgi içerebilir)
+üye yok → Bağlantı nesnesinde 'sil' üyesi yok
+adres → Veritabanı adresi 'tür:hedef' biçiminde olmalı (ör. 'sqlite:veri.db', 'postgres://kullanıcı:parola@sunucu/veritabanı')
+tür → Bilinmeyen veritabanı türü: 'oracle' (sqlite, postgres, mysql)
+sqlite boş → SQLite için dosya adı gerekli: 'sqlite:veri.db' (bellekte geçici veritabanı için 'sqlite::bellek:')
+postgres biçimi → Adres 'postgres://kullanıcı:parola@sunucu/veritabanı' biçiminde olmalı
+Bağlantı(sqlite, kapalı)
+kapalı → Bağlantı kapalı

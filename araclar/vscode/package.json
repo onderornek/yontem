@@ -1,0 +1,191 @@
+{
+  "name": "yontem-dili",
+  "displayName": "Yöntem",
+  "description": "Yöntem programlama dili: sözdizimi renklendirme, hata gösterimi, tamamlama, tanıma git, biçimlendirme, çalıştırma ve hata ayıklama",
+  "version": "0.5.0",
+  "publisher": "yontem",
+  "license": "MIT",
+  "author": "Önder Örnek",
+  "homepage": "https://yontem.pro",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters",
+    "Debuggers"
+  ],
+  "keywords": [
+    "yöntem",
+    "yontem",
+    "türkçe",
+    "pascal",
+    "programlama"
+  ],
+  "main": "./eklenti.js",
+  "activationEvents": [
+    "onLanguage:yontem",
+    "onDebugResolve:yontem",
+    "onDebugInitialConfigurations"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "yontem",
+        "aliases": [
+          "Yöntem",
+          "yontem"
+        ],
+        "extensions": [
+          ".y"
+        ],
+        "firstLine": "^\\s*(program|birim)\\s",
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yontem",
+        "scopeName": "source.yontem",
+        "path": "./syntaxes/yontem.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "yontem",
+        "path": "./snippets/yontem.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "yontem.calistir",
+        "title": "Yöntem: Programı çalıştır",
+        "icon": "$(play)"
+      },
+      {
+        "command": "yontem.test",
+        "title": "Yöntem: Testleri çalıştır"
+      },
+      {
+        "command": "yontem.ayikla",
+        "title": "Yöntem: Hata ayıkla",
+        "icon": "$(debug-alt)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "yontem.calistir",
+        "key": "f5",
+        "when": "editorLangId == yontem && !inDebugMode"
+      },
+      {
+        "command": "yontem.ayikla",
+        "key": "f6",
+        "when": "editorLangId == yontem && !inDebugMode"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "yontem.calistir",
+          "when": "editorLangId == yontem",
+          "group": "navigation"
+        },
+        {
+          "command": "yontem.ayikla",
+          "when": "editorLangId == yontem",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Yöntem",
+      "properties": {
+        "yontem.komut": {
+          "type": "string",
+          "default": "yontem",
+          "description": "Yöntem komutu. Kurulu değilse tam yol verin; örn. \"node /yol/yontem/js/dist/cli.js\" ya da \"python3 /yol/yontem/yontem.py\"."
+        }
+      }
+    },
+    "breakpoints": [
+      {
+        "language": "yontem"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "yontem",
+        "label": "Yöntem",
+        "languages": [
+          "yontem"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Hata ayıklanacak Yöntem programı (.y)",
+                "default": "${file}"
+              },
+              "args": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Programa verilecek argümanlar",
+                "default": []
+              },
+              "girdi": {
+                "type": "string",
+                "description": "oku çağrılarının okuyacağı metin dosyası (standart girdi yerine). Verilmezse girdi boştur."
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Göreli yolların çözüleceği klasör",
+                "default": "${workspaceFolder}"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Programın ilk deyiminde dur",
+                "default": false
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "yontem",
+            "request": "launch",
+            "name": "Yöntem: etkin programı ayıkla",
+            "program": "${file}"
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Yöntem: programı ayıkla",
+            "description": "Bir Yöntem programını hata ayıklayıcıyla başlatır",
+            "body": {
+              "type": "yontem",
+              "request": "launch",
+              "name": "Yöntem: ${1:program}",
+              "program": "^\"\\${workspaceFolder}/${1:program}.y\""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onderornek/yontem.git",
+    "directory": "araclar/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/onderornek/yontem/issues"
+  }
+}

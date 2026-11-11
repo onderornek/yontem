@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 4 — Derin öğrenme · Yöntem ile Makine Öğrenmesi</title>
+<meta name="description" content="20 algoritma, her biri baştan sona okunabilen bir programla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Makine Öğrenmesi</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-giris.html">Giriş</a></li><li><a href="03-bolum-1-denetimli-ogrenmenin-temelleri.html">Bölüm 1 — Denetimli öğrenmenin temelleri</a></li><li><a href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></li><li><a href="05-bolum-3-denetimsiz-ogrenme.html">Bölüm 3 — Denetimsiz öğrenme</a></li><li><a href="06-bolum-4-derin-ogrenme.html" aria-current="page">Bölüm 4 — Derin öğrenme</a></li><li><a href="07-ek-a-hangi-algoritma-ne-zaman.html">Ek A — Hangi algoritma ne zaman?</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Makine_Ogrenmesi.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 251 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Makine Öğrenmesi</a> / Bölüm 6 / 7</p>
+    <h2 id="bölüm-4-derin-öğrenme">Bölüm 4 — Derin öğrenme</h2>
+<p>Şimdiye kadarki modellerde kuralı biz tasarladık (bir eşik, bir mesafe, bir ağaç). Sinir ağlarında ise yalnızca yapıyı kurarız; milyonlarca küçük ayarı (ağırlığı) veri belirler. Bu bölümde <code>YZ</code> biriminin iki özelliğini kullanacağız: tensörler (sayı tabloları) ve otomatik türev. <code>kayıp.GeriYay</code> çağrısı, kaybın her ağırlığa göre türevini kendisi hesaplar. Optimize edici (<code>Adam</code>) de her ağırlığı kaybı azaltacak yöne biraz kaydırır. Beş programın hepsi bu döngüyü kullanır:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>opt.SıfırlaGrad          { eski türevleri sil }
+kayıp := ...             { ileri hesap: tahmin et, hatayı ölç }
+kayıp.GeriYay            { geri yayılım: her ağırlığın türevi }
+opt.Adım                 { ağırlıkları güncelle }</code></pre></div>
+<h3 id="çok-katmanlı-algılayıcı-sinir-ağı">16. Çok katmanlı algılayıcı (sinir ağı)</h3>
+<p><strong>Fikir.</strong> Bir nöron girdilerinin ağırlıklı toplamını alır ve sonucu doğrusal olmayan bir fonksiyondan (aktivasyon) geçirir. Nöronlar katmanlara dizilir; her katmanın çıktısı bir sonrakinin girdisidir. Lojistik regresyon tek bir nörondur ve yalnızca düz bir sınır çizebilir. Araya gizli bir katman eklenince ağ çember gibi eğri sınırlar da öğrenebilir.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mrow><mi mathvariant="normal">R</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">L</mi><mi mathvariant="normal">U</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><msub><mi>W</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>σ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>h</mi><msub><mi>W</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">h = \mathrm{ReLU}(x W_1 + b_1), \qquad \hat{y} = \sigma(h W_2 + b_2)</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÇokKatmanlıAlgılayıcı
+<span class="yy">{ Çok katmanlı algılayıcı (MLP): katman katman dizilmiş &quot;nöronlar&quot;.
+  Her katman  çıktı = aktivasyon(girdi @ W + b)  hesaplar. Doğrusal olmayan aktivasyon (ReLU, tanh)
+  sayesinde ağ eğri karar sınırları öğrenebilir. Ağırlıklar geri yayılım + Adam ile güncellenir.
+  Görev: bir noktanın yarıçapı 1 olan çemberin içinde mi dışında mı olduğunu öğrenmek. }</span>
+<span class="ya">kullan</span> YZ
+
+<span class="ya">değişken</span>
+  noktalar, etiket, deneme: <span class="ya">liste</span>
+  X, Y, tahmin: <span class="ya">tensör</span>
+  model, opt: <span class="ya">herhangi</span>
+  geçmiş: <span class="ya">liste</span>
+  i, isabet: <span class="ya">tamsayı</span>
+  px, py: <span class="ya">ondalık</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">7</span>)
+  noktalar := []; etiket := []
+  <span class="ys">1</span>'den <span class="ys">200</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    px := Rastgele(<span class="ys">4000</span>) / <span class="ys">1000</span> - <span class="ys">2</span>       <span class="yy">{ [-2, 2) aralığında }</span>
+    py := Rastgele(<span class="ys">4000</span>) / <span class="ys">1000</span> - <span class="ys">2</span>
+    noktalar.Ekle([px, py])
+    <span class="ya">eğer</span> px * px + py * py &lt; <span class="ys">1</span> <span class="ya">ise</span> etiket.Ekle([<span class="ys">1</span>]) <span class="ya">değilse</span> etiket.Ekle([<span class="ys">0</span>])
+  <span class="ya">bitir</span>
+  X := Tensör(noktalar)
+  Y := Tensör(etiket)
+
+  <span class="yy">{ 2 girdi → 16 gizli nöron (ReLU) → 1 çıktı (sigmoid: &quot;içeride olma olasılığı&quot;) }</span>
+  model := Ardışık([Yoğun(<span class="ys">2</span>, <span class="ys">16</span>, <span class="ym">'relu'</span>), Yoğun(<span class="ys">16</span>, <span class="ys">1</span>, <span class="ym">'sigmoid'</span>)])
+  opt := Adam(model.Parametreler, <span class="ys">0.05</span>)
+  geçmiş := Eğit(model, X, Y, <span class="ym">'ikiliÇaprazEntropi'</span>, opt, <span class="ys">400</span>, <span class="ys">100</span>)
+
+  tahmin := model.Tahmin(X)
+  isabet := <span class="ys">0</span>
+  <span class="ys">0</span>'dan <span class="ys">199</span>'a <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">eğer</span> (tahmin[i, <span class="ys">0</span>] &gt; <span class="ys">0.5</span>) = (etiket[i][<span class="ys">0</span>] = <span class="ys">1</span>) <span class="ya">ise</span> isabet := isabet + <span class="ys">1</span>
+  yaz(<span class="ym">'Eğitim doğruluğu: %'</span> + isabet / <span class="ys">2</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'Parametre sayısı: '</span> + model.ParametreSayısı, <span class="ys">1</span>)
+
+  yaz(<span class="ym">'Yeni noktalar:'</span>, <span class="ys">1</span>)
+  deneme := [[<span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0.5</span>, <span class="ys">0.5</span>], [<span class="ys">0.9</span>, <span class="ys">0</span>], [<span class="ys">1.2</span>, <span class="ys">0</span>], [<span class="ys">1.5</span>, <span class="ys">1.5</span>]]
+  tahmin := model.Tahmin(Tensör(deneme))
+  <span class="ys">0</span>'dan <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'  {}  içeride olma olasılığı {:.2}'</span>, deneme[i], tahmin[i, <span class="ys">0</span>]), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>  Epok     1/400   kayıp = 0.564626
+  Epok   100/400   kayıp = 0.021568
+  Epok   200/400   kayıp = 0.006376
+  Epok   300/400   kayıp = 0.003043
+  Epok   400/400   kayıp = 0.001746
+Eğitim doğruluğu: %100.0
+Parametre sayısı: 65
+Yeni noktalar:
+  [0, 0]  içeride olma olasılığı 1.00
+  [0.5, 0.5]  içeride olma olasılığı 1.00
+  [0.9, 0]  içeride olma olasılığı 0.31
+  [1.2, 0]  içeride olma olasılığı 0.00
+  [1.5, 1.5]  içeride olma olasılığı 0.00</code></pre></div>
+<p><strong>Ne öğrendik.</strong> 65 ağırlıklı küçük bir ağ, kimse ona çember formülünü söylemeden eğitim noktalarının hepsini doğru sınıflandırdı. Ama <code>[0.9, 0]</code> noktasına dikkat etmekte yarar vardır: nokta aslında içeridedir, ağ ise %31 der. Eğitim doğruluğunun %100 olması modelin kusursuz olduğu anlamına gelmez. Sınıra yakın bölgede az örnek vardı ve ağ sınırı biraz içeriden çizdi. Gerçek başarıyı her zaman ayrı tutulmuş bir test kümesiyle ölçmek gerekir.</p>
+<p><strong>Alıştırma.</strong> Gizli katmanı <code>Yoğun(2, 2, 'relu')</code> yapınız. İki nöron bir çember çizmeye yetiyor mu? Sonra 200 yerine 1000 nokta kullanıp <code>[0.9, 0]</code> tahmininin nasıl değiştiğine bakınız.</p>
+<h3 id="evrişimli-sinir-ağı-cnn">17. Evrişimli sinir ağı (CNN)</h3>
+<p><strong>Fikir.</strong> Bir resimde “kenar” nerede olursa olsun kenardır. CNN bu yüzden her yerde aynı küçük filtreyi kullanır: filtre resmin üzerinde kaydırılır ve her konumda altındaki yamayla çarpılıp toplanır. Sonuç bir öznitelik haritasıdır: filtrenin aradığı desen nerede varsa orada büyük değer çıkar. Havuzlama bu haritayı küçültür. Gerçek ağlarda filtreler elle seçilmez, veriden öğrenilir.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mo>*</mo><mi>F</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><munder><mo>∑</mo><mi>a</mi></munder><munder><mo>∑</mo><mi>b</mi></munder><mi>R</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo>+</mo><mi>a</mi><mo>,</mo><mspace width="0.167em"></mspace><mi>j</mi><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>⋅</mo><mi>F</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">(R * F)[i, j] = \sum_a \sum_b R[i + a,\, j + b] \cdot F[a, b]</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> EvrişimliAğ
+<span class="yy">{ Evrişimli sinir ağı (CNN) iki temel işlem üzerine kurulur:
+  1) Evrişim: küçük bir filtre (çekirdek) görüntünün üzerinde kaydırılır; her konumda filtre ile altındaki
+     yama çarpılıp toplanır. Aynı filtre her yerde kullanıldığı için desen nerede olursa olsun bulunur.
+  2) Havuzlama: harita küçük bloklara bölünür, her bloktan en büyük değer alınır.
+  Bölüm A elle seçilmiş bir kenar filtresini uygular. Bölüm B bir filtreyi veriden öğrenir:
+  yamaları bir matrisin satırlarına dizersek evrişim tek bir matris çarpımına dönüşür (yama @ filtre). }</span>
+<span class="ya">kullan</span> YZ
+
+<span class="ya">değişken</span>
+  resim, harita, havuz, filtre: <span class="ya">ondalık</span> dizisi dizisi
+  sinyal, hedef, yama: <span class="ya">ondalık</span> dizisi
+  yamalar: <span class="ya">liste</span>
+  P, H, w: <span class="ya">tensör</span>
+  opt: <span class="ya">herhangi</span>
+  kayıp: <span class="ya">tensör</span>
+  i, adım: <span class="ya">tamsayı</span>
+
+<span class="ya">fonksiyon</span> Evrişim(R, F: <span class="ya">ondalık</span> dizisi dizisi): <span class="ya">ondalık</span> dizisi dizisi
+<span class="ya">değişken</span> i, j, a, b: <span class="ya">tamsayı</span>; satır: <span class="ya">ondalık</span> dizisi; t: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sonuç := []
+  <span class="ys">0</span>'dan Uzunluk(R) - Uzunluk(F)'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    satır := []
+    <span class="ys">0</span>'dan Uzunluk(R[<span class="ys">0</span>]) - Uzunluk(F[<span class="ys">0</span>])'a <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+    <span class="ya">başla</span>
+      t := <span class="ys">0</span>
+      <span class="ys">0</span>'dan Uzunluk(F) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> a <span class="ya">için</span>
+        <span class="ys">0</span>'dan Uzunluk(F[<span class="ys">0</span>]) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> b <span class="ya">için</span>
+          t := t + R[i + a][j + b] * F[a][b]
+      satır.Ekle(t)
+    <span class="ya">bitir</span>
+    sonuç.Ekle(satır)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Göster(M: <span class="ya">ondalık</span> dizisi dizisi)
+<span class="ya">değişken</span> s: <span class="ya">ondalık</span> dizisi
+<span class="ya">başla</span>
+  M <span class="ya">içindeki</span> <span class="ya">her</span> s <span class="ya">için</span>
+    yaz(<span class="ym">'  '</span> + Birleştir(Eşle(s, <span class="ya">fonksiyon</span>(v: <span class="ya">ondalık</span>) =&gt; Biçimle(<span class="ym">'{:4.0}'</span>, v)), <span class="ym">' '</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  yaz(<span class="ym">'--- A) Hazır filtreyle dikey kenar bulma ---'</span>, <span class="ys">1</span>)
+  <span class="yy">{ 6×6 gri tonlu resim: solu koyu (0), sağı açık (9) }</span>
+  resim := []
+  <span class="ys">1</span>'den <span class="ys">6</span>'ya <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> resim.Ekle([<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">9</span>, <span class="ys">9</span>, <span class="ys">9</span>, <span class="ys">9</span>])
+  filtre := [[-<span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>], [-<span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>], [-<span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>]]     <span class="yy">{ soldan sağa parlaklık artışına tepki verir }</span>
+  harita := Evrişim(resim, filtre)
+  yaz(<span class="ym">'Öznitelik haritası (4×4):'</span>, <span class="ys">1</span>); Göster(harita)
+  <span class="yy">{ 2×2 en büyük değer havuzlaması }</span>
+  havuz := []
+  <span class="ys">0</span>'dan <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    havuz.Ekle([Maks([harita[<span class="ys">2</span>*i][<span class="ys">0</span>], harita[<span class="ys">2</span>*i][<span class="ys">1</span>], harita[<span class="ys">2</span>*i+<span class="ys">1</span>][<span class="ys">0</span>], harita[<span class="ys">2</span>*i+<span class="ys">1</span>][<span class="ys">1</span>]]),
+                Maks([harita[<span class="ys">2</span>*i][<span class="ys">2</span>], harita[<span class="ys">2</span>*i][<span class="ys">3</span>], harita[<span class="ys">2</span>*i+<span class="ys">1</span>][<span class="ys">2</span>], harita[<span class="ys">2</span>*i+<span class="ys">1</span>][<span class="ys">3</span>]])])
+  yaz(<span class="ym">'Havuzlamadan sonra (2×2):'</span>, <span class="ys">1</span>); Göster(havuz)
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'--- B) Filtreyi veriden öğrenmek ---'</span>, <span class="ys">1</span>)
+  Tohum(<span class="ys">3</span>)
+  sinyal := []
+  <span class="ys">1</span>'den <span class="ys">30</span>'a <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> sinyal.Ekle(Rastgele(<span class="ys">10</span>))
+  <span class="yy">{ Gizli kural: hedef = sinyalin [1, -2, 1] filtresiyle evrişimi. Ağ bu filtreyi bilmiyor. }</span>
+  hedef := []; yamalar := []
+  <span class="ys">0</span>'dan Uzunluk(sinyal) - <span class="ys">3</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yama := [sinyal[i], sinyal[i + <span class="ys">1</span>], sinyal[i + <span class="ys">2</span>]]
+    yamalar.Ekle(yama)
+    hedef.Ekle(<span class="ys">1</span> * yama[<span class="ys">0</span>] - <span class="ys">2</span> * yama[<span class="ys">1</span>] + <span class="ys">1</span> * yama[<span class="ys">2</span>])
+  <span class="ya">bitir</span>
+  P := Tensör(yamalar)                        <span class="yy">{ 28 × 3: her satır bir yama }</span>
+  H := Tensör(hedef)
+  w := RastgeleTensör(<span class="ys">3</span>, <span class="ya">boş</span>, <span class="ys">0.5</span>, <span class="ya">doğru</span>)     <span class="yy">{ öğrenilecek filtre }</span>
+  opt := Adam([w], <span class="ys">0.1</span>)
+  <span class="ys">1</span>'den <span class="ys">300</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    kayıp := OKH(P @ w, H)
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">100</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:3}: kayıp {:9.4}  filtre ({:.3}, {:.3}, {:.3})'</span>, adım, kayıp.Değer, w[<span class="ys">0</span>], w[<span class="ys">1</span>], w[<span class="ys">2</span>]), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>--- A) Hazır filtreyle dikey kenar bulma ---
+Öznitelik haritası (4×4):
+    27   27    0    0
+    27   27    0    0
+    27   27    0    0
+    27   27    0    0
+Havuzlamadan sonra (2×2):
+    27    0
+    27    0
+
+--- B) Filtreyi veriden öğrenmek ---
+Adım   1: kayıp   98.3248  filtre (0.147, 0.525, -0.366)
+Adım 100: kayıp    0.0003  filtre (0.999, -1.997, 0.998)
+Adım 200: kayıp    0.0000  filtre (1.000, -2.000, 1.000)
+Adım 300: kayıp    0.0000  filtre (1.000, -2.000, 1.000)</code></pre></div>
+<p><strong>Ne öğrendik.</strong> A bölümünde filtre, koyudan açığa geçilen sütunlarda 27, düz bölgelerde 0 verdi; havuzlamadan sonra bile “kenar solda” bilgisi korunuyor. B bölümü CNN’lerin asıl gücünü gösteriyor: rastgele başlayan filtre, yalnızca girdi–çıktı örneklerine bakarak gizli kuralı <code>[1, -2, 1]</code> tam olarak buldu. Gerçek bir CNN aynı şeyi yüzlerce filtre ve birkaç katmanla yapar. İlk katmanlar kenarları, sonrakiler gözler ve tekerlekler gibi daha karmaşık desenleri öğrenir.</p>
+<p><strong>Alıştırma.</strong> A bölümünde filtreyi yatay kenar bulacak biçimde (<code>[[-1, -1, -1], [0, 0, 0], [1, 1, 1]]</code>) değiştiriniz. Bu resimde ne çıkar, neden? Sonra üst yarısı koyu, alt yarısı açık bir resim kurup tekrar deneyiniz.</p>
+<h3 id="yinelemeli-sinir-ağı-rnn">18. Yinelemeli sinir ağı (RNN)</h3>
+<p><strong>Fikir.</strong> Cümleler, ses ve fiyat grafikleri birer dizidir; anlamları sıraya bağlıdır. RNN diziyi öğe öğe okur ve her adımda bir “gizli durum” günceller. Bu durum, ağın o ana kadar okuduklarından aklında tuttuğu özettir. Her adımda aynı ağırlıklar kullanılır, bu yüzden ağ her uzunlukta diziyi okuyabilir.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>t</mi></msub><mo>=</mo><mo>tanh</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>t</mi></msub><msub><mi>W</mi><mi>x</mi></msub><mo>+</mo><msub><mi>h</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><msub><mi>W</mi><mi>h</mi></msub><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mi>h</mi><mi>T</mi></msub><msub><mi>W</mi><mi>c</mi></msub><mo>+</mo><msub><mi>b</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">h_t = \tanh(x_t W_x + h_{t-1} W_h + b), \qquad \hat{y} = h_T W_c + b_c</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> YinelemeliAğ
+<span class="yy">{ Yinelemeli sinir ağı (RNN): bir diziyi öğe öğe okur ve bir &quot;gizli durum&quot; h taşır.
+  Her adımda   h ← tanh(x_t · Wx + h @ Wh + b)   hesaplanır; h, o ana kadar okunanların özetidir.
+  Dizinin sonunda çıktı h'den üretilir:   ŷ = h @ Wç + bç.
+  Görev: 5 sayılık bir diziyi oku, sonunda İLK sayıyı söyle. Bunu yapabilmesi için ağın
+  ilk sayıyı 4 adım boyunca gizli durumunda saklamayı öğrenmesi gerekir. }</span>
+<span class="ya">kullan</span> YZ
+
+<span class="ya">sabit</span>
+  N: <span class="ya">tamsayı</span> = <span class="ys">64</span>          <span class="yy">{ örnek sayısı }</span>
+  UZUNLUK: <span class="ya">tamsayı</span> = <span class="ys">5</span>     <span class="yy">{ dizi uzunluğu }</span>
+  GİZLİ: <span class="ya">tamsayı</span> = <span class="ys">8</span>       <span class="yy">{ gizli durum boyutu }</span>
+
+<span class="ya">değişken</span>
+  diziler: <span class="ya">ondalık</span> dizisi dizisi
+  sütun: <span class="ya">liste</span>
+  Xt: <span class="ya">liste</span>                       <span class="yy">{ Xt[t]: tüm örneklerin t. öğesi, N × 1 tensör }</span>
+  hedef: <span class="ya">tensör</span>
+  Wx, Wh, b, Wç, bç: <span class="ya">tensör</span>
+  opt: <span class="ya">herhangi</span>
+  kayıp, tahmin: <span class="ya">tensör</span>
+  i, t, adım: <span class="ya">tamsayı</span>
+
+<span class="ya">fonksiyon</span> İleri(girdiler: <span class="ya">liste</span>; n: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+<span class="ya">değişken</span> h: <span class="ya">tensör</span>; t: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  h := Sıfırlar(n, GİZLİ)
+  <span class="ys">0</span>'dan UZUNLUK - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+    h := (girdiler[t] @ Wx + h @ Wh + b).Tanh
+  <span class="ya">dön</span> h @ Wç + bç
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Sütunlar(D: <span class="ya">ondalık</span> dizisi dizisi): <span class="ya">liste</span>
+<span class="ya">değişken</span> t: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sonuç := []
+  <span class="ys">0</span>'dan UZUNLUK - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+    sonuç.Ekle(Tensör(Eşle(D, <span class="ya">fonksiyon</span>(d: <span class="ya">ondalık</span> dizisi) =&gt; [d[t]])))
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">11</span>)
+  diziler := []
+  <span class="ys">1</span>'den N'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sütun := []
+    <span class="ys">1</span>'den UZUNLUK'a <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span> sütun.Ekle(Rastgele(<span class="ys">200</span>) / <span class="ys">100</span> - <span class="ys">1</span>)   <span class="yy">{ [-1, 1) }</span>
+    diziler.Ekle(sütun)
+  <span class="ya">bitir</span>
+  Xt := Sütunlar(diziler)
+  hedef := Tensör(Eşle(diziler, <span class="ya">fonksiyon</span>(d: <span class="ya">ondalık</span> dizisi) =&gt; [d[<span class="ys">0</span>]]))
+
+  Wx := RastgeleTensör(<span class="ys">1</span>, GİZLİ, <span class="ys">0.5</span>, <span class="ya">doğru</span>)
+  Wh := RastgeleTensör(GİZLİ, GİZLİ, <span class="ys">0.3</span>, <span class="ya">doğru</span>)
+  b  := Sıfırlar(GİZLİ, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+  Wç := RastgeleTensör(GİZLİ, <span class="ys">1</span>, <span class="ys">0.5</span>, <span class="ya">doğru</span>)
+  bç := Sıfırlar(<span class="ys">1</span>, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+  opt := Adam([Wx, Wh, b, Wç, bç], <span class="ys">0.02</span>)
+
+  <span class="ys">1</span>'den <span class="ys">600</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    kayıp := OKH(İleri(Xt, N), hedef)
+    kayıp.GeriYay          <span class="yy">{ zaman içinde geri yayılım: hata 5 adımın hepsine geri dağıtılır }</span>
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">150</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:3}: kayıp {:.4}'</span>, adım, kayıp.Değer), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  yaz(<span class="ym">'Hiç görülmemiş diziler:'</span>, <span class="ys">1</span>)
+  diziler := [[<span class="ys">0.8</span>, -<span class="ys">0.3</span>, <span class="ys">0.5</span>, -<span class="ys">0.9</span>, <span class="ys">0.1</span>], [-<span class="ys">0.6</span>, <span class="ys">0.9</span>, <span class="ys">0.9</span>, <span class="ys">0.2</span>, -<span class="ys">0.4</span>], [<span class="ys">0.1</span>, <span class="ys">0.7</span>, -<span class="ys">0.8</span>, <span class="ys">0.6</span>, <span class="ys">0.9</span>]]
+  tahmin := İleri(Sütunlar(diziler), <span class="ys">3</span>)
+  <span class="ys">0</span>'dan <span class="ys">2</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'  {}  →  ağın cevabı {:.2}  (doğrusu {})'</span>, diziler[i], tahmin[i, <span class="ys">0</span>], diziler[i][<span class="ys">0</span>]), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Adım   1: kayıp 0.2896
+Adım 150: kayıp 0.0004
+Adım 300: kayıp 0.0012
+Adım 450: kayıp 0.0006
+Adım 600: kayıp 0.0001
+Hiç görülmemiş diziler:
+  [0.8, -0.3, 0.5, -0.9, 0.1]  →  ağın cevabı 0.79  (doğrusu 0.8)
+  [-0.6, 0.9, 0.9, 0.2, -0.4]  →  ağın cevabı -0.59  (doğrusu -0.6)
+  [0.1, 0.7, -0.8, 0.6, 0.9]  →  ağın cevabı 0.11  (doğrusu 0.1)</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Ağ ilk sayıyı dört adım boyunca “hafızasında” taşımayı öğrendi ve hiç görmediği dizilerde de doğru cevap verdi. Kaybın 300. adımda kısa süre yükselmesi normaldir: Adam bazen bir vadiden taşar, sonra geri döner. Düz RNN’lerin bilinen zayıflığı uzun dizilerdir. Hata geriye doğru yayılırken her adımda küçülür (kaybolan gradyan) ve ağ uzak geçmişi unutur. LSTM ve GRU hücreleri bu sorun için geliştirildi.</p>
+<p><strong>Alıştırma.</strong> <code>UZUNLUK</code> sabitini 15 yapınız. Kayıp aynı hızla düşüyor mu? Sonra görevi “dizinin toplamını söyle” olarak değiştiriniz; hangisi RNN için daha kolay, neden?</p>
+<h3 id="otokodlayıcı">19. Otokodlayıcı</h3>
+<p><strong>Fikir.</strong> Otokodlayıcı girdiyi çıktıda yeniden üretmeyi öğrenir; hedef girdinin kendisi olduğu için etiket gerekmez. İşin püf noktası ortadaki dar boğazdır. Kodlayıcı girdiyi birkaç sayılık bir koda sıkıştırır, çözücü bu koddan girdiyi geri kurar. Boğazdan sığmak için ağ verinin özünü bulmak zorundadır. Bu yüzden otokodlayıcılar sıkıştırmada, gürültü temizlemede ve “bu örnek tuhaf” demek gereken anomali tespitinde kullanılır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>x</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><munder><mo>min</mo><mrow><mi>f</mi><mo>,</mo><mspace width="0.167em"></mspace><mi>g</mi></mrow></munder><mspace width="0.278em"></mspace><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mover><mi>x</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">z = f(x), \qquad \hat{x} = g(z), \qquad \min_{f,\,g} \; L(x, \hat{x})</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Otokodlayıcı
+<span class="yy">{ Otokodlayıcı: girdiyi kendisine kopyalamayı öğrenen bir ağ — ama ortada dar bir boğaz vardır.
+  Kodlayıcı girdiyi küçük bir koda sıkıştırır, çözücü koddan girdiyi geri kurar.
+  Etiket gerekmez: hedef girdinin kendisidir. Boğazdan geçebilmek için ağ verinin özünü yakalamak zorundadır.
+  Klasik deney: 8 farklı &quot;tek-sıcak&quot; vektörü 3 sayıya sıkıştırmak (8 = 2³, yani ikili kod yeterli). }</span>
+<span class="ya">kullan</span> YZ
+
+<span class="ya">değişken</span>
+  X, kod, geri: <span class="ya">tensör</span>
+  kodlayıcı, çözücü, opt: <span class="ya">herhangi</span>
+  kayıp: <span class="ya">tensör</span>
+  i, adım, isabet: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">21</span>)
+  X := BirSıcak([<span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">2</span>, <span class="ys">3</span>, <span class="ys">4</span>, <span class="ys">5</span>, <span class="ys">6</span>, <span class="ys">7</span>], <span class="ys">8</span>)       <span class="yy">{ 8 × 8 birim matris }</span>
+  kodlayıcı := Ardışık([Yoğun(<span class="ys">8</span>, <span class="ys">3</span>, <span class="ym">'sigmoid'</span>)])
+  çözücü := Ardışık([Yoğun(<span class="ys">3</span>, <span class="ys">8</span>)])
+  opt := Adam(kodlayıcı.Parametreler + çözücü.Parametreler, <span class="ys">0.1</span>)
+  <span class="ys">1</span>'den <span class="ys">1500</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(çözücü.İleri(kodlayıcı.İleri(X)), X)   <span class="yy">{ ÇaprazEntropi softmaksı kendisi uygular }</span>
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">500</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:4}: yeniden kurma kaybı {:.4}'</span>, adım, kayıp.Değer), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  kod := kodlayıcı.İleri(X)
+  geri := Softmaks(çözücü.İleri(kod))
+  yaz(<span class="ym">'Girdi  →  3 sayılık kod        →  geri kurulan'</span>, <span class="ys">1</span>)
+  isabet := <span class="ys">0</span>
+  <span class="ys">0</span>'dan <span class="ys">7</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yaz(Biçimle(<span class="ym">'  {}    →  ({:.2}, {:.2}, {:.2})  →  {}'</span>, Birleştir(Eşle(Aralık(<span class="ys">8</span>), <span class="ya">fonksiyon</span>(k: <span class="ya">tamsayı</span>) =&gt; <span class="ya">eğer</span> k = i <span class="ya">ise</span> <span class="ym">'1'</span> <span class="ya">değilse</span> <span class="ym">'0'</span>), <span class="ym">''</span>),
+      kod[i, <span class="ys">0</span>], kod[i, <span class="ys">1</span>], kod[i, <span class="ys">2</span>], ArgMaks(geri)[i]), <span class="ys">1</span>)
+    <span class="ya">eğer</span> ArgMaks(geri)[i] = i <span class="ya">ise</span> isabet := isabet + <span class="ys">1</span>
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Doğru geri kurulan: '</span> + isabet + <span class="ym">' / 8'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Adım    1: yeniden kurma kaybı 2.1617
+Adım  500: yeniden kurma kaybı 0.0050
+Adım 1000: yeniden kurma kaybı 0.0015
+Adım 1500: yeniden kurma kaybı 0.0007
+Girdi  →  3 sayılık kod        →  geri kurulan
+  10000000    →  (0.01, 0.35, 0.34)  →  0
+  01000000    →  (0.01, 1.00, 1.00)  →  1
+  00100000    →  (0.00, 0.00, 1.00)  →  2
+  00010000    →  (0.01, 1.00, 0.00)  →  3
+  00001000    →  (1.00, 0.01, 0.99)  →  4
+  00000100    →  (0.99, 0.99, 0.01)  →  5
+  00000010    →  (0.99, 0.99, 0.98)  →  6
+  00000001    →  (0.89, 0.01, 0.01)  →  7
+Doğru geri kurulan: 8 / 8</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Ağ, kimse ona öğretmeden 3 bitlik ikili koda çok benzeyen bir sıkıştırma icat etti: kodların çoğu 0 ve 1’lerden oluşuyor. Sekizinci köşe (0, 0, 0) yerine ilk vektör için (0,01, 0,35, 0,34) gibi bir ara nokta seçti; çözücü bunu da ayırt edebildiği için bir sorun yoktur. Bu örnekte kodlayıcı ve çözücü iki ayrı <code>Ardışık</code> modeldir. Böylece eğitimden sonra kodlayıcıyı tek başına kullanıp her girdinin kodunu alabiliyoruz.</p>
+<p><strong>Alıştırma.</strong> Boğazı 2 nöron yapınız (<code>Yoğun(8, 2, 'sigmoid')</code> ve <code>Yoğun(2, 8)</code>). 8 vektörün hepsi yine geri kurulabiliyor mu? Kodlar nasıl yerleşiyor?</p>
+<h3 id="transformer-ve-dikkat-mekanizması">20. Transformer ve dikkat mekanizması</h3>
+<p><strong>Fikir.</strong> RNN bir cümleyi sırayla okur ve uzak kelimeleri unutabilir. Dikkat mekanizmasında ise her kelime cümledeki bütün kelimelere aynı anda bakar ve hangisine ne kadar önem vereceğine kendisi karar verir. Her kelime üç vektör üretir: sorgu (“ne arıyorum?”), anahtar (“bende ne var?”) ve değer (“ne aktarırım?”). Sorgusu bir anahtara ne kadar benzerse o kelimenin değerinden o kadar çok pay alır. ChatGPT ve Claude gibi dil modellerinin temelindeki Transformer, bu işlemi katman katman yığarak kurulur.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">k</mi><mi mathvariant="normal">k</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">f</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">k</mi><mi mathvariant="normal">s</mi></mrow><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>Q</mi><msup><mi>K</mi><mi>⊤</mi></msup></mrow><msqrt><mi>d</mi></msqrt></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">\mathrm{Dikkat}(Q, K, V) = \mathrm{softmaks}\!\left(\frac{Q K^\top}{\sqrt{d}}\right) V</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> DikkatMekanizması
+<span class="yy">{ Transformer'ların kalbi: ölçeklenmiş nokta çarpımı dikkati.
+  Her kelime üç vektör üretir: Sorgu (Q: &quot;ne arıyorum?&quot;), Anahtar (K: &quot;bende ne var?&quot;), Değer (V: &quot;ne aktarırım?&quot;).
+     ağırlıklar = softmaks(Q Kᵀ / √d)      çıktı = ağırlıklar @ V
+  Bir kelimenin sorgusu hangi kelimenin anahtarına benziyorsa, o kelimenin değerinden daha çok pay alır.
+  Böylece her kelime cümlenin geri kalanından bağlamını toplar.
+  Bölüm A: elle seçilmiş küçük vektörlerle &quot;o&quot; zamirinin kime baktığını görelim.
+  Bölüm B: Q ve K izdüşümlerini veriden öğrenerek dikkatin bir görevi çözmesini sağlayalım. }</span>
+<span class="ya">kullan</span> YZ, Matematik
+
+<span class="ya">değişken</span>
+  kelimeler: <span class="ya">metin</span> dizisi
+  E, Wq, Wk, Q, K, V, A: <span class="ya">tensör</span>
+  i, adım: <span class="ya">tamsayı</span>
+  kayıp: <span class="ya">tensör</span>
+  opt: <span class="ya">herhangi</span>
+  girdi, hedef, çıkış: <span class="ya">tensör</span>
+
+<span class="ya">fonksiyon</span> Dikkat(Q, K: <span class="ya">tensör</span>): <span class="ya">tensör</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> Softmaks(Q @ K.T / Kök(K.Şekil[<span class="ys">1</span>]))
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  yaz(<span class="ym">'--- A) &quot;kedi sütü içti çünkü o acıkmıştı&quot; ---'</span>, <span class="ys">1</span>)
+  kelimeler := [<span class="ym">'kedi'</span>, <span class="ym">'sütü'</span>, <span class="ym">'içti'</span>, <span class="ym">'çünkü'</span>, <span class="ym">'o'</span>, <span class="ym">'acıkmıştı'</span>]
+  <span class="yy">{ 4 boyutlu temsiller: [canlı mı, nesne mi, eylem mi, zamir mi] }</span>
+  E := Tensör([[<span class="ys">1.0</span>, <span class="ys">0.0</span>, <span class="ys">0.0</span>, <span class="ys">0.0</span>],
+               [<span class="ys">0.0</span>, <span class="ys">1.0</span>, <span class="ys">0.0</span>, <span class="ys">0.0</span>],
+               [<span class="ys">0.0</span>, <span class="ys">0.2</span>, <span class="ys">1.0</span>, <span class="ys">0.0</span>],
+               [<span class="ys">0.0</span>, <span class="ys">0.0</span>, <span class="ys">0.3</span>, <span class="ys">0.0</span>],
+               [<span class="ys">0.3</span>, <span class="ys">0.0</span>, <span class="ys">0.0</span>, <span class="ys">1.0</span>],
+               [<span class="ys">0.4</span>, <span class="ys">0.0</span>, <span class="ys">1.0</span>, <span class="ys">0.0</span>]])
+  <span class="yy">{ Elle kurulmuş izdüşümler: zamir özelliği olan kelimeler &quot;canlı&quot; bir şey arasın }</span>
+  Wq := Tensör([[<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">0</span>], [<span class="ys">3</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>]])
+  Wk := Tensör([[<span class="ys">3</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>]])
+  Q := E @ Wq
+  K := E @ Wk
+  A := Dikkat(Q, K)
+  yaz(<span class="ym">'Dikkat ağırlıkları (satır: bakan kelime, sütun: bakılan kelime)'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'            '</span> + Birleştir(Eşle(kelimeler, <span class="ya">fonksiyon</span>(k: <span class="ya">metin</span>) =&gt; Biçimle(<span class="ym">'{:10}'</span>, k)), <span class="ym">''</span>), <span class="ys">1</span>)
+  <span class="ys">0</span>'dan <span class="ys">5</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'{:11} '</span>, kelimeler[i]) + Birleştir(Eşle(Aralık(<span class="ys">6</span>), <span class="ya">fonksiyon</span>(k: <span class="ya">tamsayı</span>) =&gt; Biçimle(<span class="ym">'{:10.2}'</span>, A[i, k])), <span class="ym">''</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'&quot;o&quot; en çok şuna bakıyor: '</span> + kelimeler[ArgMaks(A.Satır(<span class="ys">4</span>))], <span class="ys">1</span>)
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'--- B) Dikkati öğrenmek: &quot;her konum bir sonraki konuma baksın&quot; ---'</span>, <span class="ys">1</span>)
+  <span class="yy">{ 4 konum; her konumun temsili kendi konumunun tek-sıcak vektörü. Hedef: her konum,
+    bir sonraki konumun değerini getirsin (sonuncu başa dönsün). Wq ve Wk rastgele başlar. }</span>
+  Tohum(<span class="ys">8</span>)
+  girdi := BirSıcak([<span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">2</span>, <span class="ys">3</span>], <span class="ys">4</span>)
+  <span class="yy">{ V'nin her sütunu ayrı bir eğitim örneği (aynı konumlar, farklı değerler).
+    Tek örnekle ağ &quot;hileli&quot; karışımlar bulabilir; çeşitli örnekler gerçek kuralı zorlar. }</span>
+  V := Tensör([[<span class="ys">5</span>, <span class="ys">2</span>, <span class="ys">0</span>], [<span class="ys">1</span>, <span class="ys">8</span>, <span class="ys">4</span>], [<span class="ys">7</span>, <span class="ys">3</span>, <span class="ys">9</span>], [<span class="ys">3</span>, <span class="ys">6</span>, <span class="ys">1</span>]])
+  hedef := Tensör([[<span class="ys">1</span>, <span class="ys">8</span>, <span class="ys">4</span>], [<span class="ys">7</span>, <span class="ys">3</span>, <span class="ys">9</span>], [<span class="ys">3</span>, <span class="ys">6</span>, <span class="ys">1</span>], [<span class="ys">5</span>, <span class="ys">2</span>, <span class="ys">0</span>]])
+  Wq := RastgeleTensör(<span class="ys">4</span>, <span class="ys">4</span>, <span class="ys">0.5</span>, <span class="ya">doğru</span>)
+  Wk := RastgeleTensör(<span class="ys">4</span>, <span class="ys">4</span>, <span class="ys">0.5</span>, <span class="ya">doğru</span>)
+  opt := Adam([Wq, Wk], <span class="ys">0.1</span>)
+  <span class="ys">1</span>'den <span class="ys">300</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad
+    çıkış := Dikkat(girdi @ Wq, girdi @ Wk) @ V
+    kayıp := OKH(çıkış, hedef)
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">100</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:3}: kayıp {:.4}  1. örneğin çıktıları {}'</span>, adım, kayıp.Değer,
+        Eşle(Aralık(<span class="ys">4</span>), <span class="ya">fonksiyon</span>(k: <span class="ya">tamsayı</span>) =&gt; Yuvarla(çıkış[k, <span class="ys">0</span>], <span class="ys">2</span>))), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  A := Dikkat(girdi @ Wq, girdi @ Wk)
+  yaz(<span class="ym">'1. örneğin hedefi [1, 7, 3, 5]. Öğrenilen dikkat ağırlıkları:'</span>, <span class="ys">1</span>)
+  <span class="ys">0</span>'dan <span class="ys">3</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Biçimle(<span class="ym">'  konum {} → '</span>, i) + Birleştir(Eşle(Aralık(<span class="ys">4</span>), <span class="ya">fonksiyon</span>(k: <span class="ya">tamsayı</span>) =&gt; Biçimle(<span class="ym">'{:6.2}'</span>, A[i, k])), <span class="ym">''</span>), <span class="ys">1</span>)
+  <span class="yy">{ Öğrenilen şey değerler değil bakılacak yer: yepyeni değerlerle de çalışır }</span>
+  V := Tensör([[<span class="ys">10.0</span>], [<span class="ys">20.0</span>], [<span class="ys">30.0</span>], [<span class="ys">40.0</span>]])
+  çıkış := A @ V
+  yaz(<span class="ym">'Yeni değerler [10, 20, 30, 40] → '</span> + Eşle(Aralık(<span class="ys">4</span>), <span class="ya">fonksiyon</span>(k: <span class="ya">tamsayı</span>) =&gt; Yuvarla(çıkış[k, <span class="ys">0</span>], <span class="ys">1</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>--- A) &quot;kedi sütü içti çünkü o acıkmıştı&quot; ---
+Dikkat ağırlıkları (satır: bakan kelime, sütun: bakılan kelime)
+                  kedi      sütü      içti     çünkü         o acıkmıştı
+       kedi       0.17      0.17      0.17      0.17      0.17      0.17
+       sütü       0.17      0.17      0.17      0.17      0.17      0.17
+       içti       0.13      0.13      0.22      0.16      0.13      0.22
+      çünkü       0.16      0.16      0.18      0.16      0.16      0.18
+          o       0.87      0.01      0.01      0.01      0.04      0.06
+  acıkmıştı       0.13      0.13      0.22      0.16      0.13      0.22
+&quot;o&quot; en çok şuna bakıyor: kedi
+
+--- B) Dikkati öğrenmek: &quot;her konum bir sonraki konuma baksın&quot; ---
+Adım   1: kayıp 7.1553  1. örneğin çıktıları [3.73, 4.06, 3.93, 3.99]
+Adım 100: kayıp 0.0001  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+Adım 200: kayıp 0.0000  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+Adım 300: kayıp 0.0000  1. örneğin çıktıları [1.0, 7.0, 3.0, 5.0]
+1. örneğin hedefi [1, 7, 3, 5]. Öğrenilen dikkat ağırlıkları:
+  konum 0 →   0.00  1.00  0.00  0.00
+  konum 1 →   0.00  0.00  1.00  0.00
+  konum 2 →   0.01  0.01  0.00  0.99
+  konum 3 →   1.00  0.00  0.00  0.00
+Yeni değerler [10, 20, 30, 40] → [20.0, 30.0, 39.7, 10.0]</code></pre></div>
+<p><strong>Ne öğrendik.</strong> A bölümünde “o” zamiri ağırlığının %87’sini “kedi”ye verdi, yani kimin acıktığını bağlamdan çıkardı. Sorgusu boş olan kelimeler (kedi, sütü) herkese eşit (1/6 ≈ 0,17) baktı. B bölümünde ağ, rastgele başlayan Wq ve Wk’den “bir sonrakine bak” desenini öğrendi. Öğrenilen şey değerler değil nereye bakılacağı olduğu için desen yepyeni değerlerle de çalışıyor. Programdaki yoruma da dikkat etmekte yarar vardır: tek bir örnekle eğitilen ağ, hedefi tutturan ama genellemeyen “hileli” karışımlar bulabilir. V’yi tek sütuna indirip deneyerek bunu kendiniz görebilirsiniz. Gerçek bir Transformer bu işlemi birden fazla “kafa” ile paralel yapar, araya Yoğun katmanlar koyar ve onlarca kez üst üste yığar.</p>
+<p><strong>Alıştırma.</strong> B bölümünde hedefi “bir önceki konuma bak” olarak değiştiriniz (hedef satırlarını bir aşağı kaydırınız). Ardından V’yi tek sütun <code>[[5], [1], [7], [3]]</code> yapıp eğitiniz. Öğrenilen ağırlıklar ve yeni değerlerle sonuç nasıl değişiyor?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-bolum-3-denetimsiz-ogrenme.html"><small>Önceki</small>Bölüm 3 — Denetimsiz öğrenme</a><a class="sonraki" href="07-ek-a-hangi-algoritma-ne-zaman.html"><small>Sonraki</small>Ek A — Hangi algoritma ne zaman?</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#çok-katmanlı-algılayıcı-sinir-ağı">16. Çok katmanlı algılayıcı (sinir ağı)</a></li><li><a href="#evrişimli-sinir-ağı-cnn">17. Evrişimli sinir ağı (CNN)</a></li><li><a href="#yinelemeli-sinir-ağı-rnn">18. Yinelemeli sinir ağı (RNN)</a></li><li><a href="#otokodlayıcı">19. Otokodlayıcı</a></li><li><a href="#transformer-ve-dikkat-mekanizması">20. Transformer ve dikkat mekanizması</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1861 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yöntem Birimler ve Araçlar Kılavuzu · yontem.pro</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+/* yontem.pro — çevrim içi kitaplar */
+:root {
+  --zemin: #FFFFFF; --zemin2: #F5F7FA; --murekkep: #0F1B2D; --metin: #1E293B; --soluk: #475569;
+  --cizgi: #E3E8EF; --vurgu: #0B7A75; --vurgu-koyu: #07514D; --vurgu-acik: #E7F4F3;
+  --kod-zemin: #0F1B2D; --kod-metin: #E2E8F0; --cikti-zemin: #F5F7FA; --cikti-metin: #1E293B;
+  --ya: #5EEAD4; --ym: #FBBF77; --ys: #F9A8D4; --yy: #94A3B8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --zemin: #0B1320; --zemin2: #111C2E; --murekkep: #F1F5F9; --metin: #D7DEE8; --soluk: #9AA8BA;
+    --cizgi: #22324A; --vurgu: #5EEAD4; --vurgu-koyu: #99F6E4; --vurgu-acik: #12302F;
+    --kod-zemin: #060C16; --cikti-zemin: #111C2E; --cikti-metin: #D7DEE8;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 88px; }
+body { margin: 0; background: var(--zemin); color: var(--metin); font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--vurgu-koyu); }
+a:hover { color: var(--vurgu); }
+h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(--murekkep); letter-spacing: -0.015em; }
+.atla { position: absolute; left: -9999px; }
+.atla:focus { left: 16px; top: 16px; z-index: 10; background: var(--zemin); padding: 8px 12px; }
+
+/* üst menü */
+.ust { position: sticky; top: 0; z-index: 5; background: var(--zemin); border-bottom: 1px solid var(--cizgi); }
+.ust nav { max-width: 1320px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 8px 24px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--murekkep);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21px; }
+.menu { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 15px; font-weight: 500; }
+.menu a { color: var(--soluk); text-decoration: none; padding: 10px 0; }
+.menu a[aria-current="page"], .menu a[aria-current="true"] { color: var(--murekkep); font-weight: 600; }
+.menu a.dugme { background: var(--murekkep); color: var(--zemin); padding: 10px 16px; border-radius: 10px; font-weight: 600; }
+
+/* ortak */
+.tur { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--vurgu-koyu); }
+.eylemler { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.birincil { background: var(--vurgu); color: #fff; text-decoration: none; padding: 13px 20px; border-radius: 11px; font-weight: 600; }
+.birincil:hover { color: #fff; filter: brightness(1.08); }
+@media (prefers-color-scheme: dark) { .birincil, .birincil:hover { color: #06201F; } }
+.pdf { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: var(--soluk);
+  text-decoration: none; padding: 10px 2px; }
+.pdf small { font-size: 13px; color: var(--soluk); }
+.pdf:hover { color: var(--murekkep); }
+.kapak { width: 96px; height: 136px; border-radius: 6px; padding: 12px; display: flex; flex-direction: column;
+  justify-content: space-between; box-shadow: 0 10px 22px -12px rgba(15, 27, 45, 0.55); flex: none; }
+.kapak span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; line-height: 1.2; color: #fff; hyphens: auto; overflow-wrap: anywhere; }
+.kart-kapak { text-decoration: none; }
+.kapak i { display: block; width: 32px; height: 4px; border-radius: 2px; background: #5EEAD4; }
+.kapak.acik { border: 1px solid #CBD5E1; }
+.kapak.acik span { color: #0F1B2D; }
+.kapak.acik i { background: #0B7A75; }
+.kapak.buyuk { width: 180px; height: 256px; padding: 20px; border-radius: 8px; }
+.kapak.buyuk span { font-size: 22px; }
+.kapak.buyuk i { width: 48px; height: 6px; }
+
+/* kitaplık */
+.kitaplik-ana { max-width: 1080px; margin: 0 auto; padding: 64px 24px 88px; }
+.kitaplik-ana h1 { font-size: 48px; line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.03em; }
+.ozet { font-size: 19px; line-height: 1.6; color: var(--soluk); max-width: 640px; margin: 0; }
+.kartlar { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 32px; }
+@media (max-width: 520px) { .kartlar { grid-template-columns: 1fr; } }
+.kart { display: flex; gap: 24px; align-items: flex-start; padding: 24px; border: 1px solid var(--cizgi); border-radius: 16px; }
+.kart h2 { font-size: 22px; margin: 6px 0 8px; line-height: 1.25; }
+.kart h2 a { color: var(--murekkep); text-decoration: none; }
+.kart p { margin: 0 0 16px; color: var(--soluk); font-size: 16px; }
+
+/* kitap ana sayfası */
+.kitap-giris { max-width: 960px; margin: 0 auto; padding: 56px 24px 88px; }
+.kitap-ust { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; padding-bottom: 48px; border-bottom: 1px solid var(--cizgi); }
+.kitap-bilgi { flex: 1 1 360px; min-width: 0; }
+.kitap-bilgi h1 { font-size: 44px; line-height: 1.08; margin: 8px 0 12px; letter-spacing: -0.03em; }
+.yazar { color: var(--soluk); margin: 12px 0 24px; }
+.icindekiler h2 { font-size: 26px; margin: 48px 0 16px; }
+.icindekiler > ol { list-style: none; padding: 0; margin: 0; counter-reset: b; }
+.icindekiler > ol > li { padding: 14px 0; border-bottom: 1px solid var(--cizgi); }
+.icindekiler a.bolum { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--murekkep); text-decoration: none; }
+.icindekiler a.bolum code { font-size: 0.9em; }
+.icindekiler ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 18px; }
+.icindekiler ul a { font-size: 15px; color: var(--soluk); text-decoration: none; }
+.icindekiler ul a:hover { color: var(--vurgu-koyu); text-decoration: underline; }
+
+/* okuma düzeni */
+.okuma { max-width: 1320px; margin: 0 auto; padding: 32px 24px 88px; display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 220px; gap: 48px; align-items: start; }
+.yan, .bu-bolumde { position: sticky; top: 88px; max-height: calc(100vh - 112px); overflow-y: auto; font-size: 14.5px; }
+.yan summary { list-style: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; margin-bottom: 12px; cursor: default; }
+.yan summary::-webkit-details-marker { display: none; }
+.yan summary a { color: var(--murekkep); text-decoration: none; }
+.yan ol, .bu-bolumde ol { list-style: none; margin: 0; padding: 0; }
+.yan li a { display: block; padding: 6px 10px; border-radius: 8px; color: var(--soluk); text-decoration: none; line-height: 1.4; }
+.yan li a:hover { background: var(--zemin2); color: var(--murekkep); }
+.yan li a[aria-current="page"] { background: var(--vurgu-acik); color: var(--vurgu-koyu); font-weight: 600; }
+.yan code { font-size: 0.9em; }
+.yan .pdf { margin-top: 12px; }
+.bu-bolumde span { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--soluk); margin-bottom: 8px; }
+.bu-bolumde a { display: block; padding: 4px 0; color: var(--soluk); text-decoration: none; line-height: 1.4; }
+.bu-bolumde a:hover { color: var(--vurgu-koyu); }
+@media (max-width: 1200px) { .okuma { grid-template-columns: 240px minmax(0, 1fr); } .bu-bolumde { display: none; } }
+@media (max-width: 860px) {
+  .okuma { grid-template-columns: 1fr; gap: 24px; padding-top: 16px; }
+  .yan { position: static; max-height: none; border: 1px solid var(--cizgi); border-radius: 12px; padding: 12px 14px; }
+  .yan details:not([open]) summary { margin: 0; }
+  .yan summary { cursor: pointer; }
+  .yan ol { max-height: 320px; overflow-y: auto; }
+}
+
+/* metin */
+.metin { max-width: 760px; min-width: 0; font-size: 18px; line-height: 1.75; }
+.metin .iz { font-size: 14px; color: var(--soluk); margin: 0 0 8px; }
+.metin .iz a { color: var(--soluk); }
+.metin h2 { font-size: 38px; line-height: 1.12; margin: 8px 0 28px; letter-spacing: -0.03em; }
+.metin h3 { font-size: 25px; line-height: 1.25; margin: 48px 0 12px; }
+.metin h4 { font-size: 20px; margin: 32px 0 8px; }
+.metin p, .metin li { color: var(--metin); }
+.metin p { margin: 0 0 18px; }
+.metin ul, .metin ol { padding-left: 24px; margin: 0 0 18px; }
+.metin li { margin: 4px 0; }
+.metin strong { color: var(--murekkep); }
+.metin code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.86em; background: var(--zemin2);
+  padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+.metin h2 code, .metin h3 code { background: none; padding: 0; font-size: 0.9em; }
+.metin blockquote { margin: 0 0 18px; padding: 4px 20px; border-left: 3px solid var(--vurgu); color: var(--soluk); }
+.metin figure { margin: 28px 0; }
+.metin figure img, .metin p img { max-width: 100%; height: auto; border: 1px solid var(--cizgi); border-radius: 10px; background: #fff; }
+.metin figcaption { font-size: 14.5px; color: var(--soluk); margin-top: 8px; text-align: center; }
+.metin math[display="block"] { margin: 20px 0; overflow-x: auto; font-size: 1.05em; }
+.tablo { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--cizgi); border-radius: 10px; }
+.metin table { border-collapse: collapse; width: 100%; font-size: 15.5px; line-height: 1.5; }
+.metin th, .metin td { padding: 10px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--cizgi); }
+.metin thead th { background: var(--zemin2); border-top: none; font-weight: 600; color: var(--murekkep); }
+
+/* kod */
+.kod { position: relative; margin: 0 0 22px; border-radius: 12px; overflow: hidden; }
+.kod pre { margin: 0; padding: 38px 20px 18px; overflow-x: auto; font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14.5px; line-height: 1.65; tab-size: 4; }
+.kod pre code { background: none; padding: 0; font-size: inherit; border-radius: 0; overflow-wrap: normal; }
+.kod.program, .kod.kabuk { background: var(--kod-zemin); color: var(--kod-metin); }
+.kod.cikti { background: var(--cikti-zemin); color: var(--cikti-metin); border: 1px solid var(--cizgi); }
+.kod-etiket { position: absolute; top: 10px; left: 20px; font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--yy); }
+.kod.cikti .kod-etiket { color: var(--soluk); }
+.kopyala { position: absolute; top: 6px; right: 8px; font: 500 12.5px 'Inter', sans-serif; color: var(--yy);
+  background: transparent; border: 1px solid transparent; border-radius: 7px; padding: 6px 10px; cursor: pointer; min-height: 32px; }
+.kopyala:hover, .kopyala:focus-visible { border-color: currentColor; }
+.kod.cikti .kopyala { color: var(--soluk); }
+.ya { color: var(--ya); font-weight: 600; }
+.ym { color: var(--ym); }
+.ys { color: var(--ys); }
+.yy { color: var(--yy); font-style: italic; }
+
+/* bölümler arası */
+.sayfala { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--cizgi); }
+.sayfala a { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--cizgi); border-radius: 12px;
+  text-decoration: none; color: var(--murekkep); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.35; }
+.sayfala a:hover { border-color: var(--vurgu); }
+.sayfala small { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13px; color: var(--soluk); }
+.sayfala .sonraki { text-align: right; grid-column: 2; }
+@media (max-width: 560px) { .sayfala { grid-template-columns: 1fr; } .sayfala .sonraki { grid-column: 1; } }
+
+/* alt bilgi */
+.alt { max-width: 1320px; margin: 0 auto; padding: 32px 24px 40px; border-top: 1px solid var(--cizgi); display: flex;
+  flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--soluk); }
+.alt a { color: var(--soluk); }
+
+@media print {
+  .ust, .yan, .bu-bolumde, .sayfala, .alt, .kopyala { display: none !important; }
+  .okuma { display: block; padding: 0; }
+  .metin { max-width: none; }
+}
+
+.tek .okuma { grid-template-columns: 280px minmax(0, 1fr); }
+.tek .bolum-blok { scroll-margin-top: 88px; }
+.tek.js .bolum-blok { display: none; }
+.tek.js .bolum-blok.acik { display: block; }
+.tek .bolum-blok + .bolum-blok { margin-top: 72px; }
+.tek.js .bolum-blok + .bolum-blok { margin-top: 0; }
+.tek .sayfala button { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--cizgi);
+  border-radius: 12px; background: none; color: var(--murekkep); font: 600 16px 'Space Grotesk', sans-serif; text-align: left;
+  line-height: 1.35; cursor: pointer; }
+.tek .sayfala button:hover { border-color: var(--vurgu); }
+.tek .sayfala button.sonraki { text-align: right; grid-column: 2; align-items: flex-end; }
+.tek .sayfala small { font: 500 13px 'Inter', sans-serif; color: var(--soluk); }
+.tek .sayfala { display: none; }
+.tek.js .sayfala { display: grid; }
+.tek-kapak { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end; padding: 8px 0 40px; margin-bottom: 40px; border-bottom: 1px solid var(--cizgi); }
+.tek-kapak h1 { font-size: 40px; line-height: 1.08; margin: 8px 0 10px; letter-spacing: -0.03em; }
+.tek-kapak .ozet { font-size: 18px; }
+@media (max-width: 1200px) { .tek .okuma { grid-template-columns: 240px minmax(0, 1fr); } }
+@media (max-width: 860px) { .tek .okuma { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .tek .sayfala button.sonraki { grid-column: 1; } }
+@media print { .tek .bolum-blok { display: block !important; } .tek-kapak .eylemler { display: none; } }
+
+</style>
+</head>
+<body class="tek">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="https://yontem.pro/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="https://yontem.pro/kitaplar/">Kitaplar</a>
+      <a class="dugme" href="https://yontem.pro/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="#b01">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="#b01">Bu kılavuz ne anlatır?</a></li><li><a href="#b02">1. Pencere: arayüz</a></li><li><a href="#b03">2. Mobil: telefon özellikleri</a></li><li><a href="#b04">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="#b05">4. Takvim: tarih ve saat</a></li><li><a href="#b06">5. Desen: düzenli ifadeler</a></li><li><a href="#b07">6. Ağ: web servislerine bağlanmak</a></li><li><a href="#b08">7. Veritabanı: SQL veritabanları</a></li><li><a href="#b09">8. Sunucu: web servisleri</a></li><li><a href="#b10">9. Üç katmanlı bir uygulama</a></li><li><a href="#b11">10. Araçlar</a></li><li><a href="#b12">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="birimler/Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <div class="tek-kapak">
+      <div class="kapak" style="background:#3B2F5C" aria-hidden="true"><span>Yöntem Birimler ve Araçlar Kılavuzu</span><i></i></div>
+      <div>
+        <span class="tur">Kılavuz · 12 bölüm · Önder Örnek</span>
+        <h1>Yöntem Birimler ve Araçlar Kılavuzu</h1>
+        <p class="ozet">Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları</p>
+      </div>
+    </div>
+    <section class="bolum-blok" id="b01" data-baslik="Bu kılavuz ne anlatır?"><h2>Bu kılavuz ne anlatır?</h2>
+<p>Yöntem’in çekirdeği küçüktür; gerisi <strong>birimlerle</strong> gelir. Bir birimi kullanmak için programın başına <code>kullan</code> yazmak yeterlidir, ayrıca bir şey kurulmaz (tek istisna, PostgreSQL ve MySQL’e bağlanmak için gereken sürücülerdir). Bu kılavuz gündelik programlarda en çok işe yarayan sekiz birimi ve dille birlikte gelen araçları tanıtır. Dilin kendisini öğrenmek için <em>Yöntem ile Programlamaya Giriş</em> kitabına, yapay zekâ birimleri için <em>Yöntem ile Makine Öğrenmesi</em> ve <em>Yöntem ile Sıfırdan Dil Modeli</em> kitaplarına bakabilirsiniz.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Birim</th>
+<th>Ne işe yarar</th>
+<th>Bölüm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Pencere</code></td>
+<td>Düğme, kutu ve tuvallerle arayüz</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><code>Mobil</code></td>
+<td>Telefon özellikleri: titreşim, bildirim, konum, kalıcı depo</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><code>Güvenlik</code></td>
+<td>Parola saklama, şifreleme, girdi denetimi, oturum belirteçleri</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td><code>Takvim</code></td>
+<td>Tarih ve saat hesapları</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td><code>Desen</code></td>
+<td>Düzenli ifadelerle metin arama ve değiştirme</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td><code>Ağ</code></td>
+<td>Web servislerine HTTP istekleri</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td><code>Veritabanı</code></td>
+<td>SQLite, PostgreSQL ve MySQL veritabanlarına SQL sorguları</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td><code>Sunucu</code></td>
+<td>HTTP isteklerini karşılayan web servisleri</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="9" type="1">
+<li>bölüm bu ikisiyle üç katmanlı bir uygulama kurar. Araçlar 10. bölümdedir: test çalıştırıcı, kod biçimlendirici, proje oluşturucu, paketleyici ve VS Code eklentisi.</li>
+</ol>
+<p>Bu kılavuzdaki her program gerçekten çalıştırılmıştır; altındaki çıktı onun kendi çıktısıdır. Programlar deponun <code>birim_kilavuzu/</code> klasöründedir ve iki uygulamada da (JavaScript derleyicisi ve Python yorumlayıcısı) aynı çıktıyı verir. Yalnızca 6. bölümdeki ağ örneği bir internet servisine bağlandığı için çıktısıyla birlikte verilmemiştir.</p>
+<p><strong>Bütün birimler için geçerli üç kural</strong></p>
+<ul>
+<li><strong>Adlar büyük/küçük harfe ve Türkçe karakterlere duyarsızdır.</strong> <code>Şimdi</code>, <code>şimdi</code> ve <code>SIMDI</code> aynı addır. Bu yüzden bir birim üyesiyle aynı adda değişken tanımlamamak gerekir: <code>şimdi := Şimdi</code> yazarsanız değişken, <code>Şimdi</code> işlevini gölgeler. Değişkene başka bir ad verebilir (<code>an</code>) ya da üyeyi birim adıyla çağırabilirsiniz (<code>Takvim.Şimdi</code>).</li>
+<li><strong>Testler için benzetim.</strong> Saate, rastgeleliğe ya da bir cihaza bağlı birimlerde çıktıyı sabitleyen yardımcılar vardır (<code>BenzetimZamanı</code>, <code>Tıkla</code>, <code>BenzetimKonum</code>…). Böylece aynı program hem gerçek ortamda çalışır hem de <code>yontem test</code> ile sınanabilir.</li>
+<li><strong>Gömülü arka uç.</strong> Bu sekiz birim ESP32 için üretilen C++ kodunda yoktur; orada <code>Donanım</code> birimi kullanılır.</li>
+</ul>
+</section><section class="bolum-blok" id="b02" data-baslik="1. Pencere: arayüz"><h2>1. Pencere: arayüz</h2>
+<p><code>Pencere</code> birimi (İngilizce adıyla <code>UI</code>) düğme, giriş kutusu, etiket ve tuvallerden arayüz kurar. Aynı program üç yerde çalışır:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nerede</th>
+<th>Nasıl</th>
+<th>Ne olur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Oyun alanı</td>
+<td>Çalıştır’a basılır</td>
+<td>Arayüz <strong>Uygulama</strong> sekmesinde canlı açılır</td>
+</tr>
+<tr class="even">
+<td>Web ya da telefon</td>
+<td><code>yontem paketle program.y</code></td>
+<td>Tek başına çalışan bir web uygulaması üretilir</td>
+</tr>
+<tr class="odd">
+<td>Komut satırı ve testler</td>
+<td><code>yontem program.y</code></td>
+<td>Benzetim: olayları programın kendisi üretir, arayüz metin olarak yazılır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Bir arayüz programı üç adımdan oluşur: bileşenler oluşturulur, olaylara prosedür bağlanır ve bileşenler <code>Yerleştir</code> ile pencereye konur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Selamlayıcı
+<span class="yy">{ Pencere birimi: bir giriş kutusu, bir düğme ve bir etiket.
+  Oyun alanında ya da paketlenmiş uygulamada arayüz gerçekten açılır; komut satırında
+  ve testlerde olaylar Gir ve Tıkla ile benzetilir. }</span>
+<span class="ya">kullan</span> Pencere
+
+<span class="ya">değişken</span> adKutusu, selamDüğmesi, sonuç: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Selamla
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> adKutusu.Metin = <span class="ym">''</span> <span class="ya">ise</span> sonuç.Metin := <span class="ym">'Önce adını yaz.'</span>
+  <span class="ya">değilse</span> sonuç.Metin := <span class="ym">'Merhaba, '</span> + adKutusu.Metin + <span class="ym">'!'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Başlık(<span class="ym">'Selamlayıcı'</span>)
+  adKutusu := GirişKutusu(<span class="ym">'Adın'</span>)
+  selamDüğmesi := Düğme(<span class="ym">'Selam ver'</span>)
+  sonuç := Etiket(<span class="ym">''</span>)
+  selamDüğmesi.Tıklanınca(@Selamla)
+  Yerleştir(Yatay(adKutusu, selamDüğmesi), sonuç)
+
+  <span class="ya">eğer</span> <span class="ya">değil</span> Canlı <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Tıkla(selamDüğmesi)
+    yaz(sonuç.Metin, <span class="ys">1</span>)
+    Gir(adKutusu, <span class="ym">'Zeynep'</span>)
+    Tıkla(selamDüğmesi)
+    yaz(sonuç.Metin, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  Çalıştır
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Komut satırındaki çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Önce adını yaz.
+Merhaba, Zeynep!
+Pencere &quot;Selamlayıcı&quot;
+  Yatay
+    GirişKutusu &quot;Zeynep&quot; (ipucu &quot;Adın&quot;)
+    Düğme &quot;Selam ver&quot;
+  Etiket &quot;Merhaba, Zeynep!&quot;</code></pre></div>
+<p><code>Canlı</code>, program gerçek bir arayüzde çalışıyorsa <code>doğru</code>dur. <code>eğer değil Canlı ise</code> bloğu yalnızca benzetimde çalışır: <code>Gir</code> kutuya metin yazar, <code>Tıkla</code> düğmeye basar. Sondaki <code>Çalıştır</code> canlı ortamda olayları beklemeye başlar; benzetimde arayüzün son hâlini ağaç olarak yazar. Testler bu ağacı beklenen çıktıyla karşılaştırır.</p>
+<p><strong>Bileşenler</strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bileşen</th>
+<th>Oluşturma</th>
+<th>Başlıca üyeleri</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Etiket</td>
+<td><code>Etiket(metin)</code></td>
+<td><code>Metin</code></td>
+</tr>
+<tr class="even">
+<td>Düğme</td>
+<td><code>Düğme(metin)</code></td>
+<td><code>Metin</code>, <code>Tıklanınca(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Giriş kutusu</td>
+<td><code>GirişKutusu(ipucu)</code></td>
+<td><code>Metin</code>, <code>İpucu</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Onay kutusu</td>
+<td><code>OnayKutusu(metin, işaretli)</code></td>
+<td><code>İşaretli</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Kaydırıcı</td>
+<td><code>Kaydırıcı(enAz, enÇok, değer)</code></td>
+<td><code>Değer</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Seçim kutusu</td>
+<td><code>SeçimKutusu(seçenekler)</code></td>
+<td><code>Seçili</code>, <code>SeçiliMetin</code>, <code>Seçenekler</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Tuval</td>
+<td><code>Tuval(genişlik, yükseklik)</code></td>
+<td><code>Renk</code>, <code>Çizgi</code>, <code>Dikdörtgen</code>, <code>Daire</code>, <code>Yazı</code>, <code>Temizle</code>, <code>Dokununca(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Yerleşim</td>
+<td><code>Yatay(…)</code>, <code>Dikey(…)</code></td>
+<td><code>Ekle</code>, <code>Temizle</code>, <code>Çocuklar</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Her bileşende <code>Etkin</code> ve <code>Görünür</code> vardır. Pencere düzeyinde <code>Başlık(metin)</code>, <code>Yerleştir(…)</code>, <code>Temizle</code>, belirli aralıklarla bir prosedürü çağıran <code>Aralıkla(ms, @P)</code> ve <code>AralığıDurdur</code> bulunur. Benzetim yardımcıları <code>Tıkla</code>, <code>Gir</code>, <code>Seç</code>, <code>Dokun</code> ve zamanı ilerleten <code>İlerle(ms)</code>’dir.</p>
+<p>Olay prosedürleri <code>@Ad</code> ile verilir. Kısa işler için adsız prosedür de yazılabilir: <code>düğme.Tıklanınca(prosedür başla sayı := sayı + 1 bitir)</code>.</p>
+</section><section class="bolum-blok" id="b03" data-baslik="2. Mobil: telefon özellikleri"><h2>2. Mobil: telefon özellikleri</h2>
+<p><code>Mobil</code> birimi telefonun titreşim, bildirim, paylaşma, konum, hareket algılayıcısı ve kalıcı depo özelliklerine erişir. Genellikle <code>Pencere</code> ile birlikte kullanılır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SuTakibi
+<span class="yy">{ Mobil birimi: içilen bardak sayısı telefonda saklanır, hedefe ulaşınca telefon titrer
+  ve bildirim gösterir. Benzetimde titreşim ve bildirim çıktıya birer satır olarak yazılır. }</span>
+<span class="ya">kullan</span> Pencere, Mobil
+
+<span class="ya">sabit</span> HEDEF: <span class="ya">tamsayı</span> = <span class="ys">3</span>
+
+<span class="ya">değişken</span>
+  bardak: <span class="ya">tamsayı</span>
+  gösterge, içDüğmesi: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Göster
+<span class="ya">başla</span>
+  gösterge.Metin := Metin(bardak) + <span class="ym">' / '</span> + Metin(HEDEF) + <span class="ym">' bardak'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> İç
+<span class="ya">başla</span>
+  bardak := bardak + <span class="ys">1</span>
+  Sakla(<span class="ym">'bardak'</span>, bardak)          <span class="yy">{ uygulama kapanıp açılsa da kalır }</span>
+  Göster
+  <span class="ya">eğer</span> bardak = HEDEF <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Titreşim(<span class="ys">300</span>)
+    Bildirim(<span class="ym">'Tebrikler'</span>, <span class="ym">'Bugünkü su hedefine ulaştın'</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Başlık(<span class="ym">'Su Takibi'</span>)
+  bardak := Getir(<span class="ym">'bardak'</span>, <span class="ys">0</span>)     <span class="yy">{ daha önce saklanmamışsa 0 }</span>
+  gösterge := Etiket(<span class="ym">''</span>)
+  içDüğmesi := Düğme(<span class="ym">'Bir bardak içtim'</span>)
+  içDüğmesi.Tıklanınca(@İç)
+  Yerleştir(gösterge, içDüğmesi)
+  Göster
+
+  <span class="ya">eğer</span> <span class="ya">değil</span> Canlı <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    yaz(<span class="ym">'Platform: '</span> + Platform + <span class="ym">', ekran '</span> + EkranGenişliği + <span class="ym">'×'</span> + EkranYüksekliği, <span class="ys">1</span>)
+    <span class="ys">3</span> <span class="ya">kez</span> <span class="ya">tekrarla</span> Tıkla(içDüğmesi)
+    yaz(gösterge.Metin + <span class="ym">' (saklanan: '</span> + Getir(<span class="ym">'bardak'</span>, <span class="ys">0</span>) + <span class="ym">')'</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  Çalıştır
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Platform: benzetim, ekran 390×844
+[Titreşim 300 ms]
+[Bildirim] Tebrikler: Bugünkü su hedefine ulaştın
+3 / 3 bardak (saklanan: 3)
+Pencere &quot;Su Takibi&quot;
+  Etiket &quot;3 / 3 bardak&quot;
+  Düğme &quot;Bir bardak içtim&quot;</code></pre></div>
+<p>Benzetimde <code>Titreşim</code>, <code>Bildirim</code> ve <code>Paylaş</code> çıktıya köşeli ayraçlı birer satır yazar; telefonda gerçekten titreşir ve bildirim gösterir. <code>Sakla</code> ile yazılan değerler uygulama kapansa da kalır; metin, sayı, mantıksal değer ve bunların listeleri saklanabilir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Titreşim(ms)</code></td>
+<td>Telefonu titretir</td>
+</tr>
+<tr class="even">
+<td><code>Bildirim(başlık, metin)</code></td>
+<td>Bildirim gösterir</td>
+</tr>
+<tr class="odd">
+<td><code>Paylaş(metin)</code></td>
+<td>Paylaşma menüsünü açar</td>
+</tr>
+<tr class="even">
+<td><code>KonumAl(@P)</code></td>
+<td>Konum bulununca <code>P(enlem, boylam)</code> çağrılır</td>
+</tr>
+<tr class="odd">
+<td><code>HareketOlunca(@P)</code></td>
+<td>Telefon hareket ettikçe <code>P(x, y, z)</code> çağrılır</td>
+</tr>
+<tr class="even">
+<td><code>YönDeğişince(@P)</code></td>
+<td>Ekran döndüğünde <code>P(yön)</code> çağrılır (<code>'dikey'</code> ya da <code>'yatay'</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>Sakla(anahtar, değer)</code>, <code>Getir(anahtar, varsayılan)</code>, <code>Unut(anahtar)</code></td>
+<td>Kalıcı depo</td>
+</tr>
+<tr class="even">
+<td><code>Platform</code>, <code>Dokunmatik</code>, <code>EkranGenişliği</code>, <code>EkranYüksekliği</code>, <code>EkranYönü</code></td>
+<td>Cihaz bilgisi</td>
+</tr>
+<tr class="odd">
+<td><code>BenzetimKonum</code>, <code>BenzetimHareket</code>, <code>Salla</code>, <code>BenzetimYön</code></td>
+<td>Testler için benzetim</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Telefona kurmak.</strong> <code>yontem paketle program.y --mobil --ad "Su Takibi"</code> komutu bir klasör üretir: <code>index.html</code>, uygulama bildirimi (<code>manifest.webmanifest</code>), çevrim dışı çalışma için <code>sw.js</code> ve simgeler. Klasörü HTTPS ile yayımlamanız yeterlidir (GitHub Pages, Netlify ya da kendi sunucunuz); telefonun tarayıcısında açıp <strong>Ana ekrana ekle</strong> deyince uygulama olarak kurulur ve internet olmadan da çalışır. Uygulama mağazası paketi (Android/iOS) bu sürümde yoktur.</p>
+</section><section class="bolum-blok" id="b04" data-baslik="3. Güvenlik: saldırılara karşı savunma"><h2>3. Güvenlik: saldırılara karşı savunma</h2>
+<p><code>Güvenlik</code> birimi yaygın saldırılara karşı denenmiş yapı taşları sunar. Kendi şifreleme yönteminizi yazmak yerine bunları doğru yerde kullanmanız yeterlidir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÜyelikÖzeti
+<span class="yy">{ Güvenlik birimi: parola saklama, kullanıcı girdisini temizleme ve süreli oturum belirteci.
+  Çıktının her çalıştırmada aynı olması için birimin saati sabitlendi. }</span>
+<span class="ya">kullan</span> Güvenlik
+
+<span class="ya">sabit</span> ANAHTAR: <span class="ya">metin</span> = <span class="ym">'bunu-ortam-degiskeninden-oku'</span>
+
+<span class="ya">değişken</span> kayıtlı, oturum: <span class="ya">metin</span>
+
+<span class="ya">başla</span>
+  BenzetimZamanı(<span class="ys">1800000000</span>)
+  <span class="yy">{ 1) Parola düz metin saklanmaz; tuzlu ve yavaşlatılmış özeti saklanır. }</span>
+  kayıtlı := ParolaÖzeti(<span class="ym">'Deniz-Feneri-1907'</span>, <span class="ys">1000</span>)   <span class="yy">{ gerçek sistemde ikinci argümanı vermeyin }</span>
+  yaz(<span class="ym">'Kayıt biçimi : '</span> + Ayır(kayıtlı, <span class="ym">'$'</span>)[<span class="ys">0</span>] + <span class="ym">', '</span> + Uzunluk(kayıtlı) + <span class="ym">' karakter'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'Doğru parola : '</span> + Metin(ParolaDoğrula(<span class="ym">'Deniz-Feneri-1907'</span>, kayıtlı)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Yanlış parola: '</span> + Metin(ParolaDoğrula(<span class="ym">'deniz-feneri'</span>, kayıtlı)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Zayıf parola : '</span> + Metin(ParolaSorunları(<span class="ym">'kedi123'</span>)), <span class="ys">1</span>)
+
+  <span class="yy">{ 2) Kullanıcının yazdığı metin sayfaya ve sorguya kaçışlanarak girer. }</span>
+  yaz(<span class="ym">'HTML : '</span> + HtmlKaçış(<span class="ym">'&lt;script&gt;çal()&lt;/script&gt;'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'SQL  : '</span> + SqlMetni(<span class="ym">'x'</span><span class="ym">' OR '</span><span class="ym">'1'</span><span class="ym">'='</span><span class="ym">'1'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Dosya: '</span> + DosyaAdıTemizle(<span class="ym">'../../etc/passwd'</span>) + <span class="ym">', yol güvenli mi: '</span> + Metin(YolGüvenli(<span class="ym">'../../etc/passwd'</span>)), <span class="ys">1</span>)
+
+  <span class="yy">{ 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }</span>
+  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'zeynep'</span>, <span class="ys">1800</span>)
+  yaz(<span class="ym">'Oturum sahibi: '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Sahte anahtar: '</span> + Metin(BelirteçDoğrula(<span class="ym">'tahmin'</span>, oturum)), <span class="ys">1</span>)
+  BenzetimZamanı(<span class="ys">1800000000</span> + <span class="ys">1801</span>)
+  yaz(<span class="ym">'31 dk sonra  : '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Kayıt biçimi : pbkdf2-sha256, 116 karakter
+Doğru parola : doğru
+Yanlış parola: yanlış
+Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
+HTML : &amp;lt;script&amp;gt;çal()&amp;lt;/script&amp;gt;
+SQL  : 'x'' OR ''1''=''1'
+Dosya: passwd, yol güvenli mi: yanlış
+Oturum sahibi: zeynep
+Sahte anahtar: boş
+31 dk sonra  : boş</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Saldırı</th>
+<th>Araç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parola veritabanının çalınması</td>
+<td><code>ParolaÖzeti</code>, <code>ParolaDoğrula</code>, <code>YenidenÖzetlenmeli</code>, <code>ParolaGücü</code>, <code>ParolaSorunları</code></td>
+</tr>
+<tr class="even">
+<td>Verinin değiştirilmesi</td>
+<td><code>Özet</code>, <code>İmza</code>, <code>İmzaDoğru</code>, <code>BelirteçÜret</code>, <code>BelirteçDoğrula</code></td>
+</tr>
+<tr class="odd">
+<td>Yanıt süresinden bilgi sızması</td>
+<td><code>GüvenliEşit</code></td>
+</tr>
+<tr class="even">
+<td>Verinin okunması</td>
+<td><code>AnahtarÜret</code>, <code>ParoladanAnahtar</code>, <code>Şifrele</code>, <code>ŞifreÇöz</code></td>
+</tr>
+<tr class="odd">
+<td>Tahmin edilebilir değerler</td>
+<td><code>Belirteç</code>, <code>Tuz</code>, <code>Kimlik</code>, <code>GüvenliRastgele</code></td>
+</tr>
+<tr class="even">
+<td>XSS, SQL enjeksiyonu, yol geçişi</td>
+<td><code>HtmlKaçış</code>, <code>SqlMetni</code>, <code>YolGüvenli</code>, <code>DosyaAdıTemizle</code>, <code>UrlGüvenli</code>, <code>EpostaGeçerli</code>, <code>İzinliKarakterler</code></td>
+</tr>
+<tr class="odd">
+<td>Kaba kuvvet</td>
+<td><code>Sınırlayıcı(enÇok, saniye)</code></td>
+</tr>
+<tr class="even">
+<td>İz bırakmadan saldırı</td>
+<td><code>Günlük</code>, <code>GünlükKayıtları</code>, <code>Maskele</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Üç temel alışkanlık çoğu açığı kapatır: parolaları <code>ParolaÖzeti</code> ile saklamak, kullanıcıdan gelen her metni gittiği yere göre kaçışlamak (<code>HtmlKaçış</code>, <code>SqlMetni</code>) ve gizli değerleri <code>=</code> ile değil <code>GüvenliEşit</code> ile karşılaştırmak.</p>
+<p>Birim açık anahtarlı şifreleme ve TLS içermez; ağ trafiğini HTTPS korur. Algoritmalar standart test vektörleriyle doğrulanmıştır ama bağımsız bir güvenlik denetiminden geçmemiştir. Her aracın ayrıntılı anlatımı, tam bir güvenli giriş örneği ve iyi uygulamalar <em>Yöntem Güvenlik Birimi — Kullanım Kılavuzu</em>’ndadır; örnekler <code>guvenlik_ornekleri/</code> klasöründedir.</p>
+</section><section class="bolum-blok" id="b05" data-baslik="4. Takvim: tarih ve saat"><h2>4. Takvim: tarih ve saat</h2>
+<p><code>Takvim</code> biriminde zaman, 1 Ocak 1970’ten beri geçen saniye sayısıdır (Unix saniyesi) ve bir tamsayıyla tutulur. Bu sayede iki tarih <code>&lt;</code> ile karşılaştırılır, sıralanır, birbirinden çıkarılır. Hesaplar UTC’de yapılır; yerel saati yazmak için <code>YerelFark</code> (dakika) eklenir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SınavTakvimi
+<span class="yy">{ Takvim birimi: tarih okuma, yazma ve gün hesabı. }</span>
+<span class="ya">kullan</span> Takvim
+
+<span class="ya">değişken</span>
+  bugün, sınav, teslim: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  BenzetimZamanı(TarihYap(<span class="ys">2026</span>, <span class="ys">11</span>, <span class="ys">10</span>, <span class="ys">9</span>, <span class="ys">0</span>, <span class="ys">0</span>), <span class="ys">180</span>)   <span class="yy">{ testler için sabit saat; UTC+3 }</span>
+  bugün := Şimdi
+  sınav := TarihOku(<span class="ym">'15.01.2027'</span>, <span class="ym">'GG.AA.YYYY'</span>)
+  yaz(<span class="ym">'Bugün : '</span> + TarihYaz(bugün + YerelFark * <span class="ys">60</span>, <span class="ym">'G AAAA YYYY GGGG, SS:DD'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Sınav : '</span> + TarihYaz(sınav, <span class="ym">'G AAAA YYYY GGGG'</span>) + <span class="ym">' — '</span> + GünFarkı(bugün, sınav) + <span class="ym">' gün kaldı'</span>, <span class="ys">1</span>)
+  teslim := AyEkle(GünBaşı(bugün), <span class="ys">1</span>)
+  yaz(<span class="ym">'Ödev teslimi (bir ay sonra): '</span> + TarihYaz(teslim, <span class="ym">'GG.AA.YYYY'</span>) + <span class="ym">', '</span> + HaftaNo(teslim) + <span class="ym">'. hafta'</span>, <span class="ys">1</span>)
+  <span class="ya">eğer</span> HaftaGünü(teslim) &gt; <span class="ys">5</span> <span class="ya">ise</span> yaz(<span class="ym">'  Hafta sonuna denk geliyor; pazartesi: '</span> + TarihYaz(GünEkle(teslim, <span class="ys">8</span> - HaftaGünü(teslim)), <span class="ym">'GG.AA.YYYY'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Şubat 2028 '</span> + AydakiGünSayısı(<span class="ys">2028</span>, <span class="ys">2</span>) + <span class="ym">' gün; 2028 artık yıl mı: '</span> + Metin(ArtıkYıl(<span class="ys">2028</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Bugün : 10 Kasım 2026 Salı, 12:00
+Sınav : 15 Ocak 2027 Cuma — 66 gün kaldı
+Ödev teslimi (bir ay sonra): 10.12.2026, 50. hafta
+Şubat 2028 29 gün; 2028 artık yıl mı: doğru</code></pre></div>
+<p><strong>Kalıplar.</strong> <code>TarihYaz</code> ve <code>TarihOku</code> aynı simgeleri kullanır:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Simge</th>
+<th>Anlamı</th>
+<th>Örnek</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>YYYY</code>, <code>YY</code></td>
+<td>Yıl</td>
+<td>2026, 26</td>
+</tr>
+<tr class="even">
+<td><code>AA</code>, <code>A</code></td>
+<td>Ay (iki haneli, yalın)</td>
+<td>03, 3</td>
+</tr>
+<tr class="odd">
+<td><code>AAAA</code>, <code>AAA</code></td>
+<td>Ay adı, kısa ay adı</td>
+<td>Mart, Mar</td>
+</tr>
+<tr class="even">
+<td><code>GG</code>, <code>G</code></td>
+<td>Gün (iki haneli, yalın)</td>
+<td>05, 5</td>
+</tr>
+<tr class="odd">
+<td><code>GGGG</code>, <code>GGG</code></td>
+<td>Gün adı, kısa gün adı</td>
+<td>Perşembe, Per</td>
+</tr>
+<tr class="even">
+<td><code>SS</code>, <code>DD</code>, <code>SN</code></td>
+<td>Saat, dakika, saniye</td>
+<td>09, 05, 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Küçük harfler ve noktalama olduğu gibi yazılır. Büyük harfli düz metin köşeli ayraca alınır: <code>'[Saat] SS:DD'</code>. Kalıp verilmezse <code>TarihOku</code> <code>2026-11-10</code>, <code>2026-11-10 19:30</code> ve <code>2026-11-10 19:30:00</code> biçimlerini tanır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Şimdi</code>, <code>YerelFark</code></td>
+<td>Şu an (Unix saniyesi) ve yerel saatin UTC’den farkı (dakika)</td>
+</tr>
+<tr class="even">
+<td><code>TarihYap(yıl, ay, gün [, saat, dakika, saniye])</code></td>
+<td>Tarihten zaman üretir; geçersiz tarihte hata verir</td>
+</tr>
+<tr class="odd">
+<td><code>Parçala(zaman)</code></td>
+<td><code>yıl</code>, <code>ay</code>, <code>gün</code>, <code>saat</code>, <code>dakika</code>, <code>saniye</code>, <code>haftaGünü</code>, <code>yılGünü</code> içeren sözlük</td>
+</tr>
+<tr class="even">
+<td><code>TarihYaz(zaman [, kalıp])</code>, <code>TarihOku(metin [, kalıp])</code></td>
+<td>Metne çevirir, metinden okur</td>
+</tr>
+<tr class="odd">
+<td><code>SaniyeEkle</code>, <code>GünEkle</code>, <code>AyEkle</code>, <code>YılEkle</code></td>
+<td>Zamana ekler (eksi sayı çıkarır); 31 Ocak + 1 ay = şubatın son günü</td>
+</tr>
+<tr class="even">
+<td><code>GünFarkı(başlangıç, bitiş)</code>, <code>GünBaşı(zaman)</code></td>
+<td>Takvim günü farkı; günün 00:00’ı</td>
+</tr>
+<tr class="odd">
+<td><code>HaftaGünü</code> (1 = Pazartesi), <code>HaftaNo</code> (ISO haftası), <code>GünAdı</code>, <code>AyAdı</code></td>
+<td>Takvim bilgisi</td>
+</tr>
+<tr class="even">
+<td><code>ArtıkYıl(yıl)</code>, <code>AydakiGünSayısı(yıl, ay)</code>, <code>GeçerliTarih(yıl, ay, gün)</code></td>
+<td>Denetimler</td>
+</tr>
+<tr class="odd">
+<td><code>BenzetimZamanı(zaman [, fark])</code></td>
+<td>Testler için saati sabitler</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Birim 1–9999 yılları arasında çalışır. Saat dilimi adları ve yaz saati kuralları yoktur; yalnızca UTC ve dakika cinsinden sabit bir fark vardır.</p>
+</section><section class="bolum-blok" id="b06" data-baslik="5. Desen: düzenli ifadeler"><h2>5. Desen: düzenli ifadeler</h2>
+<p>Düzenli ifade (regex), aranan metnin biçimini tarif eden küçük bir dildir: “iki rakam, iki nokta, iki rakam” gibi. <code>Desen</code> birimi bunlarla doğrulama, arama, ayıklama ve değiştirme yapar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SiparişAyıklama
+<span class="yy">{ Desen birimi: düzenli ifadelerle doğrulama, ayıklama ve değiştirme. }</span>
+<span class="ya">kullan</span> Desen
+
+<span class="ya">sabit</span> YAZI: <span class="ya">metin</span> = <span class="ym">'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 123 45 67'</span>
+
+<span class="ya">değişken</span> g: <span class="ya">herhangi</span>
+
+<span class="ya">başla</span>
+  yaz(<span class="ym">'Sipariş no : '</span> + Bul(YAZI, <span class="ym">'#[A-Z]-\d+'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Adetler    : '</span> + Metin(BulHepsi(YAZI, <span class="ym">'\d+ adet'</span>)), <span class="ys">1</span>)
+  TümGruplar(YAZI, <span class="ym">'(\d+) adet (\w+)'</span>) <span class="ya">içindeki</span> <span class="ya">her</span> g <span class="ya">için</span>
+    yaz(<span class="ym">'  '</span> + g[<span class="ys">2</span>] + <span class="ym">' × '</span> + g[<span class="ys">1</span>], <span class="ys">1</span>)
+  yaz(<span class="ym">'E-posta    : '</span> + Bul(YAZI, <span class="ym">'[\w.]+@[\w.]+\.\w+'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Telefon mu : '</span> + Metin(TamEşleşir(<span class="ym">'0532 123 45 67'</span>, <span class="ym">'0\d{3} \d{3} \d{2} \d{2}'</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Gizlenmiş  : '</span> + DesenDeğiştir(YAZI, <span class="ym">'(\d{4}) \d{3} \d{2} (\d{2})'</span>, <span class="ym">'$1 *** ** $2'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Parçalar   : '</span> + Metin(DesenAyır(<span class="ym">'çay; simit ,peynir'</span>, <span class="ym">'\s*[;,]\s*'</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Harf ayrımı: '</span> + Metin(Eşleşir(YAZI, <span class="ym">'SİPARİŞ'</span>)) + <span class="ym">', &quot;i&quot; ile: '</span> + Metin(Eşleşir(YAZI, <span class="ym">'SİPARİŞ'</span>, <span class="ym">'i'</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Sipariş no : #A-1042
+Adetler    : ['3 adet', '12 adet']
+  çay × 3
+  simit × 12
+E-posta    : zeynep@ornek.com
+Telefon mu : doğru
+Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 *** ** 67
+Parçalar   : ['çay', 'simit', 'peynir']
+Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
+<p>Desenleri tek tırnak içinde yazmanızı öneririz; tek tırnaklı metinlerde <code>\</code> olduğu gibi kalır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Desen</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>a</code>, <code>çay</code></td>
+<td>Kendisi</td>
+</tr>
+<tr class="even">
+<td><code>.</code></td>
+<td>Satır sonu dışında herhangi bir karakter</td>
+</tr>
+<tr class="odd">
+<td><code>\d</code>, <code>\w</code>, <code>\s</code></td>
+<td>Rakam; harf, rakam ya da <code>_</code>; boşluk. Büyük harflisi tersidir (<code>\D</code>)</td>
+</tr>
+<tr class="even">
+<td><code>[abc]</code>, <code>[a-z]</code>, <code>[^0-9]</code></td>
+<td>Kümedeki bir karakter; aralık; kümede olmayan</td>
+</tr>
+<tr class="odd">
+<td><code>x*</code>, <code>x+</code>, <code>x?</code></td>
+<td>Sıfır ya da çok; bir ya da çok; sıfır ya da bir</td>
+</tr>
+<tr class="even">
+<td><code>x{3}</code>, <code>x{2,4}</code>, <code>x{2,}</code></td>
+<td>Tam 3; 2 ile 4 arası; en az 2</td>
+</tr>
+<tr class="odd">
+<td><code>x*?</code>, <code>x+?</code></td>
+<td>Tembel: olabildiğince az</td>
+</tr>
+<tr class="even">
+<td><code>(…)</code>, <code>(?:…)</code></td>
+<td>Yakalayan grup; yakalamayan grup</td>
+</tr>
+<tr class="odd">
+<td><code>a\|b</code></td>
+<td>a ya da b</td>
+</tr>
+<tr class="even">
+<td><code>^</code>, <code>$</code>, <code>\b</code></td>
+<td>Metnin başı; sonu; sözcük sınırı</td>
+</tr>
+<tr class="odd">
+<td><code>\.</code>, <code>\(</code>, <code>\\</code></td>
+<td>Özel karakterin kendisi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>\w</code> Türkçe harfleri de kapsar. Son argüman olarak <code>'i'</code> verilirse büyük/küçük harf ayrımı kalkar ve Türkçedeki dört i (<code>İ I ı i</code>) birbirine eş sayılır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne döndürür</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Eşleşir(metin, desen)</code></td>
+<td>Desen metnin bir yerinde geçiyor mu</td>
+</tr>
+<tr class="even">
+<td><code>TamEşleşir(metin, desen)</code></td>
+<td>Metnin tamamı desene uyuyor mu (doğrulama için)</td>
+</tr>
+<tr class="odd">
+<td><code>Bul(metin, desen)</code></td>
+<td>İlk eşleşme ya da <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>BulHepsi(metin, desen)</code></td>
+<td>Tüm eşleşmelerin listesi</td>
+</tr>
+<tr class="odd">
+<td><code>Gruplar(metin, desen)</code></td>
+<td>İlk eşleşme için <code>[tamamı, 1. grup, 2. grup…]</code> ya da <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>TümGruplar(metin, desen)</code></td>
+<td>Her eşleşme için böyle bir liste</td>
+</tr>
+<tr class="odd">
+<td><code>DesenKonumu(metin, desen)</code></td>
+<td>İlk eşleşmenin başladığı karakter (yoksa 0)</td>
+</tr>
+<tr class="even">
+<td><code>DesenDeğiştir(metin, desen, yeni)</code></td>
+<td>Tüm eşleşmeleri değiştirir; <code>$1</code> grup, <code>$0</code> eşleşmenin tamamı, <code>$$</code> dolar işareti</td>
+</tr>
+<tr class="odd">
+<td><code>DesenAyır(metin, desen)</code></td>
+<td>Metni eşleşmelerden böler</td>
+</tr>
+<tr class="even">
+<td><code>DesenKaçış(metin)</code>, <code>DesenGeçerli(desen)</code></td>
+<td>Özel karakterleri etkisizleştirir; deseni denetler</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Birim kendi eşleştirme motorunu kullanır, bu yüzden her ortamda aynı sonucu verir. İleri/geri bakış (<code>(?=…)</code>) ve geri başvuru (<code>\1</code>) yoktur. İç içe tekrar içeren desenler (<code>(a+)+</code>) bazı metinlerde çok uzun sürebilir; birim böyle durumda programı kilitlemek yerine hatayla durdurur. Kullanıcının yazdığı metni desenin içine koyacaksanız önce <code>DesenKaçış</code> ile kaçışlamanız gerekir.</p>
+</section><section class="bolum-blok" id="b07" data-baslik="6. Ağ: web servislerine bağlanmak"><h2>6. Ağ: web servislerine bağlanmak</h2>
+<p><code>Ağ</code> birimi HTTP istekleri gönderir. İstek eşzamanlıdır: program yanıt gelene kadar bekler. Yanıt bir sözlüktür: <code>durum</code> (200, 404…), <code>gövde</code> (metin) ve <code>başlıklar</code> (adları küçük harfli bir sözlük).</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> HavaDurumu
+<span class="ya">kullan</span> Ağ, Veri
+
+<span class="ya">değişken</span>
+  yanıt: <span class="ya">sözlük</span>
+  veri: <span class="ya">herhangi</span>
+
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    yanıt := HttpAl(<span class="ym">'https://api.ornek.com/hava?'</span> + SorguYap([<span class="ym">'şehir'</span>: <span class="ym">'İzmir'</span>, <span class="ym">'birim'</span>: <span class="ym">'C'</span>]))
+    <span class="ya">eğer</span> yanıt[<span class="ym">'durum'</span>] = <span class="ys">200</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      veri := JSONÇöz(yanıt[<span class="ym">'gövde'</span>])
+      yaz(<span class="ym">'İzmir: '</span> + veri[<span class="ym">'sıcaklık'</span>] + <span class="ym">' °C'</span>, <span class="ys">1</span>)
+    <span class="ya">bitir</span>
+    <span class="ya">değilse</span> yaz(<span class="ym">'Servis '</span> + yanıt[<span class="ym">'durum'</span>] + <span class="ym">' döndürdü'</span>, <span class="ys">1</span>)
+  <span class="ya">yakala</span> (h)
+    yaz(<span class="ym">'Bağlanılamadı: '</span> + h.mesaj, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Bu program örnek bir adrese bağlandığı için çıktısı verilmemiştir; adresi kullanacağınız servisinkiyle değiştirebilirsiniz. Dikkat edilecek iki nokta vardır: 404 ya da 500 gibi yanıtlar hata <strong>değildir</strong>, <code>durum</code> ile denetlenir; sunucuya hiç ulaşılamazsa ya da süre dolarsa <code>dene … yakala</code> ile yakalanabilen bir çalışma hatası oluşur.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>HttpAl(adres [, başlıklar, zamanAşımı])</code></td>
+<td>GET isteği</td>
+</tr>
+<tr class="even">
+<td><code>HttpGönder(adres, gövde [, başlıklar, zamanAşımı])</code></td>
+<td>POST isteği</td>
+</tr>
+<tr class="odd">
+<td><code>Httpİstek(yöntem, adres [, gövde, başlıklar, zamanAşımı])</code></td>
+<td>GET, POST, PUT, PATCH, DELETE ya da HEAD</td>
+</tr>
+<tr class="even">
+<td><code>SorguYap(sözlük)</code></td>
+<td><code>a=1&amp;b=x%20y</code> biçiminde sorgu dizgisi</td>
+</tr>
+<tr class="odd">
+<td><code>UrlKodla(metin)</code>, <code>UrlÇöz(metin)</code></td>
+<td>Adreste güvenle kullanılacak biçime çevirir, geri çözer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>JSON göndermek için gövdeyi <code>Veri.JSONYap</code> ile üretip türünü başlıkta bildirebilirsiniz:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.com/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
+                    [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>, <span class="ym">'Authorization'</span>: <span class="ym">'Bearer '</span> + anahtar])</code></pre></div>
+<p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+<p>Komut satırında ve Python’da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.</p>
+</section><section class="bolum-blok" id="b08" data-baslik="7. Veritabanı: SQL veritabanları"><h2>7. Veritabanı: SQL veritabanları</h2>
+<p><code>Veritabanı</code> birimi SQL veritabanlarına tek bir arayüzle bağlanır. Hangi veritabanına bağlanılacağını <code>Bağlan</code>’a verilen adres belirler; programın geri kalanı aynı kalır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Adres</th>
+<th>Veritabanı</th>
+<th>Gerekli sürücü</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sqlite:magaza.db</code></td>
+<td>SQLite dosyası (yoksa oluşur)</td>
+<td>Yok; Node.js 22.5+ ve Python ile gelir</td>
+</tr>
+<tr class="even">
+<td><code>sqlite::bellek:</code></td>
+<td>Bellekte geçici SQLite</td>
+<td>Yok</td>
+</tr>
+<tr class="odd">
+<td><code>postgres://…</code></td>
+<td>PostgreSQL</td>
+<td><code>npm install pg</code> · <code>pip install pg8000</code></td>
+</tr>
+<tr class="even">
+<td><code>mysql://…</code></td>
+<td>MySQL ve MariaDB</td>
+<td><code>npm install mysql2</code> · <code>pip install pymysql</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sunucu adresinin tamamı <code>postgres://kullanıcı:parola@sunucu:5432/veritabanı</code> biçimindedir; parolada özel karakter varsa <code>Ağ.UrlKodla</code> ile kodlanır. Sürücü JavaScript derleyicisi için projenin klasörüne <code>npm</code> ile, Python yorumlayıcısı için <code>pip</code> ile kurulur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> VeritabanıÖrneği
+<span class="yy">{ Veritabanı birimi: tablo oluşturma, parametreli sorgular ve işlem (transaction).
+  'sqlite::bellek:' geçici bir veritabanıdır; kalıcı dosya için 'sqlite:magaza.db' yazın. }</span>
+<span class="ya">kullan</span> Veritabanı
+
+<span class="ya">değişken</span>
+  vt: <span class="ya">herhangi</span>
+  satır: <span class="ya">sözlük</span>
+
+<span class="ya">başla</span>
+  vt := Bağlan(<span class="ym">'sqlite::bellek:'</span>)
+  vt.Çalıştır(<span class="ym">'CREATE TABLE urun (no INTEGER PRIMARY KEY, ad TEXT NOT NULL UNIQUE, fiyat REAL, adet INTEGER)'</span>)
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'defter'</span>, <span class="ys">12.5</span>, <span class="ys">40</span>])
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'kalem'</span>, <span class="ys">4</span>, <span class="ys">120</span>])
+  yaz(<span class="ym">'Son eklenen ürünün numarası: '</span> + vt.SonKimlik, <span class="ys">1</span>)
+
+  <span class="yy">{ Değerler SQL metnine eklenmez, '?' ile verilir: kötü niyetli girdi yalnızca bir metin olarak kalır }</span>
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'x'</span><span class="ym">'); DROP TABLE urun; --'</span>, <span class="ys">1</span>, <span class="ys">1</span>])
+  yaz(<span class="ym">'Ürün sayısı: '</span> + vt.TekDeğer(<span class="ym">'SELECT COUNT(*) FROM urun'</span>), <span class="ys">1</span>)
+
+  vt.Sorgula(<span class="ym">'SELECT ad, fiyat * adet AS tutar FROM urun WHERE fiyat &gt; ? ORDER BY ad'</span>, [<span class="ys">3</span>]) <span class="ya">içindeki</span> <span class="ya">her</span> satır <span class="ya">için</span>
+    yaz(satır[<span class="ym">'ad'</span>] + <span class="ym">': '</span> + satır[<span class="ym">'tutar'</span>], <span class="ys">1</span>)
+
+  <span class="yy">{ İşlem: iki değişiklik ya birlikte kalıcı olur ya da hiçbiri }</span>
+  vt.İşlemBaşlat
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet - ? WHERE ad = ?'</span>, [<span class="ys">5</span>, <span class="ym">'defter'</span>])
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet + ? WHERE ad = ?'</span>, [<span class="ys">5</span>, <span class="ym">'kalem'</span>])
+  vt.Onayla
+  satır := vt.TekSatır(<span class="ym">'SELECT ad, adet FROM urun WHERE ad = ?'</span>, [<span class="ym">'defter'</span>])
+  yaz(satır, <span class="ys">1</span>)
+
+  <span class="ya">dene</span>
+    vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad) VALUES (?)'</span>, [<span class="ym">'defter'</span>])
+  <span class="ya">yakala</span> (h)
+    yaz(h.mesaj, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  vt.Kapat
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Son eklenen ürünün numarası: 2
+Ürün sayısı: 3
+defter: 500.0
+kalem: 480.0
+['ad': 'defter', 'adet': 35]
+Veritabanı hatası: UNIQUE constraint failed: urun.ad</code></pre></div>
+<p><code>Bağlan</code> bir bağlantı nesnesi döndürür:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vt.Çalıştır(sql [, parametreler])</code></td>
+<td>Değiştiren komutları çalıştırır; etkilenen satır sayısını döndürür</td>
+</tr>
+<tr class="even">
+<td><code>vt.Sorgula(sql [, parametreler])</code></td>
+<td>Satırları sözlük listesi olarak döndürür; anahtarlar sütun adlarıdır</td>
+</tr>
+<tr class="odd">
+<td><code>vt.TekSatır(sql [, parametreler])</code></td>
+<td>İlk satırı sözlük olarak döndürür; satır yoksa <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>vt.TekDeğer(sql [, parametreler])</code></td>
+<td>İlk satırın ilk sütununu döndürür; satır yoksa <code>boş</code></td>
+</tr>
+<tr class="odd">
+<td><code>vt.SonKimlik</code></td>
+<td>Son eklenen satırın otomatik numarası (PostgreSQL’de bunun yerine <code>INSERT … RETURNING</code> kullanılır)</td>
+</tr>
+<tr class="even">
+<td><code>vt.İşlemBaşlat</code> · <code>vt.Onayla</code> · <code>vt.GeriAl</code></td>
+<td>İşlem (transaction)</td>
+</tr>
+<tr class="odd">
+<td><code>vt.Kapat</code> · <code>vt.Açık</code> · <code>vt.Tür</code></td>
+<td>Bağlantıyı kapatır · açık mı · <code>'sqlite'</code>, <code>'postgres'</code> ya da <code>'mysql'</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Değerleri her zaman parametreyle vermeniz gerekir.</strong> Sorgudaki <code>?</code> işaretlerinin yerine <code>parametreler</code> listesindeki değerler sırayla konur; değer SQL metninin parçası olmaz, bu yüzden kullanıcıdan gelen girdi sorguyu değiştiremez (SQL enjeksiyonu). Yer tutucu üç veritabanında da <code>?</code> işaretidir. Tablo ve sütun adları parametre olamaz; bir adı değişkenden almak zorundaysanız <code>SqlAdı(ad)</code> onu denetleyip tırnaklar.</p>
+<p><strong>Tipler.</strong> Tamsayı sütunları <code>tamsayı</code>, kesirli ve <code>NUMERIC</code> sütunları <code>ondalık</code>, metin sütunları <code>metin</code>, <code>NULL</code> ise <code>boş</code> olarak gelir. PostgreSQL’in <code>BOOLEAN</code> tipi <code>mantıksal</code> olur; SQLite ve MySQL’de mantıksal değerler 0 ve 1’dir. Tarih ve saat sütunları veritabanının yazdığı metin olarak gelir (<code>'2026-11-11 10:30:00'</code>); <code>Takvim.TarihOku</code> ile zamana çevrilebilir.</p>
+<p>SQL’in kendisi veritabanından veritabanına biraz değişir (otomatik numara SQLite’ta <code>INTEGER PRIMARY KEY</code>, PostgreSQL’de <code>SERIAL</code>, MySQL’de <code>AUTO_INCREMENT</code> ile bildirilir); birim sorguları çevirmez, yalnızca bağlantıyı, yer tutucuları ve tipleri ortaklaştırır. Veritabanı hataları <code>Veritabanı hatası: …</code> iletisiyle fırlatılır ve <code>dene … yakala</code> ile yakalanabilir. Parolayı programın içine yazmak yerine <code>Sistem.Ortam('VT_ADRESI')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+</section><section class="bolum-blok" id="b09" data-baslik="8. Sunucu: web servisleri"><h2>8. Sunucu: web servisleri</h2>
+<p><code>Sunucu</code> birimi HTTP isteklerini karşılar: bir adrese gelen isteği sizin yazdığınız bir fonksiyona verir, fonksiyonun döndürdüğünü yanıt olarak gönderir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SunucuÖrneği
+<span class="yy">{ Sunucu birimi: yollar, yol parametreleri, JSON yanıtı.
+  İstekİşle isteği ağ olmadan işler; gerçek sunucu için sondaki Dinle satırını açın. }</span>
+<span class="ya">kullan</span> Sunucu
+
+<span class="ya">değişken</span>
+  y: <span class="ya">sözlük</span>
+
+<span class="ya">fonksiyon</span> AnaSayfa(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'&lt;h1&gt;Merhaba, '</span> + istek[<span class="ym">'sorgu'</span>].Al(<span class="ym">'ad'</span>, <span class="ym">'dünya'</span>) + <span class="ym">'!&lt;/h1&gt;'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Kare(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">değişken</span> n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  n := Tamsayı(istek[<span class="ym">'parametreler'</span>][<span class="ym">'n'</span>])
+  <span class="ya">dön</span> JsonYanıt([<span class="ym">'sayı'</span>: n, <span class="ym">'kare'</span>: n * n])
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/'</span>, AnaSayfa)
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/kare/:n'</span>, Kare)
+
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/?ad=Ay%C5%9Fe'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/kare/12'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'başlıklar'</span>][<span class="ym">'content-type'</span>] + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/kare/on'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/kare/3'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+  y := İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/yok'</span>)
+  yaz(Metin(y[<span class="ym">'durum'</span>]) + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+
+  <span class="yy">{ Dinle(8080)      tarayıcıda http://127.0.0.1:8080/kare/12 }</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>200 &lt;h1&gt;Merhaba, Ayşe!&lt;/h1&gt;
+200 application/json; charset=utf-8 {&quot;sayı&quot;: 12, &quot;kare&quot;: 144}
+500 Sunucu hatası
+405 Bu yöntem desteklenmiyor
+404 Bulunamadı</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>İşlev</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Yol(yöntem, yol, işleyici)</code></td>
+<td><code>'GET'</code>, <code>'POST'</code>, <code>'PUT'</code>, <code>'PATCH'</code>, <code>'DELETE'</code> ya da <code>'*'</code> (hepsi) için bir yol tanımlar. <code>:ad</code> ile başlayan parça parametredir</td>
+</tr>
+<tr class="even">
+<td><code>Statik(önEk, klasör)</code></td>
+<td>Klasördeki dosyaları (HTML, CSS, resim) sunar; klasörün dışına çıkılamaz</td>
+</tr>
+<tr class="odd">
+<td><code>Dinle(port [, adres])</code></td>
+<td>İstekleri dinlemeye başlar ve program durdurulana kadar bekler</td>
+</tr>
+<tr class="even">
+<td><code>Yanıt(durum, gövde [, tür])</code></td>
+<td>Durum kodu ve düz metinle yanıt; <code>tür</code> içerik tipidir</td>
+</tr>
+<tr class="odd">
+<td><code>JsonYanıt(değer [, durum])</code></td>
+<td>Sözlük ya da listeyi JSON olarak gönderir</td>
+</tr>
+<tr class="even">
+<td><code>Yönlendir(adres [, durum])</code></td>
+<td>Başka bir adrese yönlendirir (302)</td>
+</tr>
+<tr class="odd">
+<td><code>İstekİşle(yöntem, yol [, gövde, başlıklar])</code></td>
+<td>İsteği ağ olmadan işler ve yanıtı döndürür; test için</td>
+</tr>
+<tr class="even">
+<td><code>SunucuyuDurdur</code></td>
+<td>Bir işleyicinin içinden çağrılır; yanıt gittikten sonra <code>Dinle</code> sona erer</td>
+</tr>
+<tr class="odd">
+<td><code>GövdeSınırı(bayt)</code></td>
+<td>Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code> ya da <code>Yönlendir</code> kullanılır.</p>
+<p>Sunucunun kendiliğinden yaptıkları şunlardır:</p>
+<ul>
+<li>Tanımlı olmayan yola <code>404</code>, yolu olup yöntemi olmayan isteğe <code>405</code>, bozuk adrese <code>400</code>, sınırdan büyük gövdeye <code>413</code> döner.</li>
+<li>İşleyicide yakalanmayan bir hata olursa istemciye yalnızca <code>500 Sunucu hatası</code> gider; hatanın ayrıntısı sunucunun kendi çıktısına yazılır, dışarı sızmaz.</li>
+<li><code>Dinle</code> adres verilmezse yalnızca bu bilgisayardan gelen istekleri kabul eder (<code>127.0.0.1</code>). Başka cihazlardan erişim için <code>Dinle(8080, '0.0.0.0')</code> yazabilirsiniz.</li>
+<li>İstekler sırayla işlenir: bir işleyici bitmeden sonraki başlamaz. Bu, işleyicilerin birbirinin verisini bozamayacağı anlamına gelir; ama uzun süren bir işleyici diğer istekleri bekletir.</li>
+</ul>
+<p>Sunucu doğrudan internete açılacak biçimde tasarlanmamıştır: HTTPS, sıkıştırma ve aynı anda çok sayıda bağlantı için önüne nginx ya da Caddy gibi bir ters vekil koymanız gerekir. Oturum belirteçleri, parola özeti ve istek sınırlama için <code>Güvenlik</code> birimi (3. bölüm) hazırdır.</p>
+</section><section class="bolum-blok" id="b10" data-baslik="9. Üç katmanlı bir uygulama"><h2>9. Üç katmanlı bir uygulama</h2>
+<p><code>Sunucu</code> ve <code>Veritabanı</code> ile klasik üç katmanlı yapı Yöntem’in birimleriyle doğrudan kurulur: her katman ayrı bir dosyadır ve yalnızca bir altındakini <code>kullan</code> ile görür.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Katman</th>
+<th>Dosya</th>
+<th>Bildiği</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunum</td>
+<td><code>10_uc_katman.y</code> (program)</td>
+<td>HTTP: yollar, JSON, durum kodları</td>
+</tr>
+<tr class="even">
+<td>İş</td>
+<td><code>UrunIsleri.y</code> (birim)</td>
+<td>Kurallar: ad, fiyat ve stok denetimi</td>
+</tr>
+<tr class="odd">
+<td>Depolama</td>
+<td><code>UrunDeposu.y</code> (birim)</td>
+<td>SQL: tablo ve sorgular</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Depolama katmanı yalnızca SQL içerir. <code>arayüz</code> bölümü üst katmana ne sunduğunu söyler; <code>vt</code> değişkeni <code>uygulama</code> bölümünde olduğu için dışarıdan görünmez:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> ÜrünDeposu
+<span class="yy">{ Depolama katmanı: yalnızca SQL bilir. Kural da ekran da içermez.
+  Başka bir veritabanına geçmek için Aç'a verilen adresi değiştirmek yeter. }</span>
+<span class="ya">kullan</span> Veritabanı
+
+<span class="ya">arayüz</span>
+  <span class="ya">prosedür</span> Aç(adres: <span class="ya">metin</span>)
+  <span class="ya">fonksiyon</span> Hepsi: <span class="ya">liste</span>
+  <span class="ya">fonksiyon</span> Bul(no: <span class="ya">tamsayı</span>): <span class="ya">herhangi</span>
+  <span class="ya">fonksiyon</span> AdVarMı(ad: <span class="ya">metin</span>): <span class="ya">mantıksal</span>
+  <span class="ya">fonksiyon</span> Ekle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+  <span class="ya">prosedür</span> AdetDeğiştir(no, fark: <span class="ya">tamsayı</span>)
+
+<span class="ya">uygulama</span>
+
+<span class="ya">değişken</span>
+  vt: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Aç(adres: <span class="ya">metin</span>)
+<span class="ya">başla</span>
+  vt := Bağlan(adres)
+  vt.Çalıştır(<span class="ym">'CREATE TABLE IF NOT EXISTS urun (no INTEGER PRIMARY KEY, ad TEXT NOT NULL UNIQUE, fiyat REAL NOT NULL, adet INTEGER NOT NULL)'</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hepsi: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.Sorgula(<span class="ym">'SELECT no, ad, fiyat, adet FROM urun ORDER BY no'</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Bul(no: <span class="ya">tamsayı</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.TekSatır(<span class="ym">'SELECT no, ad, fiyat, adet FROM urun WHERE no = ?'</span>, [no])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> AdVarMı(ad: <span class="ya">metin</span>): <span class="ya">mantıksal</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.TekDeğer(<span class="ym">'SELECT COUNT(*) FROM urun WHERE ad = ?'</span>, [ad]) &gt; <span class="ys">0</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Ekle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [ad, fiyat, adet])
+  <span class="ya">dön</span> vt.SonKimlik
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> AdetDeğiştir(no, fark: <span class="ya">tamsayı</span>)
+<span class="ya">başla</span>
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet + ? WHERE no = ?'</span>, [fark, no])
+<span class="ya">bitir</span>
+
+<span class="ya">bitir</span>.</code></pre></div>
+<p>İş katmanı kuralları uygular. HTTP durum kodu da SQL de bilmez; kural çiğnenince türü belli bir hata fırlatır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> Ürünİşleri
+<span class="yy">{ İş katmanı: kurallar burada. HTTP'yi de SQL'i de bilmez; depolama katmanını çağırır,
+  kural çiğnenirse açıklayıcı bir hata fırlatır. }</span>
+<span class="ya">kullan</span> ÜrünDeposu
+
+<span class="ya">arayüz</span>
+  <span class="ya">fonksiyon</span> ÜrünListesi: <span class="ya">liste</span>
+  <span class="ya">fonksiyon</span> ÜrünEkle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+  <span class="ya">fonksiyon</span> Sat(no, adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+  <span class="ya">fonksiyon</span> StokDeğeri: <span class="ya">ondalık</span>
+
+<span class="ya">uygulama</span>
+
+<span class="ya">fonksiyon</span> ÜrünListesi: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> Hepsi
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> ÜrünEkle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+<span class="ya">değişken</span> temiz: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  temiz := Kırp(ad)
+  <span class="ya">eğer</span> Uzunluk(temiz) &lt; <span class="ys">2</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Ürün adı en az 2 harf olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> fiyat &lt;= <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Fiyat sıfırdan büyük olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> adet &lt; <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Adet eksi olamaz'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> AdVarMı(temiz) <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Bu adda bir ürün zaten var: '</span> + temiz, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">dön</span> Bul(Ekle(temiz, fiyat, adet))
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Sat(no, adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+<span class="ya">değişken</span> ürün: <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  ürün := Bul(no)
+  <span class="ya">eğer</span> ürün = <span class="ya">boş</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Böyle bir ürün yok'</span>, <span class="ym">'BulunamadıHatası'</span>)
+  <span class="ya">eğer</span> adet &lt; <span class="ys">1</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Satış adedi en az 1 olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> ürün[<span class="ym">'adet'</span>] &lt; adet <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Stok yetersiz: '</span> + ürün[<span class="ym">'adet'</span>] + <span class="ym">' adet var'</span>, <span class="ym">'KuralHatası'</span>)
+  AdetDeğiştir(no, -adet)
+  <span class="ya">dön</span> [<span class="ym">'ürün'</span>: ürün[<span class="ym">'ad'</span>], <span class="ym">'adet'</span>: adet, <span class="ym">'tutar'</span>: ürün[<span class="ym">'fiyat'</span>] * adet, <span class="ym">'kalan'</span>: ürün[<span class="ym">'adet'</span>] - adet]
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> StokDeğeri: <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  toplam: <span class="ya">ondalık</span>
+  ü: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  toplam := <span class="ys">0</span>
+  Hepsi <span class="ya">içindeki</span> <span class="ya">her</span> ü <span class="ya">için</span> toplam := toplam + ü[<span class="ym">'fiyat'</span>] * ü[<span class="ym">'adet'</span>]
+  <span class="ya">dön</span> toplam
+<span class="ya">bitir</span>
+
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Sunum katmanı isteği iş katmanının çağrısına, iş katmanının hatasını da durum koduna çevirir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÜçKatman
+<span class="yy">{ Sunum katmanı: HTTP isteklerini iş katmanına çevirir, sonucu JSON olarak döndürür.
+  Kural bilmez, SQL bilmez; yalnızca Ürünİşleri birimini kullanır.
+  Sunucu olarak çalıştırmak için:  yontem 10_uc_katman.y dinle }</span>
+<span class="ya">kullan</span> Sunucu, Veri, Sistem, Ürünİşleri, ÜrünDeposu
+
+<span class="ya">değişken</span>
+  y: <span class="ya">sözlük</span>
+
+<span class="yy">{ İş katmanının hatalarını HTTP durum kodlarına çevirir }</span>
+<span class="ya">fonksiyon</span> HataYanıtı(h: <span class="ya">herhangi</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> h.tür = <span class="ym">'KuralHatası'</span> <span class="ya">ise</span> <span class="ya">dön</span> JsonYanıt([<span class="ym">'hata'</span>: h.mesaj], <span class="ys">400</span>)
+  <span class="ya">eğer</span> h.tür = <span class="ym">'BulunamadıHatası'</span> <span class="ya">ise</span> <span class="ya">dön</span> JsonYanıt([<span class="ym">'hata'</span>: h.mesaj], <span class="ys">404</span>)
+  <span class="ya">fırlat</span> h
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Listele(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> JsonYanıt([<span class="ym">'ürünler'</span>: ÜrünListesi, <span class="ym">'stokDeğeri'</span>: StokDeğeri])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> YeniÜrün(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">değişken</span> v: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    v := JSONÇöz(istek[<span class="ym">'gövde'</span>])
+    <span class="ya">dön</span> JsonYanıt(ÜrünEkle(v[<span class="ym">'ad'</span>], v[<span class="ym">'fiyat'</span>], v[<span class="ym">'adet'</span>]), <span class="ys">201</span>)
+  <span class="ya">yakala</span> (h)
+    <span class="ya">dön</span> HataYanıtı(h)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Satış(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    <span class="ya">dön</span> JsonYanıt(Sat(Tamsayı(istek[<span class="ym">'parametreler'</span>][<span class="ym">'no'</span>]), Tamsayı(istek[<span class="ym">'sorgu'</span>].Al(<span class="ym">'adet'</span>, <span class="ym">'1'</span>))))
+  <span class="ya">yakala</span> (h)
+    <span class="ya">dön</span> HataYanıtı(h)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Göster(başlık: <span class="ya">metin</span>; y: <span class="ya">sözlük</span>)
+<span class="ya">başla</span>
+  yaz(başlık + <span class="ym">' → '</span> + y[<span class="ym">'durum'</span>] + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/urunler'</span>, Listele)
+  Yol(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, YeniÜrün)
+  Yol(<span class="ym">'POST'</span>, <span class="ym">'/urunler/:no/sat'</span>, Satış)
+
+  <span class="ya">eğer</span> Uzunluk(Argümanlar) &gt; <span class="ys">0</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Aç(<span class="ym">'sqlite:magaza.db'</span>)
+    Dinle(<span class="ys">8080</span>)
+    <span class="ya">dön</span>
+  <span class="ya">bitir</span>
+
+  <span class="yy">{ Argümansız çalıştırınca: bellekteki veritabanıyla, ağ olmadan bir tur }</span>
+  Aç(<span class="ym">'sqlite::bellek:'</span>)
+  Göster(<span class="ym">'ekle'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 40}'</span>))
+  Göster(<span class="ym">'ekle'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot; kalem &quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}'</span>))
+  Göster(<span class="ym">'aynı ad'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 1.0, &quot;adet&quot;: 1}'</span>))
+  Göster(<span class="ym">'kötü fiyat'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;silgi&quot;, &quot;fiyat&quot;: 0.0, &quot;adet&quot;: 1}'</span>))
+  Göster(<span class="ym">'sat'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/1/sat?adet=4'</span>))
+  Göster(<span class="ym">'stok yetersiz'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/2/sat?adet=5'</span>))
+  Göster(<span class="ym">'ürün yok'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/9/sat'</span>))
+  Göster(<span class="ym">'liste'</span>, İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/urunler'</span>))
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ekle → 201 {&quot;no&quot;: 1, &quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 40}
+ekle → 201 {&quot;no&quot;: 2, &quot;ad&quot;: &quot;kalem&quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}
+aynı ad → 400 {&quot;hata&quot;: &quot;Bu adda bir ürün zaten var: defter&quot;}
+kötü fiyat → 400 {&quot;hata&quot;: &quot;Fiyat sıfırdan büyük olmalı&quot;}
+sat → 200 {&quot;ürün&quot;: &quot;defter&quot;, &quot;adet&quot;: 4, &quot;tutar&quot;: 50.0, &quot;kalan&quot;: 36}
+stok yetersiz → 400 {&quot;hata&quot;: &quot;Stok yetersiz: 3 adet var&quot;}
+ürün yok → 404 {&quot;hata&quot;: &quot;Böyle bir ürün yok&quot;}
+liste → 200 {&quot;ürünler&quot;: [{&quot;no&quot;: 1, &quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 36}, {&quot;no&quot;: 2, &quot;ad&quot;: &quot;kalem&quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}], &quot;stokDeğeri&quot;: 462.0}</code></pre></div>
+<p>Bu ayrımın kazandırdıkları şunlardır:</p>
+<ul>
+<li><strong>Veritabanını değiştirmek</strong> tek satırdır: <code>Aç('sqlite:magaza.db')</code> yerine <code>Aç('postgres://…')</code> yazmak yeterlidir. İş ve sunum katmanları değişmez.</li>
+<li><strong>Arayüzü değiştirmek</strong> iş kurallarına dokunmaz: aynı <code>Ürünİşleri</code> birimini bir <code>Pencere</code> programı ya da komut satırı aracı da kullanabilir.</li>
+<li><strong>Test etmek</strong> kolaydır: bellekteki veritabanı ve <code>İstekİşle</code> ile bütün uygulama ağ ve dosya olmadan, <code>yontem test</code> içinde sınanır. Yukarıdaki çıktı böyle üretilmiştir.</li>
+</ul>
+<p>Katman sınırını dil zorlamaz: sunum katmanının <code>kullan ÜrünDeposu</code> yazıp doğrudan sorgu çalıştırmasını engelleyen bir şey yoktur (örnekte yalnızca veritabanını açmak için kullanılıyor). Sınırı korumak, her birimin <code>arayüz</code> bölümünü küçük tutmakla başlar.</p>
+</section><section class="bolum-blok" id="b11" data-baslik="10. Araçlar"><h2>10. Araçlar</h2>
+<p>Araçlar JavaScript derleyicisinin <code>yontem</code> komutuyla gelir. Komutu her klasörden çağırabilmek için depoda bir kez <code>cd js &amp;&amp; npm install &amp;&amp; npm run build &amp;&amp; npm install -g .</code> komutunu çalıştırmanız gerekir (ayrıntıları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz).</p>
+<p><strong>Yeni proje: <code>yontem yeni</code></strong></p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem yeni hesap-defteri
+cd hesap-defteri
+yontem hesap-defteri.y
+yontem test</code></pre></div>
+<p>Komut bir ana program, örnek bir birim, bir test ve bir <code>BENIOKU.md</code> içeren klasör oluşturur.</p>
+<p><strong>Test: <code>yontem test</code></strong></p>
+<p>Yöntem’de test, çıktısı bilinen bir programdır. <code>yontem test [klasör]</code> her <code>.y</code> programını çalıştırır ve çıktıyı yanındaki aynı adlı <code>.beklenen</code> dosyasıyla karşılaştırır; fark varsa ilk farklı satırı gösterir. <code>.beklenen</code> yoksa programın hatasız bitmesi yeterlidir. <code>.girdi</code> dosyası varsa klavye girdisi olarak verilir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ToplaTesti
+<span class="ya">kullan</span> Hesap                      <span class="yy">{ bir üst klasördeki Hesap.y birimi }</span>
+
+<span class="ya">başla</span>
+  iddia(Topla(<span class="ys">2</span>, <span class="ys">3</span>) = <span class="ys">5</span>, <span class="ym">'Topla 2 + 3 için 5 vermeli'</span>)
+  yaz(Topla(<span class="ys">10</span>, -<span class="ys">4</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p><code>iddia(koşul, mesaj)</code> koşul yanlışsa programı hatayla durdurur; test başarısız sayılır. Beklenen çıktıyı elle yazmak yerine <code>yontem test --guncelle</code> ile şimdiki çıktıdan üretebilirsiniz; üretilen dosyayı gözden geçirmenizi öneririz. <code>testler/</code> klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur. Aynı komut Python yorumlayıcısında da vardır: <code>python3 yontem.py test</code>.</p>
+<p><strong>Katı kip: <code>{$katı}</code> ve <code>yontem denetle</code></strong></p>
+<p>Yöntem tipleri olağan durumda program çalışırken denetler: <code>tamsayı</code> bir değişkene metin atayan satır, ancak o satıra gelindiğinde hata verir. Dosyanın başına <code>{$katı}</code> yazarsanız aynı denetim derleme zamanında yapılır: program hiç çalışmadan, bütün tip hataları birden listelenir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sepet
+<span class="yy">{$katı}</span>
+
+<span class="ya">değişken</span>
+  adet: <span class="ya">tamsayı</span>
+  fiyat: <span class="ya">ondalık</span>
+  ürün := <span class="ym">'defter'</span>
+
+<span class="ya">fonksiyon</span> Tutar(adet: <span class="ya">tamsayı</span>; fiyat: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> adet * fiyat
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  adet := <span class="ym">'3'</span>
+  fiyat := <span class="ys">12.5</span>
+  <span class="ya">eğer</span> adet <span class="ya">ise</span> yaz(ürün + <span class="ym">': '</span> + Tutar(fiyat, adet), <span class="ys">1</span>)
+  yaz(toplm, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tip hatası [sepet.y, satır 15] 'adet' tamsayı tipinde; metin bir değer atanamaz
+Tip hatası [sepet.y, satır 17] Koşul mantıksal olmalı, tamsayı verildi
+Tip hatası [sepet.y, satır 17] 'Tutar' çağrısında 1. argüman tamsayı olmalı, ondalık verildi
+Tip hatası [sepet.y, satır 18] Tanımsız tanımlayıcı: 'toplm'
+4 tip hatası bulundu; program çalıştırılmadı.</code></pre></div>
+<p>Katı kipte şunlar derleme hatasıdır:</p>
+<ul>
+<li>Tipi belirtilmemiş sabit: <code>sabit BAĞLAM = 10</code> yerine <code>sabit BAĞLAM: tamsayı = 10</code> yazılır.</li>
+<li>Tipi belirtilmemiş parametre ya da dönüş tipi belirtilmemiş fonksiyon. Değişkenlerde tip, ilk değerden çıkarılabiliyorsa yazılmayabilir (<code>ürün := 'defter'</code> bir <code>metin</code> değişkenidir); çıkarılamıyorsa belirtilmelidir.</li>
+<li>Tipi belli bir değeri uymayan tipte bir değişkene atamak, parametreye vermek ya da fonksiyondan döndürmek. <code>tamsayı</code>, <code>ondalık</code> beklenen yere verilebilir; tersi verilemez.</li>
+<li>Tipleri bildirilmiş bir alt programı eksik ya da fazla argümanla çağırmak.</li>
+<li>Mantıksal olmayan koşul; sayı ile metni çıkarmak ya da karşılaştırmak gibi tanımsız işlemler.</li>
+<li>Tanımlanmamış bir ad kullanmak.</li>
+</ul>
+<p>Listelerin ve sözlüklerin öğe tipini de bildirebilirsiniz; katı kip öğeleri de denetler:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span>
+  notlar: <span class="ya">tamsayı</span> listesi
+  yaşlar: <span class="ya">tamsayı</span> sözlüğü
+  tablo: <span class="ya">ondalık</span> listesi listesi
+  ad: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  notlar := [<span class="ys">70</span>, <span class="ys">85</span>, <span class="ym">'doksan'</span>]     <span class="yy">{ hata: metin bir öğe konamaz }</span>
+  notlar.Ekle(<span class="ys">100</span>)
+  ad := notlar[<span class="ys">0</span>]                  <span class="yy">{ hata: 'ad' metin tipinde; tamsayı bir değer atanamaz }</span>
+  yaşlar[<span class="ym">'Ali'</span>] := <span class="ym">'otuz'</span>          <span class="yy">{ hata: metin bir öğe konamaz }</span></code></pre></div>
+<p>Öğe tipi atamada, <code>Ekle</code> çağrısında, <code>liste[i] := değer</code> atamasında, <code>içindeki her</code> döngüsünün değişkeninde ve parametrelerde denetlenir; diziler için öğe tipi başa yazılır: <code>tamsayı dizisi</code>, sınırlı diziler için <code>ondalık dizisi[1..12]</code>, iç içe <code>ondalık dizisi dizisi</code>. Öğe tipi yazılmamış düz bir <code>liste</code> her yere verilebilir ve çalışırken denetlenir.</p>
+<p>Sınıf ve kayıt tipleri de izlenir. Tipi <code>Daire</code> olan bir değişkende olmayan bir alana ya da metoda erişmek (<code>d.çap</code>), bir alana uymayan değer atamak (<code>d.yarıçap := 'iki'</code>), bir metodu ya da kurucuyu eksik veya yanlış tipte argümanla çağırmak ve bir sınıfın nesnesini ilgisiz bir sınıfın değişkenine atamak derleme hatasıdır. Alt sınıfın nesnesi üst sınıf tipindeki değişkene atanabilir (<code>şekil := daire</code>); ama o değişken üzerinden yalnızca üst sınıfın üyelerine erişilir. Alt sınıfa özgü bir üyeye ulaşmak için değeri alt sınıf tipinde bir değişkene atayabilirsiniz.</p>
+<p>Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildirilmiş değişkenler, parametreler, alanlar ve öğeler, dönüş tipi bildirilmiş fonksiyonlar ve metodlar, sonucu belli olan yerleşik işlevler (<code>Uzunluk</code>, <code>Metin</code>, <code>Tamsayı</code>, <code>BüyükHarf</code>, <code>Ayır</code>, <code>İçerir</code> gibi), <code>Takvim</code>, <code>Desen</code>, <code>Güvenlik</code> ve <code>Ağ</code> birimlerinin işlevleri (<code>TarihYaz</code> bir metin, <code>GünFarkı</code> bir tamsayı, <code>Eşleşir</code> bir mantıksal değer verir) ve bunlarla kurulan ifadeler. Yerleşik işlevler ve yerleşik birimlerin bütün işlevleri için argüman sayısı da denetlenir: <code>TarihYap(2026, 1)</code> derleme hatasıdır. Sonucu argümana göre değişen işlevler (<code>Maks</code>, <code>Yuvarla</code>, <code>Bul</code>) ile <code>Pencere</code>, <code>Meşale</code> gibi birimlerin döndürdüğü nesneler gibi tipi önceden bilinemeyen değerler eskisi gibi çalışırken denetlenir; katı kip çalışma zamanı denetimlerini kaldırmaz, onların önüne bir denetim daha koyar. Öğe tipi bildirimi yalnızca derleme zamanında denetlenir: çalışırken bir listeye konan öğelerin tipine bakılmaz. Bir değişkeni bilerek her tipe açık bırakmak için tipini <code>herhangi</code> yazabilirsiniz.</p>
+<p>Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için <code>yontem.json</code> dosyasına <code>"kati": true</code> eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem denetle .            # programları çalıştırmadan derler, hataları listeler
+yontem denetle . --kati     # yönergesi olmayan programları da katı kipte denetler</code></pre></div>
+<p><code>yontem denetle</code> sürekli tümleştirmede ve bir projeyi katı kipe geçirmeden önce ne kadar iş çıkacağını görmek için kullanışlıdır. VS Code eklentisi katı dosyalardaki tip hatalarını yazarken gösterir.</p>
+<p><strong>Biçimlendirme: <code>yontem bicimle</code></strong></p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem bicimle .             # klasördeki tüm .y dosyalarını düzenler
+yontem bicimle . --denetle   # değiştirmeden, düzensiz dosyaları listeler</code></pre></div>
+<p>Biçimlendirici girintiyi programın yapısına göre yeniden kurar (düzey başına iki boşluk), satır sonu boşluklarını ve fazla boş satırları temizler. Yalnızca boşluklara dokunur: sözcükler, satır bölünmeleri ve yorumlar değişmez, bu yüzden programın anlamı değişemez. Çok satıra bölünmüş ifadelerde kendi hizalamanız korunur.</p>
+<p><strong>Hata ayıklama: <code>yontem ayikla</code></strong></p>
+<p>Program beklediğiniz sonucu vermiyorsa araya <code>yaz</code> satırları eklemek yerine onu hata ayıklayıcıyla çalıştırabilirsiniz: program istediğiniz satırda durur, değişkenlerin o andaki değerlerine bakar, sonra satır satır ilerlersiniz. Örnek olarak notların ortalamasını bulan şu programı alalım:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Ayıklama
+<span class="yy">{ Hata ayıklayıcıyı denemek için küçük bir program: notların ortalamasını bulur.
+  Çalıştırmak için: yontem ayikla 07_ayiklama.y }</span>
+
+<span class="ya">fonksiyon</span> Ortalama(notlar: <span class="ya">liste</span>): <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  toplam, n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  toplam := <span class="ys">0</span>
+  notlar <span class="ya">içindeki</span> <span class="ya">her</span> n <span class="ya">için</span>
+    toplam := toplam + n
+  <span class="ya">dön</span> toplam / Uzunluk(notlar)
+<span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  notlar: <span class="ya">liste</span>
+  ort: <span class="ya">ondalık</span>
+
+<span class="ya">başla</span>
+  notlar := [<span class="ys">70</span>, <span class="ys">85</span>, <span class="ys">90</span>]
+  ort := Ortalama(notlar)
+  yaz(<span class="ym">'Ortalama: '</span> + Yuvarla(ort, <span class="ys">1</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p><code>yontem ayikla 07_ayiklama.y</code> programı ilk deyimde durdurur ve komut bekler. Aşağıdaki oturumda önce bir satır ilerliyor, sonra <code>Ortalama</code> fonksiyonunun içine giriyor, döngünün içine yalnızca <code>n &gt; 80</code> olduğunda duran bir kesme noktası koyuyor ve durduğu yerde değişkenlere bakıyoruz:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>$ yontem ayikla 07_ayiklama.y
+Yöntem hata ayıklayıcı — 07_ayiklama.y (komutlar için: yardım)
+→   20    notlar := [70, 85, 90]
+(ayıkla) sonraki
+→   21    ort := Ortalama(notlar)
+(ayıkla) adım
+Ortalama içinde, 07_ayiklama.y:9
+→    9    toplam := 0
+(ayıkla) kes 11 eğer n &gt; 80
+Kesme noktası kondu: 07_ayiklama.y:11 (eğer n &gt; 80)
+(ayıkla) devam
+Kesme noktası: 07_ayiklama.y:11
+Ortalama içinde, 07_ayiklama.y:11
+→●  11      toplam := toplam + n
+(ayıkla) değişkenler
+Ortalama:
+  notlar = [70, 85, 90]
+  sonuç = 0.0
+  toplam = 70
+  n = 85
+Program:
+  ort = 0.0
+(ayıkla) yaz toplam + n
+155
+(ayıkla) yığın
+→ #0  Ortalama  07_ayiklama.y:11
+  #1  program Ayıklama  07_ayiklama.y:21
+(ayıkla) sil 11
+Kesme noktası kaldırıldı: 07_ayiklama.y:11
+(ayıkla) çık
+→   22    yaz('Ortalama: ' + Yuvarla(ort, 1), 1)
+(ayıkla) yaz ort
+81.66666666666667
+(ayıkla) devam
+Ortalama: 81.7
+Program bitti (çıkış kodu 0).</code></pre></div>
+<p>Okun (<code>→</code>) gösterdiği satır henüz çalışmamıştır; sıradaki deyimdir. <code>●</code> kesme noktasını gösterir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>adım</code> (<code>a</code>)</td>
+<td>Sonraki deyime geçer; satırda bir çağrı varsa içine girer</td>
+</tr>
+<tr class="even">
+<td><code>sonraki</code> (<code>s</code>)</td>
+<td>Sonraki satıra geçer; çağrıların içine girmez</td>
+</tr>
+<tr class="odd">
+<td><code>çık</code> (<code>ç</code>)</td>
+<td>Bulunulan alt programdan çıkana kadar çalışır</td>
+</tr>
+<tr class="even">
+<td><code>devam</code> (<code>d</code>)</td>
+<td>Bir kesme noktasına ya da programın sonuna kadar çalışır</td>
+</tr>
+<tr class="odd">
+<td><code>kes 12</code> (<code>k</code>)</td>
+<td>Kesme noktası koyar. Başka bir birimde: <code>kes Birim:12</code>. Koşullu: <code>kes 12 eğer i &gt; 3</code></td>
+</tr>
+<tr class="even">
+<td><code>sil 12</code></td>
+<td>Kesme noktasını kaldırır; <code>sil hepsi</code> hepsini</td>
+</tr>
+<tr class="odd">
+<td><code>yaz ifade</code> (<code>y</code>)</td>
+<td>İfadeyi değerlendirir: <code>y toplam * 2</code>. Atama değişkeni değiştirir: <code>y x := 5</code></td>
+</tr>
+<tr class="even">
+<td><code>değişkenler</code> (<code>dğ</code>)</td>
+<td>Bulunulan alt programın, nesnenin ve programın değişkenlerini listeler</td>
+</tr>
+<tr class="odd">
+<td><code>yığın</code> (<code>yğ</code>)</td>
+<td>Buraya hangi çağrılarla gelindiğini gösterir; <code>yukarı</code> ve <code>aşağı</code> çağıranın değişkenlerine geçirir</td>
+</tr>
+<tr class="even">
+<td><code>liste</code> (<code>l</code>)</td>
+<td>Çevredeki kaynak satırlarını gösterir</td>
+</tr>
+<tr class="odd">
+<td><code>hatalar kapat</code></td>
+<td>Çalışma hatasında durmayı kapatır (<code>hatalar aç</code> geri açar)</td>
+</tr>
+<tr class="even">
+<td><code>bitir</code> (<code>q</code>)</td>
+<td>Programı sonlandırır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Boş satır son adımlama komutunu yineler; komutlar Türkçe karaktersiz de yazılabilir (<code>adim</code>, <code>cik</code>, <code>degiskenler</code>). Program bir çalışma hatası verdiğinde ayıklayıcı hatanın oluştuğu satırda durur: değişkenler hâlâ yerindedir, hataya neyin yol açtığına bakabilirsiniz. Hata bir <code>dene … yakala</code> bloğunda yakalanacak olsa da durur; bunu istemiyorsanız <code>hatalar kapat</code> yazabilirsiniz. Programın <code>oku</code> çağrıları ile ayıklayıcı komutları aynı girdiyi paylaşır: program girdi beklerken yazdığınız satır programa gider.</p>
+<p>Hata ayıklayıcı JavaScript derleyicisinin aracıdır; ayıklama kipinde derlenen program aynı çıktıyı verir, yalnızca biraz daha yavaş çalışır.</p>
+<p><strong>Paketler: <code>yontem paket</code></strong></p>
+<p>Başkasının yazdığı birimleri projenize paket olarak kurarsınız. Paket, içinde birim dosyaları olan bir klasördür; merkezî bir paket deposu yoktur, paket bulunduğu yerden kurulur:</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem paket ekle github:kullanici/depo@v1.2.0     # GitHub deposu (etiket, dal ya da commit)
+yontem paket ekle https://ornek.org/araclar.zip    # arşiv (.tar.gz, .zip) ya da tek .y dosyası
+yontem paket ekle ../ortak-birimler                # yerel klasör</code></pre></div>
+<p><code>ekle</code> paketi <code>paketler/</code> klasörüne indirir ve iki dosyayı günceller. <code>yontem.json</code> projenizin bildirimidir: adı, sürümü ve doğrudan kullandığı paketler.</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>{
+  &quot;ad&quot;: &quot;hesap&quot;,
+  &quot;surum&quot;: &quot;0.1.0&quot;,
+  &quot;bagimliliklar&quot;: {
+    &quot;Selam&quot;: &quot;github:kullanici/selam@v1.2.0&quot;
+  }
+}</code></pre></div>
+<p><code>yontem.kilit.json</code> ise kurulan her paketin (paketlerin kendi bağımlılıkları dahil) tam olarak nereden geldiğini ve içeriğinin SHA-256 özetini tutar. Kurulduktan sonra paketin birimleri kendi birimleriniz gibi kullanılır: <code>kullan Selam</code>. Program, bulunduğu klasörden yukarı doğru <code>yontem.json</code> içeren ilk klasörün paketlerini görür; birimler paketin kökünde ya da <code>kutuphane/</code> klasöründe aranır. JavaScript derleyicisi ve Python yorumlayıcısı aynı kuralı uygular.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yontem paket ekle &lt;kaynak&gt;</code></td>
+<td>Paketi kurar ve <code>yontem.json</code> dosyasına yazar. Ad paketten gelir; <code>--ad Ad</code> ile değiştirilir</td>
+</tr>
+<tr class="even">
+<td><code>yontem paket kur</code></td>
+<td><code>yontem.json</code> dosyasındaki paketleri kurar, içeriği kilit dosyasıyla doğrular</td>
+</tr>
+<tr class="odd">
+<td><code>yontem paket kaldir &lt;ad&gt;</code></td>
+<td>Paketi ve başka hiçbir paketin istemediği bağımlılıklarını kaldırır</td>
+</tr>
+<tr class="even">
+<td><code>yontem paket guncelle [ad]</code></td>
+<td>Paketi (ya da hepsini) kaynağından yeniden indirir, kilit dosyasını yeniler</td>
+</tr>
+<tr class="odd">
+<td><code>yontem paket liste</code></td>
+<td>Kurulu paketleri, sürümlerini ve sağladıkları birimleri gösterir</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>yontem.json</code> ve <code>yontem.kilit.json</code> dosyalarını sürüm denetimine koymanızı, <code>paketler/</code> klasörünü ise dışarıda bırakmanızı öneririz: projeyi alan kişi <code>yontem paket kur</code> ile aynı paketleri kurar. İndirilen içerik kilit dosyasındaki özetle aynı değilse kurulum durur; kaynağın değiştiğini siz <code>guncelle</code> ile onaylamadıkça yeni içerik projenize girmez. Bu yüzden kaynağı dal adıyla değil etiketle (<code>@v1.2.0</code>) vermek en sağlıklısıdır.</p>
+<p>Kurulum yalnızca dosya kopyalar, paketteki hiçbir kod kurulurken çalışmaz; arşivlerde klasör dışına çıkan yollar reddedilir ve indirme yalnızca HTTPS ile yapılır. Yine de paket, programınızla birlikte çalışacak koddur: güvenmediğiniz bir kaynaktan paket kurmamanızı, kurduğunuz paketin birimlerini de okumanızı öneririz.</p>
+<p>Kendi paketinizi yayımlamak için birimlerinizi bir Git deposunun köküne (ya da <code>kutuphane/</code> klasörüne) koyup sürümü etiketlemeniz yeterlidir. Depoya bir <code>yontem.json</code> eklerseniz paketin adı ve sürümü oradan okunur; paketiniz başka paketlere dayanıyorsa <code>bagimliliklar</code> altında yazdıklarınız onu kuranlara kendiliğinden kurulur. İki paket aynı adlı paketi farklı kaynaklardan isterse kurulum durur ve hangisini seçeceğinizi sorar.</p>
+<p><strong>Paketleme: <code>yontem paketle</code>, <code>yontem derle</code>, <code>yontem gomulu</code></strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ürettiği</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yontem paketle program.y [--mobil] [--ad "Ad"]</code></td>
+<td><code>Pencere</code>/<code>Mobil</code> programından web uygulaması; <code>--mobil</code> ile telefona kurulabilir</td>
+</tr>
+<tr class="even">
+<td><code>yontem derle program.y -o program.js</code></td>
+<td>Node.js ile çalışan JavaScript dosyası</td>
+</tr>
+<tr class="odd">
+<td><code>yontem gomulu program.y</code></td>
+<td>ESP32 için Arduino/PlatformIO projesi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>VS Code eklentisi</strong></p>
+<p>Depodaki <code>araclar/vscode/yontem-dili-0.5.0.vsix</code> dosyasını <code>code --install-extension</code> ile ya da Eklentiler → <strong>VSIX’ten Yükle</strong> ile kurabilirsiniz. Eklenti sözdizimini renklendirir, <code>eğer</code>, <code>için</code>, <code>fonksiyon</code>, <code>sınıf</code> gibi kod parçacıkları sunar, <code>F5</code> ile etkin programı çalıştırır ve <strong>Belgeyi Biçimlendir</strong> (<code>Shift+Alt+F</code>) komutunu <code>yontem bicimle</code>’ye bağlar. Yazarken sözdizimi hatalarını ve bulunamayan birimleri altını çizerek gösterir, hiçbir yerde tanımlı olmayan adlar için yazım hatası uyarısı verir; dosyadaki adları, kullanılan birimlerin üyelerini ve yerleşikleri tamamlar (<code>Güvenlik.</code> yazınca yalnızca o birimin üyeleri gelir); bir adın üzerine gelince imzasını gösterir ve <code>F12</code> ile tanımına gider.</p>
+<p>Hata ayıklayıcı da eklentidedir: satır numarasının soluna tıklayarak kesme noktası koyabilir, <code>F6</code> ile (ya da <strong>Çalıştır ve Hata Ayıkla</strong> panelinden) ayıklamayı başlatabilirsiniz. Program kesme noktasında durduğunda değişkenler, çağrı yığını ve izleme ifadeleri yan panelde görünür; listeler, sözlükler ve nesneler açılarak incelenir, adımlama düğmeleri <code>adım</code>, <code>sonraki</code> ve <code>çık</code> komutlarının karşılığıdır. Kesme noktasına sağ tıklayıp koşul yazabilirsiniz. VS Code’da programın <code>oku</code> çağrıları klavyeden okuyamaz; girdi gerekiyorsa <code>launch.json</code> içinde <code>"girdi": "girdi.txt"</code> ile bir dosya verebilirsiniz.</p>
+<p><code>yontem</code> komutu <code>PATH</code>’te değilse eklentinin <code>yontem.komut</code> ayarına tam komutu yazabilirsiniz.</p>
+<p><strong>Başka düzenleyiciler: <code>yontem dil-sunucusu</code></strong></p>
+<p>Aynı özellikler bir dil sunucusu olarak da sunulur. Language Server Protocol destekleyen düzenleyicilerde (Neovim, Helix, Emacs, Sublime Text…) <code>.y</code> dosyaları için sunucu komutu olarak <code>yontem dil-sunucusu</code> (kısa adı <code>yontem lsp</code>) vermeniz yeterlidir; sunucu standart girdi ve çıktı üzerinden konuşur.</p>
+</section><section class="bolum-blok" id="b12" data-baslik="11. Birimleri birlikte kullanmak"><h2>11. Birimleri birlikte kullanmak</h2>
+<p>Birimler birbirinden bağımsızdır ama asıl güçleri birlikte kullanıldıklarında ortaya çıkar. Aşağıdaki program bir sunucu günlüğünü inceler: başarısız girişleri <code>Desen</code> ile ayıklar, ilk ve son deneme arasındaki süreyi <code>Takvim</code> ile hesaplar, e-posta adreslerini <code>Güvenlik</code> ile maskeler ve raporu imzalar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> GirişRaporu
+<span class="yy">{ Üç birim birlikte: bir sunucu günlüğünden başarısız girişler Desen ile ayıklanır,
+  Takvim ile zaman farkı hesaplanır, Güvenlik ile e-postalar maskelenir ve rapor imzalanır. }</span>
+<span class="ya">kullan</span> Desen, Takvim, Güvenlik
+
+<span class="ya">sabit</span>
+  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.com'</span>
+  KALIP: <span class="ya">metin</span> = <span class="ym">'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'</span>
+  RAPOR_ANAHTARI: <span class="ya">metin</span> = <span class="ym">'rapor-imza-anahtari'</span>
+
+<span class="ya">değişken</span>
+  ilk, son, sayı: <span class="ya">sözlük</span>
+  g: <span class="ya">herhangi</span>
+  an: <span class="ya">tamsayı</span>
+  rapor, kim, satır: <span class="ya">metin</span>
+
+<span class="ya">başla</span>
+  ilk := [:]; son := [:]; sayı := [:]
+  Ayır(GÜNLÜK, #<span class="ys">10</span>) <span class="ya">içindeki</span> <span class="ya">her</span> satır <span class="ya">için</span>
+  <span class="ya">başla</span>
+    g := Gruplar(satır, KALIP)
+    <span class="ya">eğer</span> g &lt;&gt; <span class="ya">boş</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      an := TarihOku(g[<span class="ys">1</span>])
+      kim := g[<span class="ys">2</span>]
+      <span class="ya">eğer</span> <span class="ya">değil</span> sayı.İçerir(kim) <span class="ya">ise</span>
+      <span class="ya">başla</span>
+        sayı[kim] := <span class="ys">0</span>
+        ilk[kim] := an
+      <span class="ya">bitir</span>
+      sayı[kim] := sayı[kim] + <span class="ys">1</span>
+      son[kim] := an
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+
+  rapor := <span class="ym">''</span>
+  Sırala(Anahtarlar(sayı)) <span class="ya">içindeki</span> <span class="ya">her</span> kim <span class="ya">için</span>
+  <span class="ya">başla</span>
+    satır := Maskele(kim, <span class="ys">10</span>) + <span class="ym">': '</span> + sayı[kim] + <span class="ym">' başarısız giriş'</span>
+    <span class="ya">eğer</span> sayı[kim] &gt;= <span class="ys">3</span> <span class="ya">ise</span>
+      satır := satır + <span class="ym">', '</span> + (son[kim] - ilk[kim]) + <span class="ym">' saniye içinde — ŞÜPHELİ ('</span> + TarihYaz(son[kim], <span class="ym">'SS:DD'</span>) + <span class="ym">')'</span>
+    yaz(satır, <span class="ys">1</span>)
+    rapor := rapor + satır + #<span class="ys">10</span>
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Rapor imzası: '</span> + AltMetin(İmza(RAPOR_ANAHTARI, rapor), <span class="ys">1</span>, <span class="ys">16</span>) + <span class="ym">'…'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>****@ornek.com: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
+***@ornek.com: 1 başarısız giriş
+Rapor imzası: 0953a164a97dc05b…</code></pre></div>
+<p>Raporu alan kişi aynı anahtarla <code>İmzaDoğru(RAPOR_ANAHTARI, rapor, imza)</code> çağırarak metnin yolda değişmediğinden emin olur. Programın yapısı tipiktir: her birim kendi işini yapar, aralarındaki veri sıradan metin, tamsayı ve sözlüklerdir.</p>
+<p><strong>Sırada ne var?</strong></p>
+<ul>
+<li>Örnekleri oyun alanında açıp değiştirebilirsiniz: <code>Pencere</code> örnekleri orada canlı çalışır.</li>
+<li>Kendi biriminizi yazabilirsiniz: <em>Programlamaya Giriş</em> kitabının 11. bölümü birimleri anlatır. Bir <code>.y</code> dosyasını programınızın yanına koymanız <code>kullan</code> ile çağırmak için yeterlidir.</li>
+<li>Programınıza <code>yontem yeni</code> ile başlayabilir, <code>yontem test</code> ile sınayabilir, <code>yontem bicimle</code> ile düzenleyebilir, takıldığınız yerde de <code>yontem ayikla</code> ile adım adım izleyebilirsiniz.</li>
+<li>Birimlerinizi başkalarıyla paylaşabilirsiniz: bir Git deposuna koyup etiketlemeniz, <code>yontem paket ekle</code> ile kurulabilmeleri için yeterlidir.</li>
+</ul>
+</section>
+    <nav class="sayfala" aria-label="Bölümler arası">
+      <button type="button" id="onceki" class="onceki"><small>Önceki bölüm</small><span></span></button>
+      <button type="button" id="sonraki" class="sonraki"><small>Sonraki bölüm</small><span></span></button>
+    </nav>
+  </main>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="https://yontem.pro/">yontem.pro</a></span>
+</footer>
+<script>
+
+(function () {
+  var govde = document.body; govde.classList.add('js');
+  var bloklar = Array.prototype.slice.call(document.querySelectorAll('.bolum-blok'));
+  var linkler = Array.prototype.slice.call(document.querySelectorAll('.yan li a'));
+  var onceki = document.getElementById('onceki'), sonraki = document.getElementById('sonraki');
+  var aktif = 0;
+  function goster(i, hedef) {
+    aktif = Math.max(0, Math.min(bloklar.length - 1, i));
+    bloklar.forEach(function (b, j) { b.classList.toggle('acik', j === aktif); });
+    linkler.forEach(function (a, j) { if (j === aktif) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    var o = bloklar[aktif - 1], s = bloklar[aktif + 1];
+    onceki.style.visibility = o ? 'visible' : 'hidden';
+    if (o) onceki.querySelector('span').textContent = o.getAttribute('data-baslik');
+    sonraki.style.visibility = s ? 'visible' : 'hidden';
+    if (s) sonraki.querySelector('span').textContent = s.getAttribute('data-baslik');
+    var kapak = document.querySelector('.tek-kapak');
+    if (kapak) kapak.style.display = aktif === 0 ? '' : 'none';
+    var t = hedef ? document.getElementById(hedef) : null;
+    setTimeout(function () { if (t && t !== bloklar[aktif]) t.scrollIntoView(); else window.scrollTo(0, 0); }, 0);
+  }
+  function hashten() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) { goster(0); return; }
+    var el = document.getElementById(id);
+    if (!el) { goster(0); return; }
+    var blok = el.closest('.bolum-blok');
+    goster(blok ? bloklar.indexOf(blok) : 0, id);
+  }
+  window.addEventListener('hashchange', hashten);
+  onceki.addEventListener('click', function () { location.hash = bloklar[aktif - 1].id; });
+  sonraki.addEventListener('click', function () { location.hash = bloklar[aktif + 1].id; });
+  if (window.matchMedia('(max-width: 860px)').matches) {
+    document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+  }
+  hashten();
+})();
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+
+</script>
+</body>
+</html>

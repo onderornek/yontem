@@ -1,0 +1,32 @@
+— Doğrulama
+  34 ABC 123 → doğru
+  06 TR 4567 → doğru
+  6 A 12 → yanlış
+  ankara → yanlış
+  0532 123 45 67 → doğru
+  +90 532 123 45 67 → doğru
+  532-123 → yanlış
+— Arama
+  İlk saat: 09:15
+  Tüm saatler: ['09:15', '09:47', '18:02']
+  "hata" kaçıncı karakterde: 47
+  Olmayan desen: boş
+— Gruplar
+  Yıl 2026, ay 11, gün 10 (tamamı: 2026-11-10)
+  giriş / ayşe / 09:15
+  hata / Çağrı / 09:47
+  çıkış / ayşe / 18:02
+— Değiştirme
+  10.11.2026 ve 05.01.2027
+  çok fazla boşluk
+  Kart: **** **** **** 1111
+  fiyat $100 TL
+— Ayırma
+  ['elma', 'armut', 'kiraz', 'üzüm']
+  ['2026-11-10 09:15 giriş ayşe', '2026-11-10 09:47 hata Çağrı', '2026-11-11 18:02 çıkış ayşe']
+— Büyük/küçük harf ("i" seçeneği Türkçe i harflerini de eşler)
+  ['Işık', 'ışık', 'IŞIK', 'İstanbul', 'istanbul']
+  yanlış / doğru
+— Kullanıcı girdisini desende kullanmak
+  1\+1=2 \(doğru mu\?\)
+  doğru

@@ -1,0 +1,7 @@
+ 1. kütük: x < 3.30 ise  0.599, değilse -0.662   →  OKH = 0.2739
+ 2. kütük: x < 3.61 ise  0.386, değilse -0.522   →  OKH = 0.1713
+ 3. kütük: x < 2.98 ise  0.351, değilse -0.318   →  OKH = 0.1144
+20. kütük: x < 5.97 ise -0.011, değilse  0.200   →  OKH = 0.0229
+40. kütük: x < 4.24 ise  0.019, değilse -0.039   →  OKH = 0.0096
+60. kütük: x < 2.04 ise  0.022, değilse -0.010   →  OKH = 0.0055
+x = 1.57 için tahmin 0.888 (gerçek sin = 1.000)

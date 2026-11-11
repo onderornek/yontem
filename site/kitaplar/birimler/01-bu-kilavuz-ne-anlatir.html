@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bu kılavuz ne anlatır? · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html" aria-current="page">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 1 / 12</p>
+    <h2 id="bu-kılavuz-ne-anlatır">Bu kılavuz ne anlatır?</h2>
+<p>Yöntem’in çekirdeği küçüktür; gerisi <strong>birimlerle</strong> gelir. Bir birimi kullanmak için programın başına <code>kullan</code> yazmak yeterlidir, ayrıca bir şey kurulmaz (tek istisna, PostgreSQL ve MySQL’e bağlanmak için gereken sürücülerdir). Bu kılavuz gündelik programlarda en çok işe yarayan sekiz birimi ve dille birlikte gelen araçları tanıtır. Dilin kendisini öğrenmek için <em>Yöntem ile Programlamaya Giriş</em> kitabına, yapay zekâ birimleri için <em>Yöntem ile Makine Öğrenmesi</em> ve <em>Yöntem ile Sıfırdan Dil Modeli</em> kitaplarına bakabilirsiniz.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Birim</th>
+<th>Ne işe yarar</th>
+<th>Bölüm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Pencere</code></td>
+<td>Düğme, kutu ve tuvallerle arayüz</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><code>Mobil</code></td>
+<td>Telefon özellikleri: titreşim, bildirim, konum, kalıcı depo</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><code>Güvenlik</code></td>
+<td>Parola saklama, şifreleme, girdi denetimi, oturum belirteçleri</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td><code>Takvim</code></td>
+<td>Tarih ve saat hesapları</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td><code>Desen</code></td>
+<td>Düzenli ifadelerle metin arama ve değiştirme</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td><code>Ağ</code></td>
+<td>Web servislerine HTTP istekleri</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td><code>Veritabanı</code></td>
+<td>SQLite, PostgreSQL ve MySQL veritabanlarına SQL sorguları</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td><code>Sunucu</code></td>
+<td>HTTP isteklerini karşılayan web servisleri</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol start="9" type="1">
+<li>bölüm bu ikisiyle üç katmanlı bir uygulama kurar. Araçlar 10. bölümdedir: test çalıştırıcı, kod biçimlendirici, proje oluşturucu, paketleyici ve VS Code eklentisi.</li>
+</ol>
+<p>Bu kılavuzdaki her program gerçekten çalıştırılmıştır; altındaki çıktı onun kendi çıktısıdır. Programlar deponun <code>birim_kilavuzu/</code> klasöründedir ve iki uygulamada da (JavaScript derleyicisi ve Python yorumlayıcısı) aynı çıktıyı verir. Yalnızca 6. bölümdeki ağ örneği bir internet servisine bağlandığı için çıktısıyla birlikte verilmemiştir.</p>
+<p><strong>Bütün birimler için geçerli üç kural</strong></p>
+<ul>
+<li><strong>Adlar büyük/küçük harfe ve Türkçe karakterlere duyarsızdır.</strong> <code>Şimdi</code>, <code>şimdi</code> ve <code>SIMDI</code> aynı addır. Bu yüzden bir birim üyesiyle aynı adda değişken tanımlamamak gerekir: <code>şimdi := Şimdi</code> yazarsanız değişken, <code>Şimdi</code> işlevini gölgeler. Değişkene başka bir ad verebilir (<code>an</code>) ya da üyeyi birim adıyla çağırabilirsiniz (<code>Takvim.Şimdi</code>).</li>
+<li><strong>Testler için benzetim.</strong> Saate, rastgeleliğe ya da bir cihaza bağlı birimlerde çıktıyı sabitleyen yardımcılar vardır (<code>BenzetimZamanı</code>, <code>Tıkla</code>, <code>BenzetimKonum</code>…). Böylece aynı program hem gerçek ortamda çalışır hem de <code>yontem test</code> ile sınanabilir.</li>
+<li><strong>Gömülü arka uç.</strong> Bu sekiz birim ESP32 için üretilen C++ kodunda yoktur; orada <code>Donanım</code> birimi kullanılır.</li>
+</ul>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><span></span><a class="sonraki" href="02-1-pencere-arayuz.html"><small>Sonraki</small>1. Pencere: arayüz</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+=== 1) Bell durumu ve dolanıklık ===
+q0: ─H──●──
+q1: ────X──
+Durum      : 0.7071|00⟩ + 0.7071|11⟩
+1000 atış  : ['00': 495, '11': 505]
+⟨ZZ⟩ = 1.0,  ⟨XX⟩ = 1.0
+
+=== 2) GHZ durumu (4 kübit) ===
+0.7071|0000⟩ + 0.7071|1111⟩
+
+=== 3) Grover araması: 16 olasılık içinde '1011' ===
+P(1011) = 0.961   en sık sonuç: 1011
+
+=== 4) Kuantum Fourier dönüşümü ve tersi ===
+QFT sonrası olasılıklar eşit: ['000': 0.125, '100': 0.125, '010': 0.125, '110': 0.125, '001': 0.125, '101': 0.125, '011': 0.125, '111': 0.125]
+Ters QFT sonrası durum: 1|101⟩
+
+=== 5) Deutsch–Jozsa ve Bernstein–Vazirani ===
+f(x) = x0 xor x1  -> dengeli
+f(x) = 1          -> sabit
+Gizli dizi tek sorguda bulundu: 110101
+
+=== 6) Kuantum ışınlama (devre ortası ölçüm + klasik denetim) ===
+q0: ─RY(1.1)──RZ(0.7)────────┊──●──H──Ö───────────
+q1: ───────────────────H──●──┊──X────────Ö────────
+q2: ──────────────────────X──┊──────────────X──Z──
+Gönderilen Bloch vektörü: [0.682, 0.574, 0.454]
+Bora'nın kübiti (q2)   : [0.682, 0.574, 0.454]
+
+=== 7) VQE: parametre kaydırma kuralıyla gradyan inişi ===
+  adım  20   enerji = -1.31678
+  adım  40   enerji = -1.40318
+  adım  60   enerji = -1.41362
+  adım  80   enerji = -1.41419
+  adım 100   enerji = -1.41421
+Kesin taban durum enerjisi: -1.41421

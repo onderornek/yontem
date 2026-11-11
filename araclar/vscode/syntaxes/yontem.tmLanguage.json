@@ -1,0 +1,206 @@
+{
+ "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+ "name": "Yöntem",
+ "scopeName": "source.yontem",
+ "patterns": [
+  {
+   "include": "#yorum"
+  },
+  {
+   "include": "#metin"
+  },
+  {
+   "include": "#sayi"
+  },
+  {
+   "include": "#bildirim"
+  },
+  {
+   "include": "#sozcukler"
+  },
+  {
+   "include": "#islec"
+  },
+  {
+   "include": "#cagri"
+  }
+ ],
+ "repository": {
+  "yorum": {
+   "patterns": [
+    {
+     "name": "comment.block.yontem",
+     "begin": "\\{",
+     "end": "\\}"
+    },
+    {
+     "name": "comment.block.yontem",
+     "begin": "\\(\\*",
+     "end": "\\*\\)"
+    },
+    {
+     "name": "comment.line.double-slash.yontem",
+     "match": "//.*$"
+    }
+   ]
+  },
+  "metin": {
+   "patterns": [
+    {
+     "match": "(?<=[\\p{L}\\p{N}_\\)\\]])(['’](?:[nN]?[dD][eEaA][nN]|[tT][eEaA][nN]|[yYnN]?[eEaA]))(?![\\p{L}])",
+     "captures": {
+      "1": {
+       "name": "keyword.other.ek.yontem"
+      }
+     }
+    },
+    {
+     "name": "string.quoted.single.yontem",
+     "begin": "'",
+     "end": "'(?!')",
+     "patterns": [
+      {
+       "name": "constant.character.escape.yontem",
+       "match": "''"
+      }
+     ]
+    },
+    {
+     "name": "string.quoted.double.yontem",
+     "begin": "\"",
+     "end": "\"",
+     "patterns": [
+      {
+       "name": "constant.character.escape.yontem",
+       "match": "\\\\."
+      }
+     ]
+    },
+    {
+     "name": "constant.character.yontem",
+     "match": "#\\d+"
+    }
+   ]
+  },
+  "sayi": {
+   "patterns": [
+    {
+     "name": "constant.numeric.hex.yontem",
+     "match": "\\$[0-9a-fA-F]+"
+    },
+    {
+     "name": "constant.numeric.yontem",
+     "match": "(?<![\\p{L}_])\\d[\\d_]*(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d+)?"
+    }
+   ]
+  },
+  "bildirim": {
+   "patterns": [
+    {
+     "match": "((?<![\\p{L}\\p{N}_])(?:[pP][rR][oOöÖ][gGğĞ][rR][aA][mM]|[bB][iİıI][rR][iİıI][mM])(?![\\p{L}\\p{N}_]))\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+     "captures": {
+      "1": {
+       "name": "keyword.other.yontem"
+      },
+      "2": {
+       "name": "entity.name.namespace.yontem"
+      }
+     }
+    },
+    {
+     "match": "((?<![\\p{L}\\p{N}_])(?:[fF][oOöÖ][nN][kK][sSşŞ][iİıI][yY][oOöÖ][nN]|[pP][rR][oOöÖ][sSşŞ][eE][dD][uUüÜ][rR]|[kK][uUüÜ][rR][uUüÜ][cCçÇ][uUüÜ])(?![\\p{L}\\p{N}_]))\\s+([\\p{L}_][\\p{L}\\p{N}_]*(?:\\.[\\p{L}_][\\p{L}\\p{N}_]*)?)",
+     "captures": {
+      "1": {
+       "name": "storage.type.function.yontem"
+      },
+      "2": {
+       "name": "entity.name.function.yontem"
+      }
+     }
+    },
+    {
+     "match": "([\\p{L}_][\\p{L}\\p{N}_]*)\\s*(=)\\s*((?<![\\p{L}\\p{N}_])(?:[kK][aA][yY][iİıI][tT]|[sSşŞ][iİıI][nN][iİıI][fF])(?![\\p{L}\\p{N}_]))",
+     "captures": {
+      "1": {
+       "name": "entity.name.type.yontem"
+      },
+      "2": {
+       "name": "keyword.operator.yontem"
+      },
+      "3": {
+       "name": "storage.type.class.yontem"
+      }
+     }
+    }
+   ]
+  },
+  "sozcukler": {
+   "patterns": [
+    {
+     "name": "keyword.control.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[aA][zZ][aA][lL][aA][rR][aA][kK]|[dD][eE][gGğĞ][eE][rR][iİıI][nN][eE]|[iİıI][cCçÇ][iİıI][nN][dD][eE][kK][iİıI]|[tT][eE][kK][rR][aA][rR][lL][aA]|[dD][eE][gGğĞ][iİıI][lL][sSşŞ][eE]|[sSşŞ][oOöÖ][nN][uUüÜ][nN][dD][aA]|[fF][iİıI][rR][lL][aA][tT]|[iİıI][cCçÇ][iİıI][nN][dD][eE]|[yY][aA][kK][aA][lL][aA]|[bB][aA][sSşŞ][lL][aA]|[bB][iİıI][tT][iİıI][rR]|[dD][eE][vV][aA][mM]|[kK][aA][dD][aA][rR]|[oOöÖ][lL][aA][nN][aA]|[aA][dD][iİıI][mM]|[dD][eE][nN][eE]|[eE][gGğĞ][eE][rR]|[gGğĞ][oOöÖ][rR][eE]|[iİıI][kK][eE][nN]|[iİıI][cCçÇ][iİıI][nN]|[dD][eE][kK]|[dD][oOöÖ][nN]|[hH][eE][rR]|[iİıI][sSşŞ][eE]|[kK][eE][zZ]|[kK][iİıI][rR]|[cCçÇ][iİıI][kK])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "storage.type.function.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[fF][oOöÖ][nN][kK][sSşŞ][iİıI][yY][oOöÖ][nN]|[pP][rR][oOöÖ][sSşŞ][eE][dD][uUüÜ][rR]|[kK][uUüÜ][rR][uUüÜ][cCçÇ][uUüÜ])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "keyword.other.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[fF][oOöÖ][nN][kK][sSşŞ][iİıI][yY][oOöÖ][nN]|[dD][eE][gGğĞ][iİıI][sSşŞ][kK][eE][nN]|[pP][rR][oOöÖ][sSşŞ][eE][dD][uUüÜ][rR]|[uUüÜ][yY][gGğĞ][uUüÜ][lL][aA][mM][aA]|[lL][iİıI][sSşŞ][tT][eE][sSşŞ][iİıI]|[pP][rR][oOöÖ][gGğĞ][rR][aA][mM]|[sSşŞ][oOöÖ][zZ][lL][uUüÜ][gGğĞ][uUüÜ]|[aA][rR][aA][yY][uUüÜ][zZ]|[dD][iİıI][zZ][iİıI][sSşŞ][iİıI]|[kK][uUüÜ][lL][lL][aA][nN]|[kK][uUüÜ][rR][uUüÜ][cCçÇ][uUüÜ]|[bB][iİıI][rR][iİıI][mM]|[kK][aA][yY][iİıI][tT]|[sSşŞ][aA][bB][iİıI][tT]|[sSşŞ][iİıI][nN][iİıI][fF]|[dD][iİıI][zZ][iİıI]|[tT][iİıI][pP])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "storage.modifier.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[kK][oOöÖ][rR][uUüÜ][mM][aA][lL][iİıI]|[gGğĞ][eE][nN][eE][lL]|[iİıI][lL][eE][rR][iİıI]|[sSşŞ][aA][nN][aA][lL]|[sSşŞ][oOöÖ][yY][uUüÜ][tT]|[eE][zZ][eE][rR]|[oOöÖ][zZ][eE][lL])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "keyword.operator.word.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[dD][eE][gGğĞ][iİıI][lL]|[vV][eE][yY][aA]|[yY][aA][dD][aA]|[bB][oOöÖ][lL]|[mM][oOöÖ][dD]|[vV][eE])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "constant.language.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[yY][aA][nN][lL][iİıI][sSşŞ]|[dD][oOöÖ][gGğĞ][rR][uUüÜ]|[bB][oOöÖ][sSşŞ])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "variable.language.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[kK][eE][nN][dD][iİıI]|[mM][iİıI][rR][aA][sSşŞ])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "support.type.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[mM][aA][nN][tT][iİıI][kK][sSşŞ][aA][lL]|[hH][eE][rR][hH][aA][nN][gGğĞ][iİıI]|[kK][aA][rR][aA][kK][tT][eE][rR]|[oOöÖ][nN][dD][aA][lL][iİıI][kK]|[tT][aA][mM][sSşŞ][aA][yY][iİıI]|[gGğĞ][eE][rR][cCçÇ][eE][kK]|[sSşŞ][oOöÖ][zZ][lL][uUüÜ][kK]|[tT][eE][nN][sSşŞ][oOöÖ][rR]|[iİıI][sSşŞ][lL][eE][vV]|[lL][iİıI][sSşŞ][tT][eE]|[mM][eE][tT][iİıI][nN]|[nN][eE][sSşŞ][nN][eE])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "support.class.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[kK][uUüÜ][aA][nN][tT][uUüÜ][mM][aA][lL][gGğĞ][oOöÖ][rR][iİıI][tT][mM][aA][lL][aA][rR][iİıI]|[mM][aA][kK][iİıI][nN][eE][oOöÖ][gGğĞ][rR][eE][nN][mM][eE][sSşŞ][iİıI]|[iİıI][sSşŞ][tT][aA][tT][iİıI][sSşŞ][tT][iİıI][kK]|[vV][eE][rR][iİıI][tT][aA][bB][aA][nN][iİıI]|[iİıI][sSşŞ][tT][aA][tT][iİıI][sSşŞ][tT][iİıI][kK]|[mM][aA][tT][eE][mM][aA][tT][iİıI][kK]|[cCçÇ][aA][lL][eE][nN][dD][aA][rR]|[gGğĞ][uUüÜ][vV][eE][nN][lL][iİıI][kK]|[sSşŞ][eE][cCçÇ][uUüÜ][rR][iİıI][tT][yY]|[dD][oOöÖ][nN][aA][nN][iİıI][mM]|[kK][uUüÜ][aA][nN][tT][uUüÜ][mM]|[pP][eE][nN][cCçÇ][eE][rR][eE]|[mM][eE][sSşŞ][aA][lL][eE]|[mM][oOöÖ][bB][iİıI][lL][eE]|[sSşŞ][iİıI][sSşŞ][tT][eE][mM]|[sSşŞ][uUüÜ][nN][uUüÜ][cCçÇ][uUüÜ]|[tT][aA][kK][vV][iİıI][mM]|[aA][rR][aA][mM][aA]|[dD][eE][sSşŞ][eE][nN]|[mM][oOöÖ][bB][iİıI][lL]|[rR][eE][gGğĞ][eE][xX]|[sSşŞ][iİıI][nN][iİıI][rR]|[uUüÜ][zZ][mM][aA][nN]|[hH][tT][tT][pP]|[vV][eE][rR][iİıI]|[dD][iİıI][lL]|[nN][eE][tT]|[aA][gGğĞ]|[uUüÜ][iİıI]|[yY][zZ])(?![\\p{L}\\p{N}_])"
+    },
+    {
+     "name": "support.function.yontem",
+     "match": "(?<![\\p{L}\\p{N}_])(?:[nN][uUüÜ][mM][aA][rR][aA][lL][aA][nN][dD][iİıI][rR]|[aA][nN][aA][hH][tT][aA][rR][lL][aA][rR]|[bB][eE][nN][zZ][eE][rR][sSşŞ][iİıI][zZ]|[bB][iİıI][rR][lL][eE][sSşŞ][tT][iİıI][rR]|[bB][uUüÜ][yY][uUüÜ][kK][hH][aA][rR][fF]|[kK][uUüÜ][cCçÇ][uUüÜ][kK][hH][aA][rR][fF]|[aA][lL][tT][mM][eE][tT][iİıI][nN]|[dD][eE][gGğĞ][eE][rR][lL][eE][rR]|[dD][eE][gGğĞ][iİıI][sSşŞ][tT][iİıI][rR]|[eE][sSşŞ][lL][eE][sSşŞ][tT][iİıI][rR]|[kK][aA][rR][aA][kK][tT][eE][rR]|[rR][aA][sSşŞ][tT][gGğĞ][eE][lL][eE]|[oOöÖ][rR][nN][eE][gGğĞ][iİıI][mM][iİıI]|[bB][iİıI][cCçÇ][iİıI][mM][lL][eE]|[oOöÖ][nN][dD][aA][lL][iİıI][kK]|[tT][aA][mM][sSşŞ][aA][yY][iİıI]|[uUüÜ][zZ][uUüÜ][nN][lL][uUüÜ][kK]|[yY][uUüÜ][vV][aA][rR][lL][aA]|[iİıI][nN][dD][iİıI][rR][gGğĞ][eE]|[aA][rR][aA][lL][iİıI][kK]|[dD][uUüÜ][rR][dD][uUüÜ][rR]|[mM][uUüÜ][tT][lL][aA][kK]|[sSşŞ][iİıI][rR][aA][lL][aA]|[tT][oOöÖ][pP][lL][aA][mM]|[iİıI][cCçÇ][eE][rR][iİıI][rR]|[aA][rR][aA][yY][aA]|[aA][rR][tT][iİıI][rR]|[aA][zZ][aA][lL][tT]|[dD][eE][gGğĞ][iİıI][sSşŞ]|[dD][iİıI][lL][iİıI][mM]|[kK][oOöÖ][nN][uUüÜ][mM]|[kK][oOöÖ][pP][yY][aA]|[mM][eE][tT][iİıI][nN]|[iİıI][dD][dD][iİıI][aA]|[aA][yY][iİıI][rR]|[eE][kK][lL][eE]|[eE][sSşŞ][lL][eE]|[hH][aA][tT][aA]|[kK][aA][rR][eE]|[kK][iİıI][rR][pP]|[mM][aA][kK][sSşŞ]|[sSşŞ][iİıI][rR][aA]|[tT][eE][rR][sSşŞ]|[kK][oOöÖ][kK]|[mM][iİıI][nN]|[sSşŞ][aA][yY]|[sSşŞ][iİıI][lL]|[sSşŞ][uUüÜ][zZ]|[tT][uUüÜ][rR]|[oOöÖ][kK][uUüÜ]|[yY][aA][zZ])(?![\\p{L}\\p{N}_])(?=\\s*\\()"
+    }
+   ]
+  },
+  "islec": {
+   "patterns": [
+    {
+     "name": "keyword.operator.assignment.yontem",
+     "match": ":=|\\+=|-=|\\*=|/="
+    },
+    {
+     "name": "keyword.operator.yontem",
+     "match": "\\|>|=>|\\*\\*|<>|<=|>=|\\.\\.|[+\\-*/=<>@^]"
+    }
+   ]
+  },
+  "cagri": {
+   "patterns": [
+    {
+     "match": "([\\p{L}_][\\p{L}\\p{N}_]*)(?=\\s*\\()",
+     "captures": {
+      "1": {
+       "name": "entity.name.function.call.yontem"
+      }
+     }
+    }
+   ]
+  }
+ }
+}

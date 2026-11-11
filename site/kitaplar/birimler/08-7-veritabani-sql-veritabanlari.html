@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Veritabanı: SQL veritabanları · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html" aria-current="page">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 8 / 12</p>
+    <h2 id="veritabanı-sql-veritabanları">7. Veritabanı: SQL veritabanları</h2>
+<p><code>Veritabanı</code> birimi SQL veritabanlarına tek bir arayüzle bağlanır. Hangi veritabanına bağlanılacağını <code>Bağlan</code>’a verilen adres belirler; programın geri kalanı aynı kalır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Adres</th>
+<th>Veritabanı</th>
+<th>Gerekli sürücü</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sqlite:magaza.db</code></td>
+<td>SQLite dosyası (yoksa oluşur)</td>
+<td>Yok; Node.js 22.5+ ve Python ile gelir</td>
+</tr>
+<tr class="even">
+<td><code>sqlite::bellek:</code></td>
+<td>Bellekte geçici SQLite</td>
+<td>Yok</td>
+</tr>
+<tr class="odd">
+<td><code>postgres://…</code></td>
+<td>PostgreSQL</td>
+<td><code>npm install pg</code> · <code>pip install pg8000</code></td>
+</tr>
+<tr class="even">
+<td><code>mysql://…</code></td>
+<td>MySQL ve MariaDB</td>
+<td><code>npm install mysql2</code> · <code>pip install pymysql</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sunucu adresinin tamamı <code>postgres://kullanıcı:parola@sunucu:5432/veritabanı</code> biçimindedir; parolada özel karakter varsa <code>Ağ.UrlKodla</code> ile kodlanır. Sürücü JavaScript derleyicisi için projenin klasörüne <code>npm</code> ile, Python yorumlayıcısı için <code>pip</code> ile kurulur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> VeritabanıÖrneği
+<span class="yy">{ Veritabanı birimi: tablo oluşturma, parametreli sorgular ve işlem (transaction).
+  'sqlite::bellek:' geçici bir veritabanıdır; kalıcı dosya için 'sqlite:magaza.db' yazın. }</span>
+<span class="ya">kullan</span> Veritabanı
+
+<span class="ya">değişken</span>
+  vt: <span class="ya">herhangi</span>
+  satır: <span class="ya">sözlük</span>
+
+<span class="ya">başla</span>
+  vt := Bağlan(<span class="ym">'sqlite::bellek:'</span>)
+  vt.Çalıştır(<span class="ym">'CREATE TABLE urun (no INTEGER PRIMARY KEY, ad TEXT NOT NULL UNIQUE, fiyat REAL, adet INTEGER)'</span>)
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'defter'</span>, <span class="ys">12.5</span>, <span class="ys">40</span>])
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'kalem'</span>, <span class="ys">4</span>, <span class="ys">120</span>])
+  yaz(<span class="ym">'Son eklenen ürünün numarası: '</span> + vt.SonKimlik, <span class="ys">1</span>)
+
+  <span class="yy">{ Değerler SQL metnine eklenmez, '?' ile verilir: kötü niyetli girdi yalnızca bir metin olarak kalır }</span>
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [<span class="ym">'x'</span><span class="ym">'); DROP TABLE urun; --'</span>, <span class="ys">1</span>, <span class="ys">1</span>])
+  yaz(<span class="ym">'Ürün sayısı: '</span> + vt.TekDeğer(<span class="ym">'SELECT COUNT(*) FROM urun'</span>), <span class="ys">1</span>)
+
+  vt.Sorgula(<span class="ym">'SELECT ad, fiyat * adet AS tutar FROM urun WHERE fiyat &gt; ? ORDER BY ad'</span>, [<span class="ys">3</span>]) <span class="ya">içindeki</span> <span class="ya">her</span> satır <span class="ya">için</span>
+    yaz(satır[<span class="ym">'ad'</span>] + <span class="ym">': '</span> + satır[<span class="ym">'tutar'</span>], <span class="ys">1</span>)
+
+  <span class="yy">{ İşlem: iki değişiklik ya birlikte kalıcı olur ya da hiçbiri }</span>
+  vt.İşlemBaşlat
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet - ? WHERE ad = ?'</span>, [<span class="ys">5</span>, <span class="ym">'defter'</span>])
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet + ? WHERE ad = ?'</span>, [<span class="ys">5</span>, <span class="ym">'kalem'</span>])
+  vt.Onayla
+  satır := vt.TekSatır(<span class="ym">'SELECT ad, adet FROM urun WHERE ad = ?'</span>, [<span class="ym">'defter'</span>])
+  yaz(satır, <span class="ys">1</span>)
+
+  <span class="ya">dene</span>
+    vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad) VALUES (?)'</span>, [<span class="ym">'defter'</span>])
+  <span class="ya">yakala</span> (h)
+    yaz(h.mesaj, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  vt.Kapat
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Son eklenen ürünün numarası: 2
+Ürün sayısı: 3
+defter: 500.0
+kalem: 480.0
+['ad': 'defter', 'adet': 35]
+Veritabanı hatası: UNIQUE constraint failed: urun.ad</code></pre></div>
+<p><code>Bağlan</code> bir bağlantı nesnesi döndürür:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vt.Çalıştır(sql [, parametreler])</code></td>
+<td>Değiştiren komutları çalıştırır; etkilenen satır sayısını döndürür</td>
+</tr>
+<tr class="even">
+<td><code>vt.Sorgula(sql [, parametreler])</code></td>
+<td>Satırları sözlük listesi olarak döndürür; anahtarlar sütun adlarıdır</td>
+</tr>
+<tr class="odd">
+<td><code>vt.TekSatır(sql [, parametreler])</code></td>
+<td>İlk satırı sözlük olarak döndürür; satır yoksa <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>vt.TekDeğer(sql [, parametreler])</code></td>
+<td>İlk satırın ilk sütununu döndürür; satır yoksa <code>boş</code></td>
+</tr>
+<tr class="odd">
+<td><code>vt.SonKimlik</code></td>
+<td>Son eklenen satırın otomatik numarası (PostgreSQL’de bunun yerine <code>INSERT … RETURNING</code> kullanılır)</td>
+</tr>
+<tr class="even">
+<td><code>vt.İşlemBaşlat</code> · <code>vt.Onayla</code> · <code>vt.GeriAl</code></td>
+<td>İşlem (transaction)</td>
+</tr>
+<tr class="odd">
+<td><code>vt.Kapat</code> · <code>vt.Açık</code> · <code>vt.Tür</code></td>
+<td>Bağlantıyı kapatır · açık mı · <code>'sqlite'</code>, <code>'postgres'</code> ya da <code>'mysql'</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Değerleri her zaman parametreyle vermeniz gerekir.</strong> Sorgudaki <code>?</code> işaretlerinin yerine <code>parametreler</code> listesindeki değerler sırayla konur; değer SQL metninin parçası olmaz, bu yüzden kullanıcıdan gelen girdi sorguyu değiştiremez (SQL enjeksiyonu). Yer tutucu üç veritabanında da <code>?</code> işaretidir. Tablo ve sütun adları parametre olamaz; bir adı değişkenden almak zorundaysanız <code>SqlAdı(ad)</code> onu denetleyip tırnaklar.</p>
+<p><strong>Tipler.</strong> Tamsayı sütunları <code>tamsayı</code>, kesirli ve <code>NUMERIC</code> sütunları <code>ondalık</code>, metin sütunları <code>metin</code>, <code>NULL</code> ise <code>boş</code> olarak gelir. PostgreSQL’in <code>BOOLEAN</code> tipi <code>mantıksal</code> olur; SQLite ve MySQL’de mantıksal değerler 0 ve 1’dir. Tarih ve saat sütunları veritabanının yazdığı metin olarak gelir (<code>'2026-11-11 10:30:00'</code>); <code>Takvim.TarihOku</code> ile zamana çevrilebilir.</p>
+<p>SQL’in kendisi veritabanından veritabanına biraz değişir (otomatik numara SQLite’ta <code>INTEGER PRIMARY KEY</code>, PostgreSQL’de <code>SERIAL</code>, MySQL’de <code>AUTO_INCREMENT</code> ile bildirilir); birim sorguları çevirmez, yalnızca bağlantıyı, yer tutucuları ve tipleri ortaklaştırır. Veritabanı hataları <code>Veritabanı hatası: …</code> iletisiyle fırlatılır ve <code>dene … yakala</code> ile yakalanabilir. Parolayı programın içine yazmak yerine <code>Sistem.Ortam('VT_ADRESI')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="07-6-ag-web-servislerine-baglanmak.html"><small>Önceki</small>6. Ağ: web servislerine bağlanmak</a><a class="sonraki" href="09-8-sunucu-web-servisleri.html"><small>Sonraki</small>8. Sunucu: web servisleri</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

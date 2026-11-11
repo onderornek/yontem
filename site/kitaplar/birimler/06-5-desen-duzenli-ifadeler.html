@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Desen: düzenli ifadeler · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html" aria-current="page">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 6 / 12</p>
+    <h2 id="desen-düzenli-ifadeler">5. Desen: düzenli ifadeler</h2>
+<p>Düzenli ifade (regex), aranan metnin biçimini tarif eden küçük bir dildir: “iki rakam, iki nokta, iki rakam” gibi. <code>Desen</code> birimi bunlarla doğrulama, arama, ayıklama ve değiştirme yapar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SiparişAyıklama
+<span class="yy">{ Desen birimi: düzenli ifadelerle doğrulama, ayıklama ve değiştirme. }</span>
+<span class="ya">kullan</span> Desen
+
+<span class="ya">sabit</span> YAZI: <span class="ya">metin</span> = <span class="ym">'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 123 45 67'</span>
+
+<span class="ya">değişken</span> g: <span class="ya">herhangi</span>
+
+<span class="ya">başla</span>
+  yaz(<span class="ym">'Sipariş no : '</span> + Bul(YAZI, <span class="ym">'#[A-Z]-\d+'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Adetler    : '</span> + Metin(BulHepsi(YAZI, <span class="ym">'\d+ adet'</span>)), <span class="ys">1</span>)
+  TümGruplar(YAZI, <span class="ym">'(\d+) adet (\w+)'</span>) <span class="ya">içindeki</span> <span class="ya">her</span> g <span class="ya">için</span>
+    yaz(<span class="ym">'  '</span> + g[<span class="ys">2</span>] + <span class="ym">' × '</span> + g[<span class="ys">1</span>], <span class="ys">1</span>)
+  yaz(<span class="ym">'E-posta    : '</span> + Bul(YAZI, <span class="ym">'[\w.]+@[\w.]+\.\w+'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Telefon mu : '</span> + Metin(TamEşleşir(<span class="ym">'0532 123 45 67'</span>, <span class="ym">'0\d{3} \d{3} \d{2} \d{2}'</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Gizlenmiş  : '</span> + DesenDeğiştir(YAZI, <span class="ym">'(\d{4}) \d{3} \d{2} (\d{2})'</span>, <span class="ym">'$1 *** ** $2'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Parçalar   : '</span> + Metin(DesenAyır(<span class="ym">'çay; simit ,peynir'</span>, <span class="ym">'\s*[;,]\s*'</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Harf ayrımı: '</span> + Metin(Eşleşir(YAZI, <span class="ym">'SİPARİŞ'</span>)) + <span class="ym">', &quot;i&quot; ile: '</span> + Metin(Eşleşir(YAZI, <span class="ym">'SİPARİŞ'</span>, <span class="ym">'i'</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Sipariş no : #A-1042
+Adetler    : ['3 adet', '12 adet']
+  çay × 3
+  simit × 12
+E-posta    : zeynep@ornek.com
+Telefon mu : doğru
+Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 *** ** 67
+Parçalar   : ['çay', 'simit', 'peynir']
+Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
+<p>Desenleri tek tırnak içinde yazmanızı öneririz; tek tırnaklı metinlerde <code>\</code> olduğu gibi kalır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Desen</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>a</code>, <code>çay</code></td>
+<td>Kendisi</td>
+</tr>
+<tr class="even">
+<td><code>.</code></td>
+<td>Satır sonu dışında herhangi bir karakter</td>
+</tr>
+<tr class="odd">
+<td><code>\d</code>, <code>\w</code>, <code>\s</code></td>
+<td>Rakam; harf, rakam ya da <code>_</code>; boşluk. Büyük harflisi tersidir (<code>\D</code>)</td>
+</tr>
+<tr class="even">
+<td><code>[abc]</code>, <code>[a-z]</code>, <code>[^0-9]</code></td>
+<td>Kümedeki bir karakter; aralık; kümede olmayan</td>
+</tr>
+<tr class="odd">
+<td><code>x*</code>, <code>x+</code>, <code>x?</code></td>
+<td>Sıfır ya da çok; bir ya da çok; sıfır ya da bir</td>
+</tr>
+<tr class="even">
+<td><code>x{3}</code>, <code>x{2,4}</code>, <code>x{2,}</code></td>
+<td>Tam 3; 2 ile 4 arası; en az 2</td>
+</tr>
+<tr class="odd">
+<td><code>x*?</code>, <code>x+?</code></td>
+<td>Tembel: olabildiğince az</td>
+</tr>
+<tr class="even">
+<td><code>(…)</code>, <code>(?:…)</code></td>
+<td>Yakalayan grup; yakalamayan grup</td>
+</tr>
+<tr class="odd">
+<td><code>a\|b</code></td>
+<td>a ya da b</td>
+</tr>
+<tr class="even">
+<td><code>^</code>, <code>$</code>, <code>\b</code></td>
+<td>Metnin başı; sonu; sözcük sınırı</td>
+</tr>
+<tr class="odd">
+<td><code>\.</code>, <code>\(</code>, <code>\\</code></td>
+<td>Özel karakterin kendisi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>\w</code> Türkçe harfleri de kapsar. Son argüman olarak <code>'i'</code> verilirse büyük/küçük harf ayrımı kalkar ve Türkçedeki dört i (<code>İ I ı i</code>) birbirine eş sayılır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne döndürür</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Eşleşir(metin, desen)</code></td>
+<td>Desen metnin bir yerinde geçiyor mu</td>
+</tr>
+<tr class="even">
+<td><code>TamEşleşir(metin, desen)</code></td>
+<td>Metnin tamamı desene uyuyor mu (doğrulama için)</td>
+</tr>
+<tr class="odd">
+<td><code>Bul(metin, desen)</code></td>
+<td>İlk eşleşme ya da <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>BulHepsi(metin, desen)</code></td>
+<td>Tüm eşleşmelerin listesi</td>
+</tr>
+<tr class="odd">
+<td><code>Gruplar(metin, desen)</code></td>
+<td>İlk eşleşme için <code>[tamamı, 1. grup, 2. grup…]</code> ya da <code>boş</code></td>
+</tr>
+<tr class="even">
+<td><code>TümGruplar(metin, desen)</code></td>
+<td>Her eşleşme için böyle bir liste</td>
+</tr>
+<tr class="odd">
+<td><code>DesenKonumu(metin, desen)</code></td>
+<td>İlk eşleşmenin başladığı karakter (yoksa 0)</td>
+</tr>
+<tr class="even">
+<td><code>DesenDeğiştir(metin, desen, yeni)</code></td>
+<td>Tüm eşleşmeleri değiştirir; <code>$1</code> grup, <code>$0</code> eşleşmenin tamamı, <code>$$</code> dolar işareti</td>
+</tr>
+<tr class="odd">
+<td><code>DesenAyır(metin, desen)</code></td>
+<td>Metni eşleşmelerden böler</td>
+</tr>
+<tr class="even">
+<td><code>DesenKaçış(metin)</code>, <code>DesenGeçerli(desen)</code></td>
+<td>Özel karakterleri etkisizleştirir; deseni denetler</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Birim kendi eşleştirme motorunu kullanır, bu yüzden her ortamda aynı sonucu verir. İleri/geri bakış (<code>(?=…)</code>) ve geri başvuru (<code>\1</code>) yoktur. İç içe tekrar içeren desenler (<code>(a+)+</code>) bazı metinlerde çok uzun sürebilir; birim böyle durumda programı kilitlemek yerine hatayla durdurur. Kullanıcının yazdığı metni desenin içine koyacaksanız önce <code>DesenKaçış</code> ile kaçışlamanız gerekir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-4-takvim-tarih-ve-saat.html"><small>Önceki</small>4. Takvim: tarih ve saat</a><a class="sonraki" href="07-6-ag-web-servislerine-baglanmak.html"><small>Sonraki</small>6. Ağ: web servislerine bağlanmak</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+12 + 5 = 17
+12 × 5 = 60
+12 ÷ 5 = 2.40
+Sıfıra bölünemez
+İki tamsayı girin
+Pencere "Hesap Makinesi"
+  Yatay
+    GirişKutusu "12" (ipucu "Birinci sayı")
+    SeçimKutusu "÷" (+ | − | × | ÷)
+    GirişKutusu "beş" (ipucu "İkinci sayı")
+  Etiket "İki tamsayı girin"

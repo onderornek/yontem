@@ -1,0 +1,3 @@
+p = Nokta(x: 1.0, y: 2.0), q = Nokta(x: 4.0, y: 6.0)
+Uzaklık: 5.0
+p.x hâlâ 1.0

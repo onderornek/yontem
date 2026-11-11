@@ -1,0 +1,19 @@
+Kökün Gini değeri: 0.459
+
+     Hava ile bölünürse ağırlıklı Gini: 0.343
+ Sıcaklık ile bölünürse ağırlıklı Gini: 0.440
+      Nem ile bölünürse ağırlıklı Gini: 0.367
+   Rüzgâr ile bölünürse ağırlıklı Gini: 0.429
+
+Hava = güneşli?  (Gini 0.459 → 0.343)
+    Nem = yüksek?  (Gini 0.480 → 0.000)
+        → hayır (3 örnek)
+    Nem = normal?  (Gini 0.480 → 0.000)
+        → evet (2 örnek)
+Hava = bulutlu?  (Gini 0.459 → 0.343)
+    → evet (4 örnek)
+Hava = yağmurlu?  (Gini 0.459 → 0.343)
+    Rüzgâr = yok?  (Gini 0.480 → 0.000)
+        → evet (3 örnek)
+    Rüzgâr = var?  (Gini 0.480 → 0.000)
+        → hayır (2 örnek)

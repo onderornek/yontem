@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11. Birimleri birlikte kullanmak · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html" aria-current="page">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 12 / 12</p>
+    <h2 id="birimleri-birlikte-kullanmak">11. Birimleri birlikte kullanmak</h2>
+<p>Birimler birbirinden bağımsızdır ama asıl güçleri birlikte kullanıldıklarında ortaya çıkar. Aşağıdaki program bir sunucu günlüğünü inceler: başarısız girişleri <code>Desen</code> ile ayıklar, ilk ve son deneme arasındaki süreyi <code>Takvim</code> ile hesaplar, e-posta adreslerini <code>Güvenlik</code> ile maskeler ve raporu imzalar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> GirişRaporu
+<span class="yy">{ Üç birim birlikte: bir sunucu günlüğünden başarısız girişler Desen ile ayıklanır,
+  Takvim ile zaman farkı hesaplanır, Güvenlik ile e-postalar maskelenir ve rapor imzalanır. }</span>
+<span class="ya">kullan</span> Desen, Takvim, Güvenlik
+
+<span class="ya">sabit</span>
+  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.com'</span>
+  KALIP: <span class="ya">metin</span> = <span class="ym">'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'</span>
+  RAPOR_ANAHTARI: <span class="ya">metin</span> = <span class="ym">'rapor-imza-anahtari'</span>
+
+<span class="ya">değişken</span>
+  ilk, son, sayı: <span class="ya">sözlük</span>
+  g: <span class="ya">herhangi</span>
+  an: <span class="ya">tamsayı</span>
+  rapor, kim, satır: <span class="ya">metin</span>
+
+<span class="ya">başla</span>
+  ilk := [:]; son := [:]; sayı := [:]
+  Ayır(GÜNLÜK, #<span class="ys">10</span>) <span class="ya">içindeki</span> <span class="ya">her</span> satır <span class="ya">için</span>
+  <span class="ya">başla</span>
+    g := Gruplar(satır, KALIP)
+    <span class="ya">eğer</span> g &lt;&gt; <span class="ya">boş</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      an := TarihOku(g[<span class="ys">1</span>])
+      kim := g[<span class="ys">2</span>]
+      <span class="ya">eğer</span> <span class="ya">değil</span> sayı.İçerir(kim) <span class="ya">ise</span>
+      <span class="ya">başla</span>
+        sayı[kim] := <span class="ys">0</span>
+        ilk[kim] := an
+      <span class="ya">bitir</span>
+      sayı[kim] := sayı[kim] + <span class="ys">1</span>
+      son[kim] := an
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+
+  rapor := <span class="ym">''</span>
+  Sırala(Anahtarlar(sayı)) <span class="ya">içindeki</span> <span class="ya">her</span> kim <span class="ya">için</span>
+  <span class="ya">başla</span>
+    satır := Maskele(kim, <span class="ys">10</span>) + <span class="ym">': '</span> + sayı[kim] + <span class="ym">' başarısız giriş'</span>
+    <span class="ya">eğer</span> sayı[kim] &gt;= <span class="ys">3</span> <span class="ya">ise</span>
+      satır := satır + <span class="ym">', '</span> + (son[kim] - ilk[kim]) + <span class="ym">' saniye içinde — ŞÜPHELİ ('</span> + TarihYaz(son[kim], <span class="ym">'SS:DD'</span>) + <span class="ym">')'</span>
+    yaz(satır, <span class="ys">1</span>)
+    rapor := rapor + satır + #<span class="ys">10</span>
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Rapor imzası: '</span> + AltMetin(İmza(RAPOR_ANAHTARI, rapor), <span class="ys">1</span>, <span class="ys">16</span>) + <span class="ym">'…'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>****@ornek.com: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
+***@ornek.com: 1 başarısız giriş
+Rapor imzası: 0953a164a97dc05b…</code></pre></div>
+<p>Raporu alan kişi aynı anahtarla <code>İmzaDoğru(RAPOR_ANAHTARI, rapor, imza)</code> çağırarak metnin yolda değişmediğinden emin olur. Programın yapısı tipiktir: her birim kendi işini yapar, aralarındaki veri sıradan metin, tamsayı ve sözlüklerdir.</p>
+<p><strong>Sırada ne var?</strong></p>
+<ul>
+<li>Örnekleri oyun alanında açıp değiştirebilirsiniz: <code>Pencere</code> örnekleri orada canlı çalışır.</li>
+<li>Kendi biriminizi yazabilirsiniz: <em>Programlamaya Giriş</em> kitabının 11. bölümü birimleri anlatır. Bir <code>.y</code> dosyasını programınızın yanına koymanız <code>kullan</code> ile çağırmak için yeterlidir.</li>
+<li>Programınıza <code>yontem yeni</code> ile başlayabilir, <code>yontem test</code> ile sınayabilir, <code>yontem bicimle</code> ile düzenleyebilir, takıldığınız yerde de <code>yontem ayikla</code> ile adım adım izleyebilirsiniz.</li>
+<li>Birimlerinizi başkalarıyla paylaşabilirsiniz: bir Git deposuna koyup etiketlemeniz, <code>yontem paket ekle</code> ile kurulabilmeleri için yeterlidir.</li>
+</ul>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="11-10-araclar.html"><small>Önceki</small>10. Araçlar</a><a class="sonraki" href="index.html"><small>Bitti</small>İçindekilere dön</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

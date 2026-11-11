@@ -1,0 +1,6 @@
+Son eklenen ürünün numarası: 2
+Ürün sayısı: 3
+defter: 500.0
+kalem: 480.0
+['ad': 'defter', 'adet': 35]
+Veritabanı hatası: UNIQUE constraint failed: urun.ad

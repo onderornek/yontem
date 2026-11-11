@@ -1,0 +1,11 @@
+Genişlik öncelikli Ankara→İzmir: ['Ankara', 'Eskişehir', 'Bursa', 'İzmir']
+Derinlik öncelikli Ankara→Mersin: ['Ankara', 'Konya', 'Mersin']
+En kısa yol (Dijkstra): ['Ankara', 'Eskişehir', 'Afyon', 'İzmir'] = 707.0 km
+A* yolu (12 adım):
+*.........
+*####.###.
+*#......#.
+*#.####.#.
+*..#*.#...
+*###*.###.
+*****.....

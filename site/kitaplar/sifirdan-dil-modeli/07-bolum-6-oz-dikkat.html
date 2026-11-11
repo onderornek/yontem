@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 6 — Öz-dikkat · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html" aria-current="page">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 7 / 14</p>
+    <h2 id="bölüm-6-öz-dikkat">Bölüm 6 — Öz-dikkat</h2>
+<p>Bir önceki bölümdeki model son üç karaktere bakıyordu. Bağlamı 30 karaktere çıkarmak istesek ne olur? Her konum için ayrı bir ağırlık matrisi gerekir. Parametre sayısı bağlamla birlikte büyür. Daha kötüsü, model “8 karakter önceki harf” ile “9 karakter önceki harf” için ayrı ayrı kurallar öğrenmek zorunda kalır.</p>
+<p>2017’de yayımlanan “Attention Is All You Need” makalesi farklı bir yol önerdi: her karakter geçmişteki <em>tüm</em> karakterlere baksın, ama hangisine ne kadar bakacağına kendisi karar versin. Bu düzeneğe <strong>öz-dikkat</strong> (self-attention) denir. Bugünkü tüm büyük dil modellerinin kalbi budur.</p>
+<h3 id="adım-1-geçmişin-ortalaması">Adım 1: geçmişin ortalaması</h3>
+<p>En basit fikirle başlayalım. Her karakter, kendisi dahil önceki tüm karakterlerin vektörlerinin ortalamasını alsın. Böylece geçmişin bir özetine sahip olur. Bunu bir matris çarpımıyla yapabiliriz: alt üçgen bir <strong>ağırlık matrisi</strong> ile çarpmak, her satırda geçmişin ağırlıklı toplamını verir.</p>
+<p>Ağırlıkları doğrudan yazmak yerine bir hile kullanırız. Önce her çift için bir <strong>puan</strong> hesaplarız. Gelecekteki karakterlerin puanına çok büyük bir eksi sayı ekleriz; bu işleme <strong>nedensel maske</strong> denir. Sonra softmaks uygularız. Softmaks, eksi sonsuza yakın puanları sıfır olasılığa, kalanları toplamı 1 olan ağırlıklara çevirir. Tüm puanlar eşitse sonuç tam olarak ortalamadır.</p>
+<p>Maske neden gerekli? Eğitimde model bir pencerenin tüm konumları için aynı anda tahmin yapar. Maske olmasaydı 3. konumdaki karakter, tahmin etmesi gereken 4. karakteri görebilirdi; model kopya çekmeyi öğrenir, metin üretirken de işe yaramazdı.</p>
+<h3 id="adım-2-sorgu-anahtar-değer">Adım 2: sorgu, anahtar, değer</h3>
+<p>Eşit ağırlık kötü bir fikirdir: “gönül” sözcüğündeki “l”, kendinden önceki “ü”ye “g”den daha çok bakmak isteyebilir. Öz-dikkatte her karakter üç vektör üretir:</p>
+<ul>
+<li><strong>Sorgu</strong> (q): “Ben ne arıyorum?”</li>
+<li><strong>Anahtar</strong> (k): “Bende ne var?”</li>
+<li><strong>Değer</strong> (v): “Bana bakan olursa ona ne aktarırım?”</li>
+</ul>
+<p>Bir karakterin sorgusu ile ötekinin anahtarının nokta çarpımı puanı verir: ikisi ne kadar uyuşuyorsa puan o kadar yüksektir. Puanlar maskelenip softmakstan geçirilir ve ağırlıklar, değerlerin ağırlıklı ortalamasını almak için kullanılır. Üç vektör de karakterin gömmesinden öğrenilen üç matrisle (Wq, Wk, Wv) elde edilir.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Dikkat</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mtext mathvariant="normal">softmaks</mtext><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>Q</mi><msup><mi>K</mi><mi>⊤</mi></msup></mrow><msqrt><mi>d</mi></msqrt></mfrac><mo>+</mo><mi>M</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">\text{Dikkat}(Q, K, V) = \text{softmaks}\!\left(\frac{Q K^\top}{\sqrt{d}} + M\right) V</annotation></semantics></math></p>
+<p>Buradaki √d bölümü (d: sorgu vektörünün uzunluğu) puanların çok büyümesini önler. Puanlar çok büyük olursa softmaks tüm ağırlığı tek bir karaktere verir ve gradyanlar neredeyse sıfırlanır.</p>
+<h3 id="adım-3-konum-bilgisi">Adım 3: konum bilgisi</h3>
+<p>Öz-dikkatin şaşırtıcı bir özelliği vardır: sırayı bilmez. Ağırlıklı ortalama, toplanan şeylerin sırasına bağlı değildir. “elma” ile “lema”nın son harfi aynı karakterlere bakar ve aynı sonucu üretir. Çözüm, her konuma öğrenilen bir <strong>konum gömmesi</strong> vermek ve bunu karakter gömmesine eklemektir. Böylece “1. konumdaki e” ile “2. konumdaki e” farklı vektörler olur.</p>
+<p>Program bu üç adımı sırasıyla gösteriyor. Ağırlıklar henüz eğitilmedi; bu bölümde yalnızca hesabın nasıl işlediğini görüyoruz.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÖzDikkat
+<span class="yy">{ Öz-dikkat, her karakterin kendinden önceki karakterlerden bilgi toplamasını sağlar.
+  A) En basit hali: geçmişin ortalamasını almak. Nedensel maske, bir karakterin
+     GELECEKTEKİ karakterleri görmesini engeller.
+  B) Gerçek öz-dikkat: ortalama eşit ağırlıklı değildir. Her karakter bir sorgu (q),
+     bir anahtar (k) ve bir değer (v) üretir. q·k büyükse o karaktere çok bakılır.
+        ağırlıklar = softmaks(Q Kᵀ / √d + maske),   çıktı = ağırlıklar @ V
+  C) Dikkat sırayı bilmez: aynı karakterler farklı sırayla gelse de sonuç aynıdır.
+     Konum gömmesi eklemek bu sorunu çözer. }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, YZ, Matematik
+
+<span class="ya">değişken</span>
+  x, M, A, Q, K, V, E, Wq, Wk, Wv, Konum, girdi: <span class="ya">tensör</span>
+  harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+
+<span class="ya">fonksiyon</span> NedenselMaske(n: <span class="ya">tamsayı</span>): <span class="ya">tensör</span>
+<span class="ya">değişken</span> i, j: <span class="ya">tamsayı</span>; satırlar: <span class="ya">liste</span>; s: <span class="ya">ondalık</span> dizisi
+<span class="ya">başla</span>
+  satırlar := []
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    s := []
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">eğer</span> j &lt;= i <span class="ya">ise</span> s.Ekle(<span class="ys">0.0</span>) <span class="ya">değilse</span> s.Ekle(-<span class="ys">1000000000.0</span>)
+    satırlar.Ekle(s)
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> Tensör(satırlar)
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> MatrisYaz(başlık: <span class="ya">metin</span>; mat: <span class="ya">tensör</span>)
+<span class="ya">değişken</span> i, j: <span class="ya">tamsayı</span>; s: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  yaz(başlık, <span class="ys">1</span>)
+  <span class="ys">0</span>'dan mat.Şekil[<span class="ys">0</span>] - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    s := <span class="ym">'   '</span>
+    <span class="ys">0</span>'dan mat.Şekil[<span class="ys">1</span>] - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> s := s + Biçimle(<span class="ym">'{:7.2}'</span>, mat[i, j])
+    yaz(s, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> SonSatırınÇıktısı(sözcük: <span class="ya">metin</span>; konumlu: <span class="ya">mantıksal</span>): <span class="ya">tensör</span>
+<span class="yy">{ Sözcüğün karakterlerini gömer, öz-dikkati uygular, son karakterin çıktısını döndürür. }</span>
+<span class="ya">değişken</span> G, Ağ: <span class="ya">tensör</span>; n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  n := Uzunluk(sözcük)
+  G := BirSıcak(DilAraclari.Kodla(sözcük, numara), Uzunluk(harfler)) @ E
+  <span class="ya">eğer</span> konumlu <span class="ya">ise</span> G := G + BirSıcak(Aralık(n), <span class="ys">8</span>) @ Konum
+  Ağ := Softmaks((G @ Wq) @ (G @ Wk).T / Kök(<span class="ys">4</span>) + NedenselMaske(n))
+  <span class="ya">dön</span> (Ağ @ (G @ Wv)).Satır(n - <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  <span class="yy">{ A) Geçmişin ortalaması }</span>
+  x := Tensör([[<span class="ys">1.0</span>, <span class="ys">0.0</span>], [<span class="ys">3.0</span>, <span class="ys">2.0</span>], [<span class="ys">5.0</span>, <span class="ys">4.0</span>], [<span class="ys">7.0</span>, <span class="ys">2.0</span>]])
+  M := NedenselMaske(<span class="ys">4</span>)
+  A := Softmaks(Sıfırlar(<span class="ys">4</span>, <span class="ys">4</span>) + M)          <span class="yy">{ tüm puanlar eşit → eşit ağırlık }</span>
+  MatrisYaz(<span class="ym">'A) Maskeli eşit ağırlıklar (satır: bakan, sütun: bakılan):'</span>, A)
+  MatrisYaz(<span class="ym">'   ağırlıklar @ x  =  her satırda, o ana kadarki satırların ortalaması:'</span>, A @ x)
+
+  <span class="yy">{ B) Sorgu, anahtar, değer }</span>
+  Tohum(<span class="ys">3</span>)
+  harfler := DilAraclari.Harfler
+  numara := DilAraclari.Numaralar(harfler)
+  E := RastgeleTensör(Uzunluk(harfler), <span class="ys">8</span>, <span class="ys">1.0</span>)      <span class="yy">{ 8 boyutlu karakter gömmeleri }</span>
+  Wq := RastgeleTensör(<span class="ys">8</span>, <span class="ys">4</span>, <span class="ys">0.5</span>)
+  Wk := RastgeleTensör(<span class="ys">8</span>, <span class="ys">4</span>, <span class="ys">0.5</span>)
+  Wv := RastgeleTensör(<span class="ys">8</span>, <span class="ys">4</span>, <span class="ys">0.5</span>)
+  girdi := BirSıcak(DilAraclari.Kodla(<span class="ym">'gönül'</span>, numara), Uzunluk(harfler)) @ E
+  Q := girdi @ Wq; K := girdi @ Wk; V := girdi @ Wv
+  A := Softmaks(Q @ K.T / Kök(<span class="ys">4</span>) + NedenselMaske(<span class="ys">5</span>))
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  MatrisYaz(<span class="ym">'B) &quot;gönül&quot; için dikkat ağırlıkları (rastgele, henüz eğitilmemiş Wq, Wk):'</span>, A)
+  yaz(<span class="ym">'   Satır toplamları: '</span> + Eşle(Aralık(<span class="ys">5</span>), <span class="ya">fonksiyon</span>(r: <span class="ya">tamsayı</span>) =&gt; Yuvarla(A.Satır(r).Toplam.Değer, <span class="ys">3</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'   Çıktının şekli: '</span> + (A @ V).Şekil + <span class="ym">'  (5 karakter, her biri için 4 sayı)'</span>, <span class="ys">1</span>)
+
+  <span class="yy">{ C) Konum bilgisi }</span>
+  Konum := RastgeleTensör(<span class="ys">8</span>, <span class="ys">8</span>, <span class="ys">1.0</span>)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'C) Son karakterin (&quot;a&quot;) çıktısı:'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'   konumsuz  &quot;elma&quot;: '</span> + Eşle(SonSatırınÇıktısı(<span class="ym">'elma'</span>, <span class="ya">yanlış</span>).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Yuvarla(z, <span class="ys">3</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'   konumsuz  &quot;lema&quot;: '</span> + Eşle(SonSatırınÇıktısı(<span class="ym">'lema'</span>, <span class="ya">yanlış</span>).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Yuvarla(z, <span class="ys">3</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'   konumlu   &quot;elma&quot;: '</span> + Eşle(SonSatırınÇıktısı(<span class="ym">'elma'</span>, <span class="ya">doğru</span>).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Yuvarla(z, <span class="ys">3</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'   konumlu   &quot;lema&quot;: '</span> + Eşle(SonSatırınÇıktısı(<span class="ym">'lema'</span>, <span class="ya">doğru</span>).Veri, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; Yuvarla(z, <span class="ys">3</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>A) Maskeli eşit ağırlıklar (satır: bakan, sütun: bakılan):
+      1.00   0.00   0.00   0.00
+      0.50   0.50   0.00   0.00
+      0.33   0.33   0.33   0.00
+      0.25   0.25   0.25   0.25
+   ağırlıklar @ x  =  her satırda, o ana kadarki satırların ortalaması:
+      1.00   0.00
+      2.00   1.00
+      3.00   2.00
+      4.00   2.00
+
+B) &quot;gönül&quot; için dikkat ağırlıkları (rastgele, henüz eğitilmemiş Wq, Wk):
+      1.00   0.00   0.00   0.00   0.00
+      0.76   0.24   0.00   0.00   0.00
+      0.23   0.30   0.47   0.00   0.00
+      0.41   0.14   0.32   0.13   0.00
+      0.01   0.02   0.03   0.51   0.43
+   Satır toplamları: [1.0, 1.0, 1.0, 1.0, 1.0]
+   Çıktının şekli: [5, 4]  (5 karakter, her biri için 4 sayı)
+
+C) Son karakterin (&quot;a&quot;) çıktısı:
+   konumsuz  &quot;elma&quot;: [-0.273, -0.001, -0.047, 1.101]
+   konumsuz  &quot;lema&quot;: [-0.273, -0.001, -0.047, 1.101]
+   konumlu   &quot;elma&quot;: [0.153, 2.455, -0.951, 0.739]
+   konumlu   &quot;lema&quot;: [0.536, -1.385, 0.089, 0.55]</code></pre></div>
+<h3 id="çıktıyı-okumak-2">Çıktıyı okumak</h3>
+<p>A bölümündeki matris tam beklendiği gibidir: köşegenin üstü sıfır (geleceğe bakılmıyor) ve her satırda ağırlıklar eşittir. Çarpımın ikinci satırı (2, 1), ilk iki satırın ortalamasıdır: (1 + 3) / 2 = 2 ve (0 + 2) / 2 = 1.</p>
+<p>B bölümünde ağırlıklar artık eşit değildir. Son satırda “l”, ağırlığının %51’ini “ü”ye, %43’ünü kendisine veriyor; “g”ye neredeyse hiç bakmıyor. Bu ağırlıklar rastgele Wq ve Wk’den geldiği için şimdilik anlamsızdır. Eğitim, bu matrisleri faydalı bakış desenleri üretecek biçimde ayarlayacak. Her satırın toplamı yine 1’dir.</p>
+<p>C bölümü konum sorununu gösteriyor. Konum gömmesi yokken “elma” ve “lema”nın son harfi birebir aynı çıktıyı üretiyor; model iki sözcüğü ayırt edemez. Konum gömmesi eklenince çıktılar farklılaşıyor.</p>
+<p><strong>Alıştırma.</strong> B bölümünde puanları √4’e bölmeyi kaldırınız ve Wq ile Wk’nin ölçeğini 0,5’ten 2,0’a çıkarınız. Ağırlık matrisi nasıl değişiyor? Neden çoğu satırda tek bir 1,00 görüyorsunuz?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="06-bolum-5-baglami-buyutmek.html"><small>Önceki</small>Bölüm 5 — Bağlamı büyütmek</a><a class="sonraki" href="08-bolum-7-transformer-blogu.html"><small>Sonraki</small>Bölüm 7 — Transformer bloğu</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#adım-1-geçmişin-ortalaması">Adım 1: geçmişin ortalaması</a></li><li><a href="#adım-2-sorgu-anahtar-değer">Adım 2: sorgu, anahtar, değer</a></li><li><a href="#adım-3-konum-bilgisi">Adım 3: konum bilgisi</a></li><li><a href="#çıktıyı-okumak-2">Çıktıyı okumak</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

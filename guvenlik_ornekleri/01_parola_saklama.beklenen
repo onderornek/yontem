@@ -1,0 +1,19 @@
+Biçim: pbkdf2-sha256, tekrar 1000
+Tuz uzunluğu: 32 onaltılık karakter
+Özet uzunluğu: 64 onaltılık karakter
+Aynı parola, farklı kayıt (tuz sayesinde): doğru
+Doğru parola: doğru
+Yanlış parola: yanlış
+Bozuk kayıt: yanlış
+Tekrar sayısı düşük, yeniden özetlenmeli: doğru
+Bilinen bir kayıtla doğrulama: doğru
+
+Parola gücü (0 = çok zayıf, 4 = çok güçlü):
+  123456 → 0  ['en az 8 karakter olmalı', 'çok yaygın bir parola', 'küçük harf yok', 'büyük harf yok', 'simge yok']
+  parola123 → 0  ['12 karakter ya da daha uzun olması önerilir', 'çok yaygın bir parola', 'büyük harf yok', 'simge yok']
+  aaaaaaaaaa → 0  ['12 karakter ya da daha uzun olması önerilir', 'tek bir karakterin tekrarı', 'büyük harf yok', 'rakam yok', 'simge yok']
+  kedi1234 → 1  ['12 karakter ya da daha uzun olması önerilir', 'büyük harf yok', 'simge yok']
+  Kedi1234 → 2  ['12 karakter ya da daha uzun olması önerilir', 'simge yok']
+  Kedi-1234-Mavi → 3  []
+  uzun ama tek tip sözcükler → 3  ['büyük harf yok', 'rakam yok']
+  Çok-Güçlü-Parola-2026! → 4  []

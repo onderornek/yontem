@@ -1,0 +1,15 @@
+Platform: benzetim, ekran 390x844
+[Titreşim 400 ms]
+[Bildirim] Hedefe ulaştın: 5 adım tamam
+6 / 5 adım · Toplam: 6 adım
+Konum: 39.9334, 32.8597
+[Paylaş] Bugün 6 adım attım — Yöntem ile yazdığım adım sayarla!
+Saklanan toplam: 6
+Pencere "Adım Sayar"
+  Etiket "6 / 5 adım"
+  Etiket "Toplam: 6 adım"
+  Yatay
+    Düğme "Konumum"
+    Düğme "Paylaş"
+    Düğme "Sıfırla"
+  Etiket "Konum: 39.9334, 32.8597"

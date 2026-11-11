@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giriş · Yöntem ile Makine Öğrenmesi</title>
+<meta name="description" content="20 algoritma, her biri baştan sona okunabilen bir programla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Makine Öğrenmesi</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-giris.html" aria-current="page">Giriş</a></li><li><a href="03-bolum-1-denetimli-ogrenmenin-temelleri.html">Bölüm 1 — Denetimli öğrenmenin temelleri</a></li><li><a href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></li><li><a href="05-bolum-3-denetimsiz-ogrenme.html">Bölüm 3 — Denetimsiz öğrenme</a></li><li><a href="06-bolum-4-derin-ogrenme.html">Bölüm 4 — Derin öğrenme</a></li><li><a href="07-ek-a-hangi-algoritma-ne-zaman.html">Ek A — Hangi algoritma ne zaman?</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Makine_Ogrenmesi.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 251 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Makine Öğrenmesi</a> / Bölüm 2 / 7</p>
+    <h2 id="giriş">Giriş</h2>
+<h3 id="başlarken">Başlarken</h3>
+<p>Kılavuz, Yöntem’in temellerini (değişkenler, döngüler, fonksiyonlar, listeler) bilen ama makine öğrenmesine yeni başlayan okurlar içindir. Matematik bilgisi olarak toplama, çarpma ve ortalama yeterlidir; gereken her formül yanında Türkçe açıklamasıyla verilir.</p>
+<p>Her bölüm aynı sırayı izler:</p>
+<ol type="1">
+<li><strong>Fikir</strong>: algoritma neyi, hangi sezgiyle yapar.</li>
+<li><strong>Formül</strong>: algoritmanın kalbindeki tek denklem.</li>
+<li><strong>Yöntem kodu</strong>: tam, çalışan bir program.</li>
+<li><strong>Çıktı</strong>: programın gerçekten ürettiği sonuç.</li>
+<li><strong>Ne öğrendik</strong>: sonucun yorumu ve sık yapılan hata.</li>
+<li><strong>Alıştırma</strong>: kodu değiştirerek deneyebileceğiniz küçük bir görev.</li>
+</ol>
+<h3 id="kodları-çalıştırmak">Kodları çalıştırmak</h3>
+<p>Programların hepsi <code>ml_kilavuz/</code> klasöründedir ve oyun alanında “Makine öğrenmesi kılavuzu” grubunda hazır bekler. Bilgisayarınızda şöyle çalıştırılır:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>node js/dist/cli.js ml_kilavuz/01_dogrusal_regresyon.y</code></pre></div>
+<p>Çıktılar <code>Tohum(...)</code> ile sabitlenmiş rastgele sayılar kullandığı için her çalıştırmada aynıdır; kendi bilgisayarınızda da buradaki sonuçları birebir görmelisiniz.</p>
+<h3 id="kullanılan-araçlar">Kullanılan araçlar</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Araç</th>
+<th>Ne için</th>
+<th>Nasıl gelir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Listeler ve döngüler</td>
+<td>Veri kümeleri, uzaklıklar, sayaçlar</td>
+<td>Dilin kendisi</td>
+</tr>
+<tr class="even">
+<td><code>Matematik</code> birimi</td>
+<td><code>Üstel</code>, <code>Ln</code>, <code>Kök</code>, <code>Sigmoid</code> gibi işlevler</td>
+<td><code>kullan Matematik</code></td>
+</tr>
+<tr class="odd">
+<td><code>YZ</code> birimi</td>
+<td>Tensörler, otomatik türev, <code>Yoğun</code> katman, <code>Adam</code></td>
+<td><code>kullan YZ</code></td>
+</tr>
+<tr class="even">
+<td><code>MakineOgrenmesi</code> birimi</td>
+<td>Hazır k-NN, k-ortalamalar ve regresyonlar</td>
+<td><code>kullan MakineOgrenmesi</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>İlk bölümlerde algoritmaları sıfırdan yazıyoruz; hazır birimleri yalnızca sonucu karşılaştırmak için kullanıyoruz. Derin öğrenme bölümünde ise <code>YZ</code> biriminin otomatik türevi, gradyan hesabını bizim yerimize yapar.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="01-onsoz.html"><small>Önceki</small>Önsöz</a><a class="sonraki" href="03-bolum-1-denetimli-ogrenmenin-temelleri.html"><small>Sonraki</small>Bölüm 1 — Denetimli öğrenmenin temelleri</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#başlarken">Başlarken</a></li><li><a href="#kodları-çalıştırmak">Kodları çalıştırmak</a></li><li><a href="#kullanılan-araçlar">Kullanılan araçlar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

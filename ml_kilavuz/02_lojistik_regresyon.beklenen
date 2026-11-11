@@ -1,0 +1,9 @@
+Adım  500  kayıp = 0.3650
+Adım 1000  kayıp = 0.3649
+Adım 1500  kayıp = 0.3649
+Adım 2000  kayıp = 0.3649
+Model: P(geçer) = σ(1.424 × saat - 4.630)
+Karar sınırı (P = 0,5): 3.25 saat
+Eğitim doğruluğu: 10/12
+2 saat çalışan için olasılık: 0.14
+5 saat çalışan için olasılık: 0.92

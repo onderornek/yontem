@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Gömülü arka uç (ESP32) · Yöntem Kurulum Kılavuzu</title>
+<meta name="description" content="Windows, macOS ve Linux&#x27;ta kurulum, ESP32 desteği ve sık karşılaşılan sorunlar">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Kurulum Kılavuzu</a></summary>
+      <ol><li><a href="01-hangi-kurulum-size-uygun.html">Hangi kurulum size uygun?</a></li><li><a href="02-1-hazirlik-node-js-ve-python.html">1. Hazırlık: Node.js ve Python</a></li><li><a href="03-2-javascript-derleyicisini-kurma.html">2. JavaScript derleyicisini kurma</a></li><li><a href="04-3-python-yorumlayicisi.html">3. Python yorumlayıcısı</a></li><li><a href="05-4-gomulu-arka-uc-esp32.html" aria-current="page">4. Gömülü arka uç (ESP32)</a></li><li><a href="06-5-dogrulama-guncelleme-ve-sorunlar.html">5. Doğrulama, güncelleme ve sorunlar</a></li></ol>
+      <a class="pdf" href="Yontem_Kurulum_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 71 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Kurulum Kılavuzu</a> / Bölüm 5 / 6</p>
+    <h2 id="gömülü-arka-uç-esp32">4. Gömülü arka uç (ESP32)</h2>
+<p>Gömülü arka uç 2. adımdaki <code>yontem</code> komutuyla gelir; ayrıca bir C++17 derleyicisi (masaüstü benzetimi için) ve kartınız varsa bir yükleme aracı gerekir. Program, statik tipli bir alt kümeye uyduğu sürece C++’a derlenir.</p>
+<p><strong>C++ derleyicisi (masaüstü benzetimi için)</strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sistem</th>
+<th>Kurulum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linux (Ubuntu, Debian)</td>
+<td><code>sudo apt install g++</code></td>
+</tr>
+<tr class="even">
+<td>macOS</td>
+<td><code>xcode-select --install</code> (gelen <code>g++</code> komutu clang’dir ve çalışır)</td>
+</tr>
+<tr class="odd">
+<td>Windows</td>
+<td><a href="https://www.msys2.org">MSYS2</a> ile MinGW <code>g++</code> kurulabilir; Windows’ta masaüstü benzetimi henüz sınanmamıştır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Farklı bir derleyici kullanmak için <code>CXX</code> ortam değişkenini ayarlayabilirsiniz (örneğin <code>CXX=clang++</code>).</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem gomulu led.y --calistir    # C++'a derler, bilgisayarda çalıştırır
+YONTEM_IZ=1 yontem gomulu led.y --calistir   # pin değişikliklerini de yazar
+yontem gomulu led.y               # ESP32 projesi üretir: led/ klasörü
+yontem gomulu led.y -o projem     # klasör adını siz verin</code></pre></div>
+<p><strong>Karta yükleme.</strong> Üretilen klasörde bir <code>.ino</code> dosyası, <code>platformio.ini</code> ve <code>BENIOKU.txt</code> bulunur. Üç yükleme yolundan birini seçebilirsiniz:</p>
+<ul>
+<li><strong>Arduino IDE:</strong> Kart Yöneticisi’nden Espressif’in “esp32” çekirdeğini (3.x önerilir) kurduktan sonra <code>.ino</code> dosyasını açıp kart olarak “ESP32 Dev Module” ve kartın bağlı olduğu portu seçerek yükleyebilirsiniz. Çekirdek 2.x ise Araçlar menüsünden C++17’yi açmanız gerekir.</li>
+<li><strong>arduino-cli:</strong> <code>arduino-cli compile --fqbn esp32:esp32:esp32 led</code> ve <code>arduino-cli upload -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32 led</code> komutları kullanılır (port adı sisteminize göre değişir; Windows’ta örneğin <code>COM3</code>).</li>
+<li><strong>PlatformIO:</strong> klasörün içinde <code>pio run -t upload</code>, ardından seri çıktı için <code>pio device monitor -b 115200</code> komutu çalıştırılır.</li>
+</ul>
+<p>Programın <code>yaz</code> çıktısı ve <code>oku</code> girdisi seri port üzerinden, 115200 baud hızında akışır. Hazır örnekler <code>yontem/gomulu_ornekler/</code> klasöründedir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="04-3-python-yorumlayicisi.html"><small>Önceki</small>3. Python yorumlayıcısı</a><a class="sonraki" href="06-5-dogrulama-guncelleme-ve-sorunlar.html"><small>Sonraki</small>5. Doğrulama, güncelleme ve sorunlar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

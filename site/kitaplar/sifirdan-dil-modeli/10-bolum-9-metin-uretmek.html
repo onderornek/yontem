@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 9 — Metin üretmek · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html" aria-current="page">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 10 / 14</p>
+    <h2 id="bölüm-9-metin-üretmek">Bölüm 9 — Metin üretmek</h2>
+<p>Eğitilmiş bir dil modeli metin yazmaz; her adımda bir olasılık dağılımı verir. Bu dağılımdan bir karakteri nasıl seçtiğimiz ise çıkan metnin karakterini belirler. Aynı model, seçim yöntemine göre sıkıcı ve tekrarcı da olabilir, yaratıcı ve dağınık da. Sohbet uygulamalarındaki “sıcaklık” ayarı da tam olarak bu bölümün konusudur.</p>
+<h3 id="üç-yöntem">Üç yöntem</h3>
+<p><strong>Açgözlü seçim.</strong> Her adımda en olası karakteri alırız. Rastgelelik yoktur; aynı başlangıç her zaman aynı metni verir. Kulağa en mantıklı yöntem gibi gelir ama genellikle kötü sonuç verir. Model kendi ürettiği metne bakarak karar verdiği için kolayca bir döngüye girer.</p>
+<p><strong>Sıcaklık.</strong> Örneklemeden önce logitleri bir T sayısına böleriz. T &lt; 1 iken büyük logitler daha da öne çıkar; model daha emin ve tutucu davranır. T &gt; 1 iken dağılım düzleşir; düşük olasılıklı karakterler de seçilmeye başlar. T = 1 modelin öğrendiği dağılımın kendisidir. T sıfıra yaklaştıkça açgözlü seçime yaklaşır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>T</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><msup><mi>e</mi><mrow><msub><mi>z</mi><mi>i</mi></msub><mi>/</mi><mi>T</mi></mrow></msup><mrow><munder><mo>∑</mo><mi>j</mi></munder><msup><mi>e</mi><mrow><msub><mi>z</mi><mi>j</mi></msub><mi>/</mi><mi>T</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">P_T(i) = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}</annotation></semantics></math></p>
+<p><strong>Top-k.</strong> Yalnızca en olası k karakter arasından seçeriz; geri kalanların olasılığını sıfırlarız. Model bazen düşük ama sıfır olmayan bir olasılıkla saçma bir karakter seçer ve metin oradan sonra raydan çıkar. Top-k bu kuyruğu keser. Büyük modellerde benzer bir yöntem olan top-p (çekirdek örnekleme) da yaygındır: k sabit sayı yerine, olasılıkları toplamı p’yi geçene kadar en olasıdan başlayarak alınır.</p>
+<p>Program, 8. bölümde kaydedilen ağırlıkları yükler. Dosya yoksa modeli 8. bölümle birebir aynı biçimde yeniden eğitir. Aynı tohumla başlayıp rastgele sayıları aynı sırayla çektiği için aynı ağırlıklara ulaşır. Bu, oyun alanında programlar arasında dosya taşınamadığı için gereklidir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> MetinÜretmek
+<span class="yy">{ Eğitilmiş bir dil modeli her adımda bir OLASILIK DAĞILIMI verir. Bir sonraki
+  karakteri bu dağılımdan nasıl seçtiğimiz, üretilen metnin karakterini belirler:
+    açgözlü   : her zaman en olası karakter (hep aynı metin, çoğu zaman tekrar)
+    sıcaklık  : logitler T'ye bölünür; T &lt; 1 dağılımı sivriltir, T &gt; 1 düzleştirir
+    top-k     : yalnızca en olası k karakter arasından seçilir
+  Program 8. bölümde kaydedilen ağırlıkları yükler. Dosya yoksa (örneğin oyun
+  alanında) modeli 8. bölümle aynı ayarlarla yeniden eğitir; bu yaklaşık 10 dakika sürer. }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, KucukGPT, YZ, Sistem, Matematik
+
+<span class="ya">sabit</span>
+  BAĞLAM: <span class="ya">tamsayı</span> = <span class="ys">16</span>
+  DOSYA: <span class="ya">metin</span> = <span class="ym">'kucuk_gpt.agirlik'</span>
+
+<span class="ya">değişken</span>
+  harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  model: GPT
+  P: <span class="ya">ondalık</span> dizisi
+  sıra: <span class="ya">tamsayı</span> dizisi
+  baş: <span class="ya">metin</span>
+  i, k: <span class="ya">tamsayı</span>
+  T: <span class="ya">ondalık</span>
+
+<span class="ya">fonksiyon</span> SonrakiDağılım(bağ: <span class="ya">tamsayı</span> dizisi; sıcaklık: <span class="ya">ondalık</span>; enİyiK: <span class="ya">tamsayı</span>): <span class="ya">ondalık</span> dizisi
+<span class="yy">{ Son karakterden sonraki karakterin olasılıkları; sıcaklık ve top-k uygulanmış. }</span>
+<span class="ya">değişken</span> logit: <span class="ya">ondalık</span> dizisi; eşik: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  logit := model.İleri(bağ, <span class="ys">1</span>, Uzunluk(bağ)).Satır(Uzunluk(bağ) - <span class="ys">1</span>).Veri
+  logit := Eşle(logit, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; z / sıcaklık)
+  <span class="ya">eğer</span> enİyiK &gt; <span class="ys">0</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    eşik := Sırala(logit, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; -z)[enİyiK - <span class="ys">1</span>]
+    logit := Eşle(logit, <span class="ya">fonksiyon</span>(z: <span class="ya">ondalık</span>) =&gt; <span class="ya">eğer</span> z &gt;= eşik <span class="ya">ise</span> z <span class="ya">değilse</span> -<span class="ys">1000000000.0</span>)
+  <span class="ya">bitir</span>
+  <span class="ya">dön</span> Softmaks(Tensör([logit])).Satır(<span class="ys">0</span>).Veri
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Üret(başlangıç: <span class="ya">metin</span>; sıcaklık: <span class="ya">ondalık</span>; enİyiK: <span class="ya">tamsayı</span>; açgözlü: <span class="ya">mantıksal</span>): <span class="ya">metin</span>
+<span class="ya">değişken</span> bağ: <span class="ya">tamsayı</span> dizisi; j: <span class="ya">tamsayı</span>; dağ: <span class="ya">ondalık</span> dizisi
+<span class="ya">başla</span>
+  sonuç := başlangıç
+  bağ := [<span class="ys">0</span>] + DilAraclari.Kodla(başlangıç, numara)
+  <span class="ya">tekrarla</span>
+    <span class="ya">eğer</span> Uzunluk(bağ) &gt; BAĞLAM <span class="ya">ise</span> bağ := Dilim(bağ, Uzunluk(bağ) - BAĞLAM, Uzunluk(bağ))
+    dağ := SonrakiDağılım(bağ, sıcaklık, enİyiK)
+    <span class="ya">eğer</span> açgözlü <span class="ya">ise</span> j := ArgMaks(dağ) <span class="ya">değilse</span> j := DilAraclari.Örnekle(dağ)
+    <span class="ya">eğer</span> j &lt;&gt; <span class="ys">0</span> <span class="ya">ise</span> sonuç := sonuç + harfler[j]
+    bağ := bağ + [j]
+  j = <span class="ys">0</span> <span class="ya">veya</span> Uzunluk(sonuç) &gt; <span class="ys">70</span> <span class="ya">olana</span> <span class="ya">dek</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> YenidenEğit
+<span class="yy">{ 8. bölümle birebir aynı eğitim: aynı tohum, veri, bırakma, öğrenme oranı takvimi ve
+  erken durdurma. Rastgele sayılar aynı sırayla çekildiği için aynı ağırlıklar çıkar. }</span>
+<span class="ya">değişken</span> veri: <span class="ya">metin</span> dizisi; eğitim, doğrulama, g, h: <span class="ya">tamsayı</span> dizisi
+         opt: <span class="ya">herhangi</span>; adım, b, s, ayrım: <span class="ya">tamsayı</span>; kayıp: <span class="ya">tensör</span>; enİyi, dk: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  yaz(<span class="ym">'Ağırlık dosyası bulunamadı; model 8. bölümdeki gibi yeniden eğitiliyor (yaklaşık 10 dakika)...'</span>, <span class="ys">1</span>)
+  Tohum(<span class="ys">2026</span>)
+  veri := Atasozleri.Hepsi
+  ayrım := Uzunluk(veri) * <span class="ys">9</span> <span class="ya">böl</span> <span class="ys">10</span>
+  eğitim := DilAraclari.Kodla(<span class="ym">'.'</span> + Birleştir(Dilim(veri, <span class="ys">0</span>, ayrım), <span class="ym">'.'</span>) + <span class="ym">'.'</span>, numara)
+  doğrulama := DilAraclari.Kodla(<span class="ym">'.'</span> + Birleştir(Dilim(veri, ayrım, Uzunluk(veri)), <span class="ym">'.'</span>) + <span class="ym">'.'</span>, numara)
+  model := GPT.Oluştur(Uzunluk(harfler), BAĞLAM, <span class="ys">32</span>, <span class="ys">4</span>, <span class="ys">2</span>)
+  model.bırakma := <span class="ys">0.2</span>
+  opt := Adam(model.Parametreler, <span class="ys">0.003</span>)
+  enİyi := <span class="ys">1000.0</span>
+  <span class="ys">1</span>'den <span class="ys">3000</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    g := []; h := []
+    <span class="ys">1</span>'den <span class="ys">8</span>'e <span class="ya">kadar</span> <span class="ya">her</span> b <span class="ya">için</span>
+    <span class="ya">başla</span>
+      s := Rastgele(Uzunluk(eğitim) - BAĞLAM - <span class="ys">1</span>)
+      g := g + Dilim(eğitim, s, s + BAĞLAM); h := h + Dilim(eğitim, s + <span class="ys">1</span>, s + BAĞLAM + <span class="ys">1</span>)
+    <span class="ya">bitir</span>
+    opt.oran := <span class="ys">0.003</span> * <span class="ys">0.5</span> * (<span class="ys">1</span> + Cos(Matematik.pi * adım / <span class="ys">3000</span>))
+    model.eğitimde := <span class="ya">doğru</span>
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(model.İleri(g, <span class="ys">8</span>, BAĞLAM), h)
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">250</span> = <span class="ys">0</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      model.eğitimde := <span class="ya">yanlış</span>
+      dk := <span class="ys">0</span>; s := <span class="ys">0</span>; b := <span class="ys">0</span>
+      s + BAĞLAM + <span class="ys">1</span> &lt;= Min(Uzunluk(doğrulama), <span class="ys">512</span>) <span class="ya">iken</span>
+      <span class="ya">başla</span>
+        dk := dk + ÇaprazEntropi(model.İleri(Dilim(doğrulama, s, s + BAĞLAM), <span class="ys">1</span>, BAĞLAM),
+                                 Dilim(doğrulama, s + <span class="ys">1</span>, s + BAĞLAM + <span class="ys">1</span>)).Değer
+        b := b + <span class="ys">1</span>; s := s + BAĞLAM
+      <span class="ya">bitir</span>
+      <span class="ya">eğer</span> dk / b &lt; enİyi <span class="ya">ise</span> <span class="ya">başla</span> enİyi := dk / b; model.Kaydet(DOSYA) <span class="ya">bitir</span>
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+  model.Yükle(DOSYA)
+  model.eğitimde := <span class="ya">yanlış</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  harfler := DilAraclari.Harfler
+  numara := DilAraclari.Numaralar(harfler)
+  <span class="ya">eğer</span> Sistem.DosyaVarMı(DOSYA) <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    model := GPT.Oluştur(Uzunluk(harfler), BAĞLAM, <span class="ys">32</span>, <span class="ys">4</span>, <span class="ys">2</span>)
+    model.Yükle(DOSYA)
+  <span class="ya">bitir</span>
+  <span class="ya">değilse</span> YenidenEğit
+
+  yaz(<span class="ym">'&quot;damlaya damlaya g&quot; yazıldıktan sonra modelin tahmini:'</span>, <span class="ys">1</span>)
+  P := SonrakiDağılım([<span class="ys">0</span>] + DilAraclari.Kodla(<span class="ym">'damlaya damlaya g'</span>, numara), <span class="ys">1.0</span>, <span class="ys">0</span>)
+  sıra := Sırala(Aralık(Uzunluk(P)), <span class="ya">fonksiyon</span>(z: <span class="ya">tamsayı</span>) =&gt; -P[z])
+  <span class="ys">0</span>'dan <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> k <span class="ya">için</span> yaz(Biçimle(<span class="ym">'   &quot;{}&quot;  {:.3}'</span>, harfler[sıra[k]], P[sıra[k]]), <span class="ys">1</span>)
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'Açgözlü seçim (her çalıştırmada aynı sonuç):'</span>, <span class="ys">1</span>)
+  [<span class="ym">''</span>, <span class="ym">'damlaya'</span>, <span class="ym">'sabır'</span>, <span class="ym">'dost'</span>, <span class="ym">'göz'</span>] <span class="ya">içindeki</span> <span class="ya">her</span> baş <span class="ya">için</span>
+    yaz(<span class="ym">'   '</span> + Üret(baş, <span class="ys">1.0</span>, <span class="ys">0</span>, <span class="ya">doğru</span>), <span class="ys">1</span>)
+
+  Tohum(<span class="ys">9</span>)
+  [<span class="ys">0.5</span>, <span class="ys">1.0</span>, <span class="ys">1.5</span>] <span class="ya">içindeki</span> <span class="ya">her</span> T <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(Biçimle(<span class="ym">'Sıcaklık {}:'</span>, T), <span class="ys">1</span>)
+    <span class="ys">1</span>'den <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> yaz(<span class="ym">'   '</span> + Üret(<span class="ym">''</span>, T, <span class="ys">0</span>, <span class="ya">yanlış</span>), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'Top-k (k = 3, sıcaklık 1.0):'</span>, <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> yaz(<span class="ym">'   '</span> + Üret(<span class="ym">''</span>, <span class="ys">1.0</span>, <span class="ys">3</span>, <span class="ya">yanlış</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>&quot;damlaya damlaya g&quot; yazıldıktan sonra modelin tahmini:
+   &quot;a&quot;  0.220
+   &quot;e&quot;  0.199
+   &quot;ı&quot;  0.188
+   &quot;ü&quot;  0.130
+   &quot;ö&quot;  0.114
+
+Açgözlü seçim (her çalıştırmada aynı sonuç):
+   alan yaran yerin derin derin derin derin derin derin derin derin derin 
+   damlayan yerin derin derin derin derin derin derin derin derin derin de
+   sabır der derin derin derin derin derin derin derin derin derin derin d
+   dostun derin derin derin derin derin derin derin derin derin derin deri
+   gözün alan alarar
+
+Sıcaklık 0.5:
+   dolun ye derin dişin olur güşmaz
+   akarıyı yolur
+   aşan der yayır
+   bili biş yelinde alarır
+
+Sıcaklık 1.0:
+   kakır yülm z biş kasanı kaparı sok övük düzüş tayı bırdığa pedinin meyi
+   ağacıyık dilver
+   esol
+   gelemeyn dolanl apırsın sörmeden binekince dermik
+
+Sıcaklık 1.5:
+   aşıgcı dok
+   acilmama
+   yelanca butaya koktuçt oçuknununz kebıden düzüderlcs dererin aktloşan
+   ısarlın götürüsaz ork ult
+
+Top-k (k = 3, sıcaklık 1.0):
+   alın deren dolunun düşmez daranı yeri deliş
+   alan kere yokmaz
+   atla kaş dürün karan dalır
+   alılan deri delir</code></pre></div>
+<h3 id="çıktıyı-okumak-5">Çıktıyı okumak</h3>
+<p><strong>İlk tablo modelin ne bildiğini gösteriyor.</strong> “damlaya damlaya g” yazıldıktan sonra model, g’den sonra bir ünlü geleceğinden emindir: ilk beş tahminin hepsi ünlü. Ama doğru cevap olan “ö”yü ancak beşinci sıraya koyuyor. Bu atasözü eğitim verisinde olduğu halde model onu ezberlememiş; bırakma ve erken durdurmanın istediğimiz etkisi budur. Model, gördüğü metinlerden hecelerin ve eklerin genel kurallarını çıkarmış.</p>
+<p><strong>Açgözlü seçim bir döngüye takılıyor.</strong> Beş başlangıcın dördü kısa sürede “derin derin derin…” tekrarına düşüyor. Model “derin” yazdıktan sonra en olası devamın yine “derin” olduğunu düşünüyor; açgözlü seçim de bu döngüden hiç çıkamıyor. Büyük dil modellerinde de aynı sorun görülür; bu yüzden sohbet uygulamaları nadiren açgözlü seçim kullanır.</p>
+<p><strong>Sıcaklık bir ayar düğmesidir.</strong> Sıcaklık 0,5’te üretilen metin kısa, düzenli ve Türkçeye en yakın olanı: “olur”, “akarıyı”, “bili” gibi sözcükler ve “-maz”, “-ır” ekleri. Sıcaklık 1,5’te sözcükler dağılıyor; “düzüderlcs” gibi Türkçede mümkün olmayan harf dizileri belirliyor.</p>
+<p><strong>Top-k sınırlı bir özgürlük tanıyor.</strong> Top-k ile sıcaklık 1,0’da metin çeşitli kalıyor ama saçma harf dizileri kayboluyor. “alın deren dolunun düşmez” gerçek bir atasözü olmasa da kulağa bir atasözü gibi geliyor.</p>
+<p>Uygulamada bu ayarlar birlikte kullanılır. Bir kod yazma asistanı düşük sıcaklık ister, çünkü doğru ve tutarlı olmak yaratıcı olmaktan önemlidir. Şiir yazdıran biri ise sıcaklığı yükseltebilir.</p>
+<p><strong>Alıştırma.</strong> Programa top-p örneklemeyi ekleyiniz: <code>SonrakiDağılım</code>’a bir <code>p</code> parametresi veriniz; olasılıkları büyükten küçüğe sıralayıp toplamı p’yi geçene kadar olanları tutunuz, kalanları sıfırlayıp yeniden normalleştiriniz. p = 0,9 ile üretilen metni top-k ile karşılaştırınız.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="09-bolum-8-kucuk-gptyi-egitmek.html"><small>Önceki</small>Bölüm 8 — Küçük GPT’yi eğitmek</a><a class="sonraki" href="11-bolum-10-kucukten-buyuge.html"><small>Sonraki</small>Bölüm 10 — Küçükten büyüğe</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#üç-yöntem">Üç yöntem</a></li><li><a href="#çıktıyı-okumak-5">Çıktıyı okumak</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

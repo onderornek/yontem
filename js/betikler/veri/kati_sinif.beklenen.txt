@@ -1,0 +1,22 @@
+Tip hatası [sinif.y, satır 93] 'h' Hesap tipinde; Daire bir değer atanamaz
+Tip hatası [sinif.y, satır 94] 'ş' Şekil tipinde; Nokta bir değer atanamaz
+Tip hatası [sinif.y, satır 95] 'sayı' tamsayı tipinde; Daire bir değer atanamaz
+Tip hatası [sinif.y, satır 96] 'yazı' metin tipinde; ondalık bir değer atanamaz
+Tip hatası [sinif.y, satır 97] 'n.x' ondalık tipinde; metin bir değer atanamaz
+Tip hatası [sinif.y, satır 98] 'd.yarıçap' ondalık tipinde; metin bir değer atanamaz
+Tip hatası [sinif.y, satır 99] 'sayı' tamsayı tipinde; ondalık bir değer atanamaz
+Tip hatası [sinif.y, satır 100] 'Daire' sınıfında 'çap' adında bir alan ya da metod yok
+Tip hatası [sinif.y, satır 101] 'Daire' sınıfında 'Büyült' adında bir alan ya da metod yok
+Tip hatası [sinif.y, satır 102] 'Nokta' kaydında 'z' adında bir alan ya da metod yok
+Tip hatası [sinif.y, satır 103] 'Daire.Taşı' en az 2 argüman ister, 1 verildi
+Tip hatası [sinif.y, satır 104] 'Daire.Taşı' çağrısında 1. argüman ondalık olmalı, metin verildi
+Tip hatası [sinif.y, satır 105] 'Daire.Tanım' çağrısında 1. argüman metin olmalı, tamsayı verildi
+Tip hatası [sinif.y, satır 106] 'Daire.Oluştur' çağrısında 1. argüman ondalık olmalı, metin verildi
+Tip hatası [sinif.y, satır 108] 'şekiller' Şekil listesi; Nokta bir öğe konamaz
+Tip hatası [sinif.y, satır 109] 'şekiller' Şekil listesi; tamsayı bir öğe konamaz
+Tip hatası [sinif.y, satır 110] 'Büyüt' çağrısında 1. argüman Şekil olmalı, Nokta verildi
+Tip hatası [sinif.y, satır 111] 'sayı' tamsayı tipinde; Şekil bir değer atanamaz
+Tip hatası [sinif.y, satır 112] 'sayı' tamsayı tipinde; ondalık bir değer atanamaz
+Tip hatası [sinif.y, satır 113] Koşul mantıksal olmalı, Daire verildi
+Tip hatası [sinif.y, satır 114] 'Şekil' sınıfında 'yarıçap' adında bir alan ya da metod yok
+21 tip hatası bulundu; program çalıştırılmadı.

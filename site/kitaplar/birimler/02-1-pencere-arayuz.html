@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Pencere: arayüz · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html" aria-current="page">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 2 / 12</p>
+    <h2 id="pencere-arayüz">1. Pencere: arayüz</h2>
+<p><code>Pencere</code> birimi (İngilizce adıyla <code>UI</code>) düğme, giriş kutusu, etiket ve tuvallerden arayüz kurar. Aynı program üç yerde çalışır:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nerede</th>
+<th>Nasıl</th>
+<th>Ne olur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Oyun alanı</td>
+<td>Çalıştır’a basılır</td>
+<td>Arayüz <strong>Uygulama</strong> sekmesinde canlı açılır</td>
+</tr>
+<tr class="even">
+<td>Web ya da telefon</td>
+<td><code>yontem paketle program.y</code></td>
+<td>Tek başına çalışan bir web uygulaması üretilir</td>
+</tr>
+<tr class="odd">
+<td>Komut satırı ve testler</td>
+<td><code>yontem program.y</code></td>
+<td>Benzetim: olayları programın kendisi üretir, arayüz metin olarak yazılır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Bir arayüz programı üç adımdan oluşur: bileşenler oluşturulur, olaylara prosedür bağlanır ve bileşenler <code>Yerleştir</code> ile pencereye konur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Selamlayıcı
+<span class="yy">{ Pencere birimi: bir giriş kutusu, bir düğme ve bir etiket.
+  Oyun alanında ya da paketlenmiş uygulamada arayüz gerçekten açılır; komut satırında
+  ve testlerde olaylar Gir ve Tıkla ile benzetilir. }</span>
+<span class="ya">kullan</span> Pencere
+
+<span class="ya">değişken</span> adKutusu, selamDüğmesi, sonuç: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Selamla
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> adKutusu.Metin = <span class="ym">''</span> <span class="ya">ise</span> sonuç.Metin := <span class="ym">'Önce adını yaz.'</span>
+  <span class="ya">değilse</span> sonuç.Metin := <span class="ym">'Merhaba, '</span> + adKutusu.Metin + <span class="ym">'!'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Başlık(<span class="ym">'Selamlayıcı'</span>)
+  adKutusu := GirişKutusu(<span class="ym">'Adın'</span>)
+  selamDüğmesi := Düğme(<span class="ym">'Selam ver'</span>)
+  sonuç := Etiket(<span class="ym">''</span>)
+  selamDüğmesi.Tıklanınca(@Selamla)
+  Yerleştir(Yatay(adKutusu, selamDüğmesi), sonuç)
+
+  <span class="ya">eğer</span> <span class="ya">değil</span> Canlı <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Tıkla(selamDüğmesi)
+    yaz(sonuç.Metin, <span class="ys">1</span>)
+    Gir(adKutusu, <span class="ym">'Zeynep'</span>)
+    Tıkla(selamDüğmesi)
+    yaz(sonuç.Metin, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  Çalıştır
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Komut satırındaki çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Önce adını yaz.
+Merhaba, Zeynep!
+Pencere &quot;Selamlayıcı&quot;
+  Yatay
+    GirişKutusu &quot;Zeynep&quot; (ipucu &quot;Adın&quot;)
+    Düğme &quot;Selam ver&quot;
+  Etiket &quot;Merhaba, Zeynep!&quot;</code></pre></div>
+<p><code>Canlı</code>, program gerçek bir arayüzde çalışıyorsa <code>doğru</code>dur. <code>eğer değil Canlı ise</code> bloğu yalnızca benzetimde çalışır: <code>Gir</code> kutuya metin yazar, <code>Tıkla</code> düğmeye basar. Sondaki <code>Çalıştır</code> canlı ortamda olayları beklemeye başlar; benzetimde arayüzün son hâlini ağaç olarak yazar. Testler bu ağacı beklenen çıktıyla karşılaştırır.</p>
+<p><strong>Bileşenler</strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bileşen</th>
+<th>Oluşturma</th>
+<th>Başlıca üyeleri</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Etiket</td>
+<td><code>Etiket(metin)</code></td>
+<td><code>Metin</code></td>
+</tr>
+<tr class="even">
+<td>Düğme</td>
+<td><code>Düğme(metin)</code></td>
+<td><code>Metin</code>, <code>Tıklanınca(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Giriş kutusu</td>
+<td><code>GirişKutusu(ipucu)</code></td>
+<td><code>Metin</code>, <code>İpucu</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Onay kutusu</td>
+<td><code>OnayKutusu(metin, işaretli)</code></td>
+<td><code>İşaretli</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Kaydırıcı</td>
+<td><code>Kaydırıcı(enAz, enÇok, değer)</code></td>
+<td><code>Değer</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Seçim kutusu</td>
+<td><code>SeçimKutusu(seçenekler)</code></td>
+<td><code>Seçili</code>, <code>SeçiliMetin</code>, <code>Seçenekler</code>, <code>Değişince(@P)</code></td>
+</tr>
+<tr class="odd">
+<td>Tuval</td>
+<td><code>Tuval(genişlik, yükseklik)</code></td>
+<td><code>Renk</code>, <code>Çizgi</code>, <code>Dikdörtgen</code>, <code>Daire</code>, <code>Yazı</code>, <code>Temizle</code>, <code>Dokununca(@P)</code></td>
+</tr>
+<tr class="even">
+<td>Yerleşim</td>
+<td><code>Yatay(…)</code>, <code>Dikey(…)</code></td>
+<td><code>Ekle</code>, <code>Temizle</code>, <code>Çocuklar</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Her bileşende <code>Etkin</code> ve <code>Görünür</code> vardır. Pencere düzeyinde <code>Başlık(metin)</code>, <code>Yerleştir(…)</code>, <code>Temizle</code>, belirli aralıklarla bir prosedürü çağıran <code>Aralıkla(ms, @P)</code> ve <code>AralığıDurdur</code> bulunur. Benzetim yardımcıları <code>Tıkla</code>, <code>Gir</code>, <code>Seç</code>, <code>Dokun</code> ve zamanı ilerleten <code>İlerle(ms)</code>’dir.</p>
+<p>Olay prosedürleri <code>@Ad</code> ile verilir. Kısa işler için adsız prosedür de yazılabilir: <code>düğme.Tıklanınca(prosedür başla sayı := sayı + 1 bitir)</code>.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="01-bu-kilavuz-ne-anlatir.html"><small>Önceki</small>Bu kılavuz ne anlatır?</a><a class="sonraki" href="03-2-mobil-telefon-ozellikleri.html"><small>Sonraki</small>2. Mobil: telefon özellikleri</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 2 — Değişkenler, tipler ve işleçler · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html" aria-current="page">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 4 / 20</p>
+    <h2 id="bölüm-2-değişkenler-tipler-ve-işleçler">Bölüm 2 — Değişkenler, tipler ve işleçler</h2>
+<p>Değişken, bir değeri saklayan adlandırılmış bir kutudur. Yöntem’de değişkenler kullanılmadan önce <code>değişken</code> bölümünde tipleriyle bildirilir, sonra <code>:=</code> ile değer atanır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Değişkenler
+
+<span class="ya">sabit</span>
+  KDV_ORANI: <span class="ya">ondalık</span> = <span class="ys">0.20</span>           <span class="yy">// sabitler değiştirilemez</span>
+
+<span class="ya">değişken</span>
+  ad: <span class="ya">metin</span>
+  yaş: <span class="ya">tamsayı</span>
+  boy: <span class="ya">ondalık</span>
+  öğrenci: <span class="ya">mantıksal</span>
+  fiyat: <span class="ya">ondalık</span> = <span class="ys">250.0</span>     <span class="yy">// ilk değerli bildirim</span>
+
+<span class="ya">başla</span>
+  ad := <span class="ym">'Elif'</span>
+  yaş := <span class="ys">21</span>
+  boy := <span class="ys">1.68</span>
+  öğrenci := <span class="ya">doğru</span>
+
+  yaz(<span class="ym">'Ad      : '</span> + ad, <span class="ys">1</span>)
+  yaz(<span class="ym">'Yaş     : '</span> + yaş, <span class="ys">1</span>)
+  yaz(<span class="ym">'Boy     : '</span> + boy + <span class="ym">' m'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'Öğrenci : '</span> + öğrenci, <span class="ys">1</span>)
+  yaz(<span class="ym">'KDV'</span><span class="ym">'li fiyat: '</span> + fiyat * (<span class="ys">1</span> + KDV_ORANI), <span class="ys">1</span>)
+  yaz(<span class="ym">'Tipler: '</span> + Tür(yaş) + <span class="ym">', '</span> + Tür(boy) + <span class="ym">', '</span> + Tür(ad), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Ad      : Elif
+Yaş     : 21
+Boy     : 1.68 m
+Öğrenci : doğru
+KDV'li fiyat: 300.0
+Tipler: tamsayı, ondalık, metin</code></pre></div>
+<p>Dikkat edilecek noktalar şunlardır:</p>
+<ul>
+<li>Atama <code>:=</code> ile yapılır. Tek başına <code>=</code> karşılaştırmadır.</li>
+<li>Metinler tek tırnak arasında yazılır. Metnin içinde tırnak gerekiyorsa iki kez yazılır: <code>'KDV''li'</code>.</li>
+<li><code>+</code> işlecinin bir yanı metinse, diğer yanı da metne çevrilir. Bu yüzden <code>'Yaş: ' + yaş</code> çalışır.</li>
+</ul>
+<h3 id="temel-tipler">Temel tipler</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tip</th>
+<th>Örnek değer</th>
+<th>Varsayılan</th>
+<th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tamsayı</code></td>
+<td><code>42</code>, <code>-7</code>, <code>$FF</code></td>
+<td><code>0</code></td>
+<td>Tam sayılar, sınırsız büyüklükte</td>
+</tr>
+<tr class="even">
+<td><code>ondalık</code></td>
+<td><code>3.14</code>, <code>1e-3</code></td>
+<td><code>0.0</code></td>
+<td>Kesirli sayılar</td>
+</tr>
+<tr class="odd">
+<td><code>metin</code></td>
+<td><code>'Merhaba'</code></td>
+<td><code>''</code></td>
+<td>Yazılar; karakterler 1’den numaralanır</td>
+</tr>
+<tr class="even">
+<td><code>mantıksal</code></td>
+<td><code>doğru</code>, <code>yanlış</code></td>
+<td><code>yanlış</code></td>
+<td>Evet/hayır değerleri</td>
+</tr>
+<tr class="odd">
+<td><code>liste</code></td>
+<td><code>[1, 2, 3]</code></td>
+<td><code>[]</code></td>
+<td>Bölüm 7’de anlatılır</td>
+</tr>
+<tr class="even">
+<td><code>sözlük</code></td>
+<td><code>['a': 1]</code></td>
+<td><code>[:]</code></td>
+<td>Bölüm 7’de anlatılır</td>
+</tr>
+<tr class="odd">
+<td><code>herhangi</code></td>
+<td>her şey</td>
+<td><code>boş</code></td>
+<td>Tip denetimi yapılmaz</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Yöntem tipleri <strong>çalışma sırasında denetler</strong>. Yanlış tipte bir değer atarsanız program açık bir mesajla durur:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  n := <span class="ys">3.5</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Çalışma hatası [b3h.y, satır 3] 'n' için tip uyuşmazlığı: tamsayı bekleniyordu, ondalık verildi</code></pre></div>
+<p>Tipler arasında dönüşüm yapmak için tip adlarını fonksiyon gibi kullanabilirsiniz:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Dönüşümler
+<span class="ya">değişken</span>
+  s: <span class="ya">metin</span>
+  n: <span class="ya">tamsayı</span>
+  x: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  s := <span class="ym">'42'</span>
+  n := <span class="ya">tamsayı</span>(s) + <span class="ys">8</span>
+  x := <span class="ya">ondalık</span>(<span class="ym">'3,75'</span>)          <span class="yy">// virgül de kabul edilir</span>
+  yaz(n, <span class="ys">1</span>)
+  yaz(x * <span class="ys">2</span>, <span class="ys">1</span>)
+  yaz(<span class="ya">metin</span>(n) + <span class="ya">metin</span>(n), <span class="ys">1</span>)
+  yaz(Yuvarla(<span class="ys">3.6</span>) + <span class="ym">' '</span> + Kes(<span class="ys">3.6</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>50
+7.5
+5050
+4 3</code></pre></div>
+<h3 id="işleçler">İşleçler</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> İşleçler
+<span class="ya">başla</span>
+  yaz(<span class="ym">'17 + 5   = '</span> + (<span class="ys">17</span> + <span class="ys">5</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'17 / 5   = '</span> + (<span class="ys">17</span> / <span class="ys">5</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'17 böl 5 = '</span> + (<span class="ys">17</span> <span class="ya">böl</span> <span class="ys">5</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'17 mod 5 = '</span> + (<span class="ys">17</span> <span class="ya">mod</span> <span class="ys">5</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'2 ** 10  = '</span> + (<span class="ys">2</span> ** <span class="ys">10</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'(3 &gt; 2) ve (1 = 1) = '</span> + ((<span class="ys">3</span> &gt; <span class="ys">2</span>) <span class="ya">ve</span> (<span class="ys">1</span> = <span class="ys">1</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'değil doğru = '</span> + (<span class="ya">değil</span> <span class="ya">doğru</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'5 &gt; 3 ve 2 &gt; 8 = '</span> + (<span class="ys">5</span> &gt; <span class="ys">3</span> <span class="ya">ve</span> <span class="ys">2</span> &gt; <span class="ys">8</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>17 + 5   = 22
+17 / 5   = 3.4
+17 böl 5 = 3
+17 mod 5 = 2
+2 ** 10  = 1024
+(3 &gt; 2) ve (1 = 1) = doğru
+değil doğru = yanlış
+5 &gt; 3 ve 2 &gt; 8 = yanlış</code></pre></div>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>İşleç</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>+  -  *</code></td>
+<td>toplama, çıkarma, çarpma</td>
+</tr>
+<tr class="even">
+<td><code>/</code></td>
+<td>bölme; sonuç her zaman ondalık</td>
+</tr>
+<tr class="odd">
+<td><code>böl</code>, <code>mod</code></td>
+<td>tam sayı bölmesi ve kalan</td>
+</tr>
+<tr class="even">
+<td><code>**</code></td>
+<td>üs alma</td>
+</tr>
+<tr class="odd">
+<td><code>=  &lt;&gt;  &lt;  &gt;  &lt;=  &gt;=</code></td>
+<td>eşit, eşit değil, küçük, büyük…</td>
+</tr>
+<tr class="even">
+<td><code>ve</code>, <code>veya</code>, <code>yada</code>, <code>değil</code></td>
+<td>mantıksal işleçler</td>
+</tr>
+<tr class="odd">
+<td><code>+=  -=  *=  /=</code></td>
+<td>kısa atama: <code>x += 1</code> ≡ <code>x := x + 1</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>İpucu: Bir ifadeyi metnin içine koyarken paranteze almanız iyi olur. <code>'Toplam: ' + 2 + 3</code> önce <code>'Toplam: 2'</code> olur, sonuç da <code>'Toplam: 23'</code> çıkar. Doğrusu <code>'Toplam: ' + (2 + 3)</code> biçimidir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="03-bolum-1-program-yapisi.html"><small>Önceki</small>Bölüm 1 — Program yapısı</a><a class="sonraki" href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html"><small>Sonraki</small>Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#temel-tipler">Temel tipler</a></li><li><a href="#işleçler">İşleçler</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+Karar sınırı: 0.581·x + 0.536·y - 3.780 = 0
+Marj genişliği: 2/‖w‖ = 2.529
+Noktalar ve y·(w·x + b) değerleri:
+  (  1,   2) sınıf -1  →  2.126
+  (  2,   3) sınıf -1  →  1.008   ← destek vektörü
+  (  2,   1) sınıf -1  →  2.081
+  (  3,   2) sınıf -1  →  0.963   ← destek vektörü
+  (1.5, 1.5) sınıf -1  →  2.103
+  (  5,   5) sınıf  1  →  1.808
+  (  6,   4) sınıf  1  →  1.853
+  (  5,   6) sınıf  1  →  2.345
+  (  7,   5) sınıf  1  →  2.971
+  (  6, 6.5) sınıf  1  →  3.194
+  (4.5,   4) sınıf  1  →  0.981   ← destek vektörü
+Yeni nokta (3.5, 3.5) → sınıf +1

@@ -1,0 +1,6 @@
+Başlangıç : 1|0⟩
+X sonrası : 1|1⟩
+H sonrası : 0.7071|0⟩ - 0.7071|1⟩
+Olasılıklar: ['0': 0.5, '1': 0.5]
+
+100 ölçümde 1 çıkma sayısı: 50

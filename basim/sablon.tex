@@ -1,0 +1,178 @@
+% Yöntem kitap dizgi şablonu — LuaLaTeX + memoir
+\documentclass[10.5pt,twoside,openright]{memoir}
+
+%%%% Sayfa: 17 × 24 cm (kitap boyu) ------------------------------------------
+\setstocksize{24cm}{17cm}
+\settrimmedsize{\stockheight}{\stockwidth}{*}
+\settypeblocksize{19.2cm}{12.6cm}{*}
+\setlrmargins{1.95cm}{*}{*}          % iç (cilt) kenar boşluğu
+\setulmargins{2.25cm}{*}{*}
+\setheadfoot{\onelineskip}{2\onelineskip}
+\setheaderspaces{*}{1.6\onelineskip}{*}
+\checkandfixthelayout
+
+%%%% Dil ve yazı tipleri --------------------------------------------------------
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\usepackage[sc]{mathpazo}             % Palatino matematik
+\usepackage[no-math]{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{turkish}
+\setmainfont{TeX Gyre Pagella}[
+  Ligatures=TeX, Numbers=OldStyle]
+\newfontfamily\aralikli{TeX Gyre Pagella}[LetterSpace=14, Numbers=Lining]
+\newfontfamily\duzrakam{TeX Gyre Pagella}[Numbers=Lining]
+\setmonofont{DejaVu Sans Mono}[Scale=0.83]
+\usepackage{microtype}
+\usepackage{newunicodechar}
+\newunicodechar{^^^^00ad}{\-}
+\newunicodechar{⁰}{\textsuperscript{0}}\newunicodechar{⁴}{\textsuperscript{4}}\newunicodechar{⁵}{\textsuperscript{5}}\newunicodechar{⁶}{\textsuperscript{6}}\newunicodechar{⁷}{\textsuperscript{7}}\newunicodechar{⁸}{\textsuperscript{8}}\newunicodechar{⁹}{\textsuperscript{9}}\newunicodechar{ˣ}{\textsuperscript{x}}
+\linespread{1.06}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\frenchspacing
+\clubpenalty=10000 \widowpenalty=10000
+\tolerance=1500 \emergencystretch=1.2em
+
+%%%% Renk, kutular, kod ---------------------------------------------------------
+\usepackage[dvipsnames]{xcolor}
+\definecolor{murekkep}{HTML}{1C2B3F}
+\definecolor{yorum}{HTML}{6E6A62}
+\definecolor{metinrenk}{HTML}{7A2E14}
+\definecolor{zemin}{HTML}{F5F2EA}
+\definecolor{cizgi}{HTML}{B9AE98}
+\usepackage{fvextra}
+\fvset{fontsize=\fontsize{7.9}{10.1}\selectfont, breaklines=true, breakindent=1.5em,
+  breaksymbolleft={\tiny\color{cizgi}\ensuremath{\hookrightarrow}}, tabsize=2}
+\newcommand{\yBS}{\textbackslash}
+\newcommand{\yLB}{\{}
+\newcommand{\yRB}{\}}
+\newcommand{\yAnahtar}[1]{\textbf{\color{murekkep}#1}}
+\newcommand{\yYorum}[1]{{\color{yorum}\itshape #1}}
+\newcommand{\yMetin}[1]{{\color{metinrenk}#1}}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{yprogram}{breakable, enhanced, colback=zemin, colframe=zemin, boxrule=0pt,
+  arc=0pt, outer arc=0pt, left=9pt, right=6pt, top=5pt, bottom=5pt,
+  borderline west={1.6pt}{0pt}{cizgi}, before skip=0.8\baselineskip, after skip=0.8\baselineskip}
+\newtcolorbox{ycikti}{breakable, enhanced, colback=white, colframe=cizgi, boxrule=0.4pt,
+  arc=0pt, outer arc=0pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=0.6\baselineskip, after skip=0.9\baselineskip}
+\AtBeginEnvironment{ycikti}{\fvset{fontsize=\fontsize{7.6}{9.6}\selectfont}}
+\newfontfamily\satirici{DejaVu Sans Mono}[Scale=0.86]
+\renewcommand{\texttt}[1]{{\satirici #1}}
+
+%%%% Tablolar ve listeler --------------------------------------------------------
+\usepackage{longtable,booktabs,array,calc}
+\setlength{\LTpre}{0.8\baselineskip}\setlength{\LTpost}{0.8\baselineskip}
+\AtBeginEnvironment{longtable}{\small\duzrakam\renewcommand{\arraystretch}{1.25}}
+\providecommand{\tightlist}{\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}}
+\usepackage{enumitem}
+\setlist{leftmargin=1.6em, topsep=0.4\baselineskip, itemsep=1pt}
+\setlist[itemize]{label=\textbullet}
+
+%%%% Bölüm ve kesim başlıkları ----------------------------------------------------
+\renewcommand{\chaptername}{Bölüm}
+\renewcommand{\appendixname}{Ek}
+\makeatletter
+\makechapterstyle{yontem}{%
+  \renewcommand{\chapterheadstart}{\vspace*{0.11\textheight}}
+  \renewcommand{\printchaptername}{%
+    \centering\normalfont\small{\aralikli \MakeUppercase{\@chapapp}}}
+  \renewcommand{\chapternamenum}{\par\vspace{0.6\baselineskip}}
+  \renewcommand{\printchapternum}{\centering\normalfont\fontsize{38}{38}\selectfont\thechapter}
+  \renewcommand{\afterchapternum}{\par\vspace{0.9\baselineskip}%
+    {\centering\color{cizgi}\rule{2.4cm}{0.5pt}\par}\vspace{0.9\baselineskip}}
+  \renewcommand{\printchapternonum}{\vspace*{3.2\baselineskip}}
+  \renewcommand{\printchaptertitle}[1]{%
+    \centering\normalfont\LARGE\itshape ##1\par\vspace{0.5\baselineskip}%
+    {\centering\color{cizgi}\rule{2.4cm}{0.5pt}\par}}
+  \renewcommand{\afterchaptertitle}{\vspace{2.6\baselineskip}}}
+\chapterstyle{yontem}
+% Numarasız bölümlerde başlığın üstündeki çizgi tekrarlanmasın
+\makeatother
+\setsecheadstyle{\large\normalfont\bfseries\raggedright}
+\setbeforesecskip{-1.7\baselineskip plus -0.4\baselineskip minus -0.2\baselineskip}
+\setaftersecskip{0.8\baselineskip}
+\setsubsecheadstyle{\normalsize\normalfont\itshape\raggedright}
+\maxsecnumdepth{chapter}\setsecnumdepth{chapter}
+\settocdepth{section}
+\renewcommand{\cftchapterfont}{\normalfont}
+\renewcommand{\cftchapterpagefont}{\normalfont}
+\setlength{\cftbeforechapterskip}{0.9em}
+\renewcommand{\cftsectionfont}{\normalfont\small}
+\renewcommand{\cftsectionpagefont}{\normalfont\small}
+\renewcommand{\cftchapterdotsep}{\cftdotsep}
+
+%%%% Sayfa başlıkları ------------------------------------------------------------
+\makepagestyle{yontem}
+\makeevenhead{yontem}{\small\thepage}{}{\small\itshape \kisabaslik}
+\makeoddhead{yontem}{\small\itshape \leftmark}{}{\small\thepage}
+\makepsmarks{yontem}{%
+  \createmark{chapter}{left}{nonumber}{}{}
+  \createmark{section}{right}{nonumber}{}{}}
+\pagestyle{yontem}
+\nouppercaseheads
+\copypagestyle{chapter}{plain}
+\makeoddfoot{plain}{}{\small\thepage}{}
+\makeevenfoot{plain}{}{\small\thepage}{}
+\aliaspagestyle{cleared}{empty}
+
+%%%% Şekiller
+\usepackage{graphicx}
+\setkeys{Gin}{keepaspectratio}
+\captionnamefont{\small\bfseries}
+\captiontitlefont{\small\itshape}
+\captiondelim{.\enspace}
+\setlength{\abovecaptionskip}{0.6\baselineskip}
+
+%%%% Bağlantılar -----------------------------------------------------------------
+\usepackage[hidelinks,unicode,pdfusetitle]{hyperref}
+\hypersetup{pdftitle={$title$$if(subtitle)$: $subtitle$$endif$}, pdfauthor={$author$}, pdflang={tr-TR}}
+
+\newcommand{\kisabaslik}{$kisa$}
+
+\begin{document}
+\frontmatter
+%%%% Yarım başlık
+\thispagestyle{empty}
+\vspace*{0.28\textheight}
+\begin{center}\LARGE\itshape $title$\end{center}
+\cleardoublepage
+%%%% Başlık sayfası
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.06\textheight}
+{\large{\aralikli \MakeUppercase{$author$}}\par}
+\vspace{0.2\textheight}
+{\fontsize{27}{33}\selectfont $title$\par}
+$if(subtitle)$
+\vspace{1.1\baselineskip}
+{\Large\itshape $subtitle$\par}
+$endif$
+\vspace{1.4\baselineskip}
+{\color{cizgi}\rule{3cm}{0.5pt}\par}
+\vfill
+{\small{\aralikli BİRİNCİ BASKI}\par\vspace{0.3\baselineskip}\small\duzrakam 2026\par}
+\end{center}
+\newpage
+%%%% Künye
+\thispagestyle{empty}
+\vspace*{\fill}
+{\footnotesize\setlength{\parindent}{0pt}\setlength{\parskip}{0.55\baselineskip}\raggedright
+\textit{$title$$if(subtitle)$: $subtitle$$endif$}\\
+$author$
+
+Telif hakkı {\duzrakam © 2026} Önder Örnek.
+
+Bu eser Creative Commons Atıf 4.0 Uluslararası Lisansı (CC~BY~4.0) ile lisanslanmıştır. Yazarın adı belirtilerek, lisansa bağlantı verilerek ve yapılan değişiklikler gösterilerek ticari amaçlar dahil her ortamda ve biçimde kopyalanabilir, dağıtılabilir ve uyarlanabilir. Lisans metni: \url{https://creativecommons.org/licenses/by/4.0/deed.tr}
+
+Eserdeki örnek programlar MIT lisansıyla kullanılabilir. Yöntem yazılımı da MIT lisanslıdır.
+
+Birinci baskı: {\duzrakam Kasım 2026}
+
+Dizgi: Metin TeX Gyre Pagella, program kodları DejaVu Sans Mono yazı tipiyle, XeLaTeX kullanılarak dizilmiştir.\par}
+\cleardoublepage
+\tableofcontents*
+\cleardoublepage
+$body$
+\end{document}

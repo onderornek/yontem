@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. Üç katmanlı bir uygulama · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html" aria-current="page">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 10 / 12</p>
+    <h2 id="üç-katmanlı-bir-uygulama">9. Üç katmanlı bir uygulama</h2>
+<p><code>Sunucu</code> ve <code>Veritabanı</code> ile klasik üç katmanlı yapı Yöntem’in birimleriyle doğrudan kurulur: her katman ayrı bir dosyadır ve yalnızca bir altındakini <code>kullan</code> ile görür.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Katman</th>
+<th>Dosya</th>
+<th>Bildiği</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunum</td>
+<td><code>10_uc_katman.y</code> (program)</td>
+<td>HTTP: yollar, JSON, durum kodları</td>
+</tr>
+<tr class="even">
+<td>İş</td>
+<td><code>UrunIsleri.y</code> (birim)</td>
+<td>Kurallar: ad, fiyat ve stok denetimi</td>
+</tr>
+<tr class="odd">
+<td>Depolama</td>
+<td><code>UrunDeposu.y</code> (birim)</td>
+<td>SQL: tablo ve sorgular</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Depolama katmanı yalnızca SQL içerir. <code>arayüz</code> bölümü üst katmana ne sunduğunu söyler; <code>vt</code> değişkeni <code>uygulama</code> bölümünde olduğu için dışarıdan görünmez:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> ÜrünDeposu
+<span class="yy">{ Depolama katmanı: yalnızca SQL bilir. Kural da ekran da içermez.
+  Başka bir veritabanına geçmek için Aç'a verilen adresi değiştirmek yeter. }</span>
+<span class="ya">kullan</span> Veritabanı
+
+<span class="ya">arayüz</span>
+  <span class="ya">prosedür</span> Aç(adres: <span class="ya">metin</span>)
+  <span class="ya">fonksiyon</span> Hepsi: <span class="ya">liste</span>
+  <span class="ya">fonksiyon</span> Bul(no: <span class="ya">tamsayı</span>): <span class="ya">herhangi</span>
+  <span class="ya">fonksiyon</span> AdVarMı(ad: <span class="ya">metin</span>): <span class="ya">mantıksal</span>
+  <span class="ya">fonksiyon</span> Ekle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+  <span class="ya">prosedür</span> AdetDeğiştir(no, fark: <span class="ya">tamsayı</span>)
+
+<span class="ya">uygulama</span>
+
+<span class="ya">değişken</span>
+  vt: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Aç(adres: <span class="ya">metin</span>)
+<span class="ya">başla</span>
+  vt := Bağlan(adres)
+  vt.Çalıştır(<span class="ym">'CREATE TABLE IF NOT EXISTS urun (no INTEGER PRIMARY KEY, ad TEXT NOT NULL UNIQUE, fiyat REAL NOT NULL, adet INTEGER NOT NULL)'</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hepsi: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.Sorgula(<span class="ym">'SELECT no, ad, fiyat, adet FROM urun ORDER BY no'</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Bul(no: <span class="ya">tamsayı</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.TekSatır(<span class="ym">'SELECT no, ad, fiyat, adet FROM urun WHERE no = ?'</span>, [no])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> AdVarMı(ad: <span class="ya">metin</span>): <span class="ya">mantıksal</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> vt.TekDeğer(<span class="ym">'SELECT COUNT(*) FROM urun WHERE ad = ?'</span>, [ad]) &gt; <span class="ys">0</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Ekle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  vt.Çalıştır(<span class="ym">'INSERT INTO urun (ad, fiyat, adet) VALUES (?, ?, ?)'</span>, [ad, fiyat, adet])
+  <span class="ya">dön</span> vt.SonKimlik
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> AdetDeğiştir(no, fark: <span class="ya">tamsayı</span>)
+<span class="ya">başla</span>
+  vt.Çalıştır(<span class="ym">'UPDATE urun SET adet = adet + ? WHERE no = ?'</span>, [fark, no])
+<span class="ya">bitir</span>
+
+<span class="ya">bitir</span>.</code></pre></div>
+<p>İş katmanı kuralları uygular. HTTP durum kodu da SQL de bilmez; kural çiğnenince türü belli bir hata fırlatır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> Ürünİşleri
+<span class="yy">{ İş katmanı: kurallar burada. HTTP'yi de SQL'i de bilmez; depolama katmanını çağırır,
+  kural çiğnenirse açıklayıcı bir hata fırlatır. }</span>
+<span class="ya">kullan</span> ÜrünDeposu
+
+<span class="ya">arayüz</span>
+  <span class="ya">fonksiyon</span> ÜrünListesi: <span class="ya">liste</span>
+  <span class="ya">fonksiyon</span> ÜrünEkle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+  <span class="ya">fonksiyon</span> Sat(no, adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+  <span class="ya">fonksiyon</span> StokDeğeri: <span class="ya">ondalık</span>
+
+<span class="ya">uygulama</span>
+
+<span class="ya">fonksiyon</span> ÜrünListesi: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> Hepsi
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> ÜrünEkle(ad: <span class="ya">metin</span>; fiyat: <span class="ya">ondalık</span>; adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+<span class="ya">değişken</span> temiz: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  temiz := Kırp(ad)
+  <span class="ya">eğer</span> Uzunluk(temiz) &lt; <span class="ys">2</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Ürün adı en az 2 harf olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> fiyat &lt;= <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Fiyat sıfırdan büyük olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> adet &lt; <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Adet eksi olamaz'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> AdVarMı(temiz) <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Bu adda bir ürün zaten var: '</span> + temiz, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">dön</span> Bul(Ekle(temiz, fiyat, adet))
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Sat(no, adet: <span class="ya">tamsayı</span>): <span class="ya">sözlük</span>
+<span class="ya">değişken</span> ürün: <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  ürün := Bul(no)
+  <span class="ya">eğer</span> ürün = <span class="ya">boş</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Böyle bir ürün yok'</span>, <span class="ym">'BulunamadıHatası'</span>)
+  <span class="ya">eğer</span> adet &lt; <span class="ys">1</span> <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Satış adedi en az 1 olmalı'</span>, <span class="ym">'KuralHatası'</span>)
+  <span class="ya">eğer</span> ürün[<span class="ym">'adet'</span>] &lt; adet <span class="ya">ise</span> <span class="ya">fırlat</span> Hata(<span class="ym">'Stok yetersiz: '</span> + ürün[<span class="ym">'adet'</span>] + <span class="ym">' adet var'</span>, <span class="ym">'KuralHatası'</span>)
+  AdetDeğiştir(no, -adet)
+  <span class="ya">dön</span> [<span class="ym">'ürün'</span>: ürün[<span class="ym">'ad'</span>], <span class="ym">'adet'</span>: adet, <span class="ym">'tutar'</span>: ürün[<span class="ym">'fiyat'</span>] * adet, <span class="ym">'kalan'</span>: ürün[<span class="ym">'adet'</span>] - adet]
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> StokDeğeri: <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  toplam: <span class="ya">ondalık</span>
+  ü: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  toplam := <span class="ys">0</span>
+  Hepsi <span class="ya">içindeki</span> <span class="ya">her</span> ü <span class="ya">için</span> toplam := toplam + ü[<span class="ym">'fiyat'</span>] * ü[<span class="ym">'adet'</span>]
+  <span class="ya">dön</span> toplam
+<span class="ya">bitir</span>
+
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Sunum katmanı isteği iş katmanının çağrısına, iş katmanının hatasını da durum koduna çevirir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÜçKatman
+<span class="yy">{ Sunum katmanı: HTTP isteklerini iş katmanına çevirir, sonucu JSON olarak döndürür.
+  Kural bilmez, SQL bilmez; yalnızca Ürünİşleri birimini kullanır.
+  Sunucu olarak çalıştırmak için:  yontem 10_uc_katman.y dinle }</span>
+<span class="ya">kullan</span> Sunucu, Veri, Sistem, Ürünİşleri, ÜrünDeposu
+
+<span class="ya">değişken</span>
+  y: <span class="ya">sözlük</span>
+
+<span class="yy">{ İş katmanının hatalarını HTTP durum kodlarına çevirir }</span>
+<span class="ya">fonksiyon</span> HataYanıtı(h: <span class="ya">herhangi</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> h.tür = <span class="ym">'KuralHatası'</span> <span class="ya">ise</span> <span class="ya">dön</span> JsonYanıt([<span class="ym">'hata'</span>: h.mesaj], <span class="ys">400</span>)
+  <span class="ya">eğer</span> h.tür = <span class="ym">'BulunamadıHatası'</span> <span class="ya">ise</span> <span class="ya">dön</span> JsonYanıt([<span class="ym">'hata'</span>: h.mesaj], <span class="ys">404</span>)
+  <span class="ya">fırlat</span> h
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Listele(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> JsonYanıt([<span class="ym">'ürünler'</span>: ÜrünListesi, <span class="ym">'stokDeğeri'</span>: StokDeğeri])
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> YeniÜrün(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">değişken</span> v: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    v := JSONÇöz(istek[<span class="ym">'gövde'</span>])
+    <span class="ya">dön</span> JsonYanıt(ÜrünEkle(v[<span class="ym">'ad'</span>], v[<span class="ym">'fiyat'</span>], v[<span class="ym">'adet'</span>]), <span class="ys">201</span>)
+  <span class="ya">yakala</span> (h)
+    <span class="ya">dön</span> HataYanıtı(h)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Satış(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    <span class="ya">dön</span> JsonYanıt(Sat(Tamsayı(istek[<span class="ym">'parametreler'</span>][<span class="ym">'no'</span>]), Tamsayı(istek[<span class="ym">'sorgu'</span>].Al(<span class="ym">'adet'</span>, <span class="ym">'1'</span>))))
+  <span class="ya">yakala</span> (h)
+    <span class="ya">dön</span> HataYanıtı(h)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Göster(başlık: <span class="ya">metin</span>; y: <span class="ya">sözlük</span>)
+<span class="ya">başla</span>
+  yaz(başlık + <span class="ym">' → '</span> + y[<span class="ym">'durum'</span>] + <span class="ym">' '</span> + y[<span class="ym">'gövde'</span>], <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Yol(<span class="ym">'GET'</span>, <span class="ym">'/urunler'</span>, Listele)
+  Yol(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, YeniÜrün)
+  Yol(<span class="ym">'POST'</span>, <span class="ym">'/urunler/:no/sat'</span>, Satış)
+
+  <span class="ya">eğer</span> Uzunluk(Argümanlar) &gt; <span class="ys">0</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Aç(<span class="ym">'sqlite:magaza.db'</span>)
+    Dinle(<span class="ys">8080</span>)
+    <span class="ya">dön</span>
+  <span class="ya">bitir</span>
+
+  <span class="yy">{ Argümansız çalıştırınca: bellekteki veritabanıyla, ağ olmadan bir tur }</span>
+  Aç(<span class="ym">'sqlite::bellek:'</span>)
+  Göster(<span class="ym">'ekle'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 40}'</span>))
+  Göster(<span class="ym">'ekle'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot; kalem &quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}'</span>))
+  Göster(<span class="ym">'aynı ad'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 1.0, &quot;adet&quot;: 1}'</span>))
+  Göster(<span class="ym">'kötü fiyat'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler'</span>, <span class="ym">'{&quot;ad&quot;: &quot;silgi&quot;, &quot;fiyat&quot;: 0.0, &quot;adet&quot;: 1}'</span>))
+  Göster(<span class="ym">'sat'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/1/sat?adet=4'</span>))
+  Göster(<span class="ym">'stok yetersiz'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/2/sat?adet=5'</span>))
+  Göster(<span class="ym">'ürün yok'</span>, İstekİşle(<span class="ym">'POST'</span>, <span class="ym">'/urunler/9/sat'</span>))
+  Göster(<span class="ym">'liste'</span>, İstekİşle(<span class="ym">'GET'</span>, <span class="ym">'/urunler'</span>))
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ekle → 201 {&quot;no&quot;: 1, &quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 40}
+ekle → 201 {&quot;no&quot;: 2, &quot;ad&quot;: &quot;kalem&quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}
+aynı ad → 400 {&quot;hata&quot;: &quot;Bu adda bir ürün zaten var: defter&quot;}
+kötü fiyat → 400 {&quot;hata&quot;: &quot;Fiyat sıfırdan büyük olmalı&quot;}
+sat → 200 {&quot;ürün&quot;: &quot;defter&quot;, &quot;adet&quot;: 4, &quot;tutar&quot;: 50.0, &quot;kalan&quot;: 36}
+stok yetersiz → 400 {&quot;hata&quot;: &quot;Stok yetersiz: 3 adet var&quot;}
+ürün yok → 404 {&quot;hata&quot;: &quot;Böyle bir ürün yok&quot;}
+liste → 200 {&quot;ürünler&quot;: [{&quot;no&quot;: 1, &quot;ad&quot;: &quot;defter&quot;, &quot;fiyat&quot;: 12.5, &quot;adet&quot;: 36}, {&quot;no&quot;: 2, &quot;ad&quot;: &quot;kalem&quot;, &quot;fiyat&quot;: 4.0, &quot;adet&quot;: 3}], &quot;stokDeğeri&quot;: 462.0}</code></pre></div>
+<p>Bu ayrımın kazandırdıkları şunlardır:</p>
+<ul>
+<li><strong>Veritabanını değiştirmek</strong> tek satırdır: <code>Aç('sqlite:magaza.db')</code> yerine <code>Aç('postgres://…')</code> yazmak yeterlidir. İş ve sunum katmanları değişmez.</li>
+<li><strong>Arayüzü değiştirmek</strong> iş kurallarına dokunmaz: aynı <code>Ürünİşleri</code> birimini bir <code>Pencere</code> programı ya da komut satırı aracı da kullanabilir.</li>
+<li><strong>Test etmek</strong> kolaydır: bellekteki veritabanı ve <code>İstekİşle</code> ile bütün uygulama ağ ve dosya olmadan, <code>yontem test</code> içinde sınanır. Yukarıdaki çıktı böyle üretilmiştir.</li>
+</ul>
+<p>Katman sınırını dil zorlamaz: sunum katmanının <code>kullan ÜrünDeposu</code> yazıp doğrudan sorgu çalıştırmasını engelleyen bir şey yoktur (örnekte yalnızca veritabanını açmak için kullanılıyor). Sınırı korumak, her birimin <code>arayüz</code> bölümünü küçük tutmakla başlar.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="09-8-sunucu-web-servisleri.html"><small>Önceki</small>8. Sunucu: web servisleri</a><a class="sonraki" href="11-10-araclar.html"><small>Sonraki</small>10. Araçlar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

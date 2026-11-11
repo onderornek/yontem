@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 10 — Küçükten büyüğe · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html" aria-current="page">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 11 / 14</p>
+    <h2 id="bölüm-10-küçükten-büyüğe">Bölüm 10 — Küçükten büyüğe</h2>
+<p>Küçük GPT’miz ile günümüzün sohbet modelleri aynı aileden gelir. İkisi de simgeleri sayılara çevirir, gömmelere dönüştürür, üst üste yığılmış Transformer bloklarından geçirir ve bir sonraki simgenin olasılığını hesaplar. Bu son bölümde aradaki farkı üç başlıkta inceliyoruz: <strong>ölçek</strong>, <strong>veri</strong> ve <strong>eğitimin aşamaları</strong>.</p>
+<h3 id="parametreleri-saymak">Parametreleri saymak</h3>
+<p>Bir Transformer’ın parametre sayısı birkaç sayıdan hesaplanır: sözlük boyu V, bağlam uzunluğu T, model boyutu D ve katman sayısı L. Parametrelerin büyük kısmı katmanlardaki matrislerdedir ve D’nin karesiyle büyür: her katmanda dikkat için yaklaşık 4·D², ileri besleme için 8·D² parametre vardır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≈</mo><mi>L</mi><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>12</mn><msup><mi>D</mi><mn>2</mn></msup><mo>+</mo><mn>13</mn><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>V</mi><mi>D</mi><mo>+</mo><mi>T</mi><mi>D</mi><mo>+</mo><mn>2</mn><mi>D</mi></mrow><annotation encoding="application/x-tex">N \approx L \,(12 D^2 + 13 D) + V D + T D + 2 D</annotation></semantics></math></p>
+<p>Eğitimin ne kadar hesap gerektirdiği için de yaygın bir kestirim vardır: işlenen her simge başına yaklaşık 6·N kayan noktalı işlem. Bunun 2·N’si ileri hesaptan, 4·N’si geri yayılımdan gelir. Program bu iki formülü GPT-2 ailesine ve kendi modelimize uygular.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Ölçekleme
+<span class="yy">{ Küçük GPT'mizle büyük modeller arasındaki fark mimaride değil, sayılardadır.
+  Bu program GPT-2 ailesinin parametre sayılarını aynı formülle hesaplar ve
+  eğitim için gereken hesap miktarını kabaca tahmin eder.
+
+  Bir GPT-2 katmanının parametreleri (D: boyut):
+     dikkat         : 4·D·D + 4·D        (Q, K, V ve çıkış matrisleri, sapmalarıyla)
+     ileri besleme  : 8·D·D + 5·D        (D → 4D → D, sapmalarıyla)
+     normalleştirme : 4·D                (iki katman normalleştirme)
+  Bunlara karakter/simge gömmesi (V·D), konum gömmesi (T·D) ve son normalleştirme (2·D)
+  eklenir. GPT-2, çıkış katmanında gömme matrisini yeniden kullanır; bu yüzden ayrı
+  bir çıkış matrisi yoktur.
+  Eğitim hesabı için yaygın bir kestirim: işlenen her simge başına 6·N kayan nokta işlemi
+  (N: parametre sayısı; 2·N ileri, 4·N geri yayılım). }</span>
+
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  adlar: <span class="ya">metin</span> dizisi
+  boyutlar, katmanlar: <span class="ya">tamsayı</span> dizisi
+  i: <span class="ya">tamsayı</span>
+  N, simge: <span class="ya">ondalık</span>
+
+<span class="ya">fonksiyon</span> ParametreSayısı(V, T, D, L: <span class="ya">tamsayı</span>): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> L * (<span class="ys">12.0</span> * D * D + <span class="ys">13.0</span> * D) + V * D + T * D + <span class="ys">2.0</span> * D
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Bilimsel(x: <span class="ya">ondalık</span>): <span class="ya">metin</span>
+<span class="yy">{ 63770112000 → '6.4 × 10^10' }</span>
+<span class="ya">değişken</span> üs: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  üs := Kes(Ln(x) / Ln(<span class="ys">10</span>))
+  <span class="ya">dön</span> Biçimle(<span class="ym">'{:.1} × 10^{}'</span>, x / (<span class="ys">10.0</span> ** üs), üs)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Sola(s: <span class="ya">metin</span>; n: <span class="ya">tamsayı</span>): <span class="ya">metin</span>
+<span class="ya">başla</span>
+  sonuç := s
+  Uzunluk(sonuç) &lt; n <span class="ya">iken</span> sonuç := sonuç + <span class="ym">' '</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  adlar := [<span class="ym">'GPT-2 küçük'</span>, <span class="ym">'GPT-2 orta'</span>, <span class="ym">'GPT-2 büyük'</span>, <span class="ym">'GPT-2 XL'</span>]
+  boyutlar := [<span class="ys">768</span>, <span class="ys">1024</span>, <span class="ys">1280</span>, <span class="ys">1600</span>]
+  katmanlar := [<span class="ys">12</span>, <span class="ys">24</span>, <span class="ys">36</span>, <span class="ys">48</span>]
+  yaz(<span class="ym">'Model           boyut  katman   parametre'</span>, <span class="ys">1</span>)
+  <span class="ys">0</span>'dan <span class="ys">3</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    yaz(Sola(adlar[i], <span class="ys">14</span>) + Biçimle(<span class="ym">'  {:5}  {:6}  {:10.1} milyon'</span>, boyutlar[i], katmanlar[i],
+      ParametreSayısı(<span class="ys">50257</span>, <span class="ys">1024</span>, boyutlar[i], katmanlar[i]) / <span class="ys">1000000</span>), <span class="ys">1</span>)
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+  N := <span class="ys">27678</span>
+  simge := <span class="ys">3000.0</span> * <span class="ys">8</span> * <span class="ys">16</span>
+  yaz(Biçimle(<span class="ym">'Küçük GPT: {:.0} parametre, eğitimde {:.0} karakter işlendi'</span>, N, simge), <span class="ys">1</span>)
+  yaz(<span class="ym">'  eğitim hesabı ≈ 6 · N · simge = '</span> + Bilimsel(<span class="ys">6</span> * N * simge) + <span class="ym">' işlem'</span>, <span class="ys">1</span>)
+  N := ParametreSayısı(<span class="ys">50257</span>, <span class="ys">1024</span>, <span class="ys">768</span>, <span class="ys">12</span>)
+  simge := <span class="ys">20</span> * N
+  yaz(<span class="ym">'GPT-2 küçük, parametre başına 20 simgeyle eğitilseydi:'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'  '</span> + Bilimsel(simge) + <span class="ym">' simge, '</span> + Bilimsel(<span class="ys">6</span> * N * simge) + <span class="ym">' işlem'</span>, <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'  Küçük GPT modelinden {:.0} kat fazla hesap'</span>, (<span class="ys">6</span> * N * simge) / (<span class="ys">6</span> * <span class="ys">27678</span> * <span class="ys">3000.0</span> * <span class="ys">8</span> * <span class="ys">16</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Model           boyut  katman   parametre
+GPT-2 küçük       768      12       124.4 milyon
+GPT-2 orta       1024      24       354.8 milyon
+GPT-2 büyük      1280      36       774.0 milyon
+GPT-2 XL         1600      48      1557.6 milyon
+
+Küçük GPT: 27678 parametre, eğitimde 384000 karakter işlendi
+  eğitim hesabı ≈ 6 · N · simge = 6.4 × 10^10 işlem
+GPT-2 küçük, parametre başına 20 simgeyle eğitilseydi:
+  2.5 × 10^9 simge, 1.9 × 10^18 işlem
+  Küçük GPT modelinden 29139543 kat fazla hesap</code></pre></div>
+<h3 id="çıktıyı-okumak-6">Çıktıyı okumak</h3>
+<p><strong>Formül gerçeği tutturuyor.</strong> OpenAI’ın 2019’da yayımladığı GPT-2 modelleri 124 milyon, 355 milyon, 774 milyon ve 1,5 milyar parametreyle bilinir. Bizim tek satırlık formülümüz bu sayıları neredeyse birebir veriyor. Demek ki “büyük model” dediğimiz şey, Küçük GPT ile aynı tarifin daha büyük D ve L değerleriyle uygulanmasıdır. Küçük GPT’de D = 32 ve L = 2 idi; GPT-2 küçükte ise D = 768 ve L = 12’dir.</p>
+<p><strong>Hesap farkı akıl almaz boyuttadır.</strong> Küçük GPT’nin eğitimi yaklaşık 6,4 × 10¹⁰ işlem sürdü; bir dizüstü bilgisayar bunu saniyeler içinde yapar. 2022’de DeepMind’ın “Chinchilla” çalışması, belirli bir hesap bütçesiyle en iyi sonucu almak için parametre başına kabaca 20 simgeyle eğitmeyi önerdi. Bu kurala uyulsaydı GPT-2 küçük bile bizim modelimizden yaklaşık 29 milyon kat fazla hesap isterdi. Günümüzün öncü modelleri ise yüzlerce milyar parametreye ve trilyonlarca simgeye çıkar. Bu ölçekte eğitim binlerce grafik işlemcisinin haftalarca birlikte çalışmasıyla yapılır.</p>
+<p><strong>Ölçekleme yasaları.</strong> 2020’de Kaplan ve arkadaşlarının yayımladığı bir çalışma, dil modellerinin kaybının parametre sayısı, veri miktarı ve hesapla çok düzenli biçimde azaldığını gösterdi: kayıp bu üçünün üslü bir fonksiyonu gibi davranıyor. Bu bulgu, “model ve veriyi büyütürsek daha iyi olur” sezgisini ölçülebilir bir tahmine dönüştürdü ve son yılların büyüme yarışının temelini attı. 8. bölümde gördüğümüz “model ezberliyor ama genelleyemiyor” sorunu da bu çerçevede anlaşılır: 27 bin parametreye karşı yalnızca 4,7 bin karakterlik veri, Chinchilla oranının çok gerisindedir.</p>
+<h3 id="ön-eğitim-ince-ayar-ve-sohbet-modelleri">Ön eğitim, ince ayar ve sohbet modelleri</h3>
+<p>Bir sohbet asistanı tek bir eğitimle oluşmaz. Genellikle üç aşama vardır.</p>
+<ol type="1">
+<li><strong>Ön eğitim.</strong> Model, internetten, kitaplardan ve kod depolarından derlenmiş çok büyük bir metin yığını üzerinde, tam olarak bu kitaptaki görevle eğitilir: bir sonraki simgeyi tahmin etmek. Hesabın büyük çoğunluğu bu aşamada harcanır. Sonuç, dili ve dünyaya dair pek çok bilgiyi öğrenmiş ama yalnızca “metni sürdürmeyi” bilen bir modeldir. Bir soru sorarsanız cevap vermek yerine başka sorular yazmayı sürdürebilir.</li>
+<li><strong>Denetimli ince ayar.</strong> Ardından model, insanların hazırladığı çok daha küçük bir “soru → iyi cevap” örnekleri kümesiyle eğitilmeye devam eder. Kayıp aynıdır, mimari aynıdır; değişen yalnızca veridir. Model böylece bir konuşmanın biçimini öğrenir: kullanıcı sorar, asistan cevap verir.</li>
+<li><strong>Tercihlerden öğrenme.</strong> Son aşamada model, aynı soruya verdiği farklı cevapların hangisinin daha yararlı, dürüst ve zararsız olduğuna dair geri bildirimle eğitilir. Bu geri bildirim insanlardan (“insan geri bildirimiyle pekiştirmeli öğrenme”, RLHF) ya da yazılı ilkelere göre değerlendirme yapan başka modellerden gelebilir. Bu aşama, modelin neyi nasıl söylediğini şekillendirir.</li>
+</ol>
+<p>Küçük GPT’ye ikinci aşamayı uygulamak için yeni bir şey öğrenmeniz gerekmez. Aşağıdaki alıştırma bunu yaptırıyor.</p>
+<h3 id="bu-kitaptan-sonra">Bu kitaptan sonra</h3>
+<ul>
+<li><strong>Simge düzeyine geçebilirsiniz.</strong> Modelimiz harf harf çalıştı. 2. bölümdeki BPE simgeleştiricisini Küçük GPT’ye bağlarsanız her adımda daha fazla metin görür ve aynı bağlam uzunluğuyla daha uzağı hatırlar.</li>
+<li><strong>Daha fazla veri toplayabilirsiniz.</strong> Bu kitabın en önemli dersi, aynı mimarinin daha fazla veriyle çok daha iyi sonuç verdiğidir. Telif sorunu olmayan Türkçe metinler (eski edebiyat eserleri, kendi yazılarınız) iyi bir başlangıçtır.</li>
+<li><strong>Büyük kütüphanelere geçebilirsiniz.</strong> Gerçek ölçekte çalışmak için grafik işlemcisinde çalışan PyTorch gibi kütüphaneler gerekir. Bu kitaptaki her kavramın orada bir karşılığı vardır: <code>Yoğun</code> katman <code>nn.Linear</code>, katman normalleştirme <code>nn.LayerNorm</code>, <code>kayıp.GeriYay</code> ise <code>loss.backward()</code> olur. Andrej Karpathy’nin açık kaynaklı nanoGPT projesi, bu kitaptaki modelin büyük ölçekli bir karşılığını birkaç yüz satırda gösterir.</li>
+<li><strong>Okumayı sürdürebilirsiniz.</strong> Transformer’ı tanıtan 2017 tarihli “Attention Is All You Need” makalesi, bu kitabı bitirdikten sonra beklenenden çok daha anlaşılır gelecektir.</li>
+</ul>
+<p><strong>Alıştırma.</strong> Küçük GPT’yi ince ayarlayınız. 8. bölümde kaydedilen ağırlıkları yükleyiniz. <code>S: öfke ile kalkan? C: zararla oturur.</code> biçiminde, her biri bir atasözünün başını soru, sonunu cevap yapan on kadar satır hazırlayınız. Bu satırlarla, 8. bölümdekinin onda biri öğrenme oranıyla birkaç yüz adım daha eğitiniz. Sonra modele <code>S: damlaya damlaya? C:</code> yazıp devamını ürettiriniz. İnce ayardan önceki ve sonraki çıktıları karşılaştırınız: model cevabı her zaman doğru bilmese de konuşmanın biçimini, yani “C:”den sonra kısa bir cevap yazıp durmayı hızla öğrenecektir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="10-bolum-9-metin-uretmek.html"><small>Önceki</small>Bölüm 9 — Metin üretmek</a><a class="sonraki" href="12-ek-a-kavram-sozlugu.html"><small>Sonraki</small>Ek A — Kavram sözlüğü</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#parametreleri-saymak">Parametreleri saymak</a></li><li><a href="#çıktıyı-okumak-6">Çıktıyı okumak</a></li><li><a href="#ön-eğitim-ince-ayar-ve-sohbet-modelleri">Ön eğitim, ince ayar ve sohbet modelleri</a></li><li><a href="#bu-kitaptan-sonra">Bu kitaptan sonra</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+# Bağımlılıklar ve derleme çıktıları
+node_modules/
+__pycache__/
+*.pyc
+build/
+*.egg-info/
+js/kutuphane/
+js/*.tgz
+
+# Üretilen dosyalar
+site/yerel/
+benchmark/derleme/
+llm_kitabi/*.out
+mesale_ornekleri/siniflandirma_modeli.json
+
+# LaTeX ara dosyaları (kaynaklar ve PDF'ler depoda kalır)
+basim/*.aux
+basim/*.log
+basim/*.toc
+basim/*.out
+basim/*.tex
+!basim/sablon.tex
+
+# Yerel
+_to_delete/
+_guncelleme/
+.DS_Store
+.vscode/
+
+# Eğitimde üretilen ağırlıklar
+llm_kitabi/*.agirlik

@@ -1,0 +1,26 @@
+program BirimHataları
+{$katı}
+kullan Takvim, Desen, Güvenlik
+
+değişken
+  t: tamsayı
+  m: metin
+  b: mantıksal
+  gün := GünAdı(Şimdi)
+
+başla
+  t := TarihYaz(Şimdi)
+  m := Şimdi
+  b := Özet('a')
+  t := Takvim.GünAdı(Şimdi)
+  m := Takvim.Şimdi
+  gün := HaftaNo(Şimdi)
+  eğer DesenDeğiştir('a', 'a', 'b') ise yaz('x', 1)
+  t := TarihYap(2026, 1)
+  m := Özet()
+  m := Güvenlik.Maskele('a', 1, 2)
+  b := Eşleşir('a')
+  yaz(Uzunluk(), 1)
+  yaz(BüyükHarf('a', 'b'), 1)
+  t := Uzunluk(DesenAyır('a,b', ',')) + GünAdı(Şimdi)
+bitir.

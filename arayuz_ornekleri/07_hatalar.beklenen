@@ -1,0 +1,31 @@
+Düğme("Tamam") Etiket("Merhaba") Kaydırıcı#3
+etiket üyesi: Etiket bileşeninde 'deger' üyesi yok
+42
+düğme metni sayı: hata yok
+etkin metin: 'Düğme.Etkin' mantıksal değer bekler, metin verildi
+10
+kaydırıcı sınırı: hata yok
+seçili dışı: SeçimKutusu dizini sınır dışı: 5 (2 seçenek)
+seçenek yok: SeçimKutusu'nda 'üç' seçeneği yok
+a
+seçenekler: hata yok
+tıkla etiket: 'Tıkla' bir Düğme bekler, Etiket verildi
+gir düğme: 'Gir' bir GirişKutusu bekler, Düğme verildi
+yerleştir sayı: 'Yerleştir' bir arayüz bileşeni bekler, tamsayı verildi
+kendi içine: Bir bileşen kendi içine eklenemez
+işleyici değil: Olay işleyicisi bir prosedür olmalı: '@Prosedür' ya da 'prosedür başla ... bitir'
+tuval sayı: 'x2' sayı bekler, metin verildi
+argüman: 'Düğme' 1 argüman bekler, 0 verildi
+kaydırıcı ters: 'Kaydırıcı' için en çok, en azdan küçük olamaz
+sakla sözlük: 'Sakla' metin, sayı, mantıksal değer ya da bunların listesini saklar, sözlük verildi
+yön: Ekran yönü 'dikey' ya da 'yatay' olabilir
+atama yok: Tuval bileşeninin 'genislik' üyesine atama yapılamaz
+tıklandı
+varsayılan boş
+[1, 2.5, 'üç', doğru]
+boş
+[Titreşim 200 ms]
+dikey
+yön: yatay
+yatay
+Pencere

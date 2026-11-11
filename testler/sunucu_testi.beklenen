@@ -1,0 +1,20 @@
+liste → 200 application/json; charset=utf-8 | [{"ad": "defter", "fiyat": 12.5}]
+ekle → 201 application/json; charset=utf-8 | {"no": 1, "ad": "kalem"}
+tek → 200 application/json; charset=utf-8 | {"ad": "kalem", "fiyat": 4}
+yok → 404 text/plain; charset=utf-8 | Ürün yok
+selam → 200 text/html; charset=utf-8 | <p>Merhaba, Ayşe Yılmaz! GET evet</p>
+405 → 405 text/plain; charset=utf-8 | Bu yöntem desteklenmiyor
+404 → 404 text/plain; charset=utf-8 | Bulunamadı
+500 → 500 text/plain; charset=utf-8 | Sunucu hatası
+400 → 400 text/plain; charset=utf-8 | Geçersiz istek
+302 /selam?ad=y%C3%B6n
+baş → 200 application/json; charset=utf-8 | 
+büyük → 413 text/plain; charset=utf-8 | İstek çok büyük
+yöntem → Geçersiz HTTP yöntemi: 'ALMA' (GET, POST, PUT, PATCH, DELETE, HEAD, *)
+yol → Yol '/' ile başlamalı: 'x'
+işleyici → 'Yol': işleyici bir alt program olmalı, tamsayı verildi
+parametre → Geçersiz yol parametresi: ':1a'
+durum → 'Yanıt': durum 100..599 arasında bir tamsayı olmalı
+yönlendir → 'Yönlendir': durum 301, 302, 303, 307 ya da 308 olmalı
+adres → 'Yönlendir': adres yalnızca ASCII karakterler içerebilir (Türkçe karakterler için UrlKodla kullanın)
+port → 'Dinle': port 0 ile 65535 arasında bir tamsayı olmalı

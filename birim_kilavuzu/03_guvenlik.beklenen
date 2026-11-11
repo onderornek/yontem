@@ -1,0 +1,10 @@
+Kayıt biçimi : pbkdf2-sha256, 116 karakter
+Doğru parola : doğru
+Yanlış parola: yanlış
+Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
+HTML : &lt;script&gt;çal()&lt;/script&gt;
+SQL  : 'x'' OR ''1''=''1'
+Dosya: passwd, yol güvenli mi: yanlış
+Oturum sahibi: zeynep
+Sahte anahtar: boş
+31 dk sonra  : boş

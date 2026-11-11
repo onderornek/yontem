@@ -1,0 +1,4 @@
+Tek derin ağaç (derinlik 8)  → test doğruluğu: 0.803
+Rastgele orman,  1 ağaç       → test doğruluğu: 0.720
+Rastgele orman,  5 ağaç       → test doğruluğu: 0.783
+Rastgele orman, 25 ağaç       → test doğruluğu: 0.840

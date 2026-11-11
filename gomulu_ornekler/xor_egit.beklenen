@@ -1,0 +1,9 @@
+  Epok     1/300   kayıp = 0.725177
+  Epok   100/300   kayıp = 0.003416
+  Epok   200/300   kayıp = 0.001165
+  Epok   300/300   kayıp = 0.000630
+Tahminler: tensör([[0.0009],
+        [0.9997],
+        [0.9992],
+        [0.0005]])
+XorModeli.y yazıldı.

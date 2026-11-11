@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yontem"
+version = "0.5.0"
+description = "Yöntem programlama dili — Python yorumlayıcısı (başvuru uygulaması)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Önder Örnek" }]
+keywords = ["yöntem", "programlama dili", "türkçe", "pascal", "eğitim"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: Turkish",
+  "Topic :: Software Development :: Interpreters",
+  "Intended Audience :: Education",
+]
+
+[project.urls]
+Homepage = "https://yontem.pro"
+Repository = "https://github.com/onderornek/yontem"
+Issues = "https://github.com/onderornek/yontem/issues"
+Changelog = "https://github.com/onderornek/yontem/blob/main/CHANGELOG.md"
+
+[project.scripts]
+# JavaScript derleyicisinin 'yontem' komutuyla çakışmaması için ayrı ad
+yontem-py = "yontem:_ana"
+
+[tool.setuptools]
+py-modules = ["yontem"]
+packages = ["yontem_dil", "yontem_dil._kutuphane"]
+
+[tool.setuptools.package-dir]
+"yontem_dil._kutuphane" = "kutuphane"
+
+[tool.setuptools.package-data]
+"yontem_dil._kutuphane" = ["*.y"]

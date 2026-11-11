@@ -1,0 +1,6 @@
+Linear(giriş=2, çıkış=1, sapma=doğru)
+epok 10  ortalama kayıp 0.01101
+epok 20  ortalama kayıp 0.01074
+epok 30  ortalama kayıp 0.01053
+öğrenilen ağırlık: tensör([[ 2.9891, -2.0021]])
+öğrenilen sapma  : tensör([1.0187])

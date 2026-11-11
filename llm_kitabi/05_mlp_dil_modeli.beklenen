@@ -1,0 +1,19 @@
+4724 eğitim, 558 doğrulama örneği
+Parametre sayısı: 6186
+Adım    1: eğitim kaybı 3.4243   doğrulama kaybı 3.4153
+Adım  500: eğitim kaybı 1.8190   doğrulama kaybı 2.4013
+Adım 1000: eğitim kaybı 1.5370   doğrulama kaybı 2.4427
+Adım 1500: eğitim kaybı 1.4076   doğrulama kaybı 2.5698
+Adım 2000: eğitim kaybı 1.3662   doğrulama kaybı 2.7467
+Adım 2500: eğitim kaybı 1.2681   doğrulama kaybı 2.7659
+Adım 3000: eğitim kaybı 1.2563   doğrulama kaybı 2.8837
+
+Modelin ürettiği "atasözleri":
+  kın gönül sıvamahme verkendi söylemek açtırı yoğurttur
+  ayama kırk dibin olar
+  akıllüyarı söyleme ne insan gele kaz geler yoğuğa döne zotuz
+  davul ne gülüm üzüm üzüm uçun elin konu kokla san ne aştan ne anlı düşen kargayır gün işler ölür
+  gülünen olur
+  gülüşen olur
+  akılsan düşmanı yürür
+  kur düşen insan da da düşma meyen olur

@@ -1,0 +1,26 @@
+Sınırlayıcı(3 / 60 sn)
+ayşe deneme 1: doğru (kalan 2)
+ayşe deneme 2: doğru (kalan 1)
+ayşe deneme 3: doğru (kalan 0)
+ayşe deneme 4: yanlış (kalan 0)
+ayşe deneme 5: yanlış (kalan 0)
+ali deneme 1: doğru
+ayşe için bekleme: 60 sn
+45 sn sonra bekleme: 15 sn, izin: yanlış
+61 sn sonra izin: doğru, kalan 2
+Sıfırlandıktan sonra kalan: 3
+
+Belirteç: a3VsbGFuxLFjxLE9YXnFn2U.2000300.jvsGbihTiO2jigU1JybsrEE-t1TmHlHpxtVc4YIIJcY
+Doğrulandı: kullanıcı=ayşe
+Yanlış anahtar: boş
+Rolü yönetici yapılmış: boş
+Anlamsız: boş
+299 sn sonra: kullanıcı=ayşe
+300 sn sonra (süresi doldu): boş
+Parola sıfırlama bağlantısı: https://ornek.com/sifirla?b=cGFyb2xhLXPEsWbEsXJsYTphecWfZUBvcm5lay5jb20.2001200.-P-C4iTPsTifbhbMadYfUpQkslnUhxOAbh3OPN81tLY
+
+[Güvenlik] giriş başarısız: kullanıcı=ayşe, ip=203.0.113.7
+[Güvenlik] hesap kilitlendi: kullanıcı=ayşe
+[Güvenlik] giriş başarısız: kullanıcı=ali\n[Güvenlik] giriş başarılı: kullanıcı=yönetici
+[Güvenlik] kart güncellendi: kart=************1111
+Kayıt sayısı: 4

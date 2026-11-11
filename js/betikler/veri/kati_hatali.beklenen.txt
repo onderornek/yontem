@@ -1,0 +1,22 @@
+Tip hatası [hatali.y, satır 6] 'SINIR' sabitinin tipi belirtilmeli (katı kip): sabit SINIR: tip = değer
+Tip hatası [hatali.y, satır 14] 'serbest' değişkeninin tipi ilk değerinden anlaşılamıyor; tipini belirtin (katı kip)
+Tip hatası [hatali.y, satır 15] 'uzun' değişkeninin tipi ilk değerinden anlaşılamıyor; tipini belirtin (katı kip)
+Tip hatası [hatali.y, satır 19] Dönüş değeri tamsayı olmalı; metin verildi
+Tip hatası [hatali.y, satır 22] 'Tipsiz': 'x' parametresinin tipi belirtilmeli (katı kip)
+Tip hatası [hatali.y, satır 22] 'Tipsiz' fonksiyonunun dönüş tipi belirtilmeli (katı kip)
+Tip hatası [hatali.y, satır 28] 'sayı' tamsayı tipinde; metin bir değer atanamaz
+Tip hatası [hatali.y, satır 30] 'sayı' tamsayı tipinde; ondalık bir değer atanamaz
+Tip hatası [hatali.y, satır 31] 'ad' metin tipinde; tamsayı bir değer atanamaz
+Tip hatası [hatali.y, satır 32] 'tamam' mantıksal tipinde; tamsayı bir değer atanamaz
+Tip hatası [hatali.y, satır 33] Koşul mantıksal olmalı, tamsayı verildi
+Tip hatası [hatali.y, satır 34] '-' işlemi metin ve tamsayı için tanımlı değil
+Tip hatası [hatali.y, satır 35] '+' işlemi mantıksal ve tamsayı için tanımlı değil
+Tip hatası [hatali.y, satır 36] 'Topla' çağrısında 2. argüman tamsayı olmalı, metin verildi
+Tip hatası [hatali.y, satır 37] 'Topla' en az 2 argüman ister, 1 verildi
+Tip hatası [hatali.y, satır 38] 'Topla' en çok 2 argüman alır, 3 verildi
+Tip hatası [hatali.y, satır 39] 'İkiKat' çağrısında 1. argüman tamsayı olmalı, ondalık verildi
+Tip hatası [hatali.y, satır 40] 'Birleştir' çağrısında 2. argüman metin olmalı, tamsayı verildi
+Tip hatası [hatali.y, satır 41] 'Birleştir' en az 2 argüman ister, 1 verildi
+Tip hatası [hatali.y, satır 42] Tanımsız tanımlayıcı: 'yokBöyleBirAd'
+Tip hatası [hatali.y, satır 44] 'yerel' tamsayı tipinde; metin bir değer atanamaz
+21 tip hatası bulundu; program çalıştırılmadı.

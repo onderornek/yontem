@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 4 — Karar vermek: eğer ve değerine göre · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html" aria-current="page">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 6 / 20</p>
+    <h2 id="bölüm-4-karar-vermek-eğer-ve-değerine-göre">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></h2>
+<p>Programlar koşullara göre farklı yollar izler. <code>eğer koşul ise A değilse B</code> yapısı koşul doğruysa A’yı, değilse B’yi çalıştırır. Koşul mutlaka <code>mantıksal</code> bir değer olmalıdır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> NotHesabı
+<span class="ya">değişken</span>
+  puan: <span class="ya">tamsayı</span>
+  harf: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  yaz(<span class="ym">'Sınav puanı (0-100): '</span>)
+  oku(puan, <span class="ys">1</span>)
+
+  <span class="ya">eğer</span> (puan &lt; <span class="ys">0</span>) <span class="ya">veya</span> (puan &gt; <span class="ys">100</span>) <span class="ya">ise</span>
+    yaz(<span class="ym">'Geçersiz puan!'</span>, <span class="ys">1</span>)
+  <span class="ya">değilse</span> <span class="ya">eğer</span> puan &gt;= <span class="ys">85</span> <span class="ya">ise</span>
+    harf := <span class="ym">'AA'</span>
+  <span class="ya">değilse</span> <span class="ya">eğer</span> puan &gt;= <span class="ys">70</span> <span class="ya">ise</span>
+    harf := <span class="ym">'BB'</span>
+  <span class="ya">değilse</span> <span class="ya">eğer</span> puan &gt;= <span class="ys">50</span> <span class="ya">ise</span>
+    harf := <span class="ym">'CC'</span>
+  <span class="ya">değilse</span>
+    harf := <span class="ym">'FF'</span>
+
+  <span class="ya">eğer</span> harf &lt;&gt; <span class="ym">''</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    yaz(<span class="ym">'Harf notu: '</span> + harf, <span class="ys">1</span>)
+    yaz(<span class="ya">eğer</span> harf = <span class="ym">'FF'</span> <span class="ya">ise</span> <span class="ym">'Kaldınız.'</span> <span class="ya">değilse</span> <span class="ym">'Geçtiniz!'</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Sınav puanı (0-100): 77
+Harf notu: BB
+Geçtiniz!</code></pre></div>
+<p>Bu programdan çıkarılacak dersler şunlardır:</p>
+<ul>
+<li>Bir dalda birden çok komut çalışsın istiyorsanız onları <code>başla … bitir</code> arasına almanız gerekir.</li>
+<li><code>değilse eğer</code> zinciriyle çok seçenekli kararlar yazılır. İlk doğru koşul kazanır.</li>
+<li><code>değilse</code> yeni bir satırda başlayabilir; komutların sonuna noktalı virgül koymak gerekmez.</li>
+<li><code>eğer … ise … değilse …</code> bir <strong>ifade</strong> olarak da kullanılabilir ve son satırdaki gibi bir değer üretir. Bu kullanımda <code>değilse</code> zorunludur.</li>
+</ul>
+<h3 id="bir-değeri-seçeneklere-göre-ayırmak-değerine-göre">Bir değeri seçeneklere göre ayırmak: <code>değerine göre</code></h3>
+<p>Tek bir değerin pek çok olası durumu varsa <code>x değerine göre … bitir</code> yapısı daha okunaklıdır. Etiketler tek değer (<code>1:</code>), virgülle liste (<code>6, 7:</code>) ya da aralık (<code>1..5:</code>) olabilir. Hiçbir etiket tutmazsa <code>değilse:</code> kolu çalışır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Günler
+<span class="ya">değişken</span>
+  gün: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den <span class="ys">7</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> gün <span class="ya">için</span>
+  <span class="ya">başla</span>
+    yaz(gün + <span class="ym">': '</span>)
+    gün <span class="ya">değerine</span> <span class="ya">göre</span>
+      <span class="ys">1</span>: yaz(<span class="ym">'Pazartesi'</span>)
+      <span class="ys">2</span>: yaz(<span class="ym">'Salı'</span>)
+      <span class="ys">3</span>: yaz(<span class="ym">'Çarşamba'</span>)
+      <span class="ys">4</span>: yaz(<span class="ym">'Perşembe'</span>)
+      <span class="ys">5</span>: yaz(<span class="ym">'Cuma'</span>)
+      <span class="ya">değilse</span>: yaz(<span class="ym">'Hafta sonu'</span>)
+    <span class="ya">bitir</span>
+    gün <span class="ya">değerine</span> <span class="ya">göre</span>
+      <span class="ys">1..5</span>: yaz(<span class="ym">' (iş günü)'</span>, <span class="ys">1</span>)
+      <span class="ys">6</span>, <span class="ys">7</span>: yaz(<span class="ym">' (tatil)'</span>, <span class="ys">1</span>)
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>1: Pazartesi (iş günü)
+2: Salı (iş günü)
+3: Çarşamba (iş günü)
+4: Perşembe (iş günü)
+5: Cuma (iş günü)
+6: Hafta sonu (tatil)
+7: Hafta sonu (tatil)</code></pre></div>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html"><small>Önceki</small>Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a><a class="sonraki" href="07-bolum-5-donguler.html"><small>Sonraki</small>Bölüm 5 — Döngüler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#bir-değeri-seçeneklere-göre-ayırmak-değerine-göre">Bir değeri seçeneklere göre ayırmak: değerine göre</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ek B — Sık yapılan hatalar · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html" aria-current="page">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 13 / 14</p>
+    <h2 id="ek-b-sık-yapılan-hatalar">Ek B — Sık yapılan hatalar</h2>
+<ol type="1">
+<li><strong>Softmaks’ı iki kez uygulamak.</strong> <code>ÇaprazEntropi</code> ham puanlar (logit) bekler ve softmaksı kendisi hesaplar. Araya bir <code>Softmaks</code> daha koymak programı bozmaz ama eğitimi sessizce bozar: kayıp yüksek kalır. Softmaks yalnızca örneklerken, olasılıkları görmek istediğinizde kullanılır.</li>
+<li><strong>Maskeyi unutmak.</strong> Nedensel maske olmadan model eğitimde geleceği görür, “sonraki harfi” bakarak kopyalar. Kayıp şaşırtıcı derecede hızlı düşer ama üretilen metin anlamsız olur, çünkü üretirken gelecek yoktur. Kayıp “fazla iyi” görünüyorsa önce maskeyi denetlemekte yarar vardır.</li>
+<li><strong>Hedefi bir kaydırmayı unutmak.</strong> Girdi <code>akış[s .. s+T]</code> ise hedef <code>akış[s+1 .. s+T+1]</code> olmalıdır. Hedefle girdi aynı olursa model yalnızca girdisini kopyalamayı öğrenir.</li>
+<li><strong>Doğrulama verisi ayırmamak.</strong> Yalnızca eğitim kaybına bakarsanız ezberlemeyi öğrenmeden ayırt edemezsiniz. 8. bölümdeki gibi verinin bir kısmını hiç eğitmeden saklamanız gerekir.</li>
+<li><strong>Öğrenme oranını büyük seçmek.</strong> Kayıp düşeceğine zıplıyor ya da çıktı “NaN” oluyorsa öğrenme oranını üçte bire indirebilirsiniz. Transformer’larda 0,001 çevresi güvenli bir başlangıçtır.</li>
+<li><strong>Bırakmayı üretimde açık bırakmak.</strong> Bırakma yalnızca eğitimde uygulanır. Metin üretmeden ya da doğrulama kaybı ölçmeden önce <code>model.eğitimde := yanlış</code> yapmanız gerekir; yoksa her çalıştırmada farklı ve daha kötü sonuç alırsınız.</li>
+<li><strong>Bağlamdan uzun dizi vermek.</strong> Konum gömmesi yalnızca <code>bağlam</code> kadar konum bilir. Üretirken metin uzadıkça modele yalnızca son <code>bağlam</code> karakteri vermeniz gerekir.</li>
+<li><strong>Yöntem’e özgü: ad çakışmaları.</strong> Yöntem büyük/küçük harf ayırmaz; <code>x</code> ile <code>X</code>, <code>w</code> ile <code>W</code> aynı addır. Matristen <code>W</code>, tek bir değerden <code>w</code> diye söz etmek isterseniz “zaten tanımlı” hatası alırsınız. <code>sonuç</code> da fonksiyonlarda dönüş değerinin adı olduğu için değişken adı olarak kullanılmamalıdır.</li>
+</ol>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="12-ek-a-kavram-sozlugu.html"><small>Önceki</small>Ek A — Kavram sözlüğü</a><a class="sonraki" href="14-ek-c-alistirma-ipuclari.html"><small>Sonraki</small>Ek C — Alıştırma ipuçları</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

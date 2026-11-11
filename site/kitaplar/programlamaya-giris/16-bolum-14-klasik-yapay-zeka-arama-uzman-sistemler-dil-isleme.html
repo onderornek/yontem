@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html" aria-current="page">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 16 / 20</p>
+    <h2 id="bölüm-14-klasik-yapay-zekâ-arama-uzman-sistemler-dil-işleme">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</h2>
+<p>Yapay zekâ yalnızca sinir ağlarından ibaret değildir. Yol bulma, kurallarla akıl yürütme ve metin sınıflandırma da yapay zekânın klasik konularıdır. Bu birimlerin hepsi Yöntem dilinde yazılmıştır; <code>kutuphane</code> klasöründe kodlarını okuyabilirsiniz.</p>
+<h3 id="arama-algoritmaları">Arama algoritmaları</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Labirent
+<span class="ya">kullan</span> Arama
+<span class="ya">değişken</span>
+  metro: <span class="ya">sözlük</span>
+  harita, yol: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  <span class="yy">// Çizge: her durağın komşuları</span>
+  metro := [<span class="ym">'Taksim'</span>: [<span class="ym">'Şişhane'</span>, <span class="ym">'Osmanbey'</span>],
+            <span class="ym">'Şişhane'</span>: [<span class="ym">'Haliç'</span>, <span class="ym">'Taksim'</span>],
+            <span class="ym">'Haliç'</span>: [<span class="ym">'Vezneciler'</span>, <span class="ym">'Şişhane'</span>],
+            <span class="ym">'Osmanbey'</span>: [<span class="ym">'Şişli'</span>, <span class="ym">'Taksim'</span>],
+            <span class="ym">'Şişli'</span>: [<span class="ym">'Gayrettepe'</span>],
+            <span class="ym">'Vezneciler'</span>: [<span class="ym">'Yenikapı'</span>]]
+  yaz(<span class="ym">'Taksim -&gt; Yenikapı: '</span> + GenişlikÖncelikli(metro, <span class="ym">'Taksim'</span>, <span class="ym">'Yenikapı'</span>), <span class="ys">2</span>)
+
+  <span class="yy">// A*: '#' duvar, '.' yol</span>
+  harita := [<span class="ym">'.....#....'</span>,
+             <span class="ym">'.###.#.##.'</span>,
+             <span class="ym">'...#...#..'</span>,
+             <span class="ym">'##.#####.#'</span>,
+             <span class="ym">'..........'</span>]
+  yol := AYıldız(harita, [<span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">9</span>])
+  yaz(<span class="ym">'A* ile '</span> + (Uzunluk(yol) - <span class="ys">1</span>) + <span class="ym">' adımda:'</span>, <span class="ys">1</span>)
+  yaz(IzgaraÇiz(harita, yol), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Taksim -&gt; Yenikapı: ['Taksim', 'Şişhane', 'Haliç', 'Vezneciler', 'Yenikapı']
+
+A* ile 13 adımda:
+*****#****
+.###*#*##.
+...#***#..
+##.#####.#
+..........</code></pre></div>
+<p><strong>Genişlik öncelikli arama</strong> başlangıçtan dışa doğru katman katman ilerler ve en az duraklı yolu bulur. <strong>A*</strong> ise her adımda hedefe kalan tahmini uzaklığı da hesaba katar; bu sayede gereksiz yerlere sapmadan en kısa yolu bulur. Yıldızlar bulunan yolu gösterir.</p>
+<h3 id="uzman-sistem">Uzman sistem</h3>
+<p>Uzman sistem, bir alandaki bilgiyi <strong>EĞER … İSE …</strong> kuralları olarak saklar ve bilinen olgulardan yeni sonuçlar çıkarır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> HavaDanışmanı
+<span class="ya">kullan</span> Uzman
+<span class="ya">değişken</span>
+  bt: BilgiTabanı
+  adım: <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  bt := BilgiTabanı.Oluştur
+  bt.KuralEkle(<span class="ym">'K1'</span>, [<span class="ym">'bulutlu'</span>, <span class="ym">'nem yüksek'</span>], <span class="ym">'yağmur olası'</span>, <span class="ys">0.8</span>)
+  bt.KuralEkle(<span class="ym">'K2'</span>, [<span class="ym">'yağmur olası'</span>], <span class="ym">'şemsiye al'</span>, <span class="ys">0.9</span>)
+  bt.KuralEkle(<span class="ym">'K3'</span>, [<span class="ym">'güneşli'</span>, <span class="ym">'sıcak'</span>], <span class="ym">'şapka tak'</span>, <span class="ys">1.0</span>)
+
+  bt.OlguEkle(<span class="ym">'bulutlu'</span>)
+  bt.OlguEkle(<span class="ym">'nem yüksek'</span>, <span class="ys">0.9</span>)
+
+  bt.İleriZincirle <span class="ya">içindeki</span> <span class="ya">her</span> adım <span class="ya">için</span>
+    yaz(<span class="ym">'Ateşlendi: '</span> + adım, <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'Şemsiye önerisinin güveni: {:.2}'</span>, bt.Güven(<span class="ym">'şemsiye al'</span>)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Neden? '</span> + bt.Açıkla(<span class="ym">'şemsiye al'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Şapka gerekli mi? '</span> + bt.GeriZincirle(<span class="ym">'şapka tak'</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Ateşlendi: K1 =&gt; yağmur olası
+Ateşlendi: K2 =&gt; şemsiye al
+Şemsiye önerisinin güveni: 0.80
+Neden? şemsiye al &lt;- K2 [yağmur olası &lt;- K1 [bulutlu (verilen olgu); nem yüksek (verilen olgu)]]
+Şapka gerekli mi? yanlış</code></pre></div>
+<ul>
+<li><strong>İleri zincirleme</strong> olgulardan başlar ve yeni olgu üretilemeyene dek kuralları ateşler.</li>
+<li><strong>Geri zincirleme</strong> bir hedeften başlar ve onu kanıtlayacak olguları arar.</li>
+<li>Her kuralın bir <strong>güven</strong> katsayısı vardır. Bir sonucun güveni, onu destekleyen zincirdeki en zayıf halkadır.</li>
+<li><code>Açıkla</code> sistemin neden o sonuca vardığını gösterir. Açıklanabilirlik, uzman sistemlerin güçlü yanıdır.</li>
+</ul>
+<h3 id="metin-sınıflandırma-spam-filtresi">Metin sınıflandırma: spam filtresi</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SpamFiltresi
+<span class="ya">kullan</span> Dil
+<span class="ya">değişken</span>
+  filtre: NaifBayes
+  m: <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  filtre := NaifBayes.Oluştur
+  filtre.Eğit(
+    [<span class="ym">'Hemen tıkla, büyük ödül kazandın'</span>,
+     <span class="ym">'Bedava hediye çeki seni bekliyor, tıkla'</span>,
+     <span class="ym">'Son fırsat! Ücretsiz kazan'</span>,
+     <span class="ym">'Yarınki toplantı saat onda'</span>,
+     <span class="ym">'Raporu akşama kadar gönderebilir misin'</span>,
+     <span class="ym">'Toplantı notlarını ekte bulabilirsin'</span>],
+    [<span class="ym">'spam'</span>, <span class="ym">'spam'</span>, <span class="ym">'spam'</span>, <span class="ym">'normal'</span>, <span class="ym">'normal'</span>, <span class="ym">'normal'</span>])
+
+  [<span class="ym">'Ücretsiz ödül için tıkla'</span>, <span class="ym">'Toplantı raporu ekte'</span>, <span class="ym">'Bedava hediye kazan'</span>] <span class="ya">içindeki</span> <span class="ya">her</span> m <span class="ya">için</span>
+    yaz(m + <span class="ym">'  -&gt;  '</span> + filtre.Tahmin(m), <span class="ys">1</span>)
+  yaz(<span class="ym">'Belirteçler: '</span> + Belirteçle(<span class="ym">'Yapay zekâ, dili anlamaya çalışıyor!'</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Ücretsiz ödül için tıkla  -&gt;  spam
+Toplantı raporu ekte  -&gt;  normal
+Bedava hediye kazan  -&gt;  spam
+Belirteçler: ['yapay', 'zekâ', 'dili', 'anlamaya', 'çalışıyor']</code></pre></div>
+<p><strong>Naif Bayes</strong>, her sözcüğün her sınıfta ne sıklıkla geçtiğini öğrenir. Yeni bir metinde, sözcüklerin hangi sınıfı daha olası kıldığını hesaplar. Yalnızca altı örnekle bile “ücretsiz”, “tıkla”, “hediye” gibi sözcüklerin spam’e işaret ettiğini öğrendi.</p>
+<h3 id="alıştırmalar-4">Alıştırmalar</h3>
+<ol type="1">
+<li><code>OKH</code> kaybını kullanarak y = 2x² − 1 eğrisine uyan bir sinir ağı eğitiniz. x için −1 ile 1 arasından 20 nokta alabilirsiniz.</li>
+<li>Hava danışmanına üç yeni kural ekleyiniz ve <code>GeriZincirle</code> ile bir sonucu sorgulayınız.</li>
+<li>Spam filtresini kendi örneklerinizle eğitiniz; <code>Olasılıklar</code> metoduyla her sınıfın olasılığını yazdırınız.</li>
+</ol>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="15-bolum-13-sinir-aglari.html"><small>Önceki</small>Bölüm 13 — Sinir ağları</a><a class="sonraki" href="17-bolum-15-kuantum-programlama.html"><small>Sonraki</small>Bölüm 15 — Kuantum programlama</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#arama-algoritmaları">Arama algoritmaları</a></li><li><a href="#uzman-sistem">Uzman sistem</a></li><li><a href="#metin-sınıflandırma-spam-filtresi">Metin sınıflandırma: spam filtresi</a></li><li><a href="#alıştırmalar-4">Alıştırmalar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+Tip hatası [birim.y, satır 12] 't' tamsayı tipinde; metin bir değer atanamaz
+Tip hatası [birim.y, satır 13] 'm' metin tipinde; tamsayı bir değer atanamaz
+Tip hatası [birim.y, satır 14] 'b' mantıksal tipinde; metin bir değer atanamaz
+Tip hatası [birim.y, satır 15] 't' tamsayı tipinde; metin bir değer atanamaz
+Tip hatası [birim.y, satır 16] 'm' metin tipinde; tamsayı bir değer atanamaz
+Tip hatası [birim.y, satır 17] 'gün' metin tipinde; tamsayı bir değer atanamaz
+Tip hatası [birim.y, satır 18] Koşul mantıksal olmalı, metin verildi
+Tip hatası [birim.y, satır 19] 'TarihYap' en az 3 argüman ister, 2 verildi
+Tip hatası [birim.y, satır 20] 'Özet' en az 1 argüman ister, 0 verildi
+Tip hatası [birim.y, satır 21] 'Maskele' en çok 2 argüman alır, 3 verildi
+Tip hatası [birim.y, satır 22] 'Eşleşir' en az 2 argüman ister, 1 verildi
+Tip hatası [birim.y, satır 23] 'Uzunluk' en az 1 argüman ister, 0 verildi
+Tip hatası [birim.y, satır 24] 'BüyükHarf' en çok 1 argüman alır, 2 verildi
+Tip hatası [birim.y, satır 25] 't' tamsayı tipinde; metin bir değer atanamaz
+14 tip hatası bulundu; program çalıştırılmadı.

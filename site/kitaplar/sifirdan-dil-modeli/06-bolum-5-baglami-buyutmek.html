@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 5 — Bağlamı büyütmek · Yöntem ile Sıfırdan Dil Modeli</title>
+<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-bolum-1-dil-modeli-nedir.html">Bölüm 1 — Dil modeli nedir?</a></li><li><a href="03-bolum-2-metni-sayilara-cevirmek.html">Bölüm 2 — Metni sayılara çevirmek</a></li><li><a href="04-bolum-3-sayarak-dil-modeli.html">Bölüm 3 — Sayarak dil modeli</a></li><li><a href="05-bolum-4-sinir-agiyla-ikili-model.html">Bölüm 4 — Sinir ağıyla ikili model</a></li><li><a href="06-bolum-5-baglami-buyutmek.html" aria-current="page">Bölüm 5 — Bağlamı büyütmek</a></li><li><a href="07-bolum-6-oz-dikkat.html">Bölüm 6 — Öz-dikkat</a></li><li><a href="08-bolum-7-transformer-blogu.html">Bölüm 7 — Transformer bloğu</a></li><li><a href="09-bolum-8-kucuk-gptyi-egitmek.html">Bölüm 8 — Küçük GPT’yi eğitmek</a></li><li><a href="10-bolum-9-metin-uretmek.html">Bölüm 9 — Metin üretmek</a></li><li><a href="11-bolum-10-kucukten-buyuge.html">Bölüm 10 — Küçükten büyüğe</a></li><li><a href="12-ek-a-kavram-sozlugu.html">Ek A — Kavram sözlüğü</a></li><li><a href="13-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="14-ek-c-alistirma-ipuclari.html">Ek C — Alıştırma ipuçları</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Sifirdan_Dil_Modeli.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 439 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 6 / 14</p>
+    <h2 id="bölüm-5-bağlamı-büyütmek">Bölüm 5 — Bağlamı büyütmek</h2>
+<p>İkili modelin en büyük zayıflığı unutkanlığıdır: “ol” yazdıktan sonra “u” mu “a” mı geleceğini bilmek için yalnızca “l” harfine bakar. Bu bölümde modeli son <strong>üç</strong> karaktere bakacak şekilde genişletiyoruz. Kuracağımız model, Yoshua Bengio ve arkadaşlarının 2003’te yayımladığı sinirsel dil modelinin küçük bir halidir.</p>
+<h3 id="modelin-yapısı">Modelin yapısı</h3>
+<ol type="1">
+<li>Son üç karakterin her biri, 4. bölümde tanıdığımız gömme tablosundan (burada <code>C</code>) 10 sayılık bir vektöre çevrilir. Tablo üç konum için ortaktır: “a” harfi nerede görülürse görülsün aynı gömmeyi alır.</li>
+<li>Üç gömme 96 nöronlu bir gizli katmana girer. Her konumun kendi ağırlık matrisi vardır (<code>W1</code>, <code>W2</code>, <code>W3</code>); böylece model “son harf” ile “üç önceki harf” arasındaki farkı bilir.</li>
+<li>Gizli katmanın çıktısı, 30 logit üreten bir çıkış katmanından geçer.</li>
+</ol>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mo>tanh</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>e</mi><mn>1</mn></msub><msub><mi>W</mi><mn>1</mn></msub><mo>+</mo><msub><mi>e</mi><mn>2</mn></msub><msub><mi>W</mi><mn>2</mn></msub><mo>+</mo><msub><mi>e</mi><mn>3</mn></msub><msub><mi>W</mi><mn>3</mn></msub><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mtext mathvariant="normal">logit</mtext><mo>=</mo><mi>h</mi><mspace width="0.167em"></mspace><msub><mi>W</mi><mtext mathvariant="normal">ç</mtext></msub><mo>+</mo><msub><mi>b</mi><mtext mathvariant="normal">ç</mtext></msub></mrow><annotation encoding="application/x-tex">h = \tanh(e_1 W_1 + e_2 W_2 + e_3 W_3 + b), \qquad \text{logit} = h\,W_{\text{ç}} + b_{\text{ç}}</annotation></semantics></math></p>
+<p>Makalelerde genellikle üç gömme yan yana konup 30 sayılık tek bir vektör yapılır ve tek bir büyük matrisle çarpılır. Bizim yazdığımız biçim matematiksel olarak aynıdır; büyük matrisi üç parçaya bölmüş olduk.</p>
+<h3 id="iki-yeni-alışkanlık">İki yeni alışkanlık</h3>
+<p><strong>Eğitim ve doğrulama ayrımı.</strong> Bir modelin gerçekten öğrenip öğrenmediğini, hiç görmediği veride sınamadan bilemeyiz. Atasözlerinin ilk %90’ını eğitim, son %10’unu (18 atasözü) doğrulama için ayırıyoruz. Model doğrulama atasözlerini eğitim boyunca hiç görmez.</p>
+<p><strong>Mini-yığınlar.</strong> 4. bölümde her adımda tüm veriyi kullanıyorduk. Burada her adımda rastgele seçilmiş 64 örnekle çalışıyoruz. Gradyan biraz gürültülü olur ama adımlar çok daha ucuzlar. Büyük modeller de böyle eğitilir; tüm internet verisini tek adımda işlemek mümkün değildir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> BağlamlıDilModeli
+<span class="yy">{ İkili model yalnızca bir önceki karaktere bakıyordu. Bu model son BAĞLAM (3)
+  karaktere bakar (Bengio ve arkadaşlarının 2003'teki modelinin küçük bir hali):
+     1) Her karakter, öğrenilen C tablosundan 10 sayılık bir gömmeye çevrilir.
+     2) Üç gömme gizli katmana girer: h = tanh(e1 @ W1 + e2 @ W2 + e3 @ W3 + b)
+        (üç gömmeyi yan yana koyup tek bir büyük matrisle çarpmakla aynı şeydir).
+     3) Çıktı katmanı 30 logit üretir: logit = h @ Wç + bç
+  Veriyi eğitim (%90) ve doğrulama (%10) diye ayırırız; doğrulama kaybı, modelin
+  ezberleyip ezberlemediğini gösterir. Her adımda rastgele 64 örnekten oluşan bir
+  yığın (mini-batch) kullanırız. }</span>
+<span class="ya">kullan</span> Atasozleri, DilAraclari, YZ
+
+<span class="ya">sabit</span>
+  BAĞLAM: <span class="ya">tamsayı</span> = <span class="ys">3</span>
+  GÖMME: <span class="ya">tamsayı</span> = <span class="ys">10</span>
+  GİZLİ: <span class="ya">tamsayı</span> = <span class="ys">96</span>
+  YIĞIN: <span class="ya">tamsayı</span> = <span class="ys">64</span>
+
+<span class="ya">değişken</span>
+  veri, harfler: <span class="ya">metin</span> dizisi
+  numara: <span class="ya">sözlük</span>
+  bağlamlar: <span class="ya">liste</span>                   <span class="yy">{ her örnek: son 3 karakterin numarası }</span>
+  hedefler: <span class="ya">tamsayı</span> dizisi
+  eğitimSayısı, n, i, k, adım: <span class="ya">tamsayı</span>
+  C, W1, W2, W3, b, Wç, bç, kayıp: <span class="ya">tensör</span>
+  opt: <span class="ya">herhangi</span>
+  seçilen: <span class="ya">tamsayı</span> dizisi
+  pencere: <span class="ya">tamsayı</span> dizisi
+  kar, sözcük: <span class="ya">metin</span>
+
+<span class="ya">fonksiyon</span> Logitler(bağ: <span class="ya">liste</span>): <span class="ya">tensör</span>
+<span class="yy">{ bağ: bağlam listesi (her biri 3 numara) → her bağlam için 30 logit }</span>
+<span class="ya">değişken</span> e1, e2, e3, h: <span class="ya">tensör</span>
+<span class="ya">başla</span>
+  e1 := BirSıcak(Eşle(bağ, <span class="ya">fonksiyon</span>(p: <span class="ya">liste</span>) =&gt; p[<span class="ys">0</span>]), Uzunluk(harfler)) @ C
+  e2 := BirSıcak(Eşle(bağ, <span class="ya">fonksiyon</span>(p: <span class="ya">liste</span>) =&gt; p[<span class="ys">1</span>]), Uzunluk(harfler)) @ C
+  e3 := BirSıcak(Eşle(bağ, <span class="ya">fonksiyon</span>(p: <span class="ya">liste</span>) =&gt; p[<span class="ys">2</span>]), Uzunluk(harfler)) @ C
+  h := (e1 @ W1 + e2 @ W2 + e3 @ W3 + b).Tanh
+  <span class="ya">dön</span> h @ Wç + bç
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> OrtalamaKayıp(ilk, son: <span class="ya">tamsayı</span>): <span class="ya">ondalık</span>
+<span class="yy">{ [ilk, son) aralığındaki örneklerin ortalama kaybı (eğitim yapmadan) }</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> ÇaprazEntropi(Logitler(Dilim(bağlamlar, ilk, son)), Dilim(hedefler, ilk, son)).Değer
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">7</span>)
+  veri := Atasozleri.Hepsi
+  harfler := DilAraclari.Harfler
+  n := Uzunluk(harfler)
+  numara := DilAraclari.Numaralar(harfler)
+
+  <span class="yy">{ Örnekleri çıkar. Atasözlerinin ilk %90'ı eğitim, son %10'u doğrulama. }</span>
+  bağlamlar := []; hedefler := []
+  <span class="ys">0</span>'dan Uzunluk(veri) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="ya">eğer</span> i = Uzunluk(veri) * <span class="ys">9</span> <span class="ya">böl</span> <span class="ys">10</span> <span class="ya">ise</span> eğitimSayısı := Uzunluk(hedefler)
+    pencere := [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>]
+    (veri[i] + <span class="ym">'.'</span>).Karakterler <span class="ya">içindeki</span> <span class="ya">her</span> kar <span class="ya">için</span>
+    <span class="ya">başla</span>
+      bağlamlar.Ekle(pencere); hedefler.Ekle(numara[kar])
+      pencere := [pencere[<span class="ys">1</span>], pencere[<span class="ys">2</span>], numara[kar]]
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'{} eğitim, {} doğrulama örneği'</span>, eğitimSayısı, Uzunluk(hedefler) - eğitimSayısı), <span class="ys">1</span>)
+
+  C  := RastgeleTensör(n, GÖMME, <span class="ys">1.0</span>, <span class="ya">doğru</span>)
+  W1 := RastgeleTensör(GÖMME, GİZLİ, <span class="ys">0.2</span>, <span class="ya">doğru</span>)
+  W2 := RastgeleTensör(GÖMME, GİZLİ, <span class="ys">0.2</span>, <span class="ya">doğru</span>)
+  W3 := RastgeleTensör(GÖMME, GİZLİ, <span class="ys">0.2</span>, <span class="ya">doğru</span>)
+  b  := Sıfırlar(GİZLİ, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+  Wç := RastgeleTensör(GİZLİ, n, <span class="ys">0.1</span>, <span class="ya">doğru</span>)
+  bç := Sıfırlar(n, <span class="ya">boş</span>, <span class="ya">doğru</span>)
+  opt := Adam([C, W1, W2, W3, b, Wç, bç], <span class="ys">0.01</span>)
+  yaz(Biçimle(<span class="ym">'Parametre sayısı: {}'</span>, n * GÖMME + <span class="ys">3</span> * GÖMME * GİZLİ + GİZLİ + GİZLİ * n + n), <span class="ys">1</span>)
+
+  <span class="ys">1</span>'den <span class="ys">3000</span>'e <span class="ya">kadar</span> <span class="ya">her</span> adım <span class="ya">için</span>
+  <span class="ya">başla</span>
+    seçilen := Eşle(Aralık(YIĞIN), <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>) =&gt; Rastgele(eğitimSayısı))
+    opt.SıfırlaGrad
+    kayıp := ÇaprazEntropi(Logitler(Eşle(seçilen, <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>) =&gt; bağlamlar[x])),
+                           Eşle(seçilen, <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>) =&gt; hedefler[x]))
+    kayıp.GeriYay
+    opt.Adım
+    <span class="ya">eğer</span> adım = <span class="ys">1</span> <span class="ya">veya</span> adım <span class="ya">mod</span> <span class="ys">500</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Adım {:4}: eğitim kaybı {:.4}   doğrulama kaybı {:.4}'</span>, adım,
+        OrtalamaKayıp(<span class="ys">0</span>, eğitimSayısı), OrtalamaKayıp(eğitimSayısı, Uzunluk(hedefler))), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>); yaz(<span class="ym">'Modelin ürettiği &quot;atasözleri&quot;:'</span>, <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">8</span>'e <span class="ya">kadar</span> <span class="ya">her</span> k <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sözcük := <span class="ym">''</span>; pencere := [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>]
+    <span class="ya">tekrarla</span>
+      i := DilAraclari.Örnekle(Softmaks(Logitler([pencere])).Satır(<span class="ys">0</span>).Veri)
+      <span class="ya">eğer</span> i &lt;&gt; <span class="ys">0</span> <span class="ya">ise</span> sözcük := sözcük + harfler[i]
+      pencere := [pencere[<span class="ys">1</span>], pencere[<span class="ys">2</span>], i]
+    i = <span class="ys">0</span> <span class="ya">olana</span> <span class="ya">dek</span>
+    yaz(<span class="ym">'  '</span> + sözcük, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>4724 eğitim, 558 doğrulama örneği
+Parametre sayısı: 6186
+Adım    1: eğitim kaybı 3.4243   doğrulama kaybı 3.4153
+Adım  500: eğitim kaybı 1.8190   doğrulama kaybı 2.4013
+Adım 1000: eğitim kaybı 1.5370   doğrulama kaybı 2.4427
+Adım 1500: eğitim kaybı 1.4076   doğrulama kaybı 2.5698
+Adım 2000: eğitim kaybı 1.3662   doğrulama kaybı 2.7467
+Adım 2500: eğitim kaybı 1.2681   doğrulama kaybı 2.7659
+Adım 3000: eğitim kaybı 1.2563   doğrulama kaybı 2.8837
+
+Modelin ürettiği &quot;atasözleri&quot;:
+  kın gönül sıvamahme verkendi söylemek açtırı yoğurttur
+  ayama kırk dibin olar
+  akıllüyarı söyleme ne insan gele kaz geler yoğuğa döne zotuz
+  davul ne gülüm üzüm üzüm uçun elin konu kokla san ne aştan ne anlı düşen kargayır gün işler ölür
+  gülünen olur
+  gülüşen olur
+  akılsan düşmanı yürür
+  kur düşen insan da da düşma meyen olur</code></pre></div>
+<h3 id="çıktıyı-okumak-ezberleme">Çıktıyı okumak: ezberleme</h3>
+<p>Üretilen metin çok daha Türkçe görünüyor. “gönül”, “söylemek”, “kırk”, “insan”, “düşmanı yürür” gibi gerçek sözcükler ve “gülüşen olur” gibi atasözü tadında dizeler belirdi. Üç karakterlik bağlam, sözcük ve hece düzeyinde büyük fark yaratıyor.</p>
+<p>Ama kayıp sütunları önemli bir uyarı veriyor. Eğitim kaybı 3000 adım boyunca düzenli olarak düşüyor (1,82 → 1,26). Doğrulama kaybı ise en iyi değerine (2,40) 500. adımda ulaşıyor, sonra <strong>yükseliyor</strong> ve 2,88’e çıkıyor. Model, eğitim atasözlerini giderek daha iyi ezberliyor ama hiç görmediği atasözlerinde giderek kötüleşiyor. Bu duruma <strong>aşırı uyum</strong> (overfitting) denir.</p>
+<p>Nedeni basit: 6186 parametreli bir model, 4724 örneği neredeyse tek tek ezberleyebilecek kadar büyüktür. Üretilen metinde “kırk”, “davul”, “üzüm üzüm” gibi eğitim verisinden birebir parçalar görmeniz bunun işaretidir. Büyük dil modelleri bu sorunu öncelikle devasa veriyle çözer: modelin ezberleyemeyeceği kadar çok metin. Bizim verimiz küçük olduğu için 8. bölümde iki teknik kullanacağız. <strong>Erken durdurma</strong>, doğrulama kaybı en düşükken modeli kaydetmektir. <strong>Bırakma</strong> (dropout) ise eğitim sırasında ağın bir kısmını rastgele susturmaktır.</p>
+<p>Bir karşılaştırma notu: 3. ve 4. bölümlerdeki kayıplar tüm veri üzerinde, yani modelin gördüğü veride ölçülmüştü. Bu bölümden itibaren asıl ölçütümüz doğrulama kaybıdır.</p>
+<p><strong>Alıştırma.</strong> <code>GİZLİ</code> sabitini 96’dan 24’e indiriniz ve programı yeniden çalıştırınız. Doğrulama kaybının en düşük değeri ve yükselmeye başladığı adım nasıl değişiyor? Ardından adım sayısını 500’e indirip üretilen metne bakınız.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-bolum-4-sinir-agiyla-ikili-model.html"><small>Önceki</small>Bölüm 4 — Sinir ağıyla ikili model</a><a class="sonraki" href="07-bolum-6-oz-dikkat.html"><small>Sonraki</small>Bölüm 6 — Öz-dikkat</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#modelin-yapısı">Modelin yapısı</a></li><li><a href="#iki-yeni-alışkanlık">İki yeni alışkanlık</a></li><li><a href="#çıktıyı-okumak-ezberleme">Çıktıyı okumak: ezberleme</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

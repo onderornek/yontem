@@ -1,0 +1,36 @@
+$ yontem ayikla 07_ayiklama.y
+Yöntem hata ayıklayıcı — 07_ayiklama.y (komutlar için: yardım)
+→   20    notlar := [70, 85, 90]
+(ayıkla) sonraki
+→   21    ort := Ortalama(notlar)
+(ayıkla) adım
+Ortalama içinde, 07_ayiklama.y:9
+→    9    toplam := 0
+(ayıkla) kes 11 eğer n > 80
+Kesme noktası kondu: 07_ayiklama.y:11 (eğer n > 80)
+(ayıkla) devam
+Kesme noktası: 07_ayiklama.y:11
+Ortalama içinde, 07_ayiklama.y:11
+→●  11      toplam := toplam + n
+(ayıkla) değişkenler
+Ortalama:
+  notlar = [70, 85, 90]
+  sonuç = 0.0
+  toplam = 70
+  n = 85
+Program:
+  ort = 0.0
+(ayıkla) yaz toplam + n
+155
+(ayıkla) yığın
+→ #0  Ortalama  07_ayiklama.y:11
+  #1  program Ayıklama  07_ayiklama.y:21
+(ayıkla) sil 11
+Kesme noktası kaldırıldı: 07_ayiklama.y:11
+(ayıkla) çık
+→   22    yaz('Ortalama: ' + Yuvarla(ort, 1), 1)
+(ayıkla) yaz ort
+81.66666666666667
+(ayıkla) devam
+Ortalama: 81.7
+Program bitti (çıkış kodu 0).

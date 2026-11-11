@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 7 — Metinler, listeler, sözlükler ve diziler · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html" aria-current="page">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 9 / 20</p>
+    <h2 id="bölüm-7-metinler-listeler-sözlükler-ve-diziler">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</h2>
+<p>Tek bir değer yerine bir değer <strong>topluluğu</strong> ile çalışmak için koleksiyonlar kullanılır. Bir kuralı en baştan akılda tutmakta yarar vardır: <strong>metinler 1’den, listeler 0’dan numaralanır.</strong> İlki Turbo Pascal geleneğidir, ikincisi ise modern dillerin alışkanlığıdır.</p>
+<h3 id="metinler">Metinler</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Metinler
+<span class="ya">değişken</span>
+  s: <span class="ya">metin</span>
+  kelimeler: <span class="ya">liste</span>
+  i: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  s := <span class="ym">'Yöntem dili'</span>
+  yaz(<span class="ym">'Uzunluk      : '</span> + Uzunluk(s), <span class="ys">1</span>)
+  yaz(<span class="ym">'İlk harf     : '</span> + s[<span class="ys">1</span>], <span class="ys">1</span>)                <span class="yy">// metinler 1'den başlar</span>
+  yaz(<span class="ym">'Son harf     : '</span> + s[Uzunluk(s)], <span class="ys">1</span>)
+  yaz(<span class="ym">'AltMetin     : '</span> + AltMetin(s, <span class="ys">8</span>, <span class="ys">4</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Konum('</span><span class="ym">'dil'</span><span class="ym">') : '</span> + Konum(<span class="ym">'dil'</span>, s), <span class="ys">1</span>)
+  yaz(<span class="ym">'Büyük harf   : '</span> + s.BüyükHarf, <span class="ys">1</span>)
+  yaz(<span class="ym">'Değiştir     : '</span> + Değiştir(s, <span class="ym">'dili'</span>, <span class="ym">'programı'</span>), <span class="ys">1</span>)
+  kelimeler := Ayır(<span class="ym">'elma,armut,kiraz'</span>, <span class="ym">','</span>)
+  yaz(<span class="ym">'Ayır         : '</span> + kelimeler, <span class="ys">1</span>)
+  yaz(<span class="ym">'Birleştir    : '</span> + Birleştir(kelimeler, <span class="ym">' + '</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Tersten      : '</span>)
+  Uzunluk(s)'den <span class="ys">1</span>'e <span class="ya">azalarak</span> <span class="ya">her</span> i <span class="ya">için</span> yaz(s[i])
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Uzunluk      : 11
+İlk harf     : Y
+Son harf     : i
+AltMetin     : dili
+Konum('dil') : 8
+Büyük harf   : YÖNTEM DİLİ
+Değiştir     : Yöntem programı
+Ayır         : ['elma', 'armut', 'kiraz']
+Birleştir    : elma + armut + kiraz
+Tersten      : ilid metnöY</code></pre></div>
+<p>Metin işlevlerinin çoğu iki biçimde yazılabilir: <code>BüyükHarf(s)</code> ya da <code>s.BüyükHarf</code>. Hangisi size daha okunaklı geliyorsa onu kullanabilirsiniz.</p>
+<h3 id="listeler">Listeler</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Listeler
+<span class="ya">değişken</span>
+  notlar: <span class="ya">liste</span>
+  n: <span class="ya">herhangi</span>
+  toplam: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  notlar := [<span class="ys">72</span>, <span class="ys">85</span>, <span class="ys">90</span>, <span class="ys">64</span>]
+  notlar.Ekle(<span class="ys">78</span>)                           <span class="yy">// sona ekle</span>
+  yaz(<span class="ym">'Notlar     : '</span> + notlar, <span class="ys">1</span>)
+  yaz(<span class="ym">'İlk not    : '</span> + notlar[<span class="ys">0</span>], <span class="ys">1</span>)       <span class="yy">// listeler 0'dan başlar</span>
+  yaz(<span class="ym">'Not sayısı : '</span> + notlar.Uzunluk, <span class="ys">1</span>)
+  yaz(<span class="ym">'Sıralı     : '</span> + Sırala(notlar), <span class="ys">1</span>)
+  yaz(<span class="ym">'En yüksek  : '</span> + Maks(notlar), <span class="ys">1</span>)
+  toplam := <span class="ys">0</span>
+  notlar <span class="ya">içindeki</span> <span class="ya">her</span> n <span class="ya">için</span> toplam += n
+  yaz(<span class="ym">'Ortalama   : '</span> + toplam / Uzunluk(notlar), <span class="ys">1</span>)
+  yaz(<span class="ym">'85 var mı? : '</span> + (<span class="ys">85</span> içinde notlar), <span class="ys">1</span>)
+  yaz(<span class="ym">'1..5       : '</span> + [<span class="ys">1..5</span>], <span class="ys">1</span>)
+  notlar[<span class="ys">0</span>] := <span class="ys">100</span>
+  Sil(notlar, <span class="ys">1</span>)
+  yaz(<span class="ym">'Değişmiş   : '</span> + notlar, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Notlar     : [72, 85, 90, 64, 78]
+İlk not    : 72
+Not sayısı : 5
+Sıralı     : [64, 72, 78, 85, 90]
+En yüksek  : 90
+Ortalama   : 77.8
+85 var mı? : doğru
+1..5       : [1, 2, 3, 4, 5]
+Değişmiş   : [100, 90, 64, 78]</code></pre></div>
+<p><code>Sırala</code> yeni, sıralı bir liste döndürür; asıl liste değişmez. <code>Sil(notlar, 1)</code> 1 numaralı (ikinci) öğeyi çıkarır. <code>[1..5]</code> bir aralığı listeye çevirir.</p>
+<h3 id="sözlükler">Sözlükler</h3>
+<p>Sözlük, <strong>anahtar → değer</strong> çiftlerini saklar. Bir değere sıra numarasıyla değil, adıyla ulaşırsınız.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sözlükler
+<span class="ya">değişken</span>
+  başkent: <span class="ya">sözlük</span>
+  ülke, şehir: <span class="ya">herhangi</span>
+  sayım: <span class="ya">sözlük</span>
+<span class="ya">başla</span>
+  başkent := [<span class="ym">'Türkiye'</span>: <span class="ym">'Ankara'</span>, <span class="ym">'Fransa'</span>: <span class="ym">'Paris'</span>, <span class="ym">'Japonya'</span>: <span class="ym">'Tokyo'</span>]
+  başkent[<span class="ym">'Mısır'</span>] := <span class="ym">'Kahire'</span>               <span class="yy">// yeni anahtar ekle</span>
+  yaz(<span class="ym">'Fransa'</span><span class="ym">'nın başkenti: '</span> + başkent[<span class="ym">'Fransa'</span>], <span class="ys">1</span>)
+  yaz(<span class="ym">'Ülke sayısı: '</span> + Uzunluk(başkent), <span class="ys">1</span>)
+  başkent <span class="ya">içindeki</span> <span class="ya">her</span> ülke, şehir <span class="ya">için</span>
+    yaz(<span class="ym">'  '</span> + ülke + <span class="ym">' -&gt; '</span> + şehir, <span class="ys">1</span>)
+  yaz(<span class="ym">'İtalya kayıtlı mı? '</span> + (<span class="ym">'İtalya'</span> içinde başkent), <span class="ys">1</span>)
+  yaz(<span class="ym">'Varsayılanla al: '</span> + başkent.Al(<span class="ym">'İtalya'</span>, <span class="ym">'bilinmiyor'</span>), <span class="ys">1</span>)
+
+  sayım := Say(Ayır(<span class="ym">'bir iki bir üç iki bir'</span>))
+  yaz(<span class="ym">'Sözcük sayıları: '</span> + sayım, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Fransa'nın başkenti: Paris
+Ülke sayısı: 4
+  Türkiye -&gt; Ankara
+  Fransa -&gt; Paris
+  Japonya -&gt; Tokyo
+  Mısır -&gt; Kahire
+İtalya kayıtlı mı? yanlış
+Varsayılanla al: bilinmiyor
+Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]</code></pre></div>
+<ul>
+<li>Sözlük yazımı köşeli parantez ve iki noktadır: <code>['anahtar': değer]</code>. Boş sözlük <code>[:]</code> olarak yazılır.</li>
+<li>Olmayan bir anahtarı okumak hatadır. Emin değilseniz <code>içinde</code> ile denetleyebilir ya da <code>.Al(anahtar, varsayılan)</code> kullanabilirsiniz.</li>
+<li><code>sözlük içindeki her a, d için</code> anahtarı ve değeri birlikte verir.</li>
+<li><code>Say</code> bir listedeki öğeleri sayar. Metin çözümlemede çok işe yarar.</li>
+</ul>
+<h3 id="sınırları-belli-diziler">Sınırları belli diziler</h3>
+<p>Turbo Pascal’daki gibi, sınırları bildirimde belirlenen diziler de vardır. Sınır dışına çıkmak anında yakalanır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SabitDizi
+<span class="ya">değişken</span>
+  sıcaklık: <span class="ya">ondalık</span> dizisi[<span class="ys">1..7</span>]
+  gün: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den <span class="ys">7</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> gün <span class="ya">için</span>
+    sıcaklık[gün] := <span class="ys">20</span> + gün * <span class="ys">1.5</span>
+  yaz(sıcaklık, <span class="ys">1</span>)
+  yaz(<span class="ym">'Sınırlar: '</span> + sıcaklık.Alt + <span class="ym">'..'</span> + sıcaklık.Üst, <span class="ys">1</span>)
+  sıcaklık[<span class="ys">8</span>] := <span class="ys">30</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[21.5, 23.0, 24.5, 26.0, 27.5, 29.0, 30.5]
+Sınırlar: 1..7
+Çalışma hatası [d5.y, satır 10] Dizi dizini sınır dışı: 8 (geçerli 1..7)</code></pre></div>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-bolum-6-prosedurler-ve-fonksiyonlar.html"><small>Önceki</small>Bölüm 6 — Prosedürler ve fonksiyonlar</a><a class="sonraki" href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html"><small>Sonraki</small>Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#metinler">Metinler</a></li><li><a href="#listeler">Listeler</a></li><li><a href="#sözlükler">Sözlükler</a></li><li><a href="#sınırları-belli-diziler">Sınırları belli diziler</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

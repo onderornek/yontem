@@ -1,0 +1,6 @@
+Adım 1:  0.70 yükseklikte  {İstanbul} + {Bursa}
+Adım 2:  1.62 yükseklikte  {Ankara} + {Konya}
+Adım 3:  2.23 yükseklikte  {Ankara Konya} + {Kayseri}
+        → 3 kümede kesilirse: {İstanbul Bursa}, {İzmir}, {Ankara Konya Kayseri}
+Adım 4:  2.33 yükseklikte  {İstanbul Bursa} + {İzmir}
+Adım 5:  4.34 yükseklikte  {İstanbul Bursa İzmir} + {Ankara Konya Kayseri}

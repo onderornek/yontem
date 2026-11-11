@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ek A — Hangi algoritma ne zaman? · Yöntem ile Makine Öğrenmesi</title>
+<meta name="description" content="20 algoritma, her biri baştan sona okunabilen bir programla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Makine Öğrenmesi</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-giris.html">Giriş</a></li><li><a href="03-bolum-1-denetimli-ogrenmenin-temelleri.html">Bölüm 1 — Denetimli öğrenmenin temelleri</a></li><li><a href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></li><li><a href="05-bolum-3-denetimsiz-ogrenme.html">Bölüm 3 — Denetimsiz öğrenme</a></li><li><a href="06-bolum-4-derin-ogrenme.html">Bölüm 4 — Derin öğrenme</a></li><li><a href="07-ek-a-hangi-algoritma-ne-zaman.html" aria-current="page">Ek A — Hangi algoritma ne zaman?</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Makine_Ogrenmesi.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 251 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Makine Öğrenmesi</a> / Bölüm 7 / 7</p>
+    <h2 id="ek-a-hangi-algoritma-ne-zaman">Ek A — Hangi algoritma ne zaman?</h2>
+<h3 id="karşılaştırma-tablosu">Karşılaştırma tablosu</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Algoritma</th>
+<th>Tür</th>
+<th>En iyi olduğu durum</th>
+<th>Dikkat edilecek nokta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Doğrusal regresyon</td>
+<td>Denetimli, sayı tahmini</td>
+<td>İlişki kabaca düz bir çizgiyse; ilk deneme modeli</td>
+<td>Aykırı değerlere duyarlı</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Lojistik regresyon</td>
+<td>Denetimli, sınıflandırma</td>
+<td>İki sınıf, olasılık gerekli, yorumlanabilirlik önemli</td>
+<td>Yalnızca düz sınır çizer</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>K-en yakın komşu</td>
+<td>Denetimli</td>
+<td>Küçük veri, karmaşık sınırlar</td>
+<td>Ölçeklendirme şart; büyük veride yavaş</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Naif Bayes</td>
+<td>Denetimli, sınıflandırma</td>
+<td>Metin, spam, çok hızlı bir temel model</td>
+<td>Öznitelikleri bağımsız varsayar</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Karar ağacı</td>
+<td>Denetimli</td>
+<td>Kuralların okunabilir olması gerektiğinde</td>
+<td>Derin ağaç ezberler</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Rastgele orman</td>
+<td>Denetimli</td>
+<td>Tablo verisinde güvenli varsayılan</td>
+<td>Tek ağaçtan daha zor yorumlanır</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Gradyan artırma</td>
+<td>Denetimli</td>
+<td>Tablo verisinde en yüksek doğruluk</td>
+<td>Öğrenme oranı ve tur sayısı ayar ister</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Destek vektör makinesi</td>
+<td>Denetimli</td>
+<td>Orta boy veri, net bir sınır payı</td>
+<td>Ölçeklendirme şart; büyük veride yavaş</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>K-ortalamalar</td>
+<td>Denetimsiz, kümeleme</td>
+<td>Yuvarlak, benzer boyutlu gruplar</td>
+<td>k’yi siz seçersiniz; başlangıca duyarlı</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Hiyerarşik kümeleme</td>
+<td>Denetimsiz</td>
+<td>Küme sayısı belirsiz, ilişki ağacı isteniyor</td>
+<td>Binlerce noktada yavaş</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>DBSCAN</td>
+<td>Denetimsiz</td>
+<td>Tuhaf biçimli kümeler, aykırı bulma</td>
+<td>ε seçimi kritik</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>PCA</td>
+<td>Denetimsiz, boyut azaltma</td>
+<td>Görselleştirme, öznitelik sıkıştırma</td>
+<td>Yalnızca doğrusal yapıyı yakalar</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Gauss karışımı</td>
+<td>Denetimsiz</td>
+<td>Yumuşak (olasılıklı) küme üyeliği</td>
+<td>Yerel en iyiye takılabilir</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>AdaBoost</td>
+<td>Denetimli</td>
+<td>Zayıf kurallardan güçlü sınıflandırıcı</td>
+<td>Gürültülü etiketlere duyarlı</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>XGBoost</td>
+<td>Denetimli</td>
+<td>Yarışmalar, büyük tablo verisi</td>
+<td>Birçok ayar parametresi</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Sinir ağı (MLP)</td>
+<td>Denetimli</td>
+<td>Çok veri, karmaşık ilişkiler</td>
+<td>Veri aç, aşırı uyuma yatkın</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>CNN</td>
+<td>Derin</td>
+<td>Resim, ses, sinyal</td>
+<td>Bol veri ve hesap gücü</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>RNN</td>
+<td>Derin</td>
+<td>Kısa diziler, zaman serileri</td>
+<td>Uzun dizilerde unutur</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>Otokodlayıcı</td>
+<td>Derin, denetimsiz</td>
+<td>Sıkıştırma, anomali tespiti, gürültü temizleme</td>
+<td>Boğaz boyutu ayar ister</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>Transformer / dikkat</td>
+<td>Derin</td>
+<td>Dil, uzun diziler, çok modlu veri</td>
+<td>Çok veri ve hesap gücü</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kabaca bir yol haritası da şöyledir:</p>
+<ul>
+<li><strong>Etiketiniz var ve sayı tahmin ediyorsanız:</strong> doğrusal regresyonla başlayabilir, yetmezse gradyan artırmaya geçebilirsiniz.</li>
+<li><strong>Etiketiniz var ve sınıf tahmin ediyorsanız:</strong> lojistik regresyon veya naif Bayes ile bir temel çizgi kurabilir, sonra rastgele orman veya gradyan artırmayı deneyebilirsiniz.</li>
+<li><strong>Etiketiniz yoksa:</strong> veriyi PCA ile iki boyuta indirip inceleyebilir, ardından k-ortalamalar veya DBSCAN deneyebilirsiniz.</li>
+<li><strong>Veri resim, ses veya metinse:</strong> derin öğrenme (CNN, RNN, Transformer) uygun olacaktır.</li>
+</ul>
+<h3 id="sık-yapılan-hatalar">Sık yapılan hatalar</h3>
+<ol type="1">
+<li><strong>Modeli eğittiği veride değerlendirmek.</strong> Eğitim doğruluğu iyimserdir (bkz. 16. bölümdeki <code>[0.9, 0]</code> noktası). Veriyi en başta eğitim ve test diye ayırmanız, test kümesine de yalnızca en sonda bakmanız gerekir.</li>
+<li><strong>Ölçeklendirmeyi unutmak.</strong> KNN, SVM, k-ortalamalar ve PCA mesafeyle çalışır. Biri santimetre, öteki lira cinsinden iki öznitelikte büyük sayılı olan her şeye hükmeder. Ağaç tabanlı yöntemler ölçekten etkilenmez.</li>
+<li><strong>Temel çizgi kurmamak.</strong> “%90 doğruluk” kulağa iyi gelir. Ama örneklerin %90’ı tek bir sınıftansa her şeye o sınıf diyen bir model de %90 alır. Bu yüzden önce en basit modeli çalıştırmak gerekir.</li>
+<li><strong>Rastgeleliği sabitlememek.</strong> Programlardaki <code>Tohum(…)</code> satırları her çalıştırmada aynı sonucu verir. Tohum olmadan iki deneyi karşılaştırdığınızda farkın değişiklikten mi yoksa şanstan mı geldiğini bilemezsiniz.</li>
+<li><strong>Tek bir sonuca güvenmek.</strong> Rastgele orman, k-ortalamalar ve sinir ağları başlangıca göre farklı sonuç verebilir. Birkaç farklı tohumla denemeniz iyi olur.</li>
+<li><strong>Gelecekten bilgi sızdırmak.</strong> Tahmin anında elinizde olmayacak bir sütunu (örneğin “kredi geri ödendi mi” tahmininde “son ödeme tarihi”) girdi yapmak, gerçekte çalışmayan harika bir model üretir.</li>
+<li><strong>Kaybı izlememek.</strong> Eğitim kaybı düşmüyorsa öğrenme oranı çok küçük veya çok büyüktür. Eğitim kaybı düşerken test kaybı artıyorsa model ezberliyordur.</li>
+<li><strong>Yanlış kayıp ve aktivasyon eşleşmesi.</strong> <code>ÇaprazEntropi</code> softmaksı kendisi uygular, bu yüzden ona ham çıktılar (logit) verilmelidir. Araya bir <code>Softmaks</code> daha koymak eğitimi sessizce bozar: program çalışır ama kayıp yüksek kalır. <code>İkiliÇaprazEntropi</code> ise sigmoid sonrası olasılık bekler.</li>
+<li><strong>Yöntem’e özgü: harf büyüklüğü çakışması.</strong> Yöntem <code>x</code> ile <code>X</code>’i ve <code>s</code> ile <code>ş</code>’yi ayırt etmez. Matematikteki gibi veri matrisine <code>X</code>, tek noktaya <code>x</code> derseniz “zaten tanımlı” hatası alırsınız. Bu kitaptaki programlar <code>px</code>, <code>nokta</code>, <code>v</code> gibi adlar kullanır.</li>
+</ol>
+<h3 id="sonraki-adımlar">Sonraki adımlar</h3>
+<ul>
+<li><strong>Alıştırmaları yapabilirsiniz.</strong> Her bölümün sonundaki alıştırma, o algoritmanın en önemli ayarını elle değiştirmenizi ister. Bir algoritmayı anlamanın en hızlı yolu onu bozmaktır.</li>
+<li><strong>Kendi verinizle çalışabilirsiniz.</strong> <code>oku</code> ile bir CSV dosyasını okuyup 1–8 arasındaki algoritmalardan birini kendi probleminize uygulayabilirsiniz: harcamalarınız, spor kayıtlarınız, bir sensörün ölçümleri.</li>
+<li><strong>Hazır fonksiyonları deneyebilirsiniz.</strong> <code>MakineOgrenmesi</code> birimi, burada elle yazdığımız algoritmaların bir kısmının hazır sürümlerini sunar. Kendi yazdığınızla aynı sonucu verip vermediklerini karşılaştırabilirsiniz.</li>
+<li><strong>Modelinizi bir cihaza taşıyabilirsiniz.</strong> <code>YZ</code> ile eğittiğiniz <code>Yoğun</code> katmanlı bir ağı <code>ModeliDışaAktar</code> ile bir Yöntem birimine çevirip ESP32 üzerinde çalıştırabilirsiniz (Yöntem kitabı, gömülü sistemler bölümü).</li>
+<li><strong>Büyük kütüphanelere geçebilirsiniz.</strong> Gerçek projelerde scikit-learn (1–15) ve PyTorch (16–20) kullanılır. Bu kitaptaki kavramlar oraya birebir taşınır. <code>Yoğun</code> katmanın PyTorch’taki karşılığı <code>nn.Linear</code>, <code>Ardışık</code> modelinki <code>nn.Sequential</code>, <code>kayıp.GeriYay</code> çağrısınınki <code>loss.backward()</code> olur.</li>
+<li><strong>Okuma önerileri.</strong> Matematik tarafı için Gareth James ve arkadaşlarının <em>An Introduction to Statistical Learning</em> kitabı ücretsiz ve yeni başlayanlara uygundur. Derin öğrenme için Michael Nielsen’in çevrim içi kitabı <em>Neural Networks and Deep Learning</em>, sinir ağlarını bu kitaptaki gibi sıfırdan kurar.</li>
+</ul>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="06-bolum-4-derin-ogrenme.html"><small>Önceki</small>Bölüm 4 — Derin öğrenme</a><a class="sonraki" href="index.html"><small>Bitti</small>İçindekilere dön</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#karşılaştırma-tablosu">Karşılaştırma tablosu</a></li><li><a href="#sık-yapılan-hatalar">Sık yapılan hatalar</a></li><li><a href="#sonraki-adımlar">Sonraki adımlar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

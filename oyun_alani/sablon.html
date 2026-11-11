@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yöntem Oyun Alanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* İznik çinisi: kobalt mavi mürekkep, mercan kırmızısı uyarı, serin kâğıt zemin.
+     Yerleşim: üst çubuk + iki bölme (sol düzenleyici, sağ çıktı/girdi). */
+  --zemin: #eef1f4;
+  --panel: #ffffff;
+  --murekkep: #17212c;
+  --soluk: #5b6878;
+  --cizgi: #d6dde5;
+  --vurgu: #1d5fa6;
+  --vurgu-acik: #e3edf8;
+  --mercan: #b83a2a;
+  --yesil: #2e7d4f;
+  --kod-zemin: #fbfcfd;
+  --s-anahtar: #1d5fa6;
+  --s-tip: #7a3fa0;
+  --s-metin: #2e7d4f;
+  --s-sayi: #b4560f;
+  --s-yorum: #8a96a3;
+  --s-ek: #b83a2a;
+  --yazi: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --kod: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --baslik: "Bricolage Grotesque", "IBM Plex Sans", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --zemin: #0e1319; --panel: #151c24; --murekkep: #e3e9ef; --soluk: #93a1b0; --cizgi: #263240;
+    --vurgu: #6ea8ea; --vurgu-acik: #1b2a3b; --mercan: #ff8370; --yesil: #6fcf97; --kod-zemin: #121820;
+    --s-anahtar: #79b0f0; --s-tip: #c99bf0; --s-metin: #8fd6a6; --s-sayi: #f0a868; --s-yorum: #6b7a8a; --s-ek: #ff8f7d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --zemin: #0e1319; --panel: #151c24; --murekkep: #e3e9ef; --soluk: #93a1b0; --cizgi: #263240;
+  --vurgu: #6ea8ea; --vurgu-acik: #1b2a3b; --mercan: #ff8370; --yesil: #6fcf97; --kod-zemin: #121820;
+  --s-anahtar: #79b0f0; --s-tip: #c99bf0; --s-metin: #8fd6a6; --s-sayi: #f0a868; --s-yorum: #6b7a8a; --s-ek: #ff8f7d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--zemin); color: var(--murekkep); font: 15px/1.5 var(--yazi); display: flex; flex-direction: column; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 10px 16px; border-bottom: 1px solid var(--cizgi); background: var(--panel); }
+.marka { display: flex; align-items: baseline; gap: 10px; margin-right: auto; }
+.marka h1 { font: 700 22px/1 var(--baslik); margin: 0; letter-spacing: -0.01em; }
+.marka h1 span { color: var(--vurgu); }
+.marka small { color: var(--soluk); font-size: 13px; }
+.denetim { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+label.gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+select { background: var(--panel); border: 1px solid var(--cizgi); border-radius: 6px; padding: 6px 8px; max-width: 280px; }
+.dugme { border: 1px solid var(--cizgi); background: var(--panel); border-radius: 6px; padding: 6px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.dugme:hover { border-color: var(--vurgu); }
+.dugme.ana { background: var(--vurgu); border-color: var(--vurgu); color: #fff; font-weight: 600; }
+:root[data-theme="dark"] .dugme.ana { color: #0e1319; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dugme.ana { color: #0e1319; } }
+.dugme.ana:hover { filter: brightness(1.08); }
+.dugme[disabled] { opacity: .45; cursor: default; }
+kbd { font: 12px var(--kod); opacity: .8; }
+
+main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; padding: 12px 16px 16px; }
+@media (max-width: 860px) { main { grid-template-columns: 1fr; grid-template-rows: minmax(360px, 1fr) minmax(300px, 1fr); } }
+.kart { background: var(--panel); border: 1px solid var(--cizgi); border-radius: 10px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.kart-baslik { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--cizgi); font-size: 13px; color: var(--soluk); min-height: 41px; }
+.kart-baslik strong { color: var(--murekkep); font-weight: 600; }
+.kart-baslik .bosluk { flex: 1; }
+.kucuk { font-size: 12.5px; padding: 3px 9px; }
+
+/* düzenleyici */
+.duzenleyici { position: relative; flex: 1; min-height: 0; display: flex; background: var(--kod-zemin); font: 14px/1.6 var(--kod); }
+.satirno { padding: 12px 8px 12px 12px; color: var(--s-yorum); text-align: right; user-select: none; overflow: hidden; white-space: pre; min-width: 44px; font-variant-numeric: tabular-nums; }
+.alan { position: relative; flex: 1; min-width: 0; }
+.alan pre, .alan textarea { position: absolute; inset: 0; margin: 0; padding: 12px 14px 12px 6px; font: inherit; white-space: pre; overflow: auto; tab-size: 2; border: 0; }
+.alan pre { pointer-events: none; color: var(--murekkep); }
+.alan textarea { background: transparent; color: transparent; caret-color: var(--murekkep); resize: none; outline: none; }
+.alan textarea::selection { background: color-mix(in srgb, var(--vurgu) 28%, transparent); color: transparent; }
+.k-a { color: var(--s-anahtar); font-weight: 500; } .k-t { color: var(--s-tip); } .k-m { color: var(--s-metin); }
+.k-s { color: var(--s-sayi); } .k-y { color: var(--s-yorum); font-style: italic; } .k-e { color: var(--s-ek); font-weight: 500; }
+
+/* sağ bölme */
+.sag { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; min-height: 0; }
+.sekmeler { display: flex; gap: 2px; }
+.sekme { border: 0; background: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; color: var(--soluk); }
+.sekme[aria-selected="true"] { background: var(--vurgu-acik); color: var(--vurgu); font-weight: 600; }
+.cikti { flex: 1; min-height: 0; margin: 0; padding: 12px 14px; overflow: auto; font: 13.5px/1.55 var(--kod); white-space: pre-wrap; word-break: break-word; background: var(--kod-zemin); }
+.cikti .hata { color: var(--mercan); }
+.cikti .iz { color: var(--soluk); }
+.secim { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; cursor: pointer; }
+.cikti.js { white-space: pre; word-break: normal; font-size: 12px; color: var(--soluk); }
+.uygulama-alani { flex: 1; min-height: 0; overflow: auto; background: var(--zemin); padding: 16px; display: flex; justify-content: center; align-items: flex-start; }
+.uygulama-alani[hidden] { display: none; }
+.telefon { width: 100%; max-width: 390px; min-height: 100%; background: #fff; border: 1px solid var(--cizgi); border-radius: 28px; overflow: hidden;
+  box-shadow: 0 18px 40px -28px rgba(23, 33, 44, .55); display: flex; flex-direction: column; }
+.telefon > .y-uygulama { flex: 1; }
+.telefon:empty::before { content: attr(data-bos); display: block; padding: 28px 24px; color: #5b6878; font: 14px/1.6 var(--yazi); }
+.sekme .rozet { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--vurgu); margin-left: 6px; vertical-align: middle; }
+.durum { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.nokta { width: 8px; height: 8px; border-radius: 50%; background: var(--cizgi); }
+.durum[data-d="calisiyor"] .nokta { background: var(--vurgu); animation: nabiz 1s infinite; }
+.durum[data-d="tamam"] .nokta { background: var(--yesil); }
+.durum[data-d="hata"] .nokta { background: var(--mercan); }
+@keyframes nabiz { 50% { opacity: .3; } }
+@media (prefers-reduced-motion: reduce) { .durum[data-d="calisiyor"] .nokta { animation: none; } }
+textarea#girdi { width: 100%; height: 84px; border: 0; resize: vertical; padding: 10px 14px; font: 13.5px/1.5 var(--kod); background: var(--kod-zemin); color: var(--murekkep); outline: none; }
+.ipucu { padding: 8px 12px; font-size: 12.5px; color: var(--soluk); border-top: 1px solid var(--cizgi); }
+.ipucu code { font-family: var(--kod); color: var(--murekkep); }
+</style>
+</head>
+<body>
+<header>
+  <div class="marka">
+    <h1>Yöntem <span>Oyun Alanı</span></h1>
+    <small>Türkçe programlama dili · tarayıcıda derlenir</small>
+  </div>
+  <div class="denetim">
+    <label class="gizli" for="ornek">Örnek program</label>
+    <select id="ornek"></select>
+    <button class="dugme" id="kopyala" type="button">Kodu kopyala</button>
+    <button class="dugme" id="durdur" type="button" disabled>Durdur</button>
+    <button class="dugme ana" id="calistir" type="button">▶ Çalıştır <kbd>Ctrl+Enter</kbd></button>
+  </div>
+</header>
+<main>
+  <section class="kart" aria-label="Kaynak kod">
+    <div class="kart-baslik"><strong id="dosyaadi">hosgeldiniz.y</strong><span class="bosluk"></span><span id="konum">Satır 1</span></div>
+    <div class="duzenleyici">
+      <div class="satirno" id="satirno" aria-hidden="true">1</div>
+      <div class="alan">
+        <pre id="renkli" aria-hidden="true"></pre>
+        <textarea id="kaynak" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Yöntem kaynak kodu"></textarea>
+      </div>
+    </div>
+  </section>
+  <div class="sag">
+    <section class="kart" aria-label="Sonuç">
+      <div class="kart-baslik">
+        <div class="sekmeler" role="tablist">
+          <button class="sekme" role="tab" id="sekme-cikti" aria-selected="true" type="button">Çıktı</button>
+          <button class="sekme" role="tab" id="sekme-uygulama" aria-selected="false" type="button">Uygulama</button>
+          <button class="sekme" role="tab" id="sekme-js" aria-selected="false" type="button">Üretilen JavaScript</button>
+        </div>
+        <span class="bosluk"></span>
+        <label class="secim" for="izsec" title="Donanım benzetiminde pin, kesme ve I2C olaylarını zaman damgasıyla gösterir"><input type="checkbox" id="izsec"> Pin izi</label>
+        <span class="durum" id="durum" data-d="bos"><span class="nokta"></span><span id="durumyazi">Hazır</span></span>
+      </div>
+      <pre class="cikti" id="cikti" role="log" aria-live="polite"></pre>
+      <div class="uygulama-alani" id="uygulamaAlani" hidden><div class="telefon" id="uygulama" data-bos="Bu program bir arayüz kurmuyor. Pencere birimiyle (kullan Pencere) düğme, kutu ve tuvallerden oluşan bir uygulama yazın; burada canlı çalışır. Örnekler listesinde 'Arayüz ve mobil uygulamalar' grubuna bakın."></div></div>
+    </section>
+    <section class="kart" aria-label="Girdi">
+      <div class="kart-baslik"><strong>Girdi</strong><span>— <code>oku(...)</code> buradan satır satır okur</span></div>
+      <textarea id="girdi" spellcheck="false" aria-label="Program girdisi"></textarea>
+      <div class="ipucu">Birimler hazır: <code>Pencere</code> <code>Mobil</code> <code>Donanım</code> (sanal saatli benzetim) <code>YZ</code> <code>Kuantum</code> <code>Matematik</code> <code>Veri</code> <code>Sistem</code> ve kütüphaneden <code>İstatistik</code> <code>Arama</code> <code>Dil</code> <code>Uzman</code> <code>MakineÖğrenmesi</code> <code>KuantumAlgoritmaları</code></div>
+    </section>
+  </div>
+</main>
+
+<script id="motor">/*__MOTOR__*/</script>
+<script>
+const ORNEKLER = /*__ORNEKLER__*/;
+const $ = (id) => document.getElementById(id);
+const kaynak = $('kaynak'), renkli = $('renkli'), satirno = $('satirno'), cikti = $('cikti'), girdi = $('girdi');
+let gecerli = ORNEKLER[0], isci = null, sekme = 'cikti', sonCikti = [], gorunum = null;
+
+// ---------------------------------------------------------------- renklendirme
+const TR = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'â': 'a', 'î': 'i', 'û': 'u' };
+const katla = (s) => [...s.replace(/İ/g, 'i').replace(/I/g, 'ı').toLowerCase()].map(c => TR[c] ?? c).join('');
+const ANAHTAR = new Set('program birim kullan arayuz uygulama degisken sabit tip prosedur fonksiyon kurucu basla bitir eger ise degilse iken icin kadar azalarak her icinde icindeki tekrarla dene yakala sonunda firlat don cik kir devam sinif kayit miras kendi ve veya yada degil mod bol dizi dizisi listesi sozlugu kez olana dek degerine gore adim'.split(' '));
+const DEGER = new Set(['dogru', 'yanlis', 'bos']);
+const TIP = new Set('tamsayi ondalik metin karakter mantiksal liste sozluk tensor herhangi sonuc'.split(' '));
+const DESEN = /(\/\/[^\n]*|\{[^}]*\}?|\(\*[\s\S]*?(?:\*\)|$))|((?<=[\p{L}\p{N}_)\]])'\p{L}+)|('(?:[^'\n]|'')*'?|"(?:[^"\\\n]|\\.)*"?)|(\$[0-9A-Fa-f]+|#\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|([\p{L}_][\p{L}\p{N}_]*)/gu;
+const kacir = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+function renklendir(metin) {
+  let out = '', son = 0;
+  for (const m of metin.matchAll(DESEN)) {
+    out += kacir(metin.slice(son, m.index));
+    const t = m[0];
+    let s = null;
+    if (m[1]) s = 'k-y'; else if (m[2]) s = 'k-e'; else if (m[3]) s = 'k-m'; else if (m[4]) s = 'k-s';
+    else { const k = katla(t); s = ANAHTAR.has(k) ? 'k-a' : DEGER.has(k) ? 'k-s' : TIP.has(k) ? 'k-t' : null; }
+    out += s ? `<span class="${s}">${kacir(t)}</span>` : kacir(t);
+    son = m.index + t.length;
+  }
+  return out + kacir(metin.slice(son)) + '\n';
+}
+function guncelle() {
+  renkli.innerHTML = renklendir(kaynak.value);
+  const n = kaynak.value.split('\n').length;
+  satirno.textContent = Array.from({ length: n }, (_, i) => i + 1).join('\n');
+  esitle();
+  try { localStorage.setItem('yontem-taslak', JSON.stringify({ ad: gecerli.ad, kaynak: kaynak.value, girdi: girdi.value })); } catch (e) {}
+}
+function esitle() { renkli.scrollTop = kaynak.scrollTop; renkli.scrollLeft = kaynak.scrollLeft; satirno.scrollTop = kaynak.scrollTop; }
+function konumGoster() {
+  const once = kaynak.value.slice(0, kaynak.selectionStart).split('\n');
+  $('konum').textContent = `Satır ${once.length}, Sütun ${once[once.length - 1].length + 1}`;
+}
+kaynak.addEventListener('input', guncelle);
+kaynak.addEventListener('scroll', esitle);
+kaynak.addEventListener('keyup', konumGoster);
+kaynak.addEventListener('click', konumGoster);
+kaynak.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertText', false, '  '); }
+  else if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) {
+    const bas = kaynak.value.lastIndexOf('\n', kaynak.selectionStart - 1) + 1;
+    const girinti = /^\s*/.exec(kaynak.value.slice(bas, kaynak.selectionStart))[0];
+    const satir = kaynak.value.slice(bas, kaynak.selectionStart).trim();
+    const ek = /(^|\s)(başla|sınıf|kayıt|dene|tekrarla|yakala|sonunda|göre)$/i.test(satir) ? '  ' : '';
+    e.preventDefault(); document.execCommand('insertText', false, '\n' + girinti + ek);
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); calistir(); } });
+
+// ---------------------------------------------------------------- örnekler
+const sec = $('ornek');
+const gruplar = {};
+ORNEKLER.forEach((o, i) => {
+  if (!gruplar[o.grup]) { const g = document.createElement('optgroup'); g.label = o.grup; sec.appendChild(g); gruplar[o.grup] = g; }
+  const op = document.createElement('option'); op.value = i; op.textContent = o.baslik; gruplar[o.grup].appendChild(op);
+});
+function ornekAc(o, k, g) {
+  gecerli = o;
+  kaynak.value = k ?? o.kaynak; girdi.value = g ?? (o.girdi || '');
+  $('dosyaadi').textContent = o.ad;
+  sec.value = ORNEKLER.indexOf(o);
+  kaynak.scrollTop = 0;
+  guncelle(); konumGoster();
+}
+sec.addEventListener('change', () => { ornekAc(ORNEKLER[+sec.value]); calistir(); });
+
+// ---------------------------------------------------------------- çalıştırma
+const MOTOR = $('motor').textContent;
+const motorURL = URL.createObjectURL(new Blob([MOTOR], { type: 'text/javascript' }));
+function durum(d, yazi) { $('durum').dataset.d = d; $('durumyazi').textContent = yazi; }
+function ciktiCiz() {
+  if (sekme !== 'cikti') { if (sonCikti.length) $('sekme-cikti').innerHTML = 'Çıktı<span class="rozet" aria-label="yeni çıktı"></span>'; return; }
+  $('sekme-cikti').textContent = 'Çıktı';
+  cikti.className = 'cikti';
+  cikti.innerHTML = sonCikti.map(([t, m]) => t === 'hata' || t === 'iz' ? `<span class="${t}">${kacir(m)}</span>` : kacir(m)).join('');
+  cikti.scrollTop = cikti.scrollHeight;
+}
+function bitir() { if (isci) { isci.terminate(); isci = null; } if (gorunum) gorunum.kapat(); $('durdur').disabled = true; $('calistir').disabled = false; }
+function calistir() {
+  bitir();
+  sonCikti = [];
+  gorunum = null;
+  $('uygulama').innerHTML = '';
+  sekmeSec('cikti');
+  ciktiCiz();
+  durum('calisiyor', 'Çalışıyor…');
+  $('durdur').disabled = false;
+  const t0 = performance.now();
+  try { isci = new Worker(motorURL); }
+  catch (e) { sonCikti.push(['hata', 'Bu tarayıcı Web Worker başlatamadı: ' + e.message + '\n']); ciktiCiz(); durum('hata', 'Başlatılamadı'); bitir(); return; }
+  isci.onmessage = (ev) => {
+    const m = ev.data;
+    if (m.tur === 'cikti') { sonCikti.push(['cikti', m.metin]); ciktiCiz(); }
+    else if (m.tur === 'arayuz') {
+      if (!gorunum) {
+        gorunum = new Yontem.ArayuzGorunumu($('uygulama'), (tur, veri) => { if (isci) isci.postMessage({ tur, veri }); }, 'yontem-oyun:');
+        sekmeSec('uygulama');
+      }
+      for (const op of m.islemler) gorunum.uygula(op);
+    }
+    else if (m.tur === 'kapat') { durum('tamam', 'Uygulama kapandı'); bitir(); }
+    else if (m.tur === 'iz') { sonCikti.push(['iz', m.metin]); ciktiCiz(); }
+    else if (m.tur === 'hata') {
+      const ek = /EvalError|unsafe-eval/.test(m.metin) ? '\nBu sayfanın güvenlik ayarı üretilen kodun çalıştırılmasına izin vermiyor.' : '';
+      sonCikti.push(['hata', m.metin + ek + '\n']); ciktiCiz();
+      if (gorunum) gorunum.duyur(m.metin, 6000);
+    }
+    else if (m.tur === 'bitti') {
+      const sn = ((performance.now() - t0) / 1000).toFixed(2);
+      if (m.canli) { durum('calisiyor', 'Uygulama çalışıyor'); return; }
+      if (m.kod === 0) durum('tamam', `Bitti · ${sn} sn`); else durum('hata', `Çıkış kodu ${m.kod} · ${sn} sn`);
+      bitir();
+    }
+  };
+  isci.onerror = (e) => { sonCikti.push(['hata', 'Motor hatası: ' + (e.message || 'bilinmiyor') + '\n']); ciktiCiz(); durum('hata', 'Motor hatası'); bitir(); };
+  isci.postMessage({ kaynak: kaynak.value, girdi: girdi.value, birimler: gecerli.birimler || {}, iz: $('izsec').checked,
+    canli: true, cihaz: Yontem.cihazBilgisi('yontem-oyun:') });
+}
+$('calistir').addEventListener('click', calistir);
+$('izsec').addEventListener('change', calistir);
+$('durdur').addEventListener('click', () => { const uyg = !!gorunum; bitir(); if (uyg) { durum('tamam', 'Uygulama durduruldu'); return; } sonCikti.push(['hata', '\nDurduruldu.\n']); ciktiCiz(); durum('hata', 'Durduruldu'); });
+$('kopyala').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(kaynak.value); $('kopyala').textContent = 'Kopyalandı ✓'; }
+  catch (e) { kaynak.select(); $('kopyala').textContent = 'Seçildi — Ctrl+C'; }
+  setTimeout(() => { $('kopyala').textContent = 'Kodu kopyala'; }, 1600);
+});
+
+// ---------------------------------------------------------------- sekmeler
+function sekmeSec(s) {
+  sekme = s;
+  $('sekme-cikti').setAttribute('aria-selected', s === 'cikti');
+  $('sekme-uygulama').setAttribute('aria-selected', s === 'uygulama');
+  $('sekme-js').setAttribute('aria-selected', s === 'js');
+  cikti.hidden = s === 'uygulama';
+  $('uygulamaAlani').hidden = s !== 'uygulama';
+  if (s === 'uygulama') return;
+  if (s === 'js') {
+    cikti.className = 'cikti js';
+    try { cikti.textContent = Yontem.jsUret(kaynak.value, gecerli.birimler || {}); }
+    catch (e) { cikti.className = 'cikti'; cikti.innerHTML = `<span class="hata">${kacir((e.metin ? e.metin() : String(e)))}</span>`; }
+    cikti.scrollTop = 0;
+  } else ciktiCiz();
+}
+$('sekme-cikti').addEventListener('click', () => sekmeSec('cikti'));
+$('sekme-js').addEventListener('click', () => sekmeSec('js'));
+$('sekme-uygulama').addEventListener('click', () => sekmeSec('uygulama'));
+
+// ---------------------------------------------------------------- başlangıç
+let taslak = null;
+try { taslak = JSON.parse(localStorage.getItem('yontem-taslak') || 'null'); } catch (e) {}
+const tOrnek = taslak && ORNEKLER.find(o => o.ad === taslak.ad);
+if (tOrnek) ornekAc(tOrnek, taslak.kaynak, taslak.girdi); else ornekAc(ORNEKLER[0]);
+calistir();
+</script>
+</body>
+</html>

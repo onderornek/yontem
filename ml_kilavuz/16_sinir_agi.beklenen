@@ -1,0 +1,13 @@
+  Epok     1/400   kayıp = 0.564626
+  Epok   100/400   kayıp = 0.021568
+  Epok   200/400   kayıp = 0.006376
+  Epok   300/400   kayıp = 0.003043
+  Epok   400/400   kayıp = 0.001746
+Eğitim doğruluğu: %100.0
+Parametre sayısı: 65
+Yeni noktalar:
+  [0, 0]  içeride olma olasılığı 1.00
+  [0.5, 0.5]  içeride olma olasılığı 1.00
+  [0.9, 0]  içeride olma olasılığı 0.31
+  [1.2, 0]  içeride olma olasılığı 0.00
+  [1.5, 1.5]  içeride olma olasılığı 0.00

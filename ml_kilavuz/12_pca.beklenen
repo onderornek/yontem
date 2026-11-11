@@ -1,0 +1,7 @@
+Kovaryans matrisi:
+tensör([[101.125, 122.125],
+        [122.125, 149.4107]])
+1. bileşen: (0.635, 0.773)  varyans 249.8  → açıklanan oran %99.7
+2. bileşen: (-0.773, 0.635)  varyans 0.8  → açıklanan oran %0.3
+Tek boyuta indirgenmiş veri (1. bileşen üzerindeki izdüşüm):
+tensör([-22.1297, -15.0923, -9.6002, -2.922, 0.5278, 8.3379, 16.9206, 23.958])

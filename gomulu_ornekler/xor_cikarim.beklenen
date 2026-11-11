@@ -1,0 +1,4 @@
+0 XOR 0 → 0.0009  LED sönük
+0 XOR 1 → 0.9997  LED yanık
+1 XOR 0 → 0.9992  LED yanık
+1 XOR 1 → 0.0005  LED sönük

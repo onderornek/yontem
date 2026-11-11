@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 6 — Prosedürler ve fonksiyonlar · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html" aria-current="page">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 8 / 20</p>
+    <h2 id="bölüm-6-prosedürler-ve-fonksiyonlar">Bölüm 6 — Prosedürler ve fonksiyonlar</h2>
+<p>Büyük bir işi küçük, adlandırılmış parçalara bölmek programı okunur ve yeniden kullanılabilir yapar. <strong>Prosedür</strong> bir iş yapar; <strong>fonksiyon</strong> ise bir değer döndürür.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> AltProgramlar
+
+<span class="ya">prosedür</span> Çizgi(uzunluk: <span class="ya">tamsayı</span> = <span class="ys">20</span>; karakter: <span class="ya">metin</span> = <span class="ym">'-'</span>)
+<span class="ya">değişken</span>
+  i: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den uzunluk'a <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> yaz(karakter)
+  yaz(<span class="ym">''</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Kare(x: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sonuç := x * x
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Faktöriyel(n: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> n &lt;= <span class="ys">1</span> <span class="ya">ise</span> <span class="ya">dön</span> <span class="ys">1</span>                   <span class="yy">// dön: değeri ver ve hemen çık</span>
+  <span class="ya">dön</span> n * Faktöriyel(n - <span class="ys">1</span>)              <span class="yy">// özyineleme</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Takas(<span class="ya">değişken</span> a, b: <span class="ya">tamsayı</span>)   <span class="yy">// referansla parametre</span>
+<span class="ya">değişken</span>
+  geçici: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  geçici := a
+  a := b
+  b := geçici
+<span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  x, y: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  Çizgi
+  yaz(<span class="ym">'Kare(1.5)    = '</span> + Kare(<span class="ys">1.5</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Faktöriyel(20) = '</span> + Faktöriyel(<span class="ys">20</span>), <span class="ys">1</span>)
+  x := <span class="ys">1</span>;  y := <span class="ys">2</span>
+  Takas(x, y)
+  yaz(<span class="ym">'Takas sonrası: x = '</span> + x + <span class="ym">', y = '</span> + y, <span class="ys">1</span>)
+  Çizgi(<span class="ys">10</span>, <span class="ym">'='</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>--------------------
+Kare(1.5)    = 2.25
+Faktöriyel(20) = 2432902008176640000
+Takas sonrası: x = 2, y = 1
+==========</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kavram</th>
+<th>Örnekte</th>
+<th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Varsayılan parametre</td>
+<td><code>uzunluk: tamsayı = 20</code></td>
+<td>Verilmezse bu değer kullanılır. <code>Çizgi;</code> boş çağrılabildi.</td>
+</tr>
+<tr class="even">
+<td>Yerel değişken</td>
+<td><code>değişken i</code></td>
+<td>Yalnızca o alt programın içinde yaşar</td>
+</tr>
+<tr class="odd">
+<td><code>sonuç</code></td>
+<td><code>sonuç := x * x</code></td>
+<td>Fonksiyonun döndüreceği değer</td>
+</tr>
+<tr class="even">
+<td><code>dön</code></td>
+<td><code>dön 1</code></td>
+<td>Değeri belirler ve fonksiyondan hemen çıkar</td>
+</tr>
+<tr class="odd">
+<td>Özyineleme</td>
+<td><code>Faktöriyel(n - 1)</code></td>
+<td>Fonksiyon kendini çağırır; bir durma koşulu şarttır</td>
+</tr>
+<tr class="even">
+<td>Referans parametre</td>
+<td><code>değişken a, b</code></td>
+<td>Değişikliği çağıranın değişkenine yansıtır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Normal parametreler <strong>değer olarak</strong> aktarılır: fonksiyon kendi kopyasını değiştirir, asıl değişken etkilenmez. Başına <code>değişken</code> yazılan parametre ise çağıranın değişkenine bağlanır; <code>Takas</code> bu yüzden çalıştı. Parametresiz alt programlar parantezsiz çağrılır: <code>Çizgi;</code></p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="07-bolum-5-donguler.html"><small>Önceki</small>Bölüm 5 — Döngüler</a><a class="sonraki" href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html"><small>Sonraki</small>Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

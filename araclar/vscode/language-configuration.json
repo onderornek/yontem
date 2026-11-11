@@ -1,0 +1,19 @@
+{
+  "comments": { "lineComment": "//", "blockComment": ["{", "}"] },
+  "brackets": [["(", ")"], ["[", "]"]],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}", "notIn": ["string"] },
+    { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [["(", ")"], ["[", "]"], ["'", "'"], ["\"", "\""]],
+  "wordPattern": "[\\p{L}_][\\p{L}\\p{N}_]*",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(ba[sş]la|de[gğ]i[sş]ken|sabit|tip|dene|yakala.*|sonunda|aray[uü]z|tekrarla|.*de[gğ]erine\\s+g[oö]re)\\s*(//.*)?$",
+    "decreaseIndentPattern": "^\\s*(bitir\\.?|yakala.*|sonunda|.*olana\\s+dek)\\s*(//.*)?$"
+  },
+  "folding": {
+    "markers": { "start": "^\\s*(ba[sş]la|dene)\\b", "end": "^\\s*bitir\\b" }
+  }
+}

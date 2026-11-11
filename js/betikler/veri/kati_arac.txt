@@ -1,0 +1,20 @@
+birim Araç
+{$katı}
+
+arayüz
+  fonksiyon İkiKat(n: tamsayı): tamsayı
+  fonksiyon Birleştir(a, b: metin; ayraç: metin := ' '): metin
+
+uygulama
+
+fonksiyon İkiKat(n: tamsayı): tamsayı
+başla
+  dön n * 2
+bitir
+
+fonksiyon Birleştir(a, b: metin; ayraç: metin := ' '): metin
+başla
+  dön a + ayraç + b
+bitir
+
+bitir.

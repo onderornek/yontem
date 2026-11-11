@@ -1,0 +1,5 @@
+200 <h1>Merhaba, Ayşe!</h1>
+200 application/json; charset=utf-8 {"sayı": 12, "kare": 144}
+500 Sunucu hatası
+405 Bu yöntem desteklenmiyor
+404 Bulunamadı

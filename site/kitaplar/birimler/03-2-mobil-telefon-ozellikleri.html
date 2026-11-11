@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. Mobil: telefon özellikleri · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html" aria-current="page">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 3 / 12</p>
+    <h2 id="mobil-telefon-özellikleri">2. Mobil: telefon özellikleri</h2>
+<p><code>Mobil</code> birimi telefonun titreşim, bildirim, paylaşma, konum, hareket algılayıcısı ve kalıcı depo özelliklerine erişir. Genellikle <code>Pencere</code> ile birlikte kullanılır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SuTakibi
+<span class="yy">{ Mobil birimi: içilen bardak sayısı telefonda saklanır, hedefe ulaşınca telefon titrer
+  ve bildirim gösterir. Benzetimde titreşim ve bildirim çıktıya birer satır olarak yazılır. }</span>
+<span class="ya">kullan</span> Pencere, Mobil
+
+<span class="ya">sabit</span> HEDEF: <span class="ya">tamsayı</span> = <span class="ys">3</span>
+
+<span class="ya">değişken</span>
+  bardak: <span class="ya">tamsayı</span>
+  gösterge, içDüğmesi: <span class="ya">herhangi</span>
+
+<span class="ya">prosedür</span> Göster
+<span class="ya">başla</span>
+  gösterge.Metin := Metin(bardak) + <span class="ym">' / '</span> + Metin(HEDEF) + <span class="ym">' bardak'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> İç
+<span class="ya">başla</span>
+  bardak := bardak + <span class="ys">1</span>
+  Sakla(<span class="ym">'bardak'</span>, bardak)          <span class="yy">{ uygulama kapanıp açılsa da kalır }</span>
+  Göster
+  <span class="ya">eğer</span> bardak = HEDEF <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    Titreşim(<span class="ys">300</span>)
+    Bildirim(<span class="ym">'Tebrikler'</span>, <span class="ym">'Bugünkü su hedefine ulaştın'</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Başlık(<span class="ym">'Su Takibi'</span>)
+  bardak := Getir(<span class="ym">'bardak'</span>, <span class="ys">0</span>)     <span class="yy">{ daha önce saklanmamışsa 0 }</span>
+  gösterge := Etiket(<span class="ym">''</span>)
+  içDüğmesi := Düğme(<span class="ym">'Bir bardak içtim'</span>)
+  içDüğmesi.Tıklanınca(@İç)
+  Yerleştir(gösterge, içDüğmesi)
+  Göster
+
+  <span class="ya">eğer</span> <span class="ya">değil</span> Canlı <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    yaz(<span class="ym">'Platform: '</span> + Platform + <span class="ym">', ekran '</span> + EkranGenişliği + <span class="ym">'×'</span> + EkranYüksekliği, <span class="ys">1</span>)
+    <span class="ys">3</span> <span class="ya">kez</span> <span class="ya">tekrarla</span> Tıkla(içDüğmesi)
+    yaz(gösterge.Metin + <span class="ym">' (saklanan: '</span> + Getir(<span class="ym">'bardak'</span>, <span class="ys">0</span>) + <span class="ym">')'</span>, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  Çalıştır
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Platform: benzetim, ekran 390×844
+[Titreşim 300 ms]
+[Bildirim] Tebrikler: Bugünkü su hedefine ulaştın
+3 / 3 bardak (saklanan: 3)
+Pencere &quot;Su Takibi&quot;
+  Etiket &quot;3 / 3 bardak&quot;
+  Düğme &quot;Bir bardak içtim&quot;</code></pre></div>
+<p>Benzetimde <code>Titreşim</code>, <code>Bildirim</code> ve <code>Paylaş</code> çıktıya köşeli ayraçlı birer satır yazar; telefonda gerçekten titreşir ve bildirim gösterir. <code>Sakla</code> ile yazılan değerler uygulama kapansa da kalır; metin, sayı, mantıksal değer ve bunların listeleri saklanabilir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Titreşim(ms)</code></td>
+<td>Telefonu titretir</td>
+</tr>
+<tr class="even">
+<td><code>Bildirim(başlık, metin)</code></td>
+<td>Bildirim gösterir</td>
+</tr>
+<tr class="odd">
+<td><code>Paylaş(metin)</code></td>
+<td>Paylaşma menüsünü açar</td>
+</tr>
+<tr class="even">
+<td><code>KonumAl(@P)</code></td>
+<td>Konum bulununca <code>P(enlem, boylam)</code> çağrılır</td>
+</tr>
+<tr class="odd">
+<td><code>HareketOlunca(@P)</code></td>
+<td>Telefon hareket ettikçe <code>P(x, y, z)</code> çağrılır</td>
+</tr>
+<tr class="even">
+<td><code>YönDeğişince(@P)</code></td>
+<td>Ekran döndüğünde <code>P(yön)</code> çağrılır (<code>'dikey'</code> ya da <code>'yatay'</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>Sakla(anahtar, değer)</code>, <code>Getir(anahtar, varsayılan)</code>, <code>Unut(anahtar)</code></td>
+<td>Kalıcı depo</td>
+</tr>
+<tr class="even">
+<td><code>Platform</code>, <code>Dokunmatik</code>, <code>EkranGenişliği</code>, <code>EkranYüksekliği</code>, <code>EkranYönü</code></td>
+<td>Cihaz bilgisi</td>
+</tr>
+<tr class="odd">
+<td><code>BenzetimKonum</code>, <code>BenzetimHareket</code>, <code>Salla</code>, <code>BenzetimYön</code></td>
+<td>Testler için benzetim</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Telefona kurmak.</strong> <code>yontem paketle program.y --mobil --ad "Su Takibi"</code> komutu bir klasör üretir: <code>index.html</code>, uygulama bildirimi (<code>manifest.webmanifest</code>), çevrim dışı çalışma için <code>sw.js</code> ve simgeler. Klasörü HTTPS ile yayımlamanız yeterlidir (GitHub Pages, Netlify ya da kendi sunucunuz); telefonun tarayıcısında açıp <strong>Ana ekrana ekle</strong> deyince uygulama olarak kurulur ve internet olmadan da çalışır. Uygulama mağazası paketi (Android/iOS) bu sürümde yoktur.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="02-1-pencere-arayuz.html"><small>Önceki</small>1. Pencere: arayüz</a><a class="sonraki" href="04-3-guvenlik-saldirilara-karsi-savunma.html"><small>Sonraki</small>3. Güvenlik: saldırılara karşı savunma</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

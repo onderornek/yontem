@@ -1,0 +1,20 @@
+A) Katman normalleştirme öncesi ve sonrası:
+   [2.0, 4.0, 6.0, 8.0]  →  [-1.34, -0.45, 0.45, 1.34]   (ortalama 0.00, sapma 1.00)
+   [100.0, 101.0, 99.0, 100.0]  →  [0.0, 1.41, -1.41, 0.0]   (ortalama 0.00, sapma 1.00)
+   [-3.0, 0.0, 0.0, 3.0]  →  [-1.41, 0.0, 0.0, 1.41]   (ortalama 0.00, sapma 1.00)
+
+B) Küçük GPT (2 katman, 4 kafa, 32 boyut, 16 karakter bağlam):
+   Karakter ve konum gömmeleri :   1472
+   Dikkat (Q, K, V, çıkış)     :   8192
+   İleri besleme ağları        :  16704
+   Katman normalleştirmeler    :    320
+   Çıkış katmanı               :    990
+   Toplam                      :  27678   (model.ParametreAdedi = 27678)
+
+C) İki pencerelik tek bir yığını ezberleme:
+   Adım   1: kayıp 3.4682
+   Adım  30: kayıp 0.0085
+   Adım  60: kayıp 0.0020
+   Adım  90: kayıp 0.0014
+   Adım 120: kayıp 0.0011
+   Adım 150: kayıp 0.0008

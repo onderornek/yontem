@@ -1,0 +1,15 @@
+178 atasözü, toplam 5282 karakter
+Sözlük boyutu: 30
+Sözlük: . abcdefghiklmnoprstuvyzçöüğış
+
+Kodlanmış : [5, 2, 13, 12, 2, 22, 2, 1, 5, 2, 13, 12, 2, 22, 2, 1, 8, 25, 12, 1, 15, 12, 20, 17]
+Çözülmüş  : damlaya damlaya göl olur
+
+BPE başlangıcı: 1140 simge
+  1. birleştirme: "n " (43 kez)  →  1097 simge
+  2. birleştirme: "r." (24 kez)  →  1073 simge
+  3. birleştirme: "an " (19 kez)  →  1054 simge
+  4. birleştirme: "de" (15 kez)  →  1039 simge
+  5. birleştirme: "i " (14 kez)  →  1025 simge
+  6. birleştirme: "ma" (13 kez)  →  1012 simge
+Simgelere bölünmüş ilk satırlar: d|a|m|l|a|y|a| |d|a|m|l|a|y|a| |g|ö|l| |o|l|u|r.|a|c|e|l|e| |i|ş|e| |ş|e|y|t|an |k|a|r|ı|ş|ı

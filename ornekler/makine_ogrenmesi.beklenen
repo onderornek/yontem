@@ -1,0 +1,8 @@
+k-NN [1.5, 1.8] -> mavi,  [7, 8.5] -> kırmızı
+k-ortalamalar atamaları: [0, 0, 0, 0, 1, 1, 1, 1]
+Merkezler: [[1.5, 1.5], [8.5, 8.5]]
+Regresyon: puan = 4.51 * saat + 46.82   (R² = 0.995)
+10 saat çalışan için tahmin: 91.9
+Korelasyon: 0.9977, medyan puan: 67.0
+Lojistik regresyon kaybı: 0.0047
+[0.15, 0.2] -> sınıf 0,  [0.85, 0.8] -> sınıf 1

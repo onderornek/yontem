@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 9 — Kayıtlar ve sınıflar · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html" aria-current="page">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 11 / 20</p>
+    <h2 id="bölüm-9-kayıtlar-ve-sınıflar">Bölüm 9 — Kayıtlar ve sınıflar</h2>
+<p>Gerçek dünyadaki şeylerin birden çok özelliği vardır: bir noktanın x ve y’si, bir hesabın sahibi ve bakiyesi. <strong>Kayıt</strong> bu özellikleri bir araya toplar. <strong>Sınıf</strong> ise özelliklerin yanına davranışları (metodları) da ekler.</p>
+<h3 id="kayıtlar">Kayıtlar</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> KayıtÖrneği
+<span class="ya">tip</span>
+  Nokta = <span class="ya">kayıt</span>
+    x, y: <span class="ya">ondalık</span>
+  <span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Uzaklık(a, b: Nokta): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> Kök((a.x - b.x) ** <span class="ys">2</span> + (a.y - b.y) ** <span class="ys">2</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  p, q: Nokta
+<span class="ya">başla</span>
+  p.x := <span class="ys">1</span>;  p.y := <span class="ys">2</span>
+  q := Nokta.Oluştur(<span class="ys">4</span>, <span class="ys">6</span>)      <span class="yy">// alanları sırayla doldurur</span>
+  yaz(<span class="ym">'p = '</span> + p + <span class="ym">', q = '</span> + q, <span class="ys">1</span>)
+  yaz(<span class="ym">'Uzaklık: '</span> + Uzaklık(p, q), <span class="ys">1</span>)
+  q := p                        <span class="yy">// kayıtlar KOPYALANIR</span>
+  q.x := <span class="ys">99</span>
+  yaz(<span class="ym">'p.x hâlâ '</span> + p.x, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>p = Nokta(x: 1.0, y: 2.0), q = Nokta(x: 4.0, y: 6.0)
+Uzaklık: 5.0
+p.x hâlâ 1.0</code></pre></div>
+<p>Kayıt tipinde bildirilen bir değişken boş alanlarla hazır gelir; <code>p.x := 1</code> hemen yazılabilir. Kayıtlar <strong>değer gibi</strong> davranır: <code>q := p</code> bir kopya üretir, <code>q</code>’yu değiştirmek <code>p</code>’yi etkilemez.</p>
+<h3 id="sınıflar">Sınıflar</h3>
+<p>Bir sınıf iki parçada yazılır. Önce <code>tip</code> bölümünde sınıfın neye sahip olduğu bildirilir. Sonra metodların gövdeleri <code>Sınıf.Metod</code> adıyla tanımlanır. Bu Delphi tarzıdır ve büyük sınıfları okunur tutar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> BankaHesabı
+<span class="ya">tip</span>
+  Hesap = <span class="ya">sınıf</span>
+  özel
+    tutar: <span class="ya">ondalık</span>
+  genel
+    sahip: <span class="ya">metin</span>
+    <span class="ya">kurucu</span> Oluştur(ad: <span class="ya">metin</span>; ilkPara: <span class="ya">ondalık</span> = <span class="ys">0</span>)
+    <span class="ya">prosedür</span> Yatır(miktar: <span class="ya">ondalık</span>)
+    <span class="ya">prosedür</span> Çek(miktar: <span class="ya">ondalık</span>)
+    <span class="ya">fonksiyon</span> Bakiye: <span class="ya">ondalık</span>
+    <span class="ya">fonksiyon</span> MetneÇevir: <span class="ya">metin</span>
+  <span class="ya">bitir</span>
+
+<span class="ya">kurucu</span> Hesap.Oluştur(ad: <span class="ya">metin</span>; ilkPara: <span class="ya">ondalık</span> = <span class="ys">0</span>)
+<span class="ya">başla</span>
+  sahip := ad
+  tutar := ilkPara
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Hesap.Yatır(miktar: <span class="ya">ondalık</span>)
+<span class="ya">başla</span>
+  tutar := tutar + miktar
+<span class="ya">bitir</span>
+
+<span class="ya">prosedür</span> Hesap.Çek(miktar: <span class="ya">ondalık</span>)
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> miktar &gt; tutar <span class="ya">ise</span>
+    <span class="ya">fırlat</span> Hata(<span class="ym">'Yetersiz bakiye'</span>, <span class="ym">'BankaHatası'</span>)
+  tutar := tutar - miktar
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hesap.Bakiye: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> tutar
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hesap.MetneÇevir: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> Biçimle(<span class="ym">'{} hesabı: {:.2} TL'</span>, sahip, tutar)
+<span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  h: Hesap
+<span class="ya">başla</span>
+  h := Hesap.Oluştur(<span class="ym">'Zeynep'</span>, <span class="ys">100</span>)
+  h.Yatır(<span class="ys">250</span>)
+  h.Çek(<span class="ys">80</span>)
+  yaz(h, <span class="ys">1</span>)
+  yaz(<span class="ym">'Bakiye: '</span> + h.Bakiye, <span class="ys">1</span>)
+  <span class="ya">dene</span>
+    h.Çek(<span class="ys">1000</span>)
+  <span class="ya">yakala</span> (hata)
+    yaz(hata.tür + <span class="ym">': '</span> + hata.mesaj, <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Zeynep hesabı: 270.00 TL
+Bakiye: 270.0
+BankaHatası: Yetersiz bakiye</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kavram</th>
+<th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alan</td>
+<td>Sınıfın verisi: <code>tutar</code>, <code>sahip</code>. Metodlar içinden doğrudan adıyla kullanılır.</td>
+</tr>
+<tr class="even">
+<td>Metod</td>
+<td>Sınıfa ait prosedür ya da fonksiyon: <code>Yatır</code>, <code>Çek</code></td>
+</tr>
+<tr class="odd">
+<td><code>kurucu</code></td>
+<td>Yeni nesne oluşturan özel metod. <code>Hesap.Oluştur(...)</code> ile çağrılır.</td>
+</tr>
+<tr class="even">
+<td><code>kendi</code></td>
+<td>Metodun üzerinde çalıştığı nesne. <code>kendi.tutar</code> = <code>tutar</code></td>
+</tr>
+<tr class="odd">
+<td><code>özel</code> / <code>genel</code></td>
+<td>Hangi üyelerin dışarı için olduğunu belgeler. Şimdilik bilgi amaçlıdır, erişimi engellemez.</td>
+</tr>
+<tr class="even">
+<td><code>MetneÇevir</code></td>
+<td>Tanımlanırsa <code>yaz(nesne)</code> onu kullanır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alanlara ve metodlara aynı adı vermemek gerekir. Büyük/küçük harf fark etmediği için <code>bakiye</code> alanı ile <code>Bakiye</code> metodu aynı ad olur. Bu yüzden alana <code>tutar</code> dedik.</p>
+<h3 id="kalıtım">Kalıtım</h3>
+<p>Bir sınıf başka bir sınıfın özelliklerini <strong>miras alabilir</strong> ve istediği metodları değiştirebilir. Metod gövdeleri sınıfın içinde de yazılabilir; kısa sınıflar için bu daha pratiktir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Kalıtım
+<span class="ya">tip</span>
+  Hayvan = <span class="ya">sınıf</span>
+    ad: <span class="ya">metin</span>
+    <span class="ya">kurucu</span> Oluştur(a: <span class="ya">metin</span>)
+    <span class="ya">başla</span>
+      ad := a
+    <span class="ya">bitir</span>
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">sanal</span>
+    <span class="ya">başla</span>
+      <span class="ya">dön</span> <span class="ym">'...'</span>
+    <span class="ya">bitir</span>
+    <span class="ya">fonksiyon</span> Tanıt: <span class="ya">metin</span>
+    <span class="ya">başla</span>
+      <span class="ya">dön</span> ad + <span class="ym">' der ki: '</span> + Ses
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+
+  Kedi = <span class="ya">sınıf</span>(Hayvan)
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">ezer</span>
+    <span class="ya">başla</span> <span class="ya">dön</span> <span class="ym">'Miyav'</span>; <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+
+  Köpek = <span class="ya">sınıf</span>(Hayvan)
+    cins: <span class="ya">metin</span>
+    <span class="ya">kurucu</span> Oluştur(a, c: <span class="ya">metin</span>)
+    <span class="ya">başla</span>
+      <span class="ya">miras</span> Oluştur(a)            <span class="yy">// ebeveynin kurucusunu çağır</span>
+      cins := c
+    <span class="ya">bitir</span>
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">ezer</span>
+    <span class="ya">başla</span> <span class="ya">dön</span> <span class="ym">'Hav hav'</span>; <span class="ya">bitir</span>
+    <span class="ya">fonksiyon</span> Tanıt: <span class="ya">metin</span>; <span class="ya">ezer</span>
+    <span class="ya">başla</span> <span class="ya">dön</span> <span class="ya">miras</span> Tanıt + <span class="ym">' ('</span> + cins + <span class="ym">')'</span>; <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  hayvanlar: <span class="ya">liste</span>
+  h: Hayvan
+<span class="ya">başla</span>
+  hayvanlar := [Kedi.Oluştur(<span class="ym">'Tekir'</span>), Köpek.Oluştur(<span class="ym">'Karabaş'</span>, <span class="ym">'Kangal'</span>), Hayvan.Oluştur(<span class="ym">'Balık'</span>)]
+  hayvanlar <span class="ya">içindeki</span> <span class="ya">her</span> h <span class="ya">için</span>
+    yaz(h.Tanıt, <span class="ys">1</span>)
+  yaz(<span class="ym">'Karabaş bir Hayvan mı? '</span> + ÖrneğiMi(hayvanlar[<span class="ys">1</span>], Hayvan), <span class="ys">1</span>)
+  yaz(<span class="ym">'Tekir bir Köpek mi?    '</span> + ÖrneğiMi(hayvanlar[<span class="ys">0</span>], Köpek), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tekir der ki: Miyav
+Karabaş der ki: Hav hav (Kangal)
+Balık der ki: ...
+Karabaş bir Hayvan mı? doğru
+Tekir bir Köpek mi?    yanlış</code></pre></div>
+<p>Buradaki en önemli fikir <strong>çok biçimliliktir</strong>. <code>Tanıt</code> metodu yalnızca <code>Hayvan</code> sınıfında yazıldı, ama içindeki <code>Ses</code> çağrısı nesnenin gerçek sınıfına göre “Miyav” ya da “Hav hav” oldu. <code>miras</code> ebeveyn sınıfın aynı adlı metodunu çağırır. <code>sanal</code> ve <code>ezer</code> sözcükleri okuyana niyeti anlatır; Yöntem’de tüm metodlar zaten sanaldır.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html"><small>Önceki</small>Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a><a class="sonraki" href="12-bolum-10-hatalarla-basa-cikmak.html"><small>Sonraki</small>Bölüm 10 — Hatalarla başa çıkmak</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#kayıtlar">Kayıtlar</a></li><li><a href="#sınıflar">Sınıflar</a></li><li><a href="#kalıtım">Kalıtım</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

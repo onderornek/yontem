@@ -1,0 +1,4 @@
+f'(2)   = 15.0   (beklenen 15)
+sin'(0) = 1.0
+Zincir kuralı: d/dx sigmoid(3x) at 0 = 0.7500
+Öğrenilen: y = 2.988x + 2.006   (kayıp 0.00133)

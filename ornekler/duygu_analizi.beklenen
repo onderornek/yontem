@@ -1,0 +1,8 @@
+"Film muhteşem, beğendim" -> olumlu (olumlu %77.6)
+"Senaryo çok sıkıcı ve kötü" -> olumsuz (olumlu %9.7)
+"Müzikleri harika" -> olumlu (olumlu %78.4)
+
+Belirteçler : ['yapay', 'zekâ', 'geleceği', 'şekillendiriyor']
+2-gramlar   : ['derin öğrenme', 'öğrenme ile', 'ile doğal', 'doğal dil', 'dil işleme']
+Benzerlik (kedi/kedi) = 0.224
+Benzerlik (kedi/borsa) = 0.000

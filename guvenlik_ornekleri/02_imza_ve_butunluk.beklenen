@@ -1,0 +1,18 @@
+Özet("") = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Özet("abc") = ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+Özet("Yöntem") = 916fcb84069105cb78bb78e7732ceb67b2d4b288c9ccc4233da1c2b38f89ab1c
+Özet("yöntem") = 6dc1aabf938f3a2a21391ce2623a3e70cafd91d6a873803d006152b95c9d69e7
+
+İleti : kullanıcı=ayşe;rol=okuyucu
+İmza  : 55166aeffd84419ad4fe62e21eed18d85bbac3a981638eac8c60d9780c547289
+Asıl ileti doğrulandı mı? doğru
+Değiştirilmiş ileti doğrulandı mı? yanlış
+Yanlış anahtarla doğrulandı mı? yanlış
+Büyük harfli imza da kabul edilir: doğru
+
+GüvenliEşit("abc", "abc") = doğru
+GüvenliEşit("abc", "abd") = yanlış
+GüvenliEşit("abc", "abcd") = yanlış
+
+Base64Kodla("Merhaba, dünya!") = TWVyaGFiYSwgZMO8bnlhIQ==
+Base64Çöz(...) = Merhaba, dünya!

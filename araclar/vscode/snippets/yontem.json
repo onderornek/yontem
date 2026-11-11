@@ -1,0 +1,305 @@
+{
+ "Program": {
+  "prefix": [
+   "program",
+   "prg"
+  ],
+  "body": [
+   "program ${1:Ad}",
+   "",
+   "başla",
+   "  ${0:yaz('Merhaba, dünya!', 1)}",
+   "bitir."
+  ],
+  "description": "Yeni program iskeleti"
+ },
+ "Birim": {
+  "prefix": [
+   "birim"
+  ],
+  "body": [
+   "birim ${1:Ad}",
+   "",
+   "arayüz",
+   "  fonksiyon ${2:İşlev}(${3:x: tamsayı}): ${4:tamsayı}",
+   "",
+   "uygulama",
+   "",
+   "fonksiyon ${2:İşlev}(${3:x: tamsayı}): ${4:tamsayı}",
+   "başla",
+   "  $0",
+   "bitir",
+   "",
+   "bitir."
+  ],
+  "description": "Yeni birim (modül) iskeleti"
+ },
+ "Kullan": {
+  "prefix": [
+   "kullan"
+  ],
+  "body": [
+   "kullan ${1|Matematik,Sistem,Veri,YZ,Kuantum,Meşale,Pencere,Mobil,Güvenlik,Takvim,Desen,Ağ,Donanım|}"
+  ],
+  "description": "Birim kullan"
+ },
+ "Değişken": {
+  "prefix": [
+   "değişken",
+   "degisken",
+   "dgs"
+  ],
+  "body": [
+   "değişken",
+   "  ${1:ad}: ${2|tamsayı,ondalık,metin,mantıksal,liste,sözlük,herhangi|}"
+  ],
+  "description": "Değişken bölümü"
+ },
+ "Sabit": {
+  "prefix": [
+   "sabit"
+  ],
+  "body": [
+   "sabit",
+   "  ${1:AD}: ${2:tamsayı} = ${3:değer}"
+  ],
+  "description": "Sabit bölümü"
+ },
+ "Eğer": {
+  "prefix": [
+   "eğer",
+   "eger"
+  ],
+  "body": [
+   "eğer ${1:koşul} ise",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "eğer … ise"
+ },
+ "Eğer değilse": {
+  "prefix": [
+   "eğerd",
+   "egerd"
+  ],
+  "body": [
+   "eğer ${1:koşul} ise",
+   "başla",
+   "  $2",
+   "bitir",
+   "değilse",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "eğer … ise … değilse"
+ },
+ "İken": {
+  "prefix": [
+   "iken"
+  ],
+  "body": [
+   "${1:koşul} iken",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "koşul iken döngüsü"
+ },
+ "Sayarak döngü": {
+  "prefix": [
+   "için",
+   "icin",
+   "kadar"
+  ],
+  "body": [
+   "${1:1}'den ${2:10}'a kadar her ${3:i} için",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "1'den 10'a kadar her i için"
+ },
+ "Azalarak döngü": {
+  "prefix": [
+   "azalarak"
+  ],
+  "body": [
+   "${1:10}'dan ${2:1}'e azalarak her ${3:i} için",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "10'dan 1'e azalarak her i için"
+ },
+ "İçindeki her": {
+  "prefix": [
+   "her",
+   "içindeki",
+   "icindeki"
+  ],
+  "body": [
+   "${1:liste} içindeki her ${2:öğe} için",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "Liste ya da sözlük üzerinde döngü"
+ },
+ "Tekrarla": {
+  "prefix": [
+   "tekrarla"
+  ],
+  "body": [
+   "tekrarla",
+   "  $0",
+   "${1:koşul} olana dek"
+  ],
+  "description": "tekrarla … olana dek"
+ },
+ "Kez tekrarla": {
+  "prefix": [
+   "kez"
+  ],
+  "body": [
+   "${1:5} kez tekrarla",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "n kez tekrarla"
+ },
+ "Değerine göre": {
+  "prefix": [
+   "değerine",
+   "degerine",
+   "göre",
+   "gore"
+  ],
+  "body": [
+   "${1:ifade} değerine göre",
+   "  ${2:1}: ${3:komut}",
+   "  değilse: ${4:komut}",
+   "bitir"
+  ],
+  "description": "Çoklu seçim (case)"
+ },
+ "Prosedür": {
+  "prefix": [
+   "prosedür",
+   "prosedur",
+   "prs"
+  ],
+  "body": [
+   "prosedür ${1:Ad}(${2})",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "Prosedür tanımı"
+ },
+ "Fonksiyon": {
+  "prefix": [
+   "fonksiyon",
+   "fnk"
+  ],
+  "body": [
+   "fonksiyon ${1:Ad}(${2:x: tamsayı}): ${3:tamsayı}",
+   "başla",
+   "  dön ${0:x}",
+   "bitir"
+  ],
+  "description": "Fonksiyon tanımı"
+ },
+ "Sınıf": {
+  "prefix": [
+   "sınıf",
+   "sinif"
+  ],
+  "body": [
+   "tip",
+   "  ${1:Ad} = sınıf",
+   "  özel",
+   "    ${2:alan}: ${3:metin}",
+   "  genel",
+   "    kurucu Oluştur(${4:a: metin})",
+   "    fonksiyon ${5:MetneÇevir}: metin",
+   "  bitir",
+   "",
+   "kurucu ${1:Ad}.Oluştur(${4:a: metin})",
+   "başla",
+   "  ${2:alan} := ${6:a}",
+   "bitir",
+   "",
+   "fonksiyon ${1:Ad}.${5:MetneÇevir}: metin",
+   "başla",
+   "  dön ${0:${2:alan}}",
+   "bitir"
+  ],
+  "description": "Sınıf tanımı (kurucu ve bir metodla)"
+ },
+ "Kayıt": {
+  "prefix": [
+   "kayıt",
+   "kayit"
+  ],
+  "body": [
+   "tip",
+   "  ${1:Ad} = kayıt",
+   "    ${2:x}, ${3:y}: ${4:ondalık}",
+   "  bitir"
+  ],
+  "description": "Kayıt (record) tanımı"
+ },
+ "Dene yakala": {
+  "prefix": [
+   "dene"
+  ],
+  "body": [
+   "dene",
+   "  $1",
+   "yakala (${2:h})",
+   "  ${0:yaz(h.mesaj, 1)}",
+   "bitir"
+  ],
+  "description": "Hata yakalama"
+ },
+ "Yaz": {
+  "prefix": [
+   "yaz"
+  ],
+  "body": [
+   "yaz(${1:'metin'}, 1)"
+  ],
+  "description": "Ekrana yaz ve satır atla"
+ },
+ "Oku": {
+  "prefix": [
+   "oku"
+  ],
+  "body": [
+   "oku(${1:değişken})"
+  ],
+  "description": "Klavyeden oku"
+ },
+ "Lambda": {
+  "prefix": [
+   "lambda",
+   "işlev"
+  ],
+  "body": [
+   "fonksiyon(${1:x}) => ${0:x * 2}"
+  ],
+  "description": "Tek ifadeli adsız fonksiyon"
+ },
+ "İddia": {
+  "prefix": [
+   "iddia"
+  ],
+  "body": [
+   "iddia(${1:koşul}, '${2:mesaj}')"
+  ],
+  "description": "Koşul yanlışsa hatayla durdur (testler için)"
+ }
+}

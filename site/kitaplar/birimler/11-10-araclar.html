@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10. Araçlar · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html" aria-current="page">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 11 / 12</p>
+    <h2 id="araçlar">10. Araçlar</h2>
+<p>Araçlar JavaScript derleyicisinin <code>yontem</code> komutuyla gelir. Komutu her klasörden çağırabilmek için depoda bir kez <code>cd js &amp;&amp; npm install &amp;&amp; npm run build &amp;&amp; npm install -g .</code> komutunu çalıştırmanız gerekir (ayrıntıları <em>Yöntem Kurulum Kılavuzu</em>’nda bulabilirsiniz).</p>
+<p><strong>Yeni proje: <code>yontem yeni</code></strong></p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem yeni hesap-defteri
+cd hesap-defteri
+yontem hesap-defteri.y
+yontem test</code></pre></div>
+<p>Komut bir ana program, örnek bir birim, bir test ve bir <code>BENIOKU.md</code> içeren klasör oluşturur.</p>
+<p><strong>Test: <code>yontem test</code></strong></p>
+<p>Yöntem’de test, çıktısı bilinen bir programdır. <code>yontem test [klasör]</code> her <code>.y</code> programını çalıştırır ve çıktıyı yanındaki aynı adlı <code>.beklenen</code> dosyasıyla karşılaştırır; fark varsa ilk farklı satırı gösterir. <code>.beklenen</code> yoksa programın hatasız bitmesi yeterlidir. <code>.girdi</code> dosyası varsa klavye girdisi olarak verilir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ToplaTesti
+<span class="ya">kullan</span> Hesap                      <span class="yy">{ bir üst klasördeki Hesap.y birimi }</span>
+
+<span class="ya">başla</span>
+  iddia(Topla(<span class="ys">2</span>, <span class="ys">3</span>) = <span class="ys">5</span>, <span class="ym">'Topla 2 + 3 için 5 vermeli'</span>)
+  yaz(Topla(<span class="ys">10</span>, -<span class="ys">4</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p><code>iddia(koşul, mesaj)</code> koşul yanlışsa programı hatayla durdurur; test başarısız sayılır. Beklenen çıktıyı elle yazmak yerine <code>yontem test --guncelle</code> ile şimdiki çıktıdan üretebilirsiniz; üretilen dosyayı gözden geçirmenizi öneririz. <code>testler/</code> klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur. Aynı komut Python yorumlayıcısında da vardır: <code>python3 yontem.py test</code>.</p>
+<p><strong>Katı kip: <code>{$katı}</code> ve <code>yontem denetle</code></strong></p>
+<p>Yöntem tipleri olağan durumda program çalışırken denetler: <code>tamsayı</code> bir değişkene metin atayan satır, ancak o satıra gelindiğinde hata verir. Dosyanın başına <code>{$katı}</code> yazarsanız aynı denetim derleme zamanında yapılır: program hiç çalışmadan, bütün tip hataları birden listelenir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sepet
+<span class="yy">{$katı}</span>
+
+<span class="ya">değişken</span>
+  adet: <span class="ya">tamsayı</span>
+  fiyat: <span class="ya">ondalık</span>
+  ürün := <span class="ym">'defter'</span>
+
+<span class="ya">fonksiyon</span> Tutar(adet: <span class="ya">tamsayı</span>; fiyat: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> adet * fiyat
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  adet := <span class="ym">'3'</span>
+  fiyat := <span class="ys">12.5</span>
+  <span class="ya">eğer</span> adet <span class="ya">ise</span> yaz(ürün + <span class="ym">': '</span> + Tutar(fiyat, adet), <span class="ys">1</span>)
+  yaz(toplm, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tip hatası [sepet.y, satır 15] 'adet' tamsayı tipinde; metin bir değer atanamaz
+Tip hatası [sepet.y, satır 17] Koşul mantıksal olmalı, tamsayı verildi
+Tip hatası [sepet.y, satır 17] 'Tutar' çağrısında 1. argüman tamsayı olmalı, ondalık verildi
+Tip hatası [sepet.y, satır 18] Tanımsız tanımlayıcı: 'toplm'
+4 tip hatası bulundu; program çalıştırılmadı.</code></pre></div>
+<p>Katı kipte şunlar derleme hatasıdır:</p>
+<ul>
+<li>Tipi belirtilmemiş sabit: <code>sabit BAĞLAM = 10</code> yerine <code>sabit BAĞLAM: tamsayı = 10</code> yazılır.</li>
+<li>Tipi belirtilmemiş parametre ya da dönüş tipi belirtilmemiş fonksiyon. Değişkenlerde tip, ilk değerden çıkarılabiliyorsa yazılmayabilir (<code>ürün := 'defter'</code> bir <code>metin</code> değişkenidir); çıkarılamıyorsa belirtilmelidir.</li>
+<li>Tipi belli bir değeri uymayan tipte bir değişkene atamak, parametreye vermek ya da fonksiyondan döndürmek. <code>tamsayı</code>, <code>ondalık</code> beklenen yere verilebilir; tersi verilemez.</li>
+<li>Tipleri bildirilmiş bir alt programı eksik ya da fazla argümanla çağırmak.</li>
+<li>Mantıksal olmayan koşul; sayı ile metni çıkarmak ya da karşılaştırmak gibi tanımsız işlemler.</li>
+<li>Tanımlanmamış bir ad kullanmak.</li>
+</ul>
+<p>Listelerin ve sözlüklerin öğe tipini de bildirebilirsiniz; katı kip öğeleri de denetler:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span>
+  notlar: <span class="ya">tamsayı</span> listesi
+  yaşlar: <span class="ya">tamsayı</span> sözlüğü
+  tablo: <span class="ya">ondalık</span> listesi listesi
+  ad: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  notlar := [<span class="ys">70</span>, <span class="ys">85</span>, <span class="ym">'doksan'</span>]     <span class="yy">{ hata: metin bir öğe konamaz }</span>
+  notlar.Ekle(<span class="ys">100</span>)
+  ad := notlar[<span class="ys">0</span>]                  <span class="yy">{ hata: 'ad' metin tipinde; tamsayı bir değer atanamaz }</span>
+  yaşlar[<span class="ym">'Ali'</span>] := <span class="ym">'otuz'</span>          <span class="yy">{ hata: metin bir öğe konamaz }</span></code></pre></div>
+<p>Öğe tipi atamada, <code>Ekle</code> çağrısında, <code>liste[i] := değer</code> atamasında, <code>içindeki her</code> döngüsünün değişkeninde ve parametrelerde denetlenir; diziler için öğe tipi başa yazılır: <code>tamsayı dizisi</code>, sınırlı diziler için <code>ondalık dizisi[1..12]</code>, iç içe <code>ondalık dizisi dizisi</code>. Öğe tipi yazılmamış düz bir <code>liste</code> her yere verilebilir ve çalışırken denetlenir.</p>
+<p>Sınıf ve kayıt tipleri de izlenir. Tipi <code>Daire</code> olan bir değişkende olmayan bir alana ya da metoda erişmek (<code>d.çap</code>), bir alana uymayan değer atamak (<code>d.yarıçap := 'iki'</code>), bir metodu ya da kurucuyu eksik veya yanlış tipte argümanla çağırmak ve bir sınıfın nesnesini ilgisiz bir sınıfın değişkenine atamak derleme hatasıdır. Alt sınıfın nesnesi üst sınıf tipindeki değişkene atanabilir (<code>şekil := daire</code>); ama o değişken üzerinden yalnızca üst sınıfın üyelerine erişilir. Alt sınıfa özgü bir üyeye ulaşmak için değeri alt sınıf tipinde bir değişkene atayabilirsiniz.</p>
+<p>Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildirilmiş değişkenler, parametreler, alanlar ve öğeler, dönüş tipi bildirilmiş fonksiyonlar ve metodlar, sonucu belli olan yerleşik işlevler (<code>Uzunluk</code>, <code>Metin</code>, <code>Tamsayı</code>, <code>BüyükHarf</code>, <code>Ayır</code>, <code>İçerir</code> gibi), <code>Takvim</code>, <code>Desen</code>, <code>Güvenlik</code> ve <code>Ağ</code> birimlerinin işlevleri (<code>TarihYaz</code> bir metin, <code>GünFarkı</code> bir tamsayı, <code>Eşleşir</code> bir mantıksal değer verir) ve bunlarla kurulan ifadeler. Yerleşik işlevler ve yerleşik birimlerin bütün işlevleri için argüman sayısı da denetlenir: <code>TarihYap(2026, 1)</code> derleme hatasıdır. Sonucu argümana göre değişen işlevler (<code>Maks</code>, <code>Yuvarla</code>, <code>Bul</code>) ile <code>Pencere</code>, <code>Meşale</code> gibi birimlerin döndürdüğü nesneler gibi tipi önceden bilinemeyen değerler eskisi gibi çalışırken denetlenir; katı kip çalışma zamanı denetimlerini kaldırmaz, onların önüne bir denetim daha koyar. Öğe tipi bildirimi yalnızca derleme zamanında denetlenir: çalışırken bir listeye konan öğelerin tipine bakılmaz. Bir değişkeni bilerek her tipe açık bırakmak için tipini <code>herhangi</code> yazabilirsiniz.</p>
+<p>Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için <code>yontem.json</code> dosyasına <code>"kati": true</code> eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem denetle .            # programları çalıştırmadan derler, hataları listeler
+yontem denetle . --kati     # yönergesi olmayan programları da katı kipte denetler</code></pre></div>
+<p><code>yontem denetle</code> sürekli tümleştirmede ve bir projeyi katı kipe geçirmeden önce ne kadar iş çıkacağını görmek için kullanışlıdır. VS Code eklentisi katı dosyalardaki tip hatalarını yazarken gösterir.</p>
+<p><strong>Biçimlendirme: <code>yontem bicimle</code></strong></p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem bicimle .             # klasördeki tüm .y dosyalarını düzenler
+yontem bicimle . --denetle   # değiştirmeden, düzensiz dosyaları listeler</code></pre></div>
+<p>Biçimlendirici girintiyi programın yapısına göre yeniden kurar (düzey başına iki boşluk), satır sonu boşluklarını ve fazla boş satırları temizler. Yalnızca boşluklara dokunur: sözcükler, satır bölünmeleri ve yorumlar değişmez, bu yüzden programın anlamı değişemez. Çok satıra bölünmüş ifadelerde kendi hizalamanız korunur.</p>
+<p><strong>Hata ayıklama: <code>yontem ayikla</code></strong></p>
+<p>Program beklediğiniz sonucu vermiyorsa araya <code>yaz</code> satırları eklemek yerine onu hata ayıklayıcıyla çalıştırabilirsiniz: program istediğiniz satırda durur, değişkenlerin o andaki değerlerine bakar, sonra satır satır ilerlersiniz. Örnek olarak notların ortalamasını bulan şu programı alalım:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Ayıklama
+<span class="yy">{ Hata ayıklayıcıyı denemek için küçük bir program: notların ortalamasını bulur.
+  Çalıştırmak için: yontem ayikla 07_ayiklama.y }</span>
+
+<span class="ya">fonksiyon</span> Ortalama(notlar: <span class="ya">liste</span>): <span class="ya">ondalık</span>
+<span class="ya">değişken</span>
+  toplam, n: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  toplam := <span class="ys">0</span>
+  notlar <span class="ya">içindeki</span> <span class="ya">her</span> n <span class="ya">için</span>
+    toplam := toplam + n
+  <span class="ya">dön</span> toplam / Uzunluk(notlar)
+<span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  notlar: <span class="ya">liste</span>
+  ort: <span class="ya">ondalık</span>
+
+<span class="ya">başla</span>
+  notlar := [<span class="ys">70</span>, <span class="ys">85</span>, <span class="ys">90</span>]
+  ort := Ortalama(notlar)
+  yaz(<span class="ym">'Ortalama: '</span> + Yuvarla(ort, <span class="ys">1</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p><code>yontem ayikla 07_ayiklama.y</code> programı ilk deyimde durdurur ve komut bekler. Aşağıdaki oturumda önce bir satır ilerliyor, sonra <code>Ortalama</code> fonksiyonunun içine giriyor, döngünün içine yalnızca <code>n &gt; 80</code> olduğunda duran bir kesme noktası koyuyor ve durduğu yerde değişkenlere bakıyoruz:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>$ yontem ayikla 07_ayiklama.y
+Yöntem hata ayıklayıcı — 07_ayiklama.y (komutlar için: yardım)
+→   20    notlar := [70, 85, 90]
+(ayıkla) sonraki
+→   21    ort := Ortalama(notlar)
+(ayıkla) adım
+Ortalama içinde, 07_ayiklama.y:9
+→    9    toplam := 0
+(ayıkla) kes 11 eğer n &gt; 80
+Kesme noktası kondu: 07_ayiklama.y:11 (eğer n &gt; 80)
+(ayıkla) devam
+Kesme noktası: 07_ayiklama.y:11
+Ortalama içinde, 07_ayiklama.y:11
+→●  11      toplam := toplam + n
+(ayıkla) değişkenler
+Ortalama:
+  notlar = [70, 85, 90]
+  sonuç = 0.0
+  toplam = 70
+  n = 85
+Program:
+  ort = 0.0
+(ayıkla) yaz toplam + n
+155
+(ayıkla) yığın
+→ #0  Ortalama  07_ayiklama.y:11
+  #1  program Ayıklama  07_ayiklama.y:21
+(ayıkla) sil 11
+Kesme noktası kaldırıldı: 07_ayiklama.y:11
+(ayıkla) çık
+→   22    yaz('Ortalama: ' + Yuvarla(ort, 1), 1)
+(ayıkla) yaz ort
+81.66666666666667
+(ayıkla) devam
+Ortalama: 81.7
+Program bitti (çıkış kodu 0).</code></pre></div>
+<p>Okun (<code>→</code>) gösterdiği satır henüz çalışmamıştır; sıradaki deyimdir. <code>●</code> kesme noktasını gösterir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>adım</code> (<code>a</code>)</td>
+<td>Sonraki deyime geçer; satırda bir çağrı varsa içine girer</td>
+</tr>
+<tr class="even">
+<td><code>sonraki</code> (<code>s</code>)</td>
+<td>Sonraki satıra geçer; çağrıların içine girmez</td>
+</tr>
+<tr class="odd">
+<td><code>çık</code> (<code>ç</code>)</td>
+<td>Bulunulan alt programdan çıkana kadar çalışır</td>
+</tr>
+<tr class="even">
+<td><code>devam</code> (<code>d</code>)</td>
+<td>Bir kesme noktasına ya da programın sonuna kadar çalışır</td>
+</tr>
+<tr class="odd">
+<td><code>kes 12</code> (<code>k</code>)</td>
+<td>Kesme noktası koyar. Başka bir birimde: <code>kes Birim:12</code>. Koşullu: <code>kes 12 eğer i &gt; 3</code></td>
+</tr>
+<tr class="even">
+<td><code>sil 12</code></td>
+<td>Kesme noktasını kaldırır; <code>sil hepsi</code> hepsini</td>
+</tr>
+<tr class="odd">
+<td><code>yaz ifade</code> (<code>y</code>)</td>
+<td>İfadeyi değerlendirir: <code>y toplam * 2</code>. Atama değişkeni değiştirir: <code>y x := 5</code></td>
+</tr>
+<tr class="even">
+<td><code>değişkenler</code> (<code>dğ</code>)</td>
+<td>Bulunulan alt programın, nesnenin ve programın değişkenlerini listeler</td>
+</tr>
+<tr class="odd">
+<td><code>yığın</code> (<code>yğ</code>)</td>
+<td>Buraya hangi çağrılarla gelindiğini gösterir; <code>yukarı</code> ve <code>aşağı</code> çağıranın değişkenlerine geçirir</td>
+</tr>
+<tr class="even">
+<td><code>liste</code> (<code>l</code>)</td>
+<td>Çevredeki kaynak satırlarını gösterir</td>
+</tr>
+<tr class="odd">
+<td><code>hatalar kapat</code></td>
+<td>Çalışma hatasında durmayı kapatır (<code>hatalar aç</code> geri açar)</td>
+</tr>
+<tr class="even">
+<td><code>bitir</code> (<code>q</code>)</td>
+<td>Programı sonlandırır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Boş satır son adımlama komutunu yineler; komutlar Türkçe karaktersiz de yazılabilir (<code>adim</code>, <code>cik</code>, <code>degiskenler</code>). Program bir çalışma hatası verdiğinde ayıklayıcı hatanın oluştuğu satırda durur: değişkenler hâlâ yerindedir, hataya neyin yol açtığına bakabilirsiniz. Hata bir <code>dene … yakala</code> bloğunda yakalanacak olsa da durur; bunu istemiyorsanız <code>hatalar kapat</code> yazabilirsiniz. Programın <code>oku</code> çağrıları ile ayıklayıcı komutları aynı girdiyi paylaşır: program girdi beklerken yazdığınız satır programa gider.</p>
+<p>Hata ayıklayıcı JavaScript derleyicisinin aracıdır; ayıklama kipinde derlenen program aynı çıktıyı verir, yalnızca biraz daha yavaş çalışır.</p>
+<p><strong>Paketler: <code>yontem paket</code></strong></p>
+<p>Başkasının yazdığı birimleri projenize paket olarak kurarsınız. Paket, içinde birim dosyaları olan bir klasördür; merkezî bir paket deposu yoktur, paket bulunduğu yerden kurulur:</p>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem paket ekle github:kullanici/depo@v1.2.0     # GitHub deposu (etiket, dal ya da commit)
+yontem paket ekle https://ornek.org/araclar.zip    # arşiv (.tar.gz, .zip) ya da tek .y dosyası
+yontem paket ekle ../ortak-birimler                # yerel klasör</code></pre></div>
+<p><code>ekle</code> paketi <code>paketler/</code> klasörüne indirir ve iki dosyayı günceller. <code>yontem.json</code> projenizin bildirimidir: adı, sürümü ve doğrudan kullandığı paketler.</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>{
+  &quot;ad&quot;: &quot;hesap&quot;,
+  &quot;surum&quot;: &quot;0.1.0&quot;,
+  &quot;bagimliliklar&quot;: {
+    &quot;Selam&quot;: &quot;github:kullanici/selam@v1.2.0&quot;
+  }
+}</code></pre></div>
+<p><code>yontem.kilit.json</code> ise kurulan her paketin (paketlerin kendi bağımlılıkları dahil) tam olarak nereden geldiğini ve içeriğinin SHA-256 özetini tutar. Kurulduktan sonra paketin birimleri kendi birimleriniz gibi kullanılır: <code>kullan Selam</code>. Program, bulunduğu klasörden yukarı doğru <code>yontem.json</code> içeren ilk klasörün paketlerini görür; birimler paketin kökünde ya da <code>kutuphane/</code> klasöründe aranır. JavaScript derleyicisi ve Python yorumlayıcısı aynı kuralı uygular.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yontem paket ekle &lt;kaynak&gt;</code></td>
+<td>Paketi kurar ve <code>yontem.json</code> dosyasına yazar. Ad paketten gelir; <code>--ad Ad</code> ile değiştirilir</td>
+</tr>
+<tr class="even">
+<td><code>yontem paket kur</code></td>
+<td><code>yontem.json</code> dosyasındaki paketleri kurar, içeriği kilit dosyasıyla doğrular</td>
+</tr>
+<tr class="odd">
+<td><code>yontem paket kaldir &lt;ad&gt;</code></td>
+<td>Paketi ve başka hiçbir paketin istemediği bağımlılıklarını kaldırır</td>
+</tr>
+<tr class="even">
+<td><code>yontem paket guncelle [ad]</code></td>
+<td>Paketi (ya da hepsini) kaynağından yeniden indirir, kilit dosyasını yeniler</td>
+</tr>
+<tr class="odd">
+<td><code>yontem paket liste</code></td>
+<td>Kurulu paketleri, sürümlerini ve sağladıkları birimleri gösterir</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>yontem.json</code> ve <code>yontem.kilit.json</code> dosyalarını sürüm denetimine koymanızı, <code>paketler/</code> klasörünü ise dışarıda bırakmanızı öneririz: projeyi alan kişi <code>yontem paket kur</code> ile aynı paketleri kurar. İndirilen içerik kilit dosyasındaki özetle aynı değilse kurulum durur; kaynağın değiştiğini siz <code>guncelle</code> ile onaylamadıkça yeni içerik projenize girmez. Bu yüzden kaynağı dal adıyla değil etiketle (<code>@v1.2.0</code>) vermek en sağlıklısıdır.</p>
+<p>Kurulum yalnızca dosya kopyalar, paketteki hiçbir kod kurulurken çalışmaz; arşivlerde klasör dışına çıkan yollar reddedilir ve indirme yalnızca HTTPS ile yapılır. Yine de paket, programınızla birlikte çalışacak koddur: güvenmediğiniz bir kaynaktan paket kurmamanızı, kurduğunuz paketin birimlerini de okumanızı öneririz.</p>
+<p>Kendi paketinizi yayımlamak için birimlerinizi bir Git deposunun köküne (ya da <code>kutuphane/</code> klasörüne) koyup sürümü etiketlemeniz yeterlidir. Depoya bir <code>yontem.json</code> eklerseniz paketin adı ve sürümü oradan okunur; paketiniz başka paketlere dayanıyorsa <code>bagimliliklar</code> altında yazdıklarınız onu kuranlara kendiliğinden kurulur. İki paket aynı adlı paketi farklı kaynaklardan isterse kurulum durur ve hangisini seçeceğinizi sorar.</p>
+<p><strong>Paketleme: <code>yontem paketle</code>, <code>yontem derle</code>, <code>yontem gomulu</code></strong></p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Komut</th>
+<th>Ürettiği</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yontem paketle program.y [--mobil] [--ad "Ad"]</code></td>
+<td><code>Pencere</code>/<code>Mobil</code> programından web uygulaması; <code>--mobil</code> ile telefona kurulabilir</td>
+</tr>
+<tr class="even">
+<td><code>yontem derle program.y -o program.js</code></td>
+<td>Node.js ile çalışan JavaScript dosyası</td>
+</tr>
+<tr class="odd">
+<td><code>yontem gomulu program.y</code></td>
+<td>ESP32 için Arduino/PlatformIO projesi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>VS Code eklentisi</strong></p>
+<p>Depodaki <code>araclar/vscode/yontem-dili-0.5.0.vsix</code> dosyasını <code>code --install-extension</code> ile ya da Eklentiler → <strong>VSIX’ten Yükle</strong> ile kurabilirsiniz. Eklenti sözdizimini renklendirir, <code>eğer</code>, <code>için</code>, <code>fonksiyon</code>, <code>sınıf</code> gibi kod parçacıkları sunar, <code>F5</code> ile etkin programı çalıştırır ve <strong>Belgeyi Biçimlendir</strong> (<code>Shift+Alt+F</code>) komutunu <code>yontem bicimle</code>’ye bağlar. Yazarken sözdizimi hatalarını ve bulunamayan birimleri altını çizerek gösterir, hiçbir yerde tanımlı olmayan adlar için yazım hatası uyarısı verir; dosyadaki adları, kullanılan birimlerin üyelerini ve yerleşikleri tamamlar (<code>Güvenlik.</code> yazınca yalnızca o birimin üyeleri gelir); bir adın üzerine gelince imzasını gösterir ve <code>F12</code> ile tanımına gider.</p>
+<p>Hata ayıklayıcı da eklentidedir: satır numarasının soluna tıklayarak kesme noktası koyabilir, <code>F6</code> ile (ya da <strong>Çalıştır ve Hata Ayıkla</strong> panelinden) ayıklamayı başlatabilirsiniz. Program kesme noktasında durduğunda değişkenler, çağrı yığını ve izleme ifadeleri yan panelde görünür; listeler, sözlükler ve nesneler açılarak incelenir, adımlama düğmeleri <code>adım</code>, <code>sonraki</code> ve <code>çık</code> komutlarının karşılığıdır. Kesme noktasına sağ tıklayıp koşul yazabilirsiniz. VS Code’da programın <code>oku</code> çağrıları klavyeden okuyamaz; girdi gerekiyorsa <code>launch.json</code> içinde <code>"girdi": "girdi.txt"</code> ile bir dosya verebilirsiniz.</p>
+<p><code>yontem</code> komutu <code>PATH</code>’te değilse eklentinin <code>yontem.komut</code> ayarına tam komutu yazabilirsiniz.</p>
+<p><strong>Başka düzenleyiciler: <code>yontem dil-sunucusu</code></strong></p>
+<p>Aynı özellikler bir dil sunucusu olarak da sunulur. Language Server Protocol destekleyen düzenleyicilerde (Neovim, Helix, Emacs, Sublime Text…) <code>.y</code> dosyaları için sunucu komutu olarak <code>yontem dil-sunucusu</code> (kısa adı <code>yontem lsp</code>) vermeniz yeterlidir; sunucu standart girdi ve çıktı üzerinden konuşur.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="10-9-uc-katmanli-bir-uygulama.html"><small>Önceki</small>9. Üç katmanlı bir uygulama</a><a class="sonraki" href="12-11-birimleri-birlikte-kullanmak.html"><small>Sonraki</small>11. Birimleri birlikte kullanmak</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

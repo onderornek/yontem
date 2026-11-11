@@ -1,0 +1,85 @@
+program   Dağınık
+{ başlık yorumu
+   ikinci satır }
+kullan Matematik
+
+
+tip
+  Nokta = kayıt
+    x, y: ondalık
+  bitir
+  Hayvan = sınıf
+  özel
+    ad: metin
+  genel
+    kurucu Oluştur(a: metin)
+    fonksiyon Ses: metin; sanal
+  bitir
+
+sabit
+  SINIR = 3
+değişken
+  toplam, i: tamsayı
+  L: liste
+
+kurucu Hayvan.Oluştur(a: metin)
+başla
+  ad := a
+bitir
+
+fonksiyon Hayvan.Ses: metin
+başla
+  dön ad + ': ...'
+bitir
+
+fonksiyon Topla(a, b: tamsayı): tamsayı
+değişken t: tamsayı
+başla
+  // satır yorumu
+  t := a +
+       b
+  dön t
+  { kapanıştan önceki yorum }
+bitir
+
+başla
+  toplam := 0
+  1'den SINIR'a kadar her i için
+    toplam += i
+  1'den 2'ye kadar her i için
+  başla
+    eğer i mod 2 = 0 ise
+      yaz('çift', 1)
+    değilse eğer i = 1 ise yaz('bir', 1)
+    değilse
+    başla
+      yaz('tek', 1)
+    bitir
+  bitir
+  toplam > 0 iken
+    toplam := toplam böl 2
+  tekrarla
+    toplam += 1
+  // döngü içi yorum
+  toplam >= 3 olana dek
+  toplam değerine göre
+    1, 2: yaz('az', 1)
+    3:
+    başla
+      yaz('üç', 1)
+    bitir
+  değilse:
+    yaz('çok', 1)
+  bitir
+  dene
+    iddia(toplam = 3, 'üç olmalı')
+    L := [1,
+          2,
+          3]
+  yakala (h)
+    yaz(h.mesaj, 1)
+  sonunda
+    yaz(Topla(Uzunluk(L), 1), 1)
+  bitir
+  yaz(Hayvan.Oluştur('Kedi').Ses, 1)
+bitir.

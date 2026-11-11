@@ -1,0 +1,7 @@
+İleri zincirleme:
+  K1 => aşırı sulama
+  K2 => kök çürüklüğü
+  K4 => öneri: sulamayı azalt, saksıyı değiştir
+Kök çürüklüğü güveni: 0.80
+Açıklama: kök çürüklüğü <- K2 [aşırı sulama <- K1 [yapraklar sarı (verilen olgu); toprak ıslak (verilen olgu)]; kök kahverengi (verilen olgu)]
+Külleme var mı (geri zincirleme)? yanlış

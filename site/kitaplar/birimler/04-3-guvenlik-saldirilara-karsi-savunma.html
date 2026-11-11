@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. Güvenlik: saldırılara karşı savunma · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html" aria-current="page">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 4 / 12</p>
+    <h2 id="güvenlik-saldırılara-karşı-savunma">3. Güvenlik: saldırılara karşı savunma</h2>
+<p><code>Güvenlik</code> birimi yaygın saldırılara karşı denenmiş yapı taşları sunar. Kendi şifreleme yönteminizi yazmak yerine bunları doğru yerde kullanmanız yeterlidir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÜyelikÖzeti
+<span class="yy">{ Güvenlik birimi: parola saklama, kullanıcı girdisini temizleme ve süreli oturum belirteci.
+  Çıktının her çalıştırmada aynı olması için birimin saati sabitlendi. }</span>
+<span class="ya">kullan</span> Güvenlik
+
+<span class="ya">sabit</span> ANAHTAR: <span class="ya">metin</span> = <span class="ym">'bunu-ortam-degiskeninden-oku'</span>
+
+<span class="ya">değişken</span> kayıtlı, oturum: <span class="ya">metin</span>
+
+<span class="ya">başla</span>
+  BenzetimZamanı(<span class="ys">1800000000</span>)
+  <span class="yy">{ 1) Parola düz metin saklanmaz; tuzlu ve yavaşlatılmış özeti saklanır. }</span>
+  kayıtlı := ParolaÖzeti(<span class="ym">'Deniz-Feneri-1907'</span>, <span class="ys">1000</span>)   <span class="yy">{ gerçek sistemde ikinci argümanı vermeyin }</span>
+  yaz(<span class="ym">'Kayıt biçimi : '</span> + Ayır(kayıtlı, <span class="ym">'$'</span>)[<span class="ys">0</span>] + <span class="ym">', '</span> + Uzunluk(kayıtlı) + <span class="ym">' karakter'</span>, <span class="ys">1</span>)
+  yaz(<span class="ym">'Doğru parola : '</span> + Metin(ParolaDoğrula(<span class="ym">'Deniz-Feneri-1907'</span>, kayıtlı)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Yanlış parola: '</span> + Metin(ParolaDoğrula(<span class="ym">'deniz-feneri'</span>, kayıtlı)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Zayıf parola : '</span> + Metin(ParolaSorunları(<span class="ym">'kedi123'</span>)), <span class="ys">1</span>)
+
+  <span class="yy">{ 2) Kullanıcının yazdığı metin sayfaya ve sorguya kaçışlanarak girer. }</span>
+  yaz(<span class="ym">'HTML : '</span> + HtmlKaçış(<span class="ym">'&lt;script&gt;çal()&lt;/script&gt;'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'SQL  : '</span> + SqlMetni(<span class="ym">'x'</span><span class="ym">' OR '</span><span class="ym">'1'</span><span class="ym">'='</span><span class="ym">'1'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Dosya: '</span> + DosyaAdıTemizle(<span class="ym">'../../etc/passwd'</span>) + <span class="ym">', yol güvenli mi: '</span> + Metin(YolGüvenli(<span class="ym">'../../etc/passwd'</span>)), <span class="ys">1</span>)
+
+  <span class="yy">{ 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }</span>
+  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'zeynep'</span>, <span class="ys">1800</span>)
+  yaz(<span class="ym">'Oturum sahibi: '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Sahte anahtar: '</span> + Metin(BelirteçDoğrula(<span class="ym">'tahmin'</span>, oturum)), <span class="ys">1</span>)
+  BenzetimZamanı(<span class="ys">1800000000</span> + <span class="ys">1801</span>)
+  yaz(<span class="ym">'31 dk sonra  : '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Kayıt biçimi : pbkdf2-sha256, 116 karakter
+Doğru parola : doğru
+Yanlış parola: yanlış
+Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
+HTML : &amp;lt;script&amp;gt;çal()&amp;lt;/script&amp;gt;
+SQL  : 'x'' OR ''1''=''1'
+Dosya: passwd, yol güvenli mi: yanlış
+Oturum sahibi: zeynep
+Sahte anahtar: boş
+31 dk sonra  : boş</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Saldırı</th>
+<th>Araç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parola veritabanının çalınması</td>
+<td><code>ParolaÖzeti</code>, <code>ParolaDoğrula</code>, <code>YenidenÖzetlenmeli</code>, <code>ParolaGücü</code>, <code>ParolaSorunları</code></td>
+</tr>
+<tr class="even">
+<td>Verinin değiştirilmesi</td>
+<td><code>Özet</code>, <code>İmza</code>, <code>İmzaDoğru</code>, <code>BelirteçÜret</code>, <code>BelirteçDoğrula</code></td>
+</tr>
+<tr class="odd">
+<td>Yanıt süresinden bilgi sızması</td>
+<td><code>GüvenliEşit</code></td>
+</tr>
+<tr class="even">
+<td>Verinin okunması</td>
+<td><code>AnahtarÜret</code>, <code>ParoladanAnahtar</code>, <code>Şifrele</code>, <code>ŞifreÇöz</code></td>
+</tr>
+<tr class="odd">
+<td>Tahmin edilebilir değerler</td>
+<td><code>Belirteç</code>, <code>Tuz</code>, <code>Kimlik</code>, <code>GüvenliRastgele</code></td>
+</tr>
+<tr class="even">
+<td>XSS, SQL enjeksiyonu, yol geçişi</td>
+<td><code>HtmlKaçış</code>, <code>SqlMetni</code>, <code>YolGüvenli</code>, <code>DosyaAdıTemizle</code>, <code>UrlGüvenli</code>, <code>EpostaGeçerli</code>, <code>İzinliKarakterler</code></td>
+</tr>
+<tr class="odd">
+<td>Kaba kuvvet</td>
+<td><code>Sınırlayıcı(enÇok, saniye)</code></td>
+</tr>
+<tr class="even">
+<td>İz bırakmadan saldırı</td>
+<td><code>Günlük</code>, <code>GünlükKayıtları</code>, <code>Maskele</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Üç temel alışkanlık çoğu açığı kapatır: parolaları <code>ParolaÖzeti</code> ile saklamak, kullanıcıdan gelen her metni gittiği yere göre kaçışlamak (<code>HtmlKaçış</code>, <code>SqlMetni</code>) ve gizli değerleri <code>=</code> ile değil <code>GüvenliEşit</code> ile karşılaştırmak.</p>
+<p>Birim açık anahtarlı şifreleme ve TLS içermez; ağ trafiğini HTTPS korur. Algoritmalar standart test vektörleriyle doğrulanmıştır ama bağımsız bir güvenlik denetiminden geçmemiştir. Her aracın ayrıntılı anlatımı, tam bir güvenli giriş örneği ve iyi uygulamalar <em>Yöntem Güvenlik Birimi — Kullanım Kılavuzu</em>’ndadır; örnekler <code>guvenlik_ornekleri/</code> klasöründedir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="03-2-mobil-telefon-ozellikleri.html"><small>Önceki</small>2. Mobil: telefon özellikleri</a><a class="sonraki" href="05-4-takvim-tarih-ve-saat.html"><small>Sonraki</small>4. Takvim: tarih ve saat</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Takvim: tarih ve saat · Yöntem Birimler ve Araçlar Kılavuzu</title>
+<meta name="description" content="Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a></summary>
+      <ol><li><a href="01-bu-kilavuz-ne-anlatir.html">Bu kılavuz ne anlatır?</a></li><li><a href="02-1-pencere-arayuz.html">1. Pencere: arayüz</a></li><li><a href="03-2-mobil-telefon-ozellikleri.html">2. Mobil: telefon özellikleri</a></li><li><a href="04-3-guvenlik-saldirilara-karsi-savunma.html">3. Güvenlik: saldırılara karşı savunma</a></li><li><a href="05-4-takvim-tarih-ve-saat.html" aria-current="page">4. Takvim: tarih ve saat</a></li><li><a href="06-5-desen-duzenli-ifadeler.html">5. Desen: düzenli ifadeler</a></li><li><a href="07-6-ag-web-servislerine-baglanmak.html">6. Ağ: web servislerine bağlanmak</a></li><li><a href="08-7-veritabani-sql-veritabanlari.html">7. Veritabanı: SQL veritabanları</a></li><li><a href="09-8-sunucu-web-servisleri.html">8. Sunucu: web servisleri</a></li><li><a href="10-9-uc-katmanli-bir-uygulama.html">9. Üç katmanlı bir uygulama</a></li><li><a href="11-10-araclar.html">10. Araçlar</a></li><li><a href="12-11-birimleri-birlikte-kullanmak.html">11. Birimleri birlikte kullanmak</a></li></ol>
+      <a class="pdf" href="Yontem_Birimler_ve_Araclar_Kilavuzu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 179 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Birimler ve Araçlar Kılavuzu</a> / Bölüm 5 / 12</p>
+    <h2 id="takvim-tarih-ve-saat">4. Takvim: tarih ve saat</h2>
+<p><code>Takvim</code> biriminde zaman, 1 Ocak 1970’ten beri geçen saniye sayısıdır (Unix saniyesi) ve bir tamsayıyla tutulur. Bu sayede iki tarih <code>&lt;</code> ile karşılaştırılır, sıralanır, birbirinden çıkarılır. Hesaplar UTC’de yapılır; yerel saati yazmak için <code>YerelFark</code> (dakika) eklenir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SınavTakvimi
+<span class="yy">{ Takvim birimi: tarih okuma, yazma ve gün hesabı. }</span>
+<span class="ya">kullan</span> Takvim
+
+<span class="ya">değişken</span>
+  bugün, sınav, teslim: <span class="ya">tamsayı</span>
+
+<span class="ya">başla</span>
+  BenzetimZamanı(TarihYap(<span class="ys">2026</span>, <span class="ys">11</span>, <span class="ys">10</span>, <span class="ys">9</span>, <span class="ys">0</span>, <span class="ys">0</span>), <span class="ys">180</span>)   <span class="yy">{ testler için sabit saat; UTC+3 }</span>
+  bugün := Şimdi
+  sınav := TarihOku(<span class="ym">'15.01.2027'</span>, <span class="ym">'GG.AA.YYYY'</span>)
+  yaz(<span class="ym">'Bugün : '</span> + TarihYaz(bugün + YerelFark * <span class="ys">60</span>, <span class="ym">'G AAAA YYYY GGGG, SS:DD'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Sınav : '</span> + TarihYaz(sınav, <span class="ym">'G AAAA YYYY GGGG'</span>) + <span class="ym">' — '</span> + GünFarkı(bugün, sınav) + <span class="ym">' gün kaldı'</span>, <span class="ys">1</span>)
+  teslim := AyEkle(GünBaşı(bugün), <span class="ys">1</span>)
+  yaz(<span class="ym">'Ödev teslimi (bir ay sonra): '</span> + TarihYaz(teslim, <span class="ym">'GG.AA.YYYY'</span>) + <span class="ym">', '</span> + HaftaNo(teslim) + <span class="ym">'. hafta'</span>, <span class="ys">1</span>)
+  <span class="ya">eğer</span> HaftaGünü(teslim) &gt; <span class="ys">5</span> <span class="ya">ise</span> yaz(<span class="ym">'  Hafta sonuna denk geliyor; pazartesi: '</span> + TarihYaz(GünEkle(teslim, <span class="ys">8</span> - HaftaGünü(teslim)), <span class="ym">'GG.AA.YYYY'</span>), <span class="ys">1</span>)
+  yaz(<span class="ym">'Şubat 2028 '</span> + AydakiGünSayısı(<span class="ys">2028</span>, <span class="ys">2</span>) + <span class="ym">' gün; 2028 artık yıl mı: '</span> + Metin(ArtıkYıl(<span class="ys">2028</span>)), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Bugün : 10 Kasım 2026 Salı, 12:00
+Sınav : 15 Ocak 2027 Cuma — 66 gün kaldı
+Ödev teslimi (bir ay sonra): 10.12.2026, 50. hafta
+Şubat 2028 29 gün; 2028 artık yıl mı: doğru</code></pre></div>
+<p><strong>Kalıplar.</strong> <code>TarihYaz</code> ve <code>TarihOku</code> aynı simgeleri kullanır:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Simge</th>
+<th>Anlamı</th>
+<th>Örnek</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>YYYY</code>, <code>YY</code></td>
+<td>Yıl</td>
+<td>2026, 26</td>
+</tr>
+<tr class="even">
+<td><code>AA</code>, <code>A</code></td>
+<td>Ay (iki haneli, yalın)</td>
+<td>03, 3</td>
+</tr>
+<tr class="odd">
+<td><code>AAAA</code>, <code>AAA</code></td>
+<td>Ay adı, kısa ay adı</td>
+<td>Mart, Mar</td>
+</tr>
+<tr class="even">
+<td><code>GG</code>, <code>G</code></td>
+<td>Gün (iki haneli, yalın)</td>
+<td>05, 5</td>
+</tr>
+<tr class="odd">
+<td><code>GGGG</code>, <code>GGG</code></td>
+<td>Gün adı, kısa gün adı</td>
+<td>Perşembe, Per</td>
+</tr>
+<tr class="even">
+<td><code>SS</code>, <code>DD</code>, <code>SN</code></td>
+<td>Saat, dakika, saniye</td>
+<td>09, 05, 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Küçük harfler ve noktalama olduğu gibi yazılır. Büyük harfli düz metin köşeli ayraca alınır: <code>'[Saat] SS:DD'</code>. Kalıp verilmezse <code>TarihOku</code> <code>2026-11-10</code>, <code>2026-11-10 19:30</code> ve <code>2026-11-10 19:30:00</code> biçimlerini tanır.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Üye</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Şimdi</code>, <code>YerelFark</code></td>
+<td>Şu an (Unix saniyesi) ve yerel saatin UTC’den farkı (dakika)</td>
+</tr>
+<tr class="even">
+<td><code>TarihYap(yıl, ay, gün [, saat, dakika, saniye])</code></td>
+<td>Tarihten zaman üretir; geçersiz tarihte hata verir</td>
+</tr>
+<tr class="odd">
+<td><code>Parçala(zaman)</code></td>
+<td><code>yıl</code>, <code>ay</code>, <code>gün</code>, <code>saat</code>, <code>dakika</code>, <code>saniye</code>, <code>haftaGünü</code>, <code>yılGünü</code> içeren sözlük</td>
+</tr>
+<tr class="even">
+<td><code>TarihYaz(zaman [, kalıp])</code>, <code>TarihOku(metin [, kalıp])</code></td>
+<td>Metne çevirir, metinden okur</td>
+</tr>
+<tr class="odd">
+<td><code>SaniyeEkle</code>, <code>GünEkle</code>, <code>AyEkle</code>, <code>YılEkle</code></td>
+<td>Zamana ekler (eksi sayı çıkarır); 31 Ocak + 1 ay = şubatın son günü</td>
+</tr>
+<tr class="even">
+<td><code>GünFarkı(başlangıç, bitiş)</code>, <code>GünBaşı(zaman)</code></td>
+<td>Takvim günü farkı; günün 00:00’ı</td>
+</tr>
+<tr class="odd">
+<td><code>HaftaGünü</code> (1 = Pazartesi), <code>HaftaNo</code> (ISO haftası), <code>GünAdı</code>, <code>AyAdı</code></td>
+<td>Takvim bilgisi</td>
+</tr>
+<tr class="even">
+<td><code>ArtıkYıl(yıl)</code>, <code>AydakiGünSayısı(yıl, ay)</code>, <code>GeçerliTarih(yıl, ay, gün)</code></td>
+<td>Denetimler</td>
+</tr>
+<tr class="odd">
+<td><code>BenzetimZamanı(zaman [, fark])</code></td>
+<td>Testler için saati sabitler</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Birim 1–9999 yılları arasında çalışır. Saat dilimi adları ve yaz saati kuralları yoktur; yalnızca UTC ve dakika cinsinden sabit bir fark vardır.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="04-3-guvenlik-saldirilara-karsi-savunma.html"><small>Önceki</small>3. Güvenlik: saldırılara karşı savunma</a><a class="sonraki" href="06-5-desen-duzenli-ifadeler.html"><small>Sonraki</small>5. Desen: düzenli ifadeler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Parametre sayısı: 33
+  Epok     1/300   kayıp = 0.704415
+  Epok   100/300   kayıp = 0.001678
+  Epok   200/300   kayıp = 0.000737
+  Epok   300/300   kayıp = 0.000424
+Tahminler:
+tensör([[0.0002],
+        [0.9997],
+        [0.9993],
+        [0.0005]])
+Doğruluk : %100.0

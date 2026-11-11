@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 13 — Sinir ağları · Yöntem ile Programlamaya Giriş</title>
+<meta name="description" content="Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html" aria-current="page">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 224 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Programlamaya Giriş</a> / Bölüm 15 / 20</p>
+    <h2 id="bölüm-13-sinir-ağları">Bölüm 13 — Sinir ağları</h2>
+<p>Bir sinir ağı, katmanların art arda dizilmesiyle oluşur. Her <strong>Yoğun</strong> katman girdisini bir ağırlık matrisiyle çarpar, bir sapma ekler ve sonucu bir <strong>etkinleştirme fonksiyonundan</strong> (<code>relu</code>, <code>tanh</code>, <code>sigmoid</code>) geçirir. Eğitim, bu ağırlıkları gradyan inişiyle ayarlamaktır.</p>
+<h3 id="ilk-sinir-ağı-xor">İlk sinir ağı: XOR</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SinirAğı
+<span class="ya">kullan</span> YZ
+<span class="ya">değişken</span>
+  X, Y, tahmin: <span class="ya">tensör</span>
+  model, opt: <span class="ya">herhangi</span>
+  geçmiş: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  Tohum(<span class="ys">42</span>)
+  <span class="yy">// XOR: girdiler aynıysa 0, farklıysa 1. Tek bir doğruyla ayrılamaz.</span>
+  X := Tensör([[<span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">0</span>, <span class="ys">1</span>], [<span class="ys">1</span>, <span class="ys">0</span>], [<span class="ys">1</span>, <span class="ys">1</span>]])
+  Y := Tensör([[<span class="ys">0</span>], [<span class="ys">1</span>], [<span class="ys">1</span>], [<span class="ys">0</span>]])
+
+  model := Ardışık([Yoğun(<span class="ys">2</span>, <span class="ys">8</span>, <span class="ym">'tanh'</span>),       <span class="yy">// 2 girdi -&gt; 8 gizli nöron</span>
+                    Yoğun(<span class="ys">8</span>, <span class="ys">1</span>, <span class="ym">'sigmoid'</span>)])  <span class="yy">// 8 -&gt; 1 çıktı (0..1 olasılık)</span>
+  opt := Adam(model.Parametreler, <span class="ys">0.05</span>)
+  yaz(<span class="ym">'Parametre sayısı: '</span> + model.ParametreSayısı, <span class="ys">1</span>)
+
+  geçmiş := Eğit(model, X, Y, <span class="ym">'ikiliÇaprazEntropi'</span>, opt, <span class="ys">300</span>, <span class="ys">100</span>)
+
+  tahmin := model.Tahmin(X)
+  yaz(<span class="ym">'Tahminler:'</span>, <span class="ys">1</span>)
+  yaz(tahmin, <span class="ys">1</span>)
+  yaz(<span class="ym">'Doğruluk : %'</span> + Doğruluk(tahmin, [<span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">0</span>]) * <span class="ys">100</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Parametre sayısı: 33
+  Epok     1/300   kayıp = 0.704415
+  Epok   100/300   kayıp = 0.001678
+  Epok   200/300   kayıp = 0.000737
+  Epok   300/300   kayıp = 0.000424
+Tahminler:
+tensör([[0.0002],
+        [0.9997],
+        [0.9993],
+        [0.0005]])
+Doğruluk : %100.0</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parça</th>
+<th>Görevi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Ardışık([...])</code></td>
+<td>Katmanları sırayla birbirine bağlayan model</td>
+</tr>
+<tr class="even">
+<td><code>Yoğun(g, ç, etkinleştirme)</code></td>
+<td><code>g</code> girdi alan, <code>ç</code> çıktı veren tam bağlantılı katman</td>
+</tr>
+<tr class="odd">
+<td><code>Adam(parametreler, oran)</code></td>
+<td>Ağırlıkları güncelleyen optimizasyon algoritması. Basit olanı: <code>SGD</code></td>
+</tr>
+<tr class="even">
+<td><code>Eğit(model, X, Y, kayıp, opt, epok, rapor)</code></td>
+<td>Hazır eğitim döngüsü; kayıp geçmişini döndürür</td>
+</tr>
+<tr class="odd">
+<td>Kayıp fonksiyonları</td>
+<td><code>OKH</code> (sayı tahmini), <code>İkiliÇaprazEntropi</code> (evet/hayır), <code>ÇaprazEntropi</code> (çok sınıf)</td>
+</tr>
+<tr class="even">
+<td><code>Tahmin(X)</code></td>
+<td>Eğitimden sonra modeli kullanır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Kayıp</strong> modelin ne kadar yanıldığını ölçer. 0.70’ten 0.0004’e düşmesi, ağın XOR kuralını öğrendiğini gösterir. <code>Tohum(42)</code> başlangıç ağırlıklarını sabitler; böylece sonuçlar her çalıştırmada aynı çıkar.</p>
+<h3 id="kendi-eğitim-döngünüz-üç-sınıflı-sınıflandırma">Kendi eğitim döngünüz: üç sınıflı sınıflandırma</h3>
+<p><code>Eğit</code> kolaydır ama ne olduğunu görmek için döngüyü bir kez elle yazmak öğreticidir. Aşağıdaki program üç nokta bulutu üretir ve hangi noktanın hangi buluta ait olduğunu öğrenir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> ÜçSınıf
+<span class="ya">kullan</span> YZ, Matematik
+<span class="ya">değişken</span>
+  noktalar: <span class="ya">liste</span>
+  etiketler: <span class="ya">liste</span>
+  i, s: <span class="ya">tamsayı</span>
+  X: <span class="ya">tensör</span>
+  model, opt: <span class="ya">herhangi</span>
+  kayıp: <span class="ya">tensör</span>
+  epok: <span class="ya">tamsayı</span>
+  merkezler: <span class="ya">liste</span>
+<span class="ya">başla</span>
+  Tohum(<span class="ys">1</span>)
+  merkezler := [[<span class="ys">0</span>, <span class="ys">0</span>], [<span class="ys">3</span>, <span class="ys">0</span>], [<span class="ys">1.5</span>, <span class="ys">3</span>]]
+  noktalar := [];  etiketler := []
+  <span class="ys">0</span>'dan <span class="ys">2</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> s <span class="ya">için</span>
+    <span class="ys">1</span>'den <span class="ys">30</span>'a <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">başla</span>
+      noktalar.Ekle([merkezler[s][<span class="ys">0</span>] + Normal(<span class="ys">0</span>, <span class="ys">0.6</span>), merkezler[s][<span class="ys">1</span>] + Normal(<span class="ys">0</span>, <span class="ys">0.6</span>)])
+      etiketler.Ekle(s)
+    <span class="ya">bitir</span>
+  X := Tensör(noktalar)
+
+  model := Ardışık([Yoğun(<span class="ys">2</span>, <span class="ys">16</span>, <span class="ym">'relu'</span>), Yoğun(<span class="ys">16</span>, <span class="ys">3</span>)])
+  opt := Adam(model.Parametreler, <span class="ys">0.03</span>)
+  <span class="ys">1</span>'den <span class="ys">150</span>'ye <span class="ya">kadar</span> <span class="ya">her</span> epok <span class="ya">için</span>
+  <span class="ya">başla</span>
+    opt.SıfırlaGrad                                      <span class="yy">// 1. eski gradyanları sil</span>
+    kayıp := ÇaprazEntropi(model.İleri(X), etiketler)   <span class="yy">// 2. ileri geçiş + kayıp</span>
+    kayıp.GeriYay                                        <span class="yy">// 3. gradyanları hesapla</span>
+    opt.Adım                                             <span class="yy">// 4. ağırlıkları güncelle</span>
+    <span class="ya">eğer</span> epok <span class="ya">mod</span> <span class="ys">50</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'epok {:3}  kayıp {:.4}  doğruluk %{:.1}'</span>, epok, kayıp.Değer,
+                  Doğruluk(model.Tahmin(X), etiketler) * <span class="ys">100</span>), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(<span class="ym">'Yeni nokta [2.8, 0.2] sınıfı: '</span> + ArgMaks(model.Tahmin([[<span class="ys">2.8</span>, <span class="ys">0.2</span>]]))[<span class="ys">0</span>], <span class="ys">1</span>)
+  yaz(<span class="ym">'Yeni nokta [1.4, 2.7] sınıfı: '</span> + ArgMaks(model.Tahmin([[<span class="ys">1.4</span>, <span class="ys">2.7</span>]]))[<span class="ys">0</span>], <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>epok  50  kayıp 0.0225  doğruluk %100.0
+epok 100  kayıp 0.0137  doğruluk %100.0
+epok 150  kayıp 0.0109  doğruluk %100.0
+Yeni nokta [2.8, 0.2] sınıfı: 1
+Yeni nokta [1.4, 2.7] sınıfı: 2</code></pre></div>
+<p>Her sinir ağı eğitimi bu dört adımı tekrarlar: <strong>sıfırla → ileri geç ve kaybı hesapla → geri yay → güncelle.</strong> Son katmanda etkinleştirme olmaması bilinçlidir: <code>ÇaprazEntropi</code> ham puanları kendisi olasılığa çevirir. <code>ArgMaks</code> en yüksek puanlı sınıfın numarasını verir. (3, 0) civarındaki nokta 1. buluta, (1.5, 3) civarındaki 2. buluta atandı.</p>
+<p><strong>Kendi katmanınızı yazmak:</strong> <code>İleri</code> ve <code>Parametreler</code> metodları olan her Yöntem sınıfı <code>Ardışık</code> modele katman olarak eklenebilir. Örneği Yöntem klasöründeki <code>ornekler/xor_sinir_agi.y</code> dosyasında bulabilirsiniz.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="14-bolum-12-tensorler-ve-otomatik-turev.html"><small>Önceki</small>Bölüm 12 — Tensörler ve otomatik türev</a><a class="sonraki" href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html"><small>Sonraki</small>Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#ilk-sinir-ağı-xor">İlk sinir ağı: XOR</a></li><li><a href="#kendi-eğitim-döngünüz-üç-sınıflı-sınıflandırma">Kendi eğitim döngünüz: üç sınıflı sınıflandırma</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

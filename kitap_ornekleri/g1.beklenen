@@ -1,0 +1,8 @@
+Taksim -> Yenikapı: ['Taksim', 'Şişhane', 'Haliç', 'Vezneciler', 'Yenikapı']
+
+A* ile 13 adımda:
+*****#****
+.###*#*##.
+...#***#..
+##.#####.#
+..........

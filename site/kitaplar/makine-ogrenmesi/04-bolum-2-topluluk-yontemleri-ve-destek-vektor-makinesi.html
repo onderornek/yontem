@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi · Yöntem ile Makine Öğrenmesi</title>
+<meta name="description" content="20 algoritma, her biri baştan sona okunabilen bir programla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Tarayıcıda dene</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem ile Makine Öğrenmesi</a></summary>
+      <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-giris.html">Giriş</a></li><li><a href="03-bolum-1-denetimli-ogrenmenin-temelleri.html">Bölüm 1 — Denetimli öğrenmenin temelleri</a></li><li><a href="04-bolum-2-topluluk-yontemleri-ve-destek-vektor-makinesi.html" aria-current="page">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</a></li><li><a href="05-bolum-3-denetimsiz-ogrenme.html">Bölüm 3 — Denetimsiz öğrenme</a></li><li><a href="06-bolum-4-derin-ogrenme.html">Bölüm 4 — Derin öğrenme</a></li><li><a href="07-ek-a-hangi-algoritma-ne-zaman.html">Ek A — Hangi algoritma ne zaman?</a></li></ol>
+      <a class="pdf" href="Yontem_ile_Makine_Ogrenmesi.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF indir <small>(isteğe bağlı, 251 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Makine Öğrenmesi</a> / Bölüm 4 / 7</p>
+    <h2 id="bölüm-2-topluluk-yöntemleri-ve-destek-vektör-makinesi">Bölüm 2 — Topluluk yöntemleri ve destek vektör makinesi</h2>
+<p>Tek bir ağaç ya ezberler ya da çok basit kalır. Topluluk yöntemleri birçok küçük modeli birleştirir: <strong>torbalama</strong> (rastgele orman) birbirinden bağımsız ağaçların oyunu alarak dalgalanmayı azaltır; <strong>artırma</strong> (gradyan artırma, AdaBoost, XGBoost) modelleri sırayla ekler, her biri öncekilerin hatasını düzeltir. Destek vektör makinesi ise başka bir yoldan gider: sınıflar arasına olabildiğince geniş bir boşluk bırakan sınırı arar.</p>
+<h3 id="rastgele-orman">6. Rastgele orman</h3>
+<p><strong>Fikir.</strong> Aynı veriden birçok farklı ağaç kurarız. Farklılığı iki rastgelelik sağlar: her ağaç verinin geri koyarak çekilmiş bir kopyasını (bootstrap) görür ve her düğümde özniteliklerin yalnızca bir kısmı denenir. Tek tek ağaçlar zayıftır ama hataları farklı yerlerdedir; oy çokluğu hataları birbirine söndürür.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>y</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>çoğunluk</mo><mo stretchy="false" form="prefix">{</mo><mspace width="0.167em"></mspace><msub><mi>h</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msub><mi>h</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>h</mi><mi>T</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\hat{y}(x) = \operatorname{çoğunluk}\{\, h_1(x), h_2(x), \ldots, h_T(x) \,\}</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> RastgeleOrman
+<span class="yy">{ Tek bir derin karar ağacı ile 25 ağaçlık rastgele ormanı karşılaştırır.
+  Her ağaç, verinin geri koyarak çekilmiş bir örneğiyle (bootstrap) ve her düğümde
+  rastgele seçilen özniteliklerle kurulur; tahmin, ağaçların oy çokluğudur. }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">tip</span>
+  Düğüm = <span class="ya">sınıf</span>
+    yaprak: <span class="ya">mantıksal</span>
+    sınıfı, öznitelik: <span class="ya">tamsayı</span>
+    eşik: <span class="ya">ondalık</span>
+    sol, sağ: Düğüm
+  <span class="ya">bitir</span>
+
+<span class="ya">değişken</span>
+  X, Xt: <span class="ya">ondalık</span> dizisi dizisi
+  Y, Yt: <span class="ya">tamsayı</span> dizisi
+  orman: Düğüm dizisi
+  tek: Düğüm
+  i, t: <span class="ya">tamsayı</span>
+
+<span class="yy">{ Veri: bir çemberin içi (1) ve dışı (0); etiketlerin %10'u bilerek yanlış (gürültü) }</span>
+<span class="ya">prosedür</span> Üret(n: <span class="ya">tamsayı</span>; X: <span class="ya">ondalık</span> dizisi dizisi; Y: <span class="ya">tamsayı</span> dizisi)
+<span class="ya">değişken</span> a, b: <span class="ya">ondalık</span>; k, j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den n'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+  <span class="ya">başla</span>
+    a := Rastgele * <span class="ys">2</span> - <span class="ys">1</span>; b := Rastgele * <span class="ys">2</span> - <span class="ys">1</span>
+    k := <span class="ya">eğer</span> a * a + b * b &lt; <span class="ys">0.5</span> <span class="ya">ise</span> <span class="ys">1</span> <span class="ya">değilse</span> <span class="ys">0</span>
+    <span class="ya">eğer</span> Rastgele &lt; <span class="ys">0.1</span> <span class="ya">ise</span> k := <span class="ys">1</span> - k
+    X.Ekle([a, b]); Y.Ekle(k)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Gini(sıra: <span class="ya">tamsayı</span> dizisi): <span class="ya">ondalık</span>
+<span class="ya">değişken</span> p: <span class="ya">ondalık</span>; j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> Uzunluk(sıra) = <span class="ys">0</span> <span class="ya">ise</span> <span class="ya">dön</span> <span class="ys">0</span>
+  p := <span class="ys">0</span>
+  sıra <span class="ya">içindeki</span> <span class="ya">her</span> j <span class="ya">için</span> p := p + Y[j]
+  p := p / Uzunluk(sıra)
+  sonuç := <span class="ys">2</span> * p * (<span class="ys">1</span> - p)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Çoğunluk(sıra: <span class="ya">tamsayı</span> dizisi): <span class="ya">tamsayı</span>
+<span class="ya">değişken</span> s, j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  s := <span class="ys">0</span>
+  sıra <span class="ya">içindeki</span> <span class="ya">her</span> j <span class="ya">için</span> s := s + Y[j]
+  sonuç := <span class="ya">eğer</span> <span class="ys">2</span> * s &gt;= Uzunluk(sıra) <span class="ya">ise</span> <span class="ys">1</span> <span class="ya">değilse</span> <span class="ys">0</span>
+<span class="ya">bitir</span>
+
+<span class="yy">{ öznitelikSayısı = 1 ise her düğümde tek bir rastgele öznitelik denenir (ormanın &quot;rastgele&quot; kısmı) }</span>
+<span class="ya">fonksiyon</span> Ağaç(sıra: <span class="ya">tamsayı</span> dizisi; derinlik, öznitelikSayısı: <span class="ya">tamsayı</span>): Düğüm
+<span class="ya">değişken</span>
+  d: Düğüm
+  f, k, j, enF: <span class="ya">tamsayı</span>
+  e, puan, enPuan, enE: <span class="ya">ondalık</span>
+  sol, sağ, adaylar: <span class="ya">tamsayı</span> dizisi
+<span class="ya">başla</span>
+  d := Düğüm.Oluştur
+  <span class="ya">eğer</span> derinlik = <span class="ys">0</span> <span class="ya">veya</span> Gini(sıra) = <span class="ys">0</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    d.yaprak := <span class="ya">doğru</span>; d.sınıfı := Çoğunluk(sıra); <span class="ya">dön</span> d
+  <span class="ya">bitir</span>
+  adaylar := <span class="ya">eğer</span> öznitelikSayısı = <span class="ys">2</span> <span class="ya">ise</span> [<span class="ys">0</span>, <span class="ys">1</span>] <span class="ya">değilse</span> [Rastgele(<span class="ys">2</span>)]
+  enPuan := <span class="ys">9</span>; enF := <span class="ys">0</span>; enE := <span class="ys">0</span>
+  adaylar <span class="ya">içindeki</span> <span class="ya">her</span> f <span class="ya">için</span>
+    sıra <span class="ya">içindeki</span> <span class="ya">her</span> k <span class="ya">için</span>
+    <span class="ya">başla</span>
+      e := X[k][f]
+      sol := Süz(sıra, <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; X[j][f] &lt; e)
+      sağ := Süz(sıra, <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; X[j][f] &gt;= e)
+      puan := (Uzunluk(sol) * Gini(sol) + Uzunluk(sağ) * Gini(sağ)) / Uzunluk(sıra)
+      <span class="ya">eğer</span> puan &lt; enPuan <span class="ya">ise</span> <span class="ya">başla</span> enPuan := puan; enF := f; enE := e <span class="ya">bitir</span>
+    <span class="ya">bitir</span>
+  d.öznitelik := enF; d.eşik := enE
+  sol := Süz(sıra, <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; X[j][enF] &lt; enE)
+  sağ := Süz(sıra, <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; X[j][enF] &gt;= enE)
+  <span class="ya">eğer</span> Uzunluk(sol) = <span class="ys">0</span> <span class="ya">veya</span> Uzunluk(sağ) = <span class="ys">0</span> <span class="ya">ise</span>
+  <span class="ya">başla</span>
+    d.yaprak := <span class="ya">doğru</span>; d.sınıfı := Çoğunluk(sıra); <span class="ya">dön</span> d
+  <span class="ya">bitir</span>
+  d.sol := Ağaç(sol, derinlik - <span class="ys">1</span>, öznitelikSayısı)
+  d.sağ := Ağaç(sağ, derinlik - <span class="ys">1</span>, öznitelikSayısı)
+  sonuç := d
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Tahmin(d: Düğüm; x: <span class="ya">ondalık</span> dizisi): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ya">eğer</span> d.yaprak <span class="ya">ise</span> <span class="ya">dön</span> d.sınıfı
+  <span class="ya">eğer</span> x[d.öznitelik] &lt; d.eşik <span class="ya">ise</span> <span class="ya">dön</span> Tahmin(d.sol, x)
+  sonuç := Tahmin(d.sağ, x)
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> OrmanTahmini(x: <span class="ya">ondalık</span> dizisi): <span class="ya">tamsayı</span>
+<span class="ya">değişken</span> oy: <span class="ya">tamsayı</span>; a: Düğüm
+<span class="ya">başla</span>
+  oy := <span class="ys">0</span>
+  orman <span class="ya">içindeki</span> <span class="ya">her</span> a <span class="ya">için</span> oy := oy + Tahmin(a, x)
+  sonuç := <span class="ya">eğer</span> <span class="ys">2</span> * oy &gt; Uzunluk(orman) <span class="ya">ise</span> <span class="ys">1</span> <span class="ya">değilse</span> <span class="ys">0</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Doğruluk(tekMi: <span class="ya">mantıksal</span>): <span class="ya">ondalık</span>
+<span class="ya">değişken</span> j, isabet, p: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  isabet := <span class="ys">0</span>
+  <span class="ys">0</span>'dan Uzunluk(Xt) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+  <span class="ya">başla</span>
+    p := <span class="ya">eğer</span> tekMi <span class="ya">ise</span> Tahmin(tek, Xt[j]) <span class="ya">değilse</span> OrmanTahmini(Xt[j])
+    <span class="ya">eğer</span> p = Yt[j] <span class="ya">ise</span> isabet := isabet + <span class="ys">1</span>
+  <span class="ya">bitir</span>
+  sonuç := isabet / Uzunluk(Xt)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">3</span>)
+  X := []; Y := []; Xt := []; Yt := []
+  Üret(<span class="ys">150</span>, X, Y)
+  Üret(<span class="ys">300</span>, Xt, Yt)
+
+  tek := Ağaç(Aralık(Uzunluk(X)), <span class="ys">8</span>, <span class="ys">2</span>)
+  yaz(Biçimle(<span class="ym">'Tek derin ağaç (derinlik 8)  → test doğruluğu: {:.3}'</span>, Doğruluk(<span class="ya">doğru</span>)), <span class="ys">1</span>)
+
+  orman := []
+  <span class="ys">1</span>'den <span class="ys">25</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+  <span class="ya">başla</span>
+    <span class="yy">{ bootstrap: n örneği geri koyarak çek }</span>
+    orman.Ekle(Ağaç(Eşle(Aralık(Uzunluk(X)), <span class="ya">fonksiyon</span>(j: <span class="ya">tamsayı</span>) =&gt; Rastgele(Uzunluk(X))), <span class="ys">8</span>, <span class="ys">1</span>))
+    <span class="ya">eğer</span> t = <span class="ys">1</span> <span class="ya">veya</span> t = <span class="ys">5</span> <span class="ya">veya</span> t = <span class="ys">25</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'Rastgele orman, {:2} ağaç       → test doğruluğu: {:.3}'</span>, t, Doğruluk(<span class="ya">yanlış</span>)), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tek derin ağaç (derinlik 8)  → test doğruluğu: 0.803
+Rastgele orman,  1 ağaç       → test doğruluğu: 0.720
+Rastgele orman,  5 ağaç       → test doğruluğu: 0.783
+Rastgele orman, 25 ağaç       → test doğruluğu: 0.840</code></pre></div>
+<p><strong>Ne öğrendik.</strong> Ormanın tek ağacı (%72), tüm veriyle kurulan derin ağaçtan (%80) kötüdür; 25 ağaç bir araya gelince %84’e çıkıyor. Etiketlerin %10’u gürültü olduğu için ulaşılabilecek en iyi doğruluk %90 civarıdır. Doğruluğu her zaman eğitimde görülmemiş bir test kümesinde ölçmek gerekir: derin ağaç eğitim verisinde %100’e yakın görünür.</p>
+<p><strong>Alıştırma.</strong> Ağaç sayısını 100’e çıkarınız ve doğruluğun nerede durduğuna bakınız. Bootstrap’ı kaldırıp her ağacı tüm veriyle kurarsanız ne olur?</p>
+<h3 id="gradyan-artırma">7. Gradyan artırma</h3>
+<p><strong>Fikir.</strong> Basit bir tahminle başlarız (ortalama). Sonra sırayla küçük ağaçlar ekleriz; her yeni ağaç o ana kadarki toplamın artıklarını (gerçek − tahmin) öğrenir. Her katkı bir öğrenme oranıyla (η) küçültülür, böylece hiçbir ağaç tek başına fazla söz sahibi olmaz.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>m</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>F</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>η</mi><mspace width="0.167em"></mspace><msub><mi>h</mi><mi>m</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">F_m(x) = F_{m-1}(x) + \eta \, h_m(x)</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> GradyanArtırma
+<span class="yy">{ Gürültülü bir sinüs eğrisini, art arda eklenen küçük &quot;karar kütükleri&quot;yle öğrenir.
+  Her yeni kütük, o ana kadarki toplam modelin hatalarını (artıkları) tahmin etmeye çalışır:
+  F_m(x) = F_(m-1)(x) + η · h_m(x)    η: öğrenme oranı }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">tip</span>
+  Kütük = <span class="ya">kayıt</span> eşik, sol, sağ: <span class="ya">ondalık</span>; <span class="ya">bitir</span>      <span class="yy">{ x &lt; eşik ise sol, değilse sağ değerini verir }</span>
+
+<span class="ya">değişken</span>
+  X, Y, F, artık: <span class="ya">ondalık</span> dizisi
+  kütükler: Kütük dizisi
+  i, m, n: <span class="ya">tamsayı</span>
+  eta, okh: <span class="ya">ondalık</span>
+  k: Kütük
+
+<span class="ya">fonksiyon</span> Ortalama(L: <span class="ya">ondalık</span> dizisi): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sonuç := <span class="ya">eğer</span> Uzunluk(L) = <span class="ys">0</span> <span class="ya">ise</span> <span class="ys">0.0</span> <span class="ya">değilse</span> Toplam(L) / Uzunluk(L)
+<span class="ya">bitir</span>
+
+<span class="yy">{ Artıklara en iyi uyan tek bölmeli ağacı bulur: her olası eşiği dener, kare hatası en küçük olanı seçer }</span>
+<span class="ya">fonksiyon</span> KütükUydur(r: <span class="ya">ondalık</span> dizisi): Kütük
+<span class="ya">değişken</span>
+  j, q: <span class="ya">tamsayı</span>
+  sol, sağ: <span class="ya">ondalık</span> dizisi
+  hata, enHata: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  enHata := <span class="ys">1</span>e9
+  <span class="ys">1</span>'den n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+  <span class="ya">başla</span>
+    sol := []; sağ := []
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> q <span class="ya">için</span> <span class="ya">eğer</span> X[q] &lt; X[j] <span class="ya">ise</span> sol.Ekle(r[q]) <span class="ya">değilse</span> sağ.Ekle(r[q])
+    hata := <span class="ys">0</span>
+    sol <span class="ya">içindeki</span> <span class="ya">her</span> e <span class="ya">için</span> hata := hata + (e - Ortalama(sol)) ** <span class="ys">2</span>
+    sağ <span class="ya">içindeki</span> <span class="ya">her</span> e <span class="ya">için</span> hata := hata + (e - Ortalama(sağ)) ** <span class="ys">2</span>
+    <span class="ya">eğer</span> hata &lt; enHata <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      enHata := hata
+      sonuç := Kütük.Oluştur(X[j], Ortalama(sol), Ortalama(sağ))
+    <span class="ya">bitir</span>
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  Tohum(<span class="ys">1</span>)
+  n := <span class="ys">40</span>
+  X := []; Y := []
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    X.Ekle(i * <span class="ys">6.28</span> / n)
+    Y.Ekle(Sin(i * <span class="ys">6.28</span> / n) + Normal(<span class="ys">0</span>, <span class="ys">0.15</span>))
+  <span class="ya">bitir</span>
+  eta := <span class="ys">0.3</span>
+  F := Eşle(Y, <span class="ya">fonksiyon</span>(v: <span class="ya">ondalık</span>) =&gt; Ortalama(Y))   <span class="yy">{ başlangıç: herkese ortalamayı tahmin et }</span>
+  kütükler := []
+  <span class="ys">1</span>'den <span class="ys">60</span>'a <span class="ya">kadar</span> <span class="ya">her</span> m <span class="ya">için</span>
+  <span class="ya">başla</span>
+    artık := []
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> artık.Ekle(Y[i] - F[i])
+    k := KütükUydur(artık)
+    kütükler.Ekle(k)
+    okh := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    <span class="ya">başla</span>
+      F[i] := F[i] + eta * (<span class="ya">eğer</span> X[i] &lt; k.eşik <span class="ya">ise</span> k.sol <span class="ya">değilse</span> k.sağ)
+      okh := okh + (Y[i] - F[i]) ** <span class="ys">2</span> / n
+    <span class="ya">bitir</span>
+    <span class="ya">eğer</span> m &lt;= <span class="ys">3</span> <span class="ya">veya</span> m <span class="ya">mod</span> <span class="ys">20</span> = <span class="ys">0</span> <span class="ya">ise</span>
+      yaz(Biçimle(<span class="ym">'{:2}. kütük: x &lt; {:.2} ise {:6.3}, değilse {:6.3}   →  OKH = {:.4}'</span>, m, k.eşik, k.sol, k.sağ, okh), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'x = 1.57 için tahmin {:.3} (gerçek sin = 1.000)'</span>, F[<span class="ys">10</span>]), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code> 1. kütük: x &lt; 3.30 ise  0.599, değilse -0.662   →  OKH = 0.2739
+ 2. kütük: x &lt; 3.61 ise  0.386, değilse -0.522   →  OKH = 0.1713
+ 3. kütük: x &lt; 2.98 ise  0.351, değilse -0.318   →  OKH = 0.1144
+20. kütük: x &lt; 5.97 ise -0.011, değilse  0.200   →  OKH = 0.0229
+40. kütük: x &lt; 4.24 ise  0.019, değilse -0.039   →  OKH = 0.0096
+60. kütük: x &lt; 2.04 ise  0.022, değilse -0.010   →  OKH = 0.0055
+x = 1.57 için tahmin 0.888 (gerçek sin = 1.000)</code></pre></div>
+<p><strong>Ne öğrendik.</strong> İlk kütük eğriyi kabaca ikiye böldü; sonrakiler giderek küçülüp ince ayar yaptı. 20. kütükte OKH, verideki gürültünün varyansına (0,15² ≈ 0,0225) ulaştı. Ondan sonraki düşüş, model artık gürültüyü ezberlediği için yanıltıcıdır. Gerçek projelerde kaç ağaç ekleneceğine ayrı bir doğrulama kümesine bakarak karar verilir.</p>
+<p><strong>Alıştırma.</strong> <code>eta</code> değerini 1,0 ve 0,05 yapınız. Aynı OKH’ye kaç kütükte ulaşılıyor?</p>
+<h3 id="destek-vektör-makinesi-svm">8. Destek vektör makinesi (SVM)</h3>
+<p><strong>Fikir.</strong> İki sınıfı ayıran pek çok doğru vardır; SVM, iki taraftaki en yakın noktalara en uzak olanı seçer. Bu en yakın noktalara <strong>destek vektörleri</strong> denir: sınır yalnızca onlara bağlıdır, diğer noktaları silseniz sonuç değişmez. Doğrusal olmayan sınırlar için “çekirdek hilesi” kullanılır.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>min</mo><mrow><mi>w</mi><mo>,</mo><mi>b</mi></mrow></munder><mspace width="0.278em"></mspace><mfrac><mi>λ</mi><mn>2</mn></mfrac><mo stretchy="false" form="prefix">∥</mo><mi>w</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munder><mo>∑</mo><mi>i</mi></munder><mo>max</mo><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mspace width="0.278em"></mspace><mn>1</mn><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>w</mi><mi>⊤</mi></msup><msub><mi>x</mi><mi>i</mi></msub><mo>+</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\min_{w,b} \; \frac{\lambda}{2}\lVert w \rVert^2 + \frac{1}{n}\sum_i \max\bigl(0,\; 1 - y_i (w^\top x_i + b)\bigr)</annotation></semantics></math></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> DestekVektörMakinesi
+<span class="yy">{ İki sınıfı ayıran ve iki sınıfa da en uzak duran doğruyu (en geniş marjı) bulur.
+  Kayıp (menteşe kaybı): λ/2·‖w‖² + ortalama(max(0, 1 − y·(w·x + b)))
+  Doğru tarafta ve marjın dışında kalan noktalar kayba hiç katkı yapmaz. }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  X: <span class="ya">ondalık</span> dizisi dizisi
+  Y: <span class="ya">tamsayı</span> dizisi      <span class="yy">{ +1 ya da −1 }</span>
+  w0, w1, b, lam, eta, m, g0, g1, gb: <span class="ya">ondalık</span>
+  i, t, n: <span class="ya">tamsayı</span>
+
+<span class="ya">fonksiyon</span> Puan(x: <span class="ya">ondalık</span> dizisi): <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  sonuç := w0 * x[<span class="ys">0</span>] + w1 * x[<span class="ys">1</span>] + b
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  X := [[<span class="ys">1</span>, <span class="ys">2</span>], [<span class="ys">2</span>, <span class="ys">3</span>], [<span class="ys">2</span>, <span class="ys">1</span>], [<span class="ys">3</span>, <span class="ys">2</span>], [<span class="ys">1.5</span>, <span class="ys">1.5</span>],       <span class="yy">{ −1 sınıfı }</span>
+        [<span class="ys">5</span>, <span class="ys">5</span>], [<span class="ys">6</span>, <span class="ys">4</span>], [<span class="ys">5</span>, <span class="ys">6</span>], [<span class="ys">7</span>, <span class="ys">5</span>], [<span class="ys">6</span>, <span class="ys">6.5</span>], [<span class="ys">4.5</span>, <span class="ys">4</span>]] <span class="yy">{ +1 sınıfı }</span>
+  Y := [-<span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>]
+  n := Uzunluk(X)
+  w0 := <span class="ys">0</span>; w1 := <span class="ys">0</span>; b := <span class="ys">0</span>; lam := <span class="ys">0.01</span>
+
+  <span class="ys">1</span>'den <span class="ys">5000</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+  <span class="ya">başla</span>
+    eta := <span class="ys">1</span> / (lam * t + <span class="ys">100</span>)        <span class="yy">{ zamanla küçülen adım }</span>
+    g0 := lam * w0; g1 := lam * w1; gb := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+      <span class="ya">eğer</span> Y[i] * Puan(X[i]) &lt; <span class="ys">1</span> <span class="ya">ise</span>    <span class="yy">{ marjın içinde ya da yanlış tarafta: düzelt }</span>
+      <span class="ya">başla</span>
+        g0 := g0 - Y[i] * X[i][<span class="ys">0</span>] / n
+        g1 := g1 - Y[i] * X[i][<span class="ys">1</span>] / n
+        gb := gb - Y[i] / n
+      <span class="ya">bitir</span>
+    w0 := w0 - eta * g0; w1 := w1 - eta * g1; b := b - eta * gb
+  <span class="ya">bitir</span>
+
+  yaz(Biçimle(<span class="ym">'Karar sınırı: {:.3}·x + {:.3}·y {} {:.3} = 0'</span>, w0, w1, <span class="ya">eğer</span> b &lt; <span class="ys">0</span> <span class="ya">ise</span> <span class="ym">'-'</span> <span class="ya">değilse</span> <span class="ym">'+'</span>, Mutlak(b)), <span class="ys">1</span>)
+  yaz(Biçimle(<span class="ym">'Marj genişliği: 2/‖w‖ = {:.3}'</span>, <span class="ys">2</span> / Kök(w0 * w0 + w1 * w1)), <span class="ys">1</span>)
+  yaz(<span class="ym">'Noktalar ve y·(w·x + b) değerleri:'</span>, <span class="ys">1</span>)
+  <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    m := Y[i] * Puan(X[i])
+    yaz(Biçimle(<span class="ym">'  ({:3}, {:3}) sınıf {:2}  → {:6.3}{}'</span>, X[i][<span class="ys">0</span>], X[i][<span class="ys">1</span>], Y[i], m,
+      <span class="ya">eğer</span> m &lt; <span class="ys">1.05</span> <span class="ya">ise</span> <span class="ym">'   ← destek vektörü'</span> <span class="ya">değilse</span> <span class="ym">''</span>), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+  yaz(Biçimle(<span class="ym">'Yeni nokta (3.5, 3.5) → sınıf {}'</span>, <span class="ya">eğer</span> Puan([<span class="ys">3.5</span>, <span class="ys">3.5</span>]) &gt;= <span class="ys">0</span> <span class="ya">ise</span> <span class="ym">'+1'</span> <span class="ya">değilse</span> <span class="ym">'-1'</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Karar sınırı: 0.581·x + 0.536·y - 3.780 = 0
+Marj genişliği: 2/‖w‖ = 2.529
+Noktalar ve y·(w·x + b) değerleri:
+  (  1,   2) sınıf -1  →  2.126
+  (  2,   3) sınıf -1  →  1.008   ← destek vektörü
+  (  2,   1) sınıf -1  →  2.081
+  (  3,   2) sınıf -1  →  0.963   ← destek vektörü
+  (1.5, 1.5) sınıf -1  →  2.103
+  (  5,   5) sınıf  1  →  1.808
+  (  6,   4) sınıf  1  →  1.853
+  (  5,   6) sınıf  1  →  2.345
+  (  7,   5) sınıf  1  →  2.971
+  (  6, 6.5) sınıf  1  →  3.194
+  (4.5,   4) sınıf  1  →  0.981   ← destek vektörü
+Yeni nokta (3.5, 3.5) → sınıf +1</code></pre></div>
+<p><strong>Ne öğrendik.</strong> 11 noktadan yalnızca 3’ü marjın kenarındadır (değeri 1’e yakındır): sınırı onlar belirler. Diğerlerinin değeri 1’den büyüktür, yani kayba katkıları sıfırdır. Özniteliklerin ölçeği burada da önemlidir; farklı birimlerdeki öznitelikler önce standartlaştırılmalıdır.</p>
+<p><strong>Alıştırma.</strong> <code>lam</code> değerini 1 yapınız. Marj genişliği ve destek vektörü sayısı nasıl değişiyor? (Büyük λ, geniş marj için birkaç hataya göz yumar.)</p>
+<h3 id="adaboost">14. AdaBoost</h3>
+<p><strong>Fikir.</strong> Her tur, yalnızca tek bir eşik kullanan çok zayıf bir sınıflandırıcı (karar kütüğü) eğitir. Yanlış sınıflanan örneklerin ağırlığı büyütülür; sonraki kütük zorunlu olarak onlara odaklanır. Sonunda her kütük, isabet oranına göre belirlenen bir ağırlıkla (α) oy verir.</p>
+<p><span class="math display">$$\alpha_t = \tfrac{1}{2}\ln\frac{1-\varepsilon_t}{\varepsilon_t}, \qquad F(x) = \operatorname{işaret}\Bigl(\sum_t \alpha_t h_t(x)\Bigr)$$</span></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> AdaBoost
+<span class="yy">{ Zayıf öğrenici (tek eşikli &quot;karar kütükleri&quot;) ağırlıklı oylamayla güçlü bir sınıflandırıcıya dönüşür.
+  Her turda yanlış sınıflanan örneklerin ağırlığı artar; sonraki kütük onlara odaklanır.
+  α_t = ½ · ln((1 − hata) / hata)     F(x) = işaret(Σ α_t · h_t(x)) }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">tip</span>
+  Kütük = <span class="ya">kayıt</span> eşik: <span class="ya">ondalık</span>; yön: <span class="ya">tamsayı</span>; alfa: <span class="ya">ondalık</span>; <span class="ya">bitir</span>   <span class="yy">{ h(x) = yön, x &lt; eşik ise; −yön değilse }</span>
+
+<span class="ya">değişken</span>
+  X, D: <span class="ya">ondalık</span> dizisi
+  Y: <span class="ya">tamsayı</span> dizisi
+  kütükler: Kütük dizisi
+  i, t, n, isabet: <span class="ya">tamsayı</span>
+  k, enK: Kütük
+  hata, enHata, z: <span class="ya">ondalık</span>
+
+<span class="ya">fonksiyon</span> H(k: Kütük; x: <span class="ya">ondalık</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sonuç := <span class="ya">eğer</span> x &lt; k.eşik <span class="ya">ise</span> k.yön <span class="ya">değilse</span> -k.yön
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Güçlü(x: <span class="ya">ondalık</span>): <span class="ya">tamsayı</span>
+<span class="ya">değişken</span> s: <span class="ya">ondalık</span>; j: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  s := <span class="ys">0</span>
+  <span class="ys">0</span>'dan Uzunluk(kütükler) - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> s := s + kütükler[j].alfa * H(kütükler[j], x)
+  sonuç := <span class="ya">eğer</span> s &gt;= <span class="ys">0</span> <span class="ya">ise</span> <span class="ys">1</span> <span class="ya">değilse</span> -<span class="ys">1</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  <span class="yy">{ Tek bir eşik bu veriyi ayıramaz: + + + − − − − + + + }</span>
+  X := [<span class="ys">1</span>, <span class="ys">2</span>, <span class="ys">3</span>, <span class="ys">4</span>, <span class="ys">5</span>, <span class="ys">6</span>, <span class="ys">7</span>, <span class="ys">8</span>, <span class="ys">9</span>, <span class="ys">10</span>]
+  Y := [<span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, -<span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>]
+  n := Uzunluk(X)
+  D := Eşle(X, <span class="ya">fonksiyon</span>(x: <span class="ya">ondalık</span>) =&gt; <span class="ys">1.0</span> / n)       <span class="yy">{ başlangıçta tüm örnekler eşit ağırlıkta }</span>
+  kütükler := []
+  <span class="ys">1</span>'den <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+  <span class="ya">başla</span>
+    enHata := <span class="ys">2</span>
+    <span class="yy">{ en düşük ağırlıklı hatayı veren eşik ve yönü ara }</span>
+    <span class="ys">0</span>'dan n'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+      [<span class="ys">1</span>, -<span class="ys">1</span>] <span class="ya">içindeki</span> <span class="ya">her</span> yön <span class="ya">için</span>
+      <span class="ya">başla</span>
+        k := Kütük.Oluştur(i + <span class="ys">0.5</span>, yön, <span class="ys">0</span>)
+        hata := <span class="ys">0</span>
+        <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">eğer</span> H(k, X[j]) &lt;&gt; Y[j] <span class="ya">ise</span> hata := hata + D[j]
+        <span class="ya">eğer</span> hata &lt; enHata <span class="ya">ise</span> <span class="ya">başla</span> enHata := hata; enK := k <span class="ya">bitir</span>
+      <span class="ya">bitir</span>
+    k := enK
+    k.alfa := <span class="ys">0.5</span> * Ln((<span class="ys">1</span> - enHata) / enHata)
+    kütükler.Ekle(k)
+    <span class="yy">{ ağırlıkları güncelle: yanlışlar ×e^α, doğrular ×e^−α, sonra toplam 1 olacak şekilde ölçekle }</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> D[j] := D[j] * Üstel(-k.alfa * Y[j] * H(k, X[j]))
+    z := Toplam(D)
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> D[j] := D[j] / z
+    isabet := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">eğer</span> Güçlü(X[j]) = Y[j] <span class="ya">ise</span> isabet := isabet + <span class="ys">1</span>
+    yaz(Biçimle(<span class="ym">'Tur {}: x &lt; {:4} ise {:2}   hata = {:.3}  α = {:.3}   topluluk doğruluğu: {}/{}'</span>,
+      t, k.eşik, k.yön, enHata, k.alfa, isabet, n), <span class="ys">1</span>)
+    yaz(<span class="ym">'        ağırlıklar: '</span> + Eşle(D, <span class="ya">fonksiyon</span>(d: <span class="ya">ondalık</span>) =&gt; Yuvarla(d, <span class="ys">2</span>)), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Tur 1: x &lt;  3.5 ise  1   hata = 0.300  α = 0.424   topluluk doğruluğu: 7/10
+        ağırlıklar: [0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.17, 0.17, 0.17]
+Tur 2: x &lt;  7.5 ise -1   hata = 0.214  α = 0.650   topluluk doğruluğu: 7/10
+        ağırlıklar: [0.17, 0.17, 0.17, 0.05, 0.05, 0.05, 0.05, 0.11, 0.11, 0.11]
+Tur 3: x &lt;  0.5 ise -1   hata = 0.182  α = 0.752   topluluk doğruluğu: 10/10
+        ağırlıklar: [0.1, 0.1, 0.1, 0.12, 0.12, 0.12, 0.12, 0.06, 0.06, 0.06]
+Tur 4: x &lt;  3.5 ise  1   hata = 0.194  α = 0.711   topluluk doğruluğu: 10/10
+        ağırlıklar: [0.06, 0.06, 0.06, 0.08, 0.08, 0.08, 0.08, 0.17, 0.17, 0.17]</code></pre></div>
+<p><strong>Ne öğrendik.</strong> İlk kütük sağdaki üç noktayı kaçırdı; ağırlıkları 0,07’den 0,17’ye çıktı ve ikinci kütük tam onları doğru sınıflandırdı. Tek başına en fazla %70 isabet eden üç kütük, birlikte 10 noktanın hepsini doğru sınıflandırıyor. Gürültülü etiketler AdaBoost’un zayıf noktasıdır: yanlış etiketli bir örneğin ağırlığı her turda büyür.</p>
+<p><strong>Alıştırma.</strong> <code>Y</code> listesindeki bir etiketi bilerek ters çeviriniz ve 10 tur çalıştırınız. O örneğin ağırlığını izleyiniz.</p>
+<h3 id="xgboost">15. XGBoost</h3>
+<p><strong>Fikir.</strong> XGBoost, gradyan artırmanın hızlı ve düzenlileştirilmiş bir sürümüdür. Kaybın yalnızca eğimini (g) değil eğriselliğini de (h, ikinci türev) kullanır; böylece her yaprağın en iyi değeri tek bir formülle bulunur. λ yaprak değerlerini küçülterek aşırı uyumu engeller; γ yeterince kazanç getirmeyen bölmeleri yasaklar.</p>
+<p><span class="math display">$$w^* = -\frac{G}{H + \lambda}, \qquad \text{kazanç} = \tfrac{1}{2}\Bigl[\frac{G_L^2}{H_L+\lambda} + \frac{G_R^2}{H_R+\lambda} - \frac{G^2}{H+\lambda}\Bigr] - \gamma$$</span></p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> XGBoost
+<span class="yy">{ XGBoost'un çekirdeği: kaybın birinci (g) ve ikinci (h) türevini kullanan, düzenlileştirilmiş artırma.
+  Lojistik kayıpta p = σ(F) için:  g = p − y,  h = p·(1 − p)  (kodda grad ve hess dizileri)
+  Yaprak ağırlığı: w = −G / (H + λ)          Bölmenin kazancı:
+  kazanç = ½ [G_L²/(H_L+λ) + G_R²/(H_R+λ) − G²/(H+λ)] − γ   (kazanç ≤ 0 ise bölme yapılmaz) }</span>
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">değişken</span>
+  X: <span class="ya">ondalık</span> dizisi
+  Y: <span class="ya">tamsayı</span> dizisi
+  i: <span class="ya">tamsayı</span>
+
+<span class="ya">prosedür</span> Eğit(lam, gama: <span class="ya">ondalık</span>)
+<span class="ya">değişken</span>
+  F, grad, hess: <span class="ya">ondalık</span> dizisi
+  t, j, n, enEşik: <span class="ya">tamsayı</span>
+  GL, HL, GR, HR, G, H, kazanç, enKazanç, wL, wR, kayıp, p: <span class="ya">ondalık</span>
+<span class="ya">başla</span>
+  n := Uzunluk(X)
+  F := Eşle(X, <span class="ya">fonksiyon</span>(x: <span class="ya">ondalık</span>) =&gt; <span class="ys">0.0</span>)
+  yaz(Biçimle(<span class="ym">'λ = {}, γ = {}'</span>, lam, gama), <span class="ys">1</span>)
+  <span class="ys">1</span>'den <span class="ys">4</span>'e <span class="ya">kadar</span> <span class="ya">her</span> t <span class="ya">için</span>
+  <span class="ya">başla</span>
+    grad := []; hess := []
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+    <span class="ya">başla</span>
+      p := Sigmoid(F[j]); grad.Ekle(p - Y[j]); hess.Ekle(p * (<span class="ys">1</span> - p))
+    <span class="ya">bitir</span>
+    G := Toplam(grad); H := Toplam(hess)
+    enKazanç := <span class="ys">0</span>; enEşik := <span class="ys">0</span>
+    <span class="ys">1</span>'den n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>    <span class="yy">{ eşik: X[i-1] ile X[i] arası }</span>
+    <span class="ya">başla</span>
+      GL := <span class="ys">0</span>; HL := <span class="ys">0</span>
+      <span class="ys">0</span>'dan i - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">başla</span> GL := GL + grad[j]; HL := HL + hess[j] <span class="ya">bitir</span>
+      GR := G - GL; HR := H - HL
+      kazanç := <span class="ys">0.5</span> * (GL * GL / (HL + lam) + GR * GR / (HR + lam) - G * G / (H + lam)) - gama
+      <span class="ya">eğer</span> kazanç &gt; enKazanç <span class="ya">ise</span> <span class="ya">başla</span> enKazanç := kazanç; enEşik := i <span class="ya">bitir</span>
+    <span class="ya">bitir</span>
+    <span class="ya">eğer</span> enKazanç &lt;= <span class="ys">0</span> <span class="ya">ise</span>
+    <span class="ya">başla</span>
+      yaz(<span class="ym">'  Tur '</span> + t + <span class="ym">': hiçbir bölme γ cezasını karşılamıyor, ağaç büyümüyor'</span>, <span class="ys">1</span>)
+      <span class="ya">kır</span>
+    <span class="ya">bitir</span>
+    GL := <span class="ys">0</span>; HL := <span class="ys">0</span>
+    <span class="ys">0</span>'dan enEşik - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span> <span class="ya">başla</span> GL := GL + grad[j]; HL := HL + hess[j] <span class="ya">bitir</span>
+    wL := -GL / (HL + lam); wR := -(G - GL) / (H - HL + lam)
+    kayıp := <span class="ys">0</span>
+    <span class="ys">0</span>'dan n - <span class="ys">1</span>'e <span class="ya">kadar</span> <span class="ya">her</span> j <span class="ya">için</span>
+    <span class="ya">başla</span>
+      F[j] := F[j] + <span class="ys">0.5</span> * (<span class="ya">eğer</span> j &lt; enEşik <span class="ya">ise</span> wL <span class="ya">değilse</span> wR)       <span class="yy">{ 0.5: küçültme (shrinkage) }</span>
+      p := Sigmoid(F[j])
+      kayıp := kayıp - (Y[j] * Ln(p) + (<span class="ys">1</span> - Y[j]) * Ln(<span class="ys">1</span> - p)) / n
+    <span class="ya">bitir</span>
+    yaz(Biçimle(<span class="ym">'  Tur {}: x &lt; {:4.1} | kazanç {:.3} | yapraklar {:6.3} / {:6.3} | kayıp {:.4}'</span>,
+      t, (X[enEşik - <span class="ys">1</span>] + X[enEşik]) / <span class="ys">2</span>, enKazanç, wL, wR, kayıp), <span class="ys">1</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  <span class="yy">{ Müşterinin yaşı (sıralı) ve ürünü satın alıp almadığı }</span>
+  X := [<span class="ys">18</span>, <span class="ys">22</span>, <span class="ys">25</span>, <span class="ys">28</span>, <span class="ys">31</span>, <span class="ys">35</span>, <span class="ys">38</span>, <span class="ys">42</span>, <span class="ys">46</span>, <span class="ys">50</span>, <span class="ys">55</span>, <span class="ys">60</span>]
+  Y := [<span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">1</span>, <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">1</span>]
+  Eğit(<span class="ys">0</span>, <span class="ys">0</span>)
+  Eğit(<span class="ys">5</span>, <span class="ys">0</span>)
+  Eğit(<span class="ys">5</span>, <span class="ys">0.8</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Programın çıktısı şöyledir:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>λ = 0.0, γ = 0.0
+  Tur 1: x &lt; 26.5 | kazanç 2.722 | yapraklar -2.000 /  1.111 | kayıp 0.5110
+  Tur 2: x &lt; 33.0 | kazanç 1.252 | yapraklar -1.023 /  0.957 | kayıp 0.4290
+  Tur 3: x &lt; 26.5 | kazanç 0.493 | yapraklar -1.221 /  0.439 | kayıp 0.3962
+  Tur 4: x &lt; 52.5 | kazanç 0.318 | yapraklar -0.208 /  1.285 | kayıp 0.3755
+λ = 5.0, γ = 0.0
+  Tur 1: x &lt; 33.0 | kazanç 0.580 | yapraklar -0.240 /  0.370 | kayıp 0.6428
+  Tur 2: x &lt; 26.5 | kazanç 0.476 | yapraklar -0.245 /  0.309 | kayıp 0.6023
+  Tur 3: x &lt; 33.0 | kazanç 0.395 | yapraklar -0.214 /  0.285 | kayıp 0.5696
+  Tur 4: x &lt; 26.5 | kazanç 0.324 | yapraklar -0.217 /  0.239 | kayıp 0.5431
+λ = 5.0, γ = 0.8
+  Tur 1: hiçbir bölme γ cezasını karşılamıyor, ağaç büyümüyor</code></pre></div>
+<p><strong>Ne öğrendik.</strong> λ = 0 iken yaprak değerleri ±2’ye kadar çıktı ve 4. turda model 50 yaşındaki tek “hayır” için ayrı bir bölme açtı: gürültüyü kovalamaya başladı. λ = 5 yaprakları ±0,3 civarında tuttu ve model yalnızca iki anlamlı eşiği (26,5 ve 33) kullandı. γ = 0,8 ise hiçbir bölmenin bu kadar kazanç getirmediğine karar verdi. Gerçek XGBoost bunlara ek olarak derin ağaçlar, özellik örnekleme ve paralel hesap kullanır; fikir aynıdır.</p>
+<p><strong>Alıştırma.</strong> <code>Eğit(1, 0.1)</code> ekleyiniz ve sonucu üç çalıştırmayla karşılaştırınız. Hangi ayar, verideki gerçek deseni (yaş ~30’dan sonra satın alım) en iyi yakalıyor?</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="03-bolum-1-denetimli-ogrenmenin-temelleri.html"><small>Önceki</small>Bölüm 1 — Denetimli öğrenmenin temelleri</a><a class="sonraki" href="05-bolum-3-denetimsiz-ogrenme.html"><small>Sonraki</small>Bölüm 3 — Denetimsiz öğrenme</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#rastgele-orman">6. Rastgele orman</a></li><li><a href="#gradyan-artırma">7. Gradyan artırma</a></li><li><a href="#destek-vektör-makinesi-svm">8. Destek vektör makinesi (SVM)</a></li><li><a href="#adaboost">14. AdaBoost</a></li><li><a href="#xgboost">15. XGBoost</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

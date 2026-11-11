@@ -1,0 +1,30 @@
+200 Merhaba, dünya! çğıöşü [text/plain; charset=utf-8]
+GET /yanki?ad=Ay%C5%9Fe%20%C3%96z&soru=a%26b%3Dc%3F | x-deneme=değer 1 | ajan=Yontem
+POST application/json {"ürün": "çay", "adet": 3}
+çay × 3
+PUT gövde-PUT
+PATCH gövde-patch
+DELETE gövde-DELETE
+HEAD 200 gövde uzunluğu 0
+404 durum 404
+500 durum 500
+yönlendirme → 200 Merhaba, dünya! çğıöşü
+204 ""
+doğru evet
+Ay%C5%9Fe%20%26%20Ali%20%3D%20%C3%A7%2F%C4%9F%3F çay + simit -_.!~*'() 42
+a=1&b=x%20y&%C3%A7=do%C4%9Fru ""
+zaman aşımı: Ağ hatası: <sunucu>/yavas zaman aşımına uğradı (1 sn)
+kapalı kapı: Ağ hatası: http://127.0.0.1:9/yok adresine bağlanılamadı
+geçersiz adres: Geçersiz adres: 'ftp://ornek.com' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
+boşluklu adres: Geçersiz adres: 'http://ornek.com/a b' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
+yöntem: Bilinmeyen HTTP yöntemi: 'SİL' (GET, POST, PUT, PATCH, DELETE, HEAD)
+GET gövdesi: GET isteğinin gövdesi olamaz
+başlık adı: Geçersiz başlık adı: 'Kötü Ad'
+başlık enjeksiyonu: 'X-A' başlığının değerinde satır sonu olamaz
+başlık ascii: 'X-A' başlığının değerinde yalnızca ASCII karakterler olabilir (Türkçe karakterler için UrlKodla kullanın)
+başlık türü: 'başlıklar' sözlük bekler, metin verildi
+süre: 'zaman aşımı' 1 ile 300 saniye arasında olmalı
+gövde türü: 'gövde' metin bekler, tamsayı verildi
+url çöz: 'UrlÇöz': geçersiz '%' dizisi (1. karakter)
+url utf8: 'UrlÇöz': çözülen veri geçerli UTF-8 metin değil
+argüman: 'HttpAl' 1..3 argüman bekler, 0 verildi

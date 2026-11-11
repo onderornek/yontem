@@ -1,0 +1,6 @@
+derinlik  4: 124 düğüm
+derinlik  6: 508 düğüm
+derinlik  8: 2044 düğüm
+derinlik 10: 8188 düğüm
+derinlik 12: 32764 düğüm
+derinlik 14: 131068 düğüm

@@ -1,0 +1,14 @@
+Ağ(
+  katman1: Doğrusal(giriş=2, çıkış=32, sapma=doğru)
+  katman2: Doğrusal(giriş=32, çıkış=3, sapma=doğru)
+  bırak: BırakmaKatmanı(p=0.1)
+)
+Parametre sayısı: 195
+
+adım 100  kayıp 0.2289  doğruluk %90.8
+adım 200  kayıp 0.1689  doğruluk %94.2
+adım 300  kayıp 0.1763  doğruluk %94.2
+adım 400  kayıp 0.1261  doğruluk %95.8
+
+Yüklemeden önce yeni model: doğruluk %40.8
+Yükledikten sonra        : doğruluk %95.8

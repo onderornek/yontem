@@ -1,0 +1,11 @@
+Sesli bildirim, düzey 60
+Sesli bildirim, düzey 100
+Sessiz bildirim
+Bildirimler kapalı
+Sessiz hâlâ: doğru
+Pencere "Ayarlar"
+  OnayKutusu [ ] "Bildirimleri göster"
+  OnayKutusu [x] "Sessiz" (devre dışı)
+  Etiket "Ses düzeyi: 100%"
+  Kaydırıcı 100 (0..100) (gizli)
+  Etiket "Bildirimler kapalı"
