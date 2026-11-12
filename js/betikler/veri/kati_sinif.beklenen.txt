@@ -12,8 +12,8 @@ Tip hatası [sinif.y, satır 103] 'Daire.Taşı' en az 2 argüman ister, 1 veril
 Tip hatası [sinif.y, satır 104] 'Daire.Taşı' çağrısında 1. argüman ondalık olmalı, metin verildi
 Tip hatası [sinif.y, satır 105] 'Daire.Tanım' çağrısında 1. argüman metin olmalı, tamsayı verildi
 Tip hatası [sinif.y, satır 106] 'Daire.Oluştur' çağrısında 1. argüman ondalık olmalı, metin verildi
-Tip hatası [sinif.y, satır 108] 'şekiller' Şekil listesi; Nokta bir öğe konamaz
-Tip hatası [sinif.y, satır 109] 'şekiller' Şekil listesi; tamsayı bir öğe konamaz
+Tip hatası [sinif.y, satır 108] 'şekiller' Şekil listesi; Nokta bir eleman konamaz
+Tip hatası [sinif.y, satır 109] 'şekiller' Şekil listesi; tamsayı bir eleman konamaz
 Tip hatası [sinif.y, satır 110] 'Büyüt' çağrısında 1. argüman Şekil olmalı, Nokta verildi
 Tip hatası [sinif.y, satır 111] 'sayı' tamsayı tipinde; Şekil bir değer atanamaz
 Tip hatası [sinif.y, satır 112] 'sayı' tamsayı tipinde; ondalık bir değer atanamaz

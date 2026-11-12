@@ -20,7 +20,7 @@ başla
   d := hedef
   d <> boş iken
   başla
-    Ekle(yol, 0, d)
+    Ekle(yol, d, 0)
     d := önceki[d]
   bitir
   dön yol
@@ -125,7 +125,7 @@ bitir
 { Izgara: metin listesi, '#' duvar. Başlangıç/hedef: [satır, sütun] }
 fonksiyon AYıldız(ızgara: liste; başlangıç, hedef: liste): liste
 değişken
-  açık: liste           // öğeler: [f, g, satır, sütun]
+  açık: liste           // elemanlar: [f, g, satır, sütun]
   gMaliyet, önceki: sözlük
   mevcut, yön: liste
   r, c, nr, nc, i, enİyi: tamsayı
@@ -151,7 +151,7 @@ başla
       k := anahtar
       k <> boş iken
       başla
-        Ekle(yol, 0, Eşle(Ayır(k, ','), fonksiyon(s) => tamsayı(s)))
+        Ekle(yol, Eşle(Ayır(k, ','), fonksiyon(s) => tamsayı(s)), 0)
         k := önceki[k]
       bitir
       dön yol

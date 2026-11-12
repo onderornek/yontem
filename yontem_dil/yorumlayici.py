@@ -714,7 +714,22 @@ class Yorumlayici:
         return self.oto(self.ad_al(k, n.ad, n), n.satir)
 
     def i_alan(self, n, k):
+        ks = self._konum_sil(n, k)
+        if ks is not None:
+            return self.oto(ks, n.satir)
         return self.oto(self.alan_al(self.deg(n.nesne, k), n.ad, n.ham), n.satir)
+
+    def _konum_sil(self, n, k):
+        """L(2).Sil: L bir liste, dizi ya da sözlükse Sil(L, 2) ile aynıdır."""
+        c = n.nesne
+        if n.ad != 'sil' or c.tur != 'cagri' or c.cagrilan.tur != 'ad' or len(c.argumanlar) != 1:
+            return None
+        x = self.ad_al(k, c.cagrilan.ad, c.cagrilan)
+        if type(x) not in (list, dict, PascalDizi):
+            return None
+        i = self.deg(c.argumanlar[0], k)
+        sil = self.yerlesik_sil
+        return YerelFonksiyon('Sil', lambda y, a: sil.fn(y, [x, i]), oto=True)
 
     def i_miras(self, n, k):
         return self.oto(self.miras_coz(n, k), n.satir)
@@ -746,6 +761,9 @@ class Yorumlayici:
         if t == 'ad':
             return self.ad_al(k, n.ad, n)
         if t == 'alan':
+            ks = self._konum_sil(n, k)
+            if ks is not None:
+                return ks
             return self.alan_al(self.deg(n.nesne, k), n.ad, n.ham)
         if t == 'miras':
             return self.miras_coz(n, k)

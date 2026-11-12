@@ -9,7 +9,7 @@ export type Tip =
   | { k: 'fonk'; p: Tip[]; d: Tip; ref?: boolean[] }
   | { k: 'deg'; r: TipDeg };
 
-/** Çıkarım bekleyen tip değişkeni (ör. 'liste' olarak bildirilen değişkenin öğe tipi) */
+/** Çıkarım bekleyen tip değişkeni (ör. 'liste' olarak bildirilen değişkenin eleman tipi) */
 export interface TipDeg { id: number; t: Tip | null; sayisal: boolean; aciklama: string }
 let degSayac = 0;
 export function yeniDeg(aciklama: string): Tip { return { k: 'deg', r: { id: ++degSayac, t: null, sayisal: false, aciklama } }; }

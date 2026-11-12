@@ -1,17 +1,17 @@
-Tip hatası [liste.y, satır 44] 'sayılar' tamsayı listesi; metin bir öğe konamaz
+Tip hatası [liste.y, satır 44] 'sayılar' tamsayı listesi; metin bir eleman konamaz
 Tip hatası [liste.y, satır 45] 'sayılar' tamsayı listesi tipinde; metin listesi bir değer atanamaz
 Tip hatası [liste.y, satır 46] 'ad' metin tipinde; tamsayı bir değer atanamaz
 Tip hatası [liste.y, satır 47] 'n' tamsayı tipinde; metin bir değer atanamaz
 Tip hatası [liste.y, satır 48] 'n' tamsayı tipinde; tamsayı listesi bir değer atanamaz
-Tip hatası [liste.y, satır 49] 'sayılar' tamsayı listesi; metin bir öğe konamaz
-Tip hatası [liste.y, satır 50] 'adlar' metin listesi; tamsayı bir öğe konamaz
-Tip hatası [liste.y, satır 51] 'sayılar' tamsayı listesi; ondalık bir öğe konamaz
+Tip hatası [liste.y, satır 49] 'sayılar' tamsayı listesi; metin bir eleman konamaz
+Tip hatası [liste.y, satır 50] 'adlar' metin listesi; tamsayı bir eleman konamaz
+Tip hatası [liste.y, satır 51] 'sayılar' tamsayı listesi; ondalık bir eleman konamaz
 Tip hatası [liste.y, satır 52] 'n' tamsayı tipinde; metin bir değer atanamaz
 Tip hatası [liste.y, satır 53] 'İlk' çağrısında 1. argüman tamsayı listesi olmalı, metin listesi verildi
 Tip hatası [liste.y, satır 54] 'n' tamsayı tipinde; metin bir değer atanamaz
 Tip hatası [liste.y, satır 55] 'ad' metin tipinde; tamsayı bir değer atanamaz
 Tip hatası [liste.y, satır 56] Koşul mantıksal olmalı, tamsayı verildi
 Tip hatası [liste.y, satır 57] 'n' tamsayı tipinde; metin bir değer atanamaz
-Tip hatası [liste.y, satır 58] 'yaşlar' tamsayı sözlüğü; metin bir öğe konamaz
+Tip hatası [liste.y, satır 58] 'yaşlar' tamsayı sözlüğü; metin bir eleman konamaz
 Tip hatası [liste.y, satır 59] 'sayılar' tamsayı listesi tipinde; metin listesi bir değer atanamaz
 16 tip hatası bulundu; program çalıştırılmadı.

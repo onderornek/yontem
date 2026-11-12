@@ -1,7 +1,7 @@
 program KatıSınıfTesti
 {$katı}
 { Katı kipte sınıf tipleri: atama uyumu (alt sınıf üst sınıf yerine geçer), alan ve metod erişimi,
-  metod argümanları ve sınıf öğeli listeler derleme zamanında denetlenir. }
+  metod argümanları ve sınıf elemanlı listeler derleme zamanında denetlenir. }
 
 tip
   Nokta = kayıt

@@ -94,7 +94,7 @@ export class Uretici {
   // ============================================================ katı kip
   // {$katı} yönergesi taşıyan dosyalar derleme zamanında denetlenir: tipi belirtilmemiş bildirimler, tanımsız adlar
   // ve tipi derleme anında bilinen değerlerin uyumsuz kullanımı (atama, argüman, dönüş, koşul, işlem) hatadır.
-  // Tipi derleme anında bilinemeyen değerler (liste öğeleri, 'herhangi') eskisi gibi çalışma zamanında denetlenir.
+  // Tipi derleme anında bilinemeyen değerler (liste elemanları, 'herhangi') eskisi gibi çalışma zamanında denetlenir.
   kati = false;
   tanilar: Tani[] = [];
   deyimSatiri: number | null = null;
@@ -106,7 +106,7 @@ export class Uretici {
     if (this.tanilar.some(t => t.mesaj === mesaj && t.satir === satir && t.dosya === this.dosya)) return;
     this.tanilar.push({ mesaj, satir, dosya: this.dosya });
   }
-  // Geniş tipler yalnızca katı kipin tanıları içindir; üretilen kodu etkilemez. Öğe tipi bilinen kaplar
+  // Geniş tipler yalnızca katı kipin tanıları içindir; üretilen kodu etkilemez. Eleman tipi bilinen kaplar
   // 'liste<tamsayi>' / 'sozluk<metin>' biçiminde yazılır; yerleşik işlevlerin dönüş tipleri de burada bilinir.
   genisTip = false;
   /** İfadenin katı kip tanılarında kullanılan tipi (ifadeTipi'nden daha çok şey bilir) */
@@ -234,13 +234,13 @@ export class Uretici {
     birlestir: 'metin', karakter: 'metin', mantiksal: 'mantiksal', harfmi: 'mantiksal', rakammi: 'mantiksal', icerir: 'mantiksal',
     liste: 'liste', anahtarlar: 'liste', degerler: 'liste', benzersiz: 'liste', ayir: 'liste<metin>',
   };
-  /** Öğe tipi bildirilmiş bir kaba konan değerin tipi uymuyorsa tanı üretir */
+  /** Eleman tipi bildirilmiş bir kaba konan değerin tipi uymuyorsa tanı üretir */
   ogeDenetle(kap: string | null, deger: Dugum, k: Kapsam, ne: string, satir: number) {
     const a = this.kapAyir(kap);
     if (!a) return;
     const v = this.tipK(deger, k);
     const u = this.uyumsuz(this.adTip(a.eleman), v);
-    if (u) this.tani(`${ne} ${this.tipYazi(kap!)}; ${this.tipYazi(v!)} bir öğe konamaz`, satir);
+    if (u) this.tani(`${ne} ${this.tipYazi(kap!)}; ${this.tipYazi(v!)} bir eleman konamaz`, satir);
   }
   static TIP_ADI: Record<string, string> = { tamsayi: 'tamsayı', ondalik: 'ondalık', metin: 'metin', karakter: 'karakter', mantiksal: 'mantıksal', liste: 'liste', sozluk: 'sözlük', tensor: 'tensör' };
   tipYazi(t: string): string {
@@ -255,7 +255,7 @@ export class Uretici {
     if (!hedef || kaynak === null) return null;
     const kk = this.kapAyir(kaynak);
     if (kk) {
-      // öğe tipi bilinen kap: önce kabın kendisi, sonra öğeler
+      // eleman tipi bilinen kap: önce kabın kendisi, sonra elemanlar
       if (hedef.k === 'temel' && hedef.ad === kk.kap) return hedef.eleman && this.uyumsuz(hedef.eleman, kk.eleman) ? this.tipYazi(this.genisAd(hedef)!) : null;
       kaynak = kk.kap;
     }
@@ -853,7 +853,7 @@ export class Uretici {
           const tip: Tip = r && r.tur === 'sembol' && r.s.tur === 'degisken' ? r.s.tip ?? null : r && r.tur === 'alan' ? r.tip : null;
           const ham = d.hedef.ham ?? d.hedef.ad;
           if (tip) {
-            const sabitListe = tip.k === 'temel' && !!tip.eleman && d.deger.tur === 'liste';   // öğeler tek tek bildirilir
+            const sabitListe = tip.k === 'temel' && !!tip.eleman && d.deger.tur === 'liste';   // elemanlar tek tek bildirilir
             if (!sabitListe) this.uyDenetle(tip, this.tipK(d.deger, k), J(d.hedef.ad), ham);
             if (tip.k === 'temel' && tip.eleman && d.deger.tur === 'liste') for (const e of d.deger.elemanlar) this.ogeDenetle(this.genisAd(tip), e, k, `'${ham}'`, d.satir);
           }
@@ -881,6 +881,7 @@ export class Uretici {
           if (r && r.tur === 'yerlesik' && typeof r.v === 'function') return `Y.${e.ad}();`;
           return `$.cagirDeyim(${this.cagrilan(e, k)});`;
         }
+        if (e.tur === 'alan' && this.konumSilMi(e, k)) return this.konumSil(e, k) + ';';
         if (e.tur === 'alan' || e.tur === 'miras') return `$.cagirDeyim(${this.cagrilan(e, k)});`;
         return `${this.ifade(e, k)};`;
       }
@@ -920,7 +921,7 @@ export class Uretici {
           return `for (const [${x}, ${y}] of $.yineleCift(${kaynak})) {\n${a1} ${a2}\n${this.donguGovde(d.govde, k)}\n}`;
         }
         if (this.kati) {
-          // döngü değişkeninin tipi, kaynağın öğe tipiyle uyuşmalı
+          // döngü değişkeninin tipi, kaynağın eleman tipiyle uyuşmalı
           const kt = this.tipK(d.kaynak, k), ka = this.kapAyir(kt), r = this.bul(k, d.ad);
           const ot = ka && ka.kap === 'liste' ? ka.eleman : kt === 'metin' ? 'metin' : null;
           if (ot && r && r.tur === 'sembol' && r.s.tur === 'degisken') this.uyDenetle(r.s.tip ?? null, ot, J(d.ad), r.s.ham);
@@ -1218,7 +1219,7 @@ export class Uretici {
     if (this.kati) {
       const sabitListe = !!tip && tip.k === 'temel' && !!tip.eleman && n.tur === 'liste';
       if (!sabitListe) this.uyDenetle(tip, this.tipK(n, k), ad);
-      // liste sabitinin öğeleri tek tek: [1, 2, 'üç'] → tamsayı listesi
+      // liste sabitinin elemanları tek tek: [1, 2, 'üç'] → tamsayı listesi
       if (tip && tip.k === 'temel' && tip.eleman && n.tur === 'liste') for (const e of n.elemanlar) this.ogeDenetle(this.genisAd(tip), e, k, `${(() => { try { return `'${JSON.parse(ad)}'`; } catch { return ad; } })()}`, e.satir ?? n.satir);
     }
     return this.uyT(tip, this.ifade(n, k), tip && tip.k === 'temel' ? this.ifadeTipi(n, k) : null, ad);
@@ -1230,6 +1231,7 @@ export class Uretici {
       case 'sabitdeger': return this.sabit(n.deger);
       case 'ad': return this.adDeger(n, k);
       case 'alan':
+        if (this.konumSilMi(n, k)) return this.konumSil(n, k);
         if (this.kati) this.uyeBul(n, k);
         return `$.al(${this.ifade(n.nesne, k)}, ${J(n.ad)}, ${J(n.ham)})`;
       case 'indeks': {
@@ -1397,20 +1399,39 @@ export class Uretici {
     return '$.refYok()';
   }
 
+  /** L(2).Sil biçimi: L bir değişkense (fonksiyon, sınıf ya da yerleşik değilse) konumdaki elemanı siler. */
+  konumSilMi(n: Dugum, k: Kapsam): boolean {
+    const c = n.nesne;
+    if (n.ad !== 'sil' || c.tur !== 'cagri' || c.cagrilan.tur !== 'ad' || c.argumanlar.length !== 1) return false;
+    const r = this.bul(k, c.cagrilan.ad) as any;
+    if (!r) return false;
+    return r.tur === 'alan' || (r.tur === 'sembol' && (r.s.tur === 'degisken' || r.s.tur === 'sabit'));
+  }
+  konumSil(n: Dugum, k: Kapsam): string {
+    const c = n.nesne;
+    if (this.kati) {
+      const r = this.bul(k, c.cagrilan.ad) as any;
+      if (r && r.tur === 'sembol' && r.s.tip && r.s.tip.k === 'dizi')
+        this.tani(`'${r.s.ham}' sabit boyutlu bir dizidir; ${n.ham ?? n.ad} ile eleman eklenemez ya da silinemez (liste kullanın)`, n.satir);
+    }
+    return `$.konumSil(${this.cagrilan(c.cagrilan, k)}, ${this.ifade(c.argumanlar[0], k)})`;
+  }
+
   cagri(n: Dugum, k: Kapsam): string {
     const c = n.cagrilan, args: Dugum[] = n.argumanlar;
+    if (c.tur === 'alan' && args.length === 0 && this.konumSilMi(c, k)) return this.konumSil(c, k);
     if (this.kati) {
-      // liste.Ekle(öğe) ve Ekle(liste, öğe): öğe tipi bildirilmiş listeye uymayan öğe
-      if (c.tur === 'alan' && c.ad === 'ekle' && (args.length === 1 || args.length === 2)) this.ogeDenetle(this.tipK(c.nesne, k), args[args.length - 1], k, `'${c.nesne.ham ?? 'liste'}'`, n.satir);
+      // liste.Ekle(eleman) ve Ekle(liste, eleman): eleman tipi bildirilmiş listeye uymayan eleman
+      if (c.tur === 'alan' && c.ad === 'ekle' && (args.length === 1 || args.length === 2)) this.ogeDenetle(this.tipK(c.nesne, k), args[0], k, `'${c.nesne.ham ?? 'liste'}'`, n.satir);
       if (c.tur === 'alan') { const u = this.uyeBul(c, k); if (u && u.metod) this.metodArgDenetle(u.metod, `${u.sinif.ham}.${c.ham ?? c.ad}`, args, k, n.satir); }
       else if (c.tur === 'ad') { const r = this.bul(k, c.ad) as any; if (r && r.tur === 'metod') this.metodArgDenetle(r.m, c.ham ?? c.ad, args, k, n.satir); }
       // Ekle/Sil: sınırları bildirilmiş (sabit boyutlu) bir diziye uygulanamaz
       if (c.tur === 'ad' && (c.ad === 'ekle' || c.ad === 'sil') && args.length >= 1 && args[0].tur === 'ad') {
         const f = this.bul(k, c.ad) as any, r = this.bul(k, args[0].ad) as any;
         if (f && f.tur === 'yerlesik' && r && r.tur === 'sembol' && r.s.tip && r.s.tip.k === 'dizi')
-          this.tani(`'${r.s.ham}' sabit boyutlu bir dizidir; ${c.ham ?? c.ad} ile öğe eklenemez ya da silinemez (liste kullanın)`, n.satir);
+          this.tani(`'${r.s.ham}' sabit boyutlu bir dizidir; ${c.ham ?? c.ad} ile eleman eklenemez ya da silinemez (liste kullanın)`, n.satir);
       }
-      if (c.tur === 'ad' && c.ad === 'ekle' && (args.length === 2 || args.length === 3)) { const r = this.bul(k, 'ekle'); if (r && (r as any).tur === 'yerlesik') this.ogeDenetle(this.tipK(args[0], k), args[args.length - 1], k, `'${args[0].ham ?? 'liste'}'`, n.satir); }
+      if (c.tur === 'ad' && c.ad === 'ekle' && (args.length === 2 || args.length === 3)) { const r = this.bul(k, 'ekle'); if (r && (r as any).tur === 'yerlesik') this.ogeDenetle(this.tipK(args[0], k), args[1], k, `'${args[0].ham ?? 'liste'}'`, n.satir); }
     }
     if (c.tur === 'ad') {
       const r = this.bul(k, c.ad);

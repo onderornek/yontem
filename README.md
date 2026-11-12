@@ -87,7 +87,7 @@ Birimlerin ve araçların örneklerle anlatımı *Yöntem Birimler ve Araçlar K
 | `yontem yeni <ad>` | Program, örnek birim ve test içeren yeni proje klasörü oluşturur |
 | `yontem test [klasör]` | `.y` programlarını çalıştırır, çıktıyı yanlarındaki `.beklenen` dosyasıyla karşılaştırır; `--guncelle` beklenen dosyaları yeniler. `.girdi` dosyası varsa klavye girdisi olarak verilir. `python3 yontem.py test` aynı işi Python yorumlayıcısıyla yapar |
 | `yontem bicimle <dosya ya da klasör>` | Girintiyi programın yapısına göre düzenler (düzey başına 2 boşluk), satır sonu boşluklarını ve fazla boş satırları temizler. Yalnızca boşluklara dokunur; sözcükler, satır bölünmeleri ve yorumlar değişmez. `--denetle` dosyaları değiştirmeden biçimsiz olanları listeler |
-| `yontem denetle <dosya ya da klasör> [--kati]` | Programları çalıştırmadan derler. **Katı kip:** başında `{$katı}` yönergesi olan dosyalarda (ya da `yontem.json` içinde `"kati": true` olan projelerde) tipler derleme zamanında denetlenir; tipsiz parametreler, uyumsuz atamalar ve argümanlar, öğe tipi bildirilmiş listelere (`tamsayı listesi`) uymayan öğeler, mantıksal olmayan koşullar, tanımsız adlar program çalışmadan, hepsi birden bildirilir |
+| `yontem denetle <dosya ya da klasör> [--kati]` | Programları çalıştırmadan derler. **Katı kip:** başında `{$katı}` yönergesi olan dosyalarda (ya da `yontem.json` içinde `"kati": true` olan projelerde) tipler derleme zamanında denetlenir; tipsiz parametreler, uyumsuz atamalar ve argümanlar, eleman tipi bildirilmiş listelere (`tamsayı listesi`) uymayan elemanlar, mantıksal olmayan koşullar, tanımsız adlar program çalışmadan, hepsi birden bildirilir |
 | `yontem paket ekle\|kur\|kaldir\|guncelle\|liste` | Paket yöneticisi: birimleri GitHub/GitLab deposundan (`github:kullanici/depo@etiket`), bir HTTPS adresindeki arşivden ya da yerel klasörden `paketler/` klasörüne kurar. `yontem.json` bağımlılıkları, `yontem.kilit.json` içerik özetlerini (SHA-256) tutar; kurulumda kod çalışmaz. Kurulan birimleri Python yorumlayıcısı da bulur |
 | `yontem ayikla program.y` | Hata ayıklayıcı: adım adım çalıştırma, (koşullu) kesme noktaları, değişkenleri ve çağrı yığınını inceleme, ifade değerlendirme, çalışma hatasında durma. Uçbirimde komutlarla, VS Code'da `F6` ile (Debug Adapter Protocol: `yontem ayikla --dap`) |
 | `yontem dil-sunucusu` | Dil sunucusu (Language Server Protocol, stdio): yazarken hata gösterimi, tanımlı görünmeyen adlar için yazım hatası uyarısı, tamamlama, imza bilgisi, tanıma git, simge listesi, biçimlendirme. VS Code eklentisi kendiliğinden kullanır; Neovim, Helix, Emacs gibi LSP destekleyen düzenleyicilerde sunucu komutu olarak `yontem lsp` verilir |
@@ -291,8 +291,8 @@ tekrarla
   n := n + 1
 n >= 10 olana dek
 
-liste içindeki her öğe için yaz(öğe, 1)
-sözlük içindeki her anahtar, değer için ...     // listelerde: dizin, öğe
+liste içindeki her eleman için yaz(eleman, 1)
+sözlük içindeki her anahtar, değer için ...     // listelerde: dizin, eleman
 
 puan değerine göre
   90..100: harf := 'A'
@@ -470,9 +470,18 @@ alt klasörü, Yöntem'in `kutuphane/` klasörü ve `YONTEM_YOL` ortam değişke
 Biçimli çıktı Turbo Pascal'daki gibidir: `yaz(x:8:2, 1)` (genişlik 8, 2 ondalık basamak). Karma metinlerde
 `Biçimle('{} = {:8.2}', ad, x)` kullanılır (`{:.2}` basamak, `{:8}` genişlik).
 
-**Öğe ekleme ve silme.** `Ekle(L, v)` sona ekler, `Ekle(L, i, v)` `i` konumuna yerleştirir,
-`Sil(L, i)` `i` konumundaki öğeyi çıkarıp döndürür. Konumlar 0'dan sayılır (3. öğe: `Sil(L, 2)`);
-eksi konum sondan sayar (`Sil(L, -1)` son öğe). Bu işlemler yalnızca listelerde çalışır: sınırlı
+**Eleman ekleme ve silme.** `Ekle(L, v)` sona ekler, `Ekle(L, v, i)` `i` konumuna yerleştirir,
+`Sil(L, i)` `i` konumundaki elemanı çıkarıp döndürür. Listede elemanlar 0'dan numaralanır; eksi konum
+sondan sayar (`Sil(L, -1)` son eleman). Silmenin üç eş anlamlı yazımı vardır:
+
+```
+L.Sil(2)                          { ya da Sil(L, 2) }
+L(2).Sil
+L listesindeki 2. elemanı Sil     { dizilerde: D dizisindeki 2. elemanı Sil }
+```
+
+Üçü de 2 numaralı elemanı (`L[2]`) siler. Cümle biçiminde hesaplanan konum ayraç içine yazılır:
+`L listesindeki (i + 1). elemanı Sil`. Bu işlemler yalnızca listelerde çalışır: sınırlı
 diziler (`T dizisi[a..b]`) sabit boyutludur ve `Ekle`/`Sil` hata verir. Diziyi listeye
 kopyalamak için `liste(D)` kullanılır. Sınır yazılmadan bildirilen `T dizisi`, liste gibi davranır.
 
@@ -1012,7 +1021,7 @@ hesaplama süresini testlere göre 1,2–2,3 kat kısalttı (önceki ölçüm: 3
 - `Güvenlik` birimi gömülü arka uçta henüz yok; açık anahtarlı şifreleme (imza ve anahtar
   değişimi, ör. Ed25519/X25519) ve TLS planlanıyor. Saf kodla yazılan şifreleme yan kanal
   saldırılarına karşı bağımsız bir denetimden geçmemiştir.
-- Katı kip, tipi derleme anında bilinen değerleri denetler: temel tipler, bildirilmiş değişken, parametre ve dönüş tipleri, öğe tipi bildirilmiş listeler ve sözlükler (`tamsayı listesi`), sınıf ve kayıt tipleri (alan ve metod erişimi, metod argümanları, sınıflar arası uyum), sonucu belli yerleşik işlevler, `Takvim`/`Desen`/`Güvenlik`/`Ağ` işlevlerinin dönüş tipleri ve bütün yerleşik işlevlerin argüman sayıları. Sonucu argümana bağlı işlevler (`Maks`, `Yuvarla`, `Bul`) ve `Pencere`, `Meşale` gibi birimlerin döndürdüğü nesneler derleme anında izlenmez; bunlar çalışırken denetlenir. Öğe tipi bildirimi çalışma zamanında zorlanmaz. Denetim yalnızca JavaScript derleyicisindedir.
+- Katı kip, tipi derleme anında bilinen değerleri denetler: temel tipler, bildirilmiş değişken, parametre ve dönüş tipleri, eleman tipi bildirilmiş listeler ve sözlükler (`tamsayı listesi`), sınıf ve kayıt tipleri (alan ve metod erişimi, metod argümanları, sınıflar arası uyum), sonucu belli yerleşik işlevler, `Takvim`/`Desen`/`Güvenlik`/`Ağ` işlevlerinin dönüş tipleri ve bütün yerleşik işlevlerin argüman sayıları. Sonucu argümana bağlı işlevler (`Maks`, `Yuvarla`, `Bul`) ve `Pencere`, `Meşale` gibi birimlerin döndürdüğü nesneler derleme anında izlenmez; bunlar çalışırken denetlenir. Eleman tipi bildirimi çalışma zamanında zorlanmaz. Denetim yalnızca JavaScript derleyicisindedir.
 - `Veritabanı` biriminde SQLite, Node.js 22.5 ya da yenisini gerektirir (Python'da her sürümde vardır); PostgreSQL ve MySQL sürücüleri ayrıca kurulur. Birim sorguları çevirmez: SQL lehçesi farkları programcıya kalır. `Sunucu` istekleri sırayla işler ve HTTPS sunmaz; internete açarken önüne bir ters vekil konmalıdır. İki birim de tarayıcıda ve gömülü arka uçta yoktur.
 - Paket yöneticisinin merkezî bir paket deposu ve sürüm aralığı çözümü yoktur: paket, verilen kaynaktan (depo etiketi, adres, klasör) olduğu gibi kurulur. Hata ayıklayıcı ve paket komutları yalnızca JavaScript derleyicisindedir; kurulan paketleri Python yorumlayıcısı da kullanır. `Ağ` birimi yalnızca metin
   yanıtları ve eşzamanlı istekleri destekler (dosya indirme, akış ve WebSocket yok).

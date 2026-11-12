@@ -1601,7 +1601,7 @@ Adım 300: kayıp    0.0000  filtre (1.000, -2.000, 1.000)
 
 ### 18. Yinelemeli sinir ağı (RNN)
 
-**Fikir.** Cümleler, ses ve fiyat grafikleri birer dizidir; anlamları sıraya bağlıdır. RNN diziyi öğe öğe okur ve her adımda bir "gizli durum" günceller. Bu durum, ağın o ana kadar okuduklarından aklında tuttuğu özettir. Her adımda aynı ağırlıklar kullanılır, bu yüzden ağ her uzunlukta diziyi okuyabilir.
+**Fikir.** Cümleler, ses ve fiyat grafikleri birer dizidir; anlamları sıraya bağlıdır. RNN diziyi eleman eleman okur ve her adımda bir "gizli durum" günceller. Bu durum, ağın o ana kadar okuduklarından aklında tuttuğu özettir. Her adımda aynı ağırlıklar kullanılır, bu yüzden ağ her uzunlukta diziyi okuyabilir.
 
 ```latex
 h_t = \tanh(x_t W_x + h_{t-1} W_h + b), \qquad \hat{y} = h_T W_c + b_c
@@ -1609,7 +1609,7 @@ h_t = \tanh(x_t W_x + h_{t-1} W_h + b), \qquad \hat{y} = h_T W_c + b_c
 
 ```
 program YinelemeliAğ
-{ Yinelemeli sinir ağı (RNN): bir diziyi öğe öğe okur ve bir "gizli durum" h taşır.
+{ Yinelemeli sinir ağı (RNN): bir diziyi eleman eleman okur ve bir "gizli durum" h taşır.
   Her adımda   h ← tanh(x_t · Wx + h @ Wh + b)   hesaplanır; h, o ana kadar okunanların özetidir.
   Dizinin sonunda çıktı h'den üretilir:   ŷ = h @ Wç + bç.
   Görev: 5 sayılık bir diziyi oku, sonunda İLK sayıyı söyle. Bunu yapabilmesi için ağın

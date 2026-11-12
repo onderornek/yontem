@@ -68,7 +68,7 @@ export function liste(v: any, ad = 'değer'): any[] {
 /** Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder. */
 function boyutDegisir(v: any, ad: string): any[] {
   if (v instanceof PascalDizi)
-    hata(`${ad}: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)`);
+    hata(`${ad}: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)`);
   return liste(v, ad);
 }
 
@@ -139,7 +139,7 @@ function sirala(L: any, anahtar: any = null, ters: any = false) {
     ciftler.sort((a, b) => ters ? -karsilastir(a[0], b[0]) : karsilastir(a[0], b[0]));
     return ciftler.map(c => c[1]);
   } catch (e) {
-    if (e instanceof TypeError) hata('Sırala: öğeler karşılaştırılamıyor');
+    if (e instanceof TypeError) hata('Sırala: elemanlar karşılaştırılamıyor');
     throw e;
   }
 }
@@ -341,17 +341,22 @@ ekle(['Uzunluk'], yf('Uzunluk', 1, 1, (v: any) => {
   hata(`Uzunluk tanımsız: ${pyTipAdi(v)}`);
 }));
 function konumTam(i: any) { if (typeof i !== 'bigint') hata('Ekle: konum tamsayı olmalı'); return i; }
-// Ekle(L, x) sona ekler; Ekle(L, konum, x) verilen konuma yerleştirir
+// Ekle(L, x) sona ekler; Ekle(L, x, konum) verilen konuma yerleştirir
 ekle(['Ekle'], yf('Ekle', 2, 3, (L: any, a: any, b?: any) => {
   const D = boyutDegisir(L, 'Ekle');
-  if (b === undefined) D.push(a); else pyInsert(D, konumTam(a), b);
+  if (b === undefined) D.push(a); else pyInsert(D, konumTam(b), a);
   return null;
 }));
 ekle(['Sil'], yf('Sil', 2, 2, (L: any, i: any) => {
   if (L instanceof Map) { L.delete(i); return null; }
   return pyPop(boyutDegisir(L, 'Sil'), i, `Sil: dizin sınır dışı: ${metne(i)}`);
 }));
-ekle(['Araya'], yf('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)")));
+// L(2).Sil: L bir liste, dizi ya da sözlükse Sil(L, 2) ile aynıdır; değilse sıradan çağrı ve üye erişimi
+$.konumSil = (x: any, i: any) => {
+  if (Array.isArray(x) || x instanceof PascalDizi || x instanceof Map) return Y.sil(x, i);
+  return $.cU(cagir(x, [i]), 'sil', 'Sil', []);
+};
+ekle(['Araya'], yf('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: Ekle(L, x, konum)")));
 ekle(['Aralık'], yf('Aralık', 1, 3, aralikListe));
 ekle(['Eşle'], yf('Eşle', 2, 2, (L: any, f: any) => yinele(L).map(x => cagir(f, [x]))));
 ekle(['Süz'], yf('Süz', 2, 2, (L: any, f: any) => yinele(L).filter(x => cagir(f, [x]) === true)));
@@ -495,10 +500,10 @@ function tablo(t: Record<string, any>, ad: string, u: any) { t[katla(ad)] = u; }
 const L: Record<string, any> = {}, S: Record<string, any> = {}, M: Record<string, any> = {}, D: Record<string, any> = {};
 const B = (v: any) => BigInt(v);
 tablo(L, 'Uzunluk', m('Uzunluk', 0, null, o => B(o.length), true));
-tablo(L, 'Ekle', m('Ekle', 1, 2, (o, a, b?: any) => { if (b === undefined) o.push(a); else pyInsert(o, konumTam(a), b); return null; }));
+tablo(L, 'Ekle', m('Ekle', 1, 2, (o, a, b?: any) => { if (b === undefined) o.push(a); else pyInsert(o, konumTam(b), a); return null; }));
 tablo(L, 'Çıkar', m('Çıkar', 0, 1, (o, i = -1n) => { if (!o.length) hata('Boş listeden çıkarılamaz'); return pyPop(o, i, null); }, true));
 tablo(L, 'Sil', m('Sil', 1, 1, (o, i) => pyPop(o, i, null)));
-tablo(L, 'Araya', m('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: L.Ekle(konum, x)")));
+tablo(L, 'Araya', m('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: L.Ekle(x, konum)")));
 tablo(L, 'Temizle', m('Temizle', 0, null, o => { o.length = 0; return null; }, true));
 tablo(L, 'Bul', m('Bul', 1, 1, (o, v) => { const i = o.findIndex((x: any) => esit(x, v)); return B(i); }));
 tablo(L, 'İçerir', m('İçerir', 1, 1, (o, v) => o.some((x: any) => esit(x, v))));

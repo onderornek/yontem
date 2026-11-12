@@ -20,12 +20,12 @@ if (process.argv.includes('--guncelle')) fs.writeFileSync(path.join(VERI, 'kati_
 denetle('her kural için bir tip hatası, hepsi birden bildirilir', r.status === 2 && r.stderr === beklenen && r.stdout === '', r.stderr);
 denetle('beklenen liste kuralların hepsini içerir', ['sabitinin tipi belirtilmeli', 'tipini belirtin', 'Dönüş değeri', 'parametresinin tipi', 'dönüş tipi belirtilmeli', 'bir değer atanamaz', 'Koşul mantıksal olmalı', 'işlemi metin ve tamsayı için tanımlı değil', 'argüman tamsayı olmalı', 'en az 2 argüman', 'en çok 2 argüman', 'Tanımsız tanımlayıcı'].every(p => beklenen.includes(p)));
 
-// Öğe tipi bildirilmiş listeler/sözlükler ve yerleşik işlevlerin dönüş tipleri
+// Eleman tipi bildirilmiş listeler/sözlükler ve yerleşik işlevlerin dönüş tipleri
 fs.writeFileSync(path.join(dizin, 'liste.y'), fs.readFileSync(path.join(VERI, 'kati_liste.txt'), 'utf-8'));
 r = y(['liste.y']);
 if (process.argv.includes('--guncelle')) fs.writeFileSync(path.join(VERI, 'kati_liste.beklenen.txt'), r.stderr);
 const listeBeklenen = fs.readFileSync(path.join(VERI, 'kati_liste.beklenen.txt'), 'utf-8');
-denetle('tipli listeler: öğe, atama, Ekle, döngü ve argüman hataları', r.status === 2 && r.stderr === listeBeklenen, r.stderr);
+denetle('tipli listeler: eleman, atama, Ekle, döngü ve argüman hataları', r.status === 2 && r.stderr === listeBeklenen, r.stderr);
 denetle('tipli listeler: geçerli kullanımlar (satır 27-42) hata vermez', !/satır (2[7-9]|3\d|4[0-2])\]/.test(listeBeklenen) && /^16 tip hatası/m.test(listeBeklenen), listeBeklenen);
 
 // Sınıf tipleri: atama uyumu, alan/metod erişimi, metod argümanları
@@ -33,7 +33,7 @@ fs.writeFileSync(path.join(dizin, 'sinif.y'), fs.readFileSync(path.join(VERI, 'k
 r = y(['sinif.y']);
 if (process.argv.includes('--guncelle')) fs.writeFileSync(path.join(VERI, 'kati_sinif.beklenen.txt'), r.stderr);
 const sinifBeklenen = fs.readFileSync(path.join(VERI, 'kati_sinif.beklenen.txt'), 'utf-8');
-denetle('sınıf tipleri: uyumsuz atama, olmayan üye, metod argümanları', r.status === 2 && r.stderr === sinifBeklenen && /^21 tip hatası/m.test(sinifBeklenen) && ['Hesap tipinde; Daire', "'çap' adında bir alan ya da metod yok", "'Daire.Taşı' en az 2 argüman", 'Şekil listesi; Nokta bir öğe konamaz'].every(p => sinifBeklenen.includes(p)), r.stderr);
+denetle('sınıf tipleri: uyumsuz atama, olmayan üye, metod argümanları', r.status === 2 && r.stderr === sinifBeklenen && /^21 tip hatası/m.test(sinifBeklenen) && ['Hesap tipinde; Daire', "'çap' adında bir alan ya da metod yok", "'Daire.Taşı' en az 2 argüman", 'Şekil listesi; Nokta bir eleman konamaz'].every(p => sinifBeklenen.includes(p)), r.stderr);
 denetle('sınıf tipleri: geçerli kullanımlar hata vermez', !sinifBeklenen.split('\n').some(l => { const m = /satır (\d+)\]/.exec(l); return m && Number(m[1]) < 93; }), sinifBeklenen);
 
 // Yerleşik birimler: dönüş tipleri ve argüman sayıları
@@ -46,19 +46,19 @@ denetle('yerleşik birimler: dönüş tipleri ve argüman sayıları', r.status 
 // Dizi tipi yazımı: 'tip dizisi'; eski 'dizi türünde tip' yazımı iki çalışma zamanında da açıklayıcı hata verir
 fs.writeFileSync(path.join(dizin, 'eski.y'), "program Eski\ndeğişken\n  a: dizi türünde tamsayı\nbaşla\nbitir.\n");
 r = y(['eski.y']);
-denetle("eski 'dizi türünde' yazımı yenisini gösteren hata verir", r.status === 2 && /satır 3\] 'dizi türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı dizisi'/.test(r.stderr), r.stderr);
+denetle("eski 'dizi türünde' yazımı yenisini gösteren hata verir", r.status === 2 && /satır 3\] 'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi'/.test(r.stderr), r.stderr);
 for (const [eski, yeni] of [['liste türünde metin', 'tamsayı listesi'], ['sözlük türünde tamsayı', 'tamsayı sözlüğü']]) {
   fs.writeFileSync(path.join(dizin, 'eski2.y'), `program Eski\ndeğişken\n  a: ${eski}\nbaşla\nbitir.\n`);
   const e = y(['eski2.y']);
   const pe = spawnSync('python3', [path.join(KOK, 'yontem.py'), 'eski2.y'], { cwd: dizin, encoding: 'utf-8' });
-  denetle(`eski '${eski.split(' ').slice(0, 2).join(' ')}' yazımı yenisini gösteren hata verir (iki çalışma zamanında)`, e.status === 2 && e.stderr.includes(`yazımı kaldırıldı; öğe tipini başa yazın: '${yeni}'`) && (pe.error || /yazımı kaldırıldı/.test(pe.stderr + pe.stdout)), e.stderr);
+  denetle(`eski '${eski.split(' ').slice(0, 2).join(' ')}' yazımı yenisini gösteren hata verir (iki çalışma zamanında)`, e.status === 2 && e.stderr.includes(`yazımı kaldırıldı; eleman tipini başa yazın: '${yeni}'`) && (pe.error || /yazımı kaldırıldı/.test(pe.stderr + pe.stdout)), e.stderr);
   fs.rmSync(path.join(dizin, 'eski2.y'));
 }
 const pyEski = spawnSync('python3', [path.join(KOK, 'yontem.py'), 'eski.y'], { cwd: dizin, encoding: 'utf-8' });
 if (!pyEski.error) denetle('Python yorumlayıcısı da aynı hatayı verir', pyEski.status !== 0 && /yazımı kaldırıldı/.test(pyEski.stderr + pyEski.stdout), pyEski);
 fs.writeFileSync(path.join(dizin, 'dizi.y'), "program Diziler\n{$katı}\ndeğişken\n  a: tamsayı dizisi\n  b: ondalık dizisi[1..3]\n  c: metin dizisi dizisi\n  d: tamsayı dizisi listesi\n  listesi: metin sözlüğü\n  dizisi: metin\nbaşla\n  a := [1, 2]\n  b[1] := 2.5\n  c := [['a'], ['b', 'c']]\n  d := [[1], [2, 3]]\n  listesi['a'] := 'b'\n  dizisi := c[1][0] + a[1] + b.Üst + Uzunluk(d)\n  yaz(dizisi, 1)\n  a := ['x']\nbitir.\n");
 r = y(['dizi.y']);
-denetle("'tip dizisi' yazımı: sınırlı, iç içe; öğeler katı kipte denetlenir", r.status === 2 && /satır 18\] 'a' tamsayı listesi; metin bir öğe konamaz/.test(r.stderr) && /^1 tip hatası/m.test(r.stderr), r.stderr);
+denetle("'tip dizisi' yazımı: sınırlı, iç içe; elemanlar katı kipte denetlenir", r.status === 2 && /satır 18\] 'a' tamsayı listesi; metin bir eleman konamaz/.test(r.stderr) && /^1 tip hatası/m.test(r.stderr), r.stderr);
 fs.writeFileSync(path.join(dizin, 'dizi.y'), fs.readFileSync(path.join(dizin, 'dizi.y'), 'utf-8').replace("  a := ['x']\n", ''));
 r = y(['dizi.y']);
 const pyDizi = spawnSync('python3', [path.join(KOK, 'yontem.py'), 'dizi.y'], { cwd: dizin, encoding: 'utf-8' });
@@ -102,10 +102,10 @@ denetle('geçerli katı program çalışır', r.status === 0 && r.stdout === cik
 const py = spawnSync('python3', [path.join(KOK, 'yontem.py'), gecerli], { encoding: 'utf-8' });
 if (py.error) console.log('atlandı    Python bulunamadı'); else denetle('Python aynı çıktıyı verir', py.status === 0 && py.stdout === cikti, py);
 
-// Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren dokuz satır işaretlenir (yanlış alarm yok)
+// Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren on bir satır işaretlenir (yanlış alarm yok)
 r = y(['denetle', 'ornekler', 'testler', 'kitap_ornekleri', 'birim_kilavuzu', 'guvenlik_ornekleri', 'ml_kilavuz', '--kati'], KOK);
 const bulunan = (r.stderr.match(/Tip hatası \[[^\]]*\]/g) || []).map(s => s.replace(/\\/g, '/')).sort();
-denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 172]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 62]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 67]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 72]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
+denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 172]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 74]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 79]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 84]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 89]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 94]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
 
 // Dil sunucusu ve hata ayıklayıcı
 const { cozumle } = require(path.join(__dirname, '..', 'dist', 'dil_hizmeti.js'));

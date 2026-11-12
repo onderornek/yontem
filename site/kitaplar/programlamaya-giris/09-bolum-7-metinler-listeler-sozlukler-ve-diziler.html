@@ -31,7 +31,7 @@
     <details open>
       <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html" aria-current="page">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 226 KB)</small></a>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 227 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -103,7 +103,7 @@ Ortalama   : 77.8
 85 var mı? : doğru
 1..5       : [1, 2, 3, 4, 5]
 Değişmiş   : [100, 90, 64, 78]</code></pre></div>
-<p><code>Sırala</code> yeni, sıralı bir liste döndürür; asıl liste değişmez. <code>Sil(notlar, 1)</code> 1 numaralı (ikinci) öğeyi çıkarır. <code>[1..5]</code> bir aralığı listeye çevirir.</p>
+<p><code>Sırala</code> yeni, sıralı bir liste döndürür; asıl liste değişmez. <code>Sil(notlar, 1)</code> 1 numaralı elemanı (<code>notlar[1]</code>) çıkarır. <code>[1..5]</code> bir aralığı listeye çevirir.</p>
 <h3 id="sözlükler">Sözlükler</h3>
 <p>Sözlük, <strong>anahtar → değer</strong> çiftlerini saklar. Bir değere sıra numarasıyla değil, adıyla ulaşırsınız.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sözlükler
@@ -137,7 +137,7 @@ Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]</code></pre></div>
 <li>Sözlük yazımı köşeli parantez ve iki noktadır: <code>['anahtar': değer]</code>. Boş sözlük <code>[:]</code> olarak yazılır.</li>
 <li>Olmayan bir anahtarı okumak hatadır. Emin değilseniz <code>içinde</code> ile denetleyebilir ya da <code>.Al(anahtar, varsayılan)</code> kullanabilirsiniz.</li>
 <li><code>sözlük içindeki her a, d için</code> anahtarı ve değeri birlikte verir.</li>
-<li><code>Say</code> bir listedeki öğeleri sayar. Metin çözümlemede çok işe yarar.</li>
+<li><code>Say</code> bir listedeki elemanları sayar. Metin çözümlemede çok işe yarar.</li>
 </ul>
 <h3 id="sınırları-belli-diziler">Sınırları belli diziler</h3>
 <p>Turbo Pascal’daki gibi, sınırları bildirimde belirlenen diziler de vardır. Bu dizilerin boyutu sabittir ve dizinleri sizin yazdığınız sınırlar arasındadır; sınır dışına çıkmak anında yakalanır.</p>
@@ -193,19 +193,24 @@ Sınırlar: 1..7
 </tr>
 <tr class="odd">
 <td>Araya eklemek</td>
-<td><code>Ekle(notlar, 1, 95)</code> (konum 1’e)</td>
+<td><code>Ekle(notlar, 95, 1)</code> (konum 1’e)</td>
 <td>Eklenemez</td>
 </tr>
 <tr class="even">
-<td>3. öğeyi silmek</td>
-<td><code>Sil(notlar, 2)</code></td>
+<td>2 numaralı elemanı silmek</td>
+<td><code>notlar.Sil(2)</code></td>
 <td>Silinemez</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> öğeyi sona ekler; <code>Ekle(notlar, 1, 95)</code> ise öğeyi 1 numaralı konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(1, 95)</code>.</p>
-<p>Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
+<p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> elemanı sona ekler; <code>Ekle(notlar, 95, 1)</code> ise elemanı 1 numaralı konuma yerleştirir ve sonraki elemanları birer sıra kaydırır: önce eklenecek değer, sonra konum yazılır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(95, 1)</code>.</p>
+<p>Bir elemanı silmenin üç yazımı vardır ve üçü de aynı işi yapar:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>notlar.Sil(2)
+notlar(2).Sil
+notlar listesindeki 2. elemanı Sil</code></pre></div>
+<p>Üçü de 2 numaralı elemanı, yani <code>notlar[2]</code>’yi siler. Listede elemanlar 0’dan numaralandığı için bu, baştan üçüncü sıradaki elemandır. Konumu hesaplayarak vermek isterseniz cümle biçiminde ayraç kullanabilirsiniz: <code>notlar listesindeki (i + 1). elemanı Sil</code>. <code>Sil</code> çıkardığı elemanı döndürür; <code>x := notlar.Sil(0)</code> yazarak onu bir değişkene alabilirsiniz.</p>
+<p>Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Eleman ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-bolum-6-prosedurler-ve-fonksiyonlar.html"><small>Önceki</small>Bölüm 6 — Prosedürler ve fonksiyonlar</a><a class="sonraki" href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html"><small>Sonraki</small>Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></nav>
   </main>

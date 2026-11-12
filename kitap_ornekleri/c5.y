@@ -12,7 +12,7 @@ başla
   n = 0 olana dek
   yaz('9875 sayısının basamakları toplamı: ' + toplam, 1)
 
-  // her: bir koleksiyonun öğeleri üzerinde dolaşır
+  // her: bir koleksiyonun elemanları üzerinde dolaşır
   ['elma', 'armut', 'kiraz'] içindeki her meyve için
     yaz(meyve.BüyükHarf + ' ')
   yaz('', 1)

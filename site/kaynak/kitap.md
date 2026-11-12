@@ -390,7 +390,7 @@ Döngüler bir işi tekrar tekrar yapar. Yöntem'de beş döngü vardır ve heps
 | Döngü | Ne zaman kullanılır? |
 | --- | --- |
 | `1'den 10'a kadar her i için …` | Bir sayaç belli bir aralıkta dolaşacaksa |
-| `liste içindeki her x için …` | Bir listenin, metnin ya da sözlüğün her öğesi için |
+| `liste içindeki her x için …` | Bir listenin, metnin ya da sözlüğün her elemanı için |
 | `5 kez tekrarla …` | Bir iş belli sayıda yapılacaksa |
 | `koşul iken …` | Koşul doğru olduğu sürece; hiç çalışmayabilir |
 | `tekrarla … koşul olana dek` | Koşul doğru olana dek; en az bir kez çalışır |
@@ -498,7 +498,7 @@ başla
   n = 0 olana dek
   yaz('9875 sayısının basamakları toplamı: ' + toplam, 1)
 
-  // her: bir koleksiyonun öğeleri üzerinde dolaşır
+  // her: bir koleksiyonun elemanları üzerinde dolaşır
   ['elma', 'armut', 'kiraz'] içindeki her meyve için
     yaz(meyve.BüyükHarf + ' ')
   yaz('', 1)
@@ -705,7 +705,7 @@ Ortalama   : 77.8
 Değişmiş   : [100, 90, 64, 78]
 ```
 
-`Sırala` yeni, sıralı bir liste döndürür; asıl liste değişmez. `Sil(notlar, 1)` 1 numaralı (ikinci) öğeyi çıkarır. `[1..5]` bir aralığı listeye çevirir.
+`Sırala` yeni, sıralı bir liste döndürür; asıl liste değişmez. `Sil(notlar, 1)` 1 numaralı elemanı (`notlar[1]`) çıkarır. `[1..5]` bir aralığı listeye çevirir.
 
 ### Sözlükler
 
@@ -747,7 +747,7 @@ Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]
 - Sözlük yazımı köşeli parantez ve iki noktadır: `['anahtar': değer]`. Boş sözlük `[:]` olarak yazılır.
 - Olmayan bir anahtarı okumak hatadır. Emin değilseniz `içinde` ile denetleyebilir ya da `.Al(anahtar, varsayılan)` kullanabilirsiniz.
 - `sözlük içindeki her a, d için` anahtarı ve değeri birlikte verir.
-- `Say` bir listedeki öğeleri sayar. Metin çözümlemede çok işe yarar.
+- `Say` bir listedeki elemanları sayar. Metin çözümlemede çok işe yarar.
 
 ### Sınırları belli diziler
 
@@ -781,12 +781,22 @@ Liste ile dizi arasındaki farkı akılda tutmakta yarar vardır:
 | Dizinler | 0'dan başlar | Sizin yazdığınız sınırlar (burada 1..7) |
 | Boyut | Değişir: `Ekle`, `Sil` | Sabittir |
 | Sona eklemek | `Ekle(notlar, 95)` | Eklenemez |
-| Araya eklemek | `Ekle(notlar, 1, 95)` (konum 1'e) | Eklenemez |
-| 3. öğeyi silmek | `Sil(notlar, 2)` | Silinemez |
+| Araya eklemek | `Ekle(notlar, 95, 1)` (konum 1'e) | Eklenemez |
+| 2 numaralı elemanı silmek | `notlar.Sil(2)` | Silinemez |
 
-`Ekle` iki biçimde kullanılır: `Ekle(notlar, 95)` öğeyi sona ekler; `Ekle(notlar, 1, 95)` ise öğeyi 1 numaralı konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemleri nokta ile de yazabilirsiniz: `notlar.Ekle(95)`, `notlar.Ekle(1, 95)`.
+`Ekle` iki biçimde kullanılır: `Ekle(notlar, 95)` elemanı sona ekler; `Ekle(notlar, 95, 1)` ise elemanı 1 numaralı konuma yerleştirir ve sonraki elemanları birer sıra kaydırır: önce eklenecek değer, sonra konum yazılır. Aynı işlemleri nokta ile de yazabilirsiniz: `notlar.Ekle(95)`, `notlar.Ekle(95, 1)`.
 
-Sınırlı bir diziye `Ekle` ya da `Sil` uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
+Bir elemanı silmenin üç yazımı vardır ve üçü de aynı işi yapar:
+
+```yontem
+notlar.Sil(2)
+notlar(2).Sil
+notlar listesindeki 2. elemanı Sil
+```
+
+Üçü de 2 numaralı elemanı, yani `notlar[2]`'yi siler. Listede elemanlar 0'dan numaralandığı için bu, baştan üçüncü sıradaki elemandır. Konumu hesaplayarak vermek isterseniz cümle biçiminde ayraç kullanabilirsiniz: `notlar listesindeki (i + 1). elemanı Sil`. `Sil` çıkardığı elemanı döndürür; `x := notlar.Sil(0)` yazarak onu bir değişkene alabilirsiniz.
+
+Sınırlı bir diziye `Ekle` ya da `Sil` uygulamak hata verir, çünkü dizinin boyutu değişemez. Eleman ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
 
 ## Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci
 
@@ -848,9 +858,9 @@ Sayaç    : 3
 | --- | --- |
 | `fonksiyon(x) => ifade` | Tek ifadelik isimsiz fonksiyon |
 | `fonksiyon(x) başla … bitir` | Gövdeli isimsiz fonksiyon |
-| `Eşle(L, f)` | Her öğeye `f` uygular, yeni liste döndürür |
-| `Süz(L, f)` | `f` doğru döndüren öğeleri tutar |
-| `İndirge(L, f)` | Öğeleri ikili ikili birleştirerek tek değere indirir |
+| `Eşle(L, f)` | Her elemana `f` uygular, yeni liste döndürür |
+| `Süz(L, f)` | `f` doğru döndüren elemanları tutar |
+| `İndirge(L, f)` | Elemanları ikili ikili birleştirerek tek değere indirir |
 | `Sırala(L, anahtar)` | Anahtar fonksiyonunun sonucuna göre sıralar |
 | `x \|> f(y)` | `f(x, y)` ile aynıdır; işlem zincirleri soldan sağa okunur |
 | `Çağır(f, ...)` | Değişkende duran bir fonksiyonu çağırır |
@@ -1084,7 +1094,7 @@ başla
     bitir
   bitir
 
-  İddia(Uzunluk(sayılar) = 3, 'Liste 3 öğeli olmalı')
+  İddia(Uzunluk(sayılar) = 3, 'Liste 3 elemanlı olmalı')
   yaz('İddia doğrulandı.', 1)
 bitir.
 ```
@@ -1644,7 +1654,7 @@ Bu, ünlü **Bell durumudur**. Sonuçların her biri tek başına rastgeledir, a
 
 ### Kuantum araması: Grover algoritması
 
-Sırasız bir listede bir öğeyi bulmak için klasik bir bilgisayar ortalama N/2 deneme yapar. Grover algoritması bunu yaklaşık √N adımda yapar. `KuantumAlgoritmaları` birimi algoritmayı hazır sunar.
+Sırasız bir listede bir elemanı bulmak için klasik bir bilgisayar ortalama N/2 deneme yapar. Grover algoritması bunu yaklaşık √N adımda yapar. `KuantumAlgoritmaları` birimi algoritmayı hazır sunar.
 
 ```pascal
 program GroverArama

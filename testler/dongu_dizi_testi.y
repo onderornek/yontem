@@ -37,16 +37,16 @@ başla
   L := [10, 20, 30, 40, 50]
   yaz(Sil(L, 2), 1)
   yaz(L, 1)
-  Ekle(L, 2, 30)
+  Ekle(L, 30, 2)
   Ekle(L, 60)
   yaz(L, 1)
   yaz(L.Sil(-1), 1)
-  L.Ekle(0, 5)
-  Ekle(L, -1, 45)
-  Ekle(L, 99, 70)
+  L.Ekle(5, 0)
+  Ekle(L, 45, -1)
+  Ekle(L, 70, 99)
   yaz(L, 1)
   dene
-    Ekle(L, 'iki', 7)
+    Ekle(L, 7, 'iki')
   yakala (h)
     yaz(h.mesaj, 1)
   bitir
@@ -55,6 +55,18 @@ başla
   yakala (h)
     yaz(h.mesaj, 1)
   bitir
+
+  { silmenin üç yazımı aynı anlama gelir }
+  L := [0, 10, 20, 30, 40, 50, 60]
+  L.Sil(2)
+  L(2).Sil
+  L listesindeki 2. elemanı Sil
+  yaz(L, 1)
+  a := 0
+  L listesindeki a. elemanı sil
+  L listesindeki (a + 1). elemanı Sil
+  yaz(L(0).Sil, 1)
+  yaz(L, 1)
 
   { sınırlı dizi: boyutu sabittir }
   1'den 5'e kadar her i için dz[i] := i * 10
@@ -69,7 +81,17 @@ başla
     yaz(h.mesaj, 1)
   bitir
   dene
-    Ekle(dz, 1, 5)
+    Ekle(dz, 5, 1)
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
+  dene
+    dz(2).Sil
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
+  dene
+    dz dizisindeki 2. elemanı Sil
   yakala (h)
     yaz(h.mesaj, 1)
   bitir

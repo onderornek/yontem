@@ -209,10 +209,10 @@ export class Cozumleyici {
     };
     let tip: Dugum;
     if (this.asMi('dizi')) {
-      // öğe tipi belirtilmemiş dizi: dizi · dizi[1..5]
+      // eleman tipi belirtilmemiş dizi: dizi · dizi[1..5]
       this.ilerle();
       const [alt, ust] = sinirlar();
-      if (this.asMi('turunde')) this.hata("'dizi türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı dizisi' (sınırlıysa 'tamsayı dizisi[1..5]')");
+      if (this.asMi('turunde')) this.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi' (sınırlıysa 'tamsayı dizisi[1..5]')");
       tip = N('tip_dizi', satir, { alt, ust, eleman: null });
     } else {
       const tok = this.bekleAd();
@@ -223,11 +223,11 @@ export class Cozumleyici {
         modul = tok.deger; ad = t2.deger; ham = t2.ham;
       }
       if (this.asMi('turunde')) this.hata(ad === 'sozluk'
-        ? "'sözlük türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı sözlüğü'"
-        : "'liste türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı listesi'");
+        ? "'sözlük türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı sözlüğü'"
+        : "'liste türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı listesi'");
       tip = N('tip_ad', satir, { ad, ham, modul, eleman: null });
     }
-    // Öğe tipi başa yazılır, kap sona: 'tamsayı dizisi', 'metin listesi', 'tamsayı sözlüğü'. Ekler soldan sağa
+    // Eleman tipi başa yazılır, kap sona: 'tamsayı dizisi', 'metin listesi', 'tamsayı sözlüğü'. Ekler soldan sağa
     // birikir ('metin listesi dizisi' = metin listelerinin dizisi) ve tiple aynı satırda olmalıdır: sonraki
     // satırdaki 'listesi' bir değişken adı olabilir.
     while (this.t.tip === 'AD' && !this.satirSonuMu() && (this.t.deger === 'dizisi' || this.t.deger === 'listesi' || this.t.deger === 'sozlugu')) {
@@ -384,7 +384,7 @@ export class Cozumleyici {
         return N('eger', s, { kosul, o, degilse: d });
       }
       if (k === 'icin') this.hata("Sayaçlı döngü şöyle yazılır: 1'den 10'a kadar her i için");
-      if (k === 'her') this.hata('Liste döngüsü şöyle yazılır: liste içindeki her öğe için');
+      if (k === 'her') this.hata('Liste döngüsü şöyle yazılır: liste içindeki her eleman için');
       if (k === 'iken') this.hata('Koşullu döngüde koşul önce gelir: x < 10 iken');
       if (k === 'tekrarla') return this.tekrarlaCoz();
       if (k === 'dene') return this.deneCoz();
@@ -449,6 +449,17 @@ export class Cozumleyici {
       if (this.opMu(',')) { this.ilerle(); v2 = this.bekleAd().deger; }
       this.bekleAs('icin');
       return N('her', s, { ad: v.deger, ad2: v2, kaynak: hedef, govde: this.deyimVeyaBos() });
+    }
+    // L listesindeki 2. elemanı Sil   ≡   Sil(L, 2)   ≡   L.Sil(2)   ≡   L(2).Sil
+    if (this.adMi('listesindeki') || this.adMi('dizisindeki')) {
+      this.ilerle();
+      const e = this.ifade();
+      if (!(e.tur === 'alan' && (e.ad === 'elemani' || e.ad === 'elemanini')))
+        this.hata("Konumdan sonra '. elemanı' bekleniyordu (ör. L listesindeki 2. elemanı Sil; hesaplanan konum ayraç içine yazılır: (i + 1). elemanı)");
+      if (!this.adMi('sil')) this.hata("'Sil' bekleniyordu (ör. L listesindeki 2. elemanı Sil)");
+      const st = this.ilerle();
+      const cagrilan = N('ad', st.satir, { ad: 'sil', ham: st.ham });
+      return N('cagri_deyim', s, { ifade: N('cagri', s, { cagrilan, argumanlar: [hedef, e.nesne] }) });
     }
     if (this.asMi('iken')) { this.ilerle(); return N('iken', s, { kosul: hedef, govde: this.deyimVeyaBos() }); }
     if (this.adMi('kez')) { this.ilerle(); this.bekleAs('tekrarla'); return N('kez', s, { sayi: hedef, govde: this.deyimVeyaBos() }); }

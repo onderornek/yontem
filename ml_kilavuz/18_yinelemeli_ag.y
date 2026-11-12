@@ -1,5 +1,5 @@
 program YinelemeliAğ
-{ Yinelemeli sinir ağı (RNN): bir diziyi öğe öğe okur ve bir "gizli durum" h taşır.
+{ Yinelemeli sinir ağı (RNN): bir diziyi eleman eleman okur ve bir "gizli durum" h taşır.
   Her adımda   h ← tanh(x_t · Wx + h @ Wh + b)   hesaplanır; h, o ana kadar okunanların özetidir.
   Dizinin sonunda çıktı h'den üretilir:   ŷ = h @ Wç + bç.
   Görev: 5 sayılık bir diziyi oku, sonunda İLK sayıyı söyle. Bunu yapabilmesi için ağın

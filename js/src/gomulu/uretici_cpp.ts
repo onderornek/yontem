@@ -282,7 +282,7 @@ export class CppUretici {
   tipCoz(n: Dugum | null, k: Kapsam, ad = ''): Tip {
     if (!n) this.hata(`'${ad}' için tip belirtin (gömülü sürümde her değişkenin tipi olmalı)`);
     if (n.tur === 'tip_dizi') {
-      const e = n.eleman ? this.tipCoz(n.eleman, k, ad) : this.yeniDegisken(`'${ad}' listesinin öğe tipi`);
+      const e = n.eleman ? this.tipCoz(n.eleman, k, ad) : this.yeniDegisken(`'${ad}' listesinin eleman tipi`);
       if (n.alt === null) return liste(e);
       return { k: 'dizi', e, alt: this.donustur(this.ifade(n.alt, k), TAM, 'dizi sınırı', n), ust: this.donustur(this.ifade(n.ust, k), TAM, 'dizi sınırı', n) };
     }
@@ -293,7 +293,7 @@ export class CppUretici {
         case 'metin': case 'karakter': return METIN;
         case 'mantiksal': return MANT;
         case 'tensor': return TENSOR;
-        case 'liste': return liste(this.yeniDegisken(`'${ad}' listesinin öğe tipi`));
+        case 'liste': return liste(this.yeniDegisken(`'${ad}' listesinin eleman tipi`));
         case 'sozluk': return { k: 'sozluk', a: this.yeniDegisken(`'${ad}' sözlüğünün anahtar tipi`), d: this.yeniDegisken(`'${ad}' sözlüğünün değer tipi`) };
         case 'herhangi': case 'nesne': case 'islev': return this.yeniDegisken(`'${ad}' değişkeninin tipi`);
       }
@@ -759,9 +759,9 @@ export class CppUretici {
       }
       if (c.t.k === 'liste' || c.t.k === 'dizi') {
         if (idx.length !== 1) this.hata('Çok boyutlu dizin için iç içe dizin kullanın: a[i][j]', n);
-        return `${c.c}[${idx[0]}] = ${this.donustur(v, c.t.e, 'öğe', n)}`;
+        return `${c.c}[${idx[0]}] = ${this.donustur(v, c.t.e, 'eleman', n)}`;
       }
-      if (c.t.k === 'tensor') return `y::indeks_ata(${c.c}, ${idx.join(', ')}, ${this.donustur(v, OND, 'öğe', n)})`;
+      if (c.t.k === 'tensor') return `y::indeks_ata(${c.c}, ${idx.join(', ')}, ${this.donustur(v, OND, 'eleman', n)})`;
       this.hata(`${tipAdi(c.t)} dizinle değiştirilemez`, n);
     }
     this.hata('Geçersiz atama hedefi', n);
@@ -893,14 +893,14 @@ export class CppUretici {
     if (bekDeg) et = null;
     const ogeler = n.elemanlar.map((e: Dugum) => this.ifade(e, k, et ?? undefined));
     if (!et) {
-      if (!ogeler.length) et = this.yeniDegisken('boş listenin öğe tipi');
+      if (!ogeler.length) et = this.yeniDegisken('boş listenin eleman tipi');
       else et = ogeler[0].t;
       for (const o of ogeler.slice(1)) et = this.ortakTip(et!, o.t, n);
       if (bekDeg) { ayni(bekDeg, et!); et = tc(bekDeg); }
     }
     et = tc(et!);
     const t = liste(et!);
-    return { c: `${cppTip(t)}{${ogeler.map((o: E) => this.donustur(o, et!, 'liste öğesi', n)).join(', ')}}`, t };
+    return { c: `${cppTip(t)}{${ogeler.map((o: E) => this.donustur(o, et!, 'liste elemanı', n)).join(', ')}}`, t };
   }
 
   ortakTip(a: Tip, b: Tip, n: Dugum): Tip {
@@ -1086,7 +1086,7 @@ export class CppUretici {
         break;
       case 'icinde':
         if (tb.k === 'sozluk') return { c: `y::icinde(${this.donustur(a, tb.a, 'anahtar', n)}, ${b.c})`, t: MANT };
-        if (tb.k === 'liste' || tb.k === 'dizi') return { c: `y::icinde(${this.donustur(a, tb.e, 'öğe', n)}, ${b.c})`, t: MANT };
+        if (tb.k === 'liste' || tb.k === 'dizi') return { c: `y::icinde(${this.donustur(a, tb.e, 'eleman', n)}, ${b.c})`, t: MANT };
         if (tb.k === 'metin') { if (ta.k !== 'metin') this.hata('Metin içinde yalnızca metin aranabilir', n); return { c: `y::icinde(${a.c}, ${b.c})`, t: MANT }; }
         this.hata(`'içinde' sağ tarafta liste ya da metin bekler, ${tipAdi(tb)} verildi`, n);
     }
@@ -1102,6 +1102,14 @@ export class CppUretici {
 
   // ---------------------------------------------------------------- alan / üye erişimi
   alan(n: Dugum, k: Kapsam, args: Dugum[] | null, deyim = false): E {
+    // L(2).Sil: L bir değişkense Sil(L, 2) ile aynıdır
+    if (n.ad === 'sil' && (!args || args.length === 0) && n.nesne.tur === 'cagri' && n.nesne.cagrilan.tur === 'ad' && n.nesne.argumanlar.length === 1) {
+      const r = this.bul(k, n.nesne.cagrilan.ad) as any;
+      if (r && (r.tur === 'alan' || (r.tur === 'sem' && (r.s.tur === 'degisken' || r.s.tur === 'sabit')))) {
+        const cagrilan = { tur: 'ad', ad: 'sil', ham: n.ham ?? 'Sil', satir: n.satir } as any;
+        return this.cagri({ tur: 'cagri', satir: n.satir, cagrilan, argumanlar: [n.nesne.cagrilan, n.nesne.argumanlar[0]] } as any, k);
+      }
+    }
     // birim üyesi
     if (n.nesne.tur === 'ad') {
       const r = this.bul(k, n.nesne.ad);
@@ -1184,13 +1192,13 @@ export class CppUretici {
       const e = t.e;
       switch (ad) {
         case 'uzunluk': sayiKontrol(0, 0); return { c: `(${o.c}).uz()`, t: TAM };
-        case 'ekle': sayiKontrol(1, 2); if (as.length === 2) return { c: `y::araya(${o.c}, ${this.donustur(arg(0), TAM, 'konum', n)}, ${this.donustur(arg(1, e), e, 'öğe', n)})`, t: YOK }; return { c: `y::ekle(${o.c}, ${this.donustur(arg(0, e), e, 'öğe', n)})`, t: YOK };
+        case 'ekle': sayiKontrol(1, 2); if (as.length === 2) return { c: `y::araya(${o.c}, ${this.donustur(arg(1), TAM, 'konum', n)}, ${this.donustur(arg(0, e), e, 'eleman', n)})`, t: YOK }; return { c: `y::ekle(${o.c}, ${this.donustur(arg(0, e), e, 'eleman', n)})`, t: YOK };
         case 'cikar': sayiKontrol(0, 1); return as.length ? { c: `y::sil(${o.c}, ${this.donustur(arg(0), TAM, 'dizin', n)})`, t: e } : { c: `y::cikar(${o.c})`, t: e };
         case 'sil': sayiKontrol(1, 1); return { c: `y::sil(${o.c}, ${this.donustur(arg(0), TAM, 'dizin', n)})`, t: e };
-        case 'araya': this.hata("'Araya' kaldırıldı; şöyle yazın: L.Ekle(konum, x)", n); return { c: '', t: YOK };
+        case 'araya': this.hata("'Araya' kaldırıldı; şöyle yazın: L.Ekle(x, konum)", n); return { c: '', t: YOK };
         case 'temizle': sayiKontrol(0, 0); return { c: `(${o.c}).p->clear()`, t: YOK };
-        case 'bul': sayiKontrol(1, 1); return { c: `y::bul(${o.c}, ${this.donustur(arg(0, e), e, 'öğe', n)})`, t: TAM };
-        case 'icerir': sayiKontrol(1, 1); return { c: `y::icinde(${this.donustur(arg(0, e), e, 'öğe', n)}, ${o.c})`, t: MANT };
+        case 'bul': sayiKontrol(1, 1); return { c: `y::bul(${o.c}, ${this.donustur(arg(0, e), e, 'eleman', n)})`, t: TAM };
+        case 'icerir': sayiKontrol(1, 1); return { c: `y::icinde(${this.donustur(arg(0, e), e, 'eleman', n)}, ${o.c})`, t: MANT };
         case 'sirala': case 'ters': case 'kopya': case 'esle': case 'suz': case 'indirge': case 'toplam': case 'dilim':
           return this.yerelCagriE('genel', ad === 'kopya' ? 'kopya' : ad, [o, ...as.map(() => null as any)], as, k, n);
         case 'birlestir': sayiKontrol(0, 1); return { c: `y::birlestir_metin(${o.c}${as.length ? ', ' + this.donustur(arg(0), METIN, 'ayraç', n) : ''})`, t: METIN };
@@ -1268,7 +1276,7 @@ export class CppUretici {
       const p = params[i];
       const e = this.ifade(a, k, p.tip);
       if (p.ref) {
-        if (!e.lv) this.hata(`'${p.ham}' değişken parametresine yalnızca değişken, alan ya da liste öğesi verilebilir`, n);
+        if (!e.lv) this.hata(`'${p.ham}' değişken parametresine yalnızca değişken, alan ya da liste elemanı verilebilir`, n);
         if (!ayni(e.t, p.tip)) this.hata(`'${p.ham}' değişken parametresi ${tipAdi(p.tip)} bekler, ${tipAdi(e.t)} verildi`, n);
         if (a.tur === 'ad') { const r = this.bul(k, a.ad); if (r && r.tur === 'sem') this.yakalamaDenetle(k, r.s, n); }
         return e.c;
@@ -1397,9 +1405,9 @@ export class CppUretici {
           if (v.t.k === 'tensor') return { c: `(y::Tam)((${v.c}).sekil.empty() ? 1 : (${v.c}).sekil[0])`, t: TAM };
           this.hata(`Uzunluk tanımsız: ${tipAdi(v.t)}`, n);
         }
-        case 'ekle': sayi(2, 3); { const l = A(0); if (l.t.k === 'dizi') this.hata('Ekle: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Ekle liste olmalı', n); if (args.length === 3) return { c: `y::araya(${l.c}, ${D(1, TAM, 'konum')}, ${D(2, l.t.e, 'öğe')})`, t: YOK }; return { c: `y::ekle(${l.c}, ${D(1, l.t.e, 'öğe')})`, t: YOK }; }
-        case 'sil': sayi(2, 2); { const l = A(0); if (l.t.k === 'sozluk') return { c: `(${l.c}).sil(${D(1, l.t.a, 'anahtar')})`, t: YOK }; if (l.t.k === 'dizi') this.hata('Sil: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Sil liste olmalı', n); return { c: `y::sil(${l.c}, ${D(1, TAM, 'dizin')})`, t: l.t.e }; }
-        case 'araya': this.hata("'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)", n); return { c: '', t: YOK };
+        case 'ekle': sayi(2, 3); { const l = A(0); if (l.t.k === 'dizi') this.hata('Ekle: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Ekle liste olmalı', n); if (args.length === 3) return { c: `y::araya(${l.c}, ${D(2, TAM, 'konum')}, ${D(1, l.t.e, 'eleman')})`, t: YOK }; return { c: `y::ekle(${l.c}, ${D(1, l.t.e, 'eleman')})`, t: YOK }; }
+        case 'sil': sayi(2, 2); { const l = A(0); if (l.t.k === 'sozluk') return { c: `(${l.c}).sil(${D(1, l.t.a, 'anahtar')})`, t: YOK }; if (l.t.k === 'dizi') this.hata('Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Sil liste olmalı', n); return { c: `y::sil(${l.c}, ${D(1, TAM, 'dizin')})`, t: l.t.e }; }
+        case 'araya': this.hata("'Araya' kaldırıldı; şöyle yazın: Ekle(L, x, konum)", n); return { c: '', t: YOK };
         case 'aralik': {
           sayi(1, 3);
           if (args.length === 1) return { c: `y::aralik(0, ${D(0, TAM)}, 1)`, t: liste(TAM) };
@@ -1497,7 +1505,7 @@ export class CppUretici {
         case 'icerir': {
           sayi(2, 2);
           const c = A(0);
-          if (c.t.k === 'liste' || c.t.k === 'dizi') return { c: `y::icinde(${D(1, c.t.e, 'öğe')}, ${c.c})`, t: MANT };
+          if (c.t.k === 'liste' || c.t.k === 'dizi') return { c: `y::icinde(${D(1, c.t.e, 'eleman')}, ${c.c})`, t: MANT };
           if (c.t.k === 'metin') return { c: `y::icinde(${D(1, METIN)}, ${c.c})`, t: MANT };
           if (c.t.k === 'sozluk') return { c: `(${c.c}).var(${D(1, c.t.a, 'anahtar')})`, t: MANT };
           this.hata('İçerir liste ya da metin bekler', n);

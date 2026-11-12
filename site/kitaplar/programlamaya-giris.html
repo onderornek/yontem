@@ -224,7 +224,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
     <details open>
       <summary><a href="#b01">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="#b01">Önsöz</a></li><li><a href="#b02">Başlamadan önce</a></li><li><a href="#b03">Bölüm 1 — Program yapısı</a></li><li><a href="#b04">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="#b05">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="#b06">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="#b07">Bölüm 5 — Döngüler</a></li><li><a href="#b08">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="#b09">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="#b10">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="#b11">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="#b12">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="#b13">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="#b14">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="#b15">Bölüm 13 — Sinir ağları</a></li><li><a href="#b16">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="#b17">Bölüm 15 — Kuantum programlama</a></li><li><a href="#b18">Ek A — Anahtar sözcükler</a></li><li><a href="#b19">Ek B — Sık yapılan hatalar</a></li><li><a href="#b20">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" download>PDF sürümü <small>(isteğe bağlı, 226 KB)</small></a>
+      <a class="pdf" href="programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" download>PDF sürümü <small>(isteğe bağlı, 227 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -659,7 +659,7 @@ Geçtiniz!</code></pre></div>
 </tr>
 <tr class="even">
 <td><code>liste içindeki her x için …</code></td>
-<td>Bir listenin, metnin ya da sözlüğün her öğesi için</td>
+<td>Bir listenin, metnin ya da sözlüğün her elemanı için</td>
 </tr>
 <tr class="odd">
 <td><code>5 kez tekrarla …</code></td>
@@ -782,7 +782,7 @@ Bildiniz! 6 denemede.</code></pre></div>
   n = <span class="ys">0</span> <span class="ya">olana</span> <span class="ya">dek</span>
   yaz(<span class="ym">'9875 sayısının basamakları toplamı: '</span> + toplam, <span class="ys">1</span>)
 
-  <span class="yy">// her: bir koleksiyonun öğeleri üzerinde dolaşır</span>
+  <span class="yy">// her: bir koleksiyonun elemanları üzerinde dolaşır</span>
   [<span class="ym">'elma'</span>, <span class="ym">'armut'</span>, <span class="ym">'kiraz'</span>] <span class="ya">içindeki</span> <span class="ya">her</span> meyve <span class="ya">için</span>
     yaz(meyve.BüyükHarf + <span class="ym">' '</span>)
   yaz(<span class="ym">''</span>, <span class="ys">1</span>)
@@ -990,7 +990,7 @@ Ortalama   : 77.8
 85 var mı? : doğru
 1..5       : [1, 2, 3, 4, 5]
 Değişmiş   : [100, 90, 64, 78]</code></pre></div>
-<p><code>Sırala</code> yeni, sıralı bir liste döndürür; asıl liste değişmez. <code>Sil(notlar, 1)</code> 1 numaralı (ikinci) öğeyi çıkarır. <code>[1..5]</code> bir aralığı listeye çevirir.</p>
+<p><code>Sırala</code> yeni, sıralı bir liste döndürür; asıl liste değişmez. <code>Sil(notlar, 1)</code> 1 numaralı elemanı (<code>notlar[1]</code>) çıkarır. <code>[1..5]</code> bir aralığı listeye çevirir.</p>
 <h3 id="sözlükler">Sözlükler</h3>
 <p>Sözlük, <strong>anahtar → değer</strong> çiftlerini saklar. Bir değere sıra numarasıyla değil, adıyla ulaşırsınız.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sözlükler
@@ -1024,7 +1024,7 @@ Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]</code></pre></div>
 <li>Sözlük yazımı köşeli parantez ve iki noktadır: <code>['anahtar': değer]</code>. Boş sözlük <code>[:]</code> olarak yazılır.</li>
 <li>Olmayan bir anahtarı okumak hatadır. Emin değilseniz <code>içinde</code> ile denetleyebilir ya da <code>.Al(anahtar, varsayılan)</code> kullanabilirsiniz.</li>
 <li><code>sözlük içindeki her a, d için</code> anahtarı ve değeri birlikte verir.</li>
-<li><code>Say</code> bir listedeki öğeleri sayar. Metin çözümlemede çok işe yarar.</li>
+<li><code>Say</code> bir listedeki elemanları sayar. Metin çözümlemede çok işe yarar.</li>
 </ul>
 <h3 id="sınırları-belli-diziler">Sınırları belli diziler</h3>
 <p>Turbo Pascal’daki gibi, sınırları bildirimde belirlenen diziler de vardır. Bu dizilerin boyutu sabittir ve dizinleri sizin yazdığınız sınırlar arasındadır; sınır dışına çıkmak anında yakalanır.</p>
@@ -1080,19 +1080,24 @@ Sınırlar: 1..7
 </tr>
 <tr class="odd">
 <td>Araya eklemek</td>
-<td><code>Ekle(notlar, 1, 95)</code> (konum 1’e)</td>
+<td><code>Ekle(notlar, 95, 1)</code> (konum 1’e)</td>
 <td>Eklenemez</td>
 </tr>
 <tr class="even">
-<td>3. öğeyi silmek</td>
-<td><code>Sil(notlar, 2)</code></td>
+<td>2 numaralı elemanı silmek</td>
+<td><code>notlar.Sil(2)</code></td>
 <td>Silinemez</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> öğeyi sona ekler; <code>Ekle(notlar, 1, 95)</code> ise öğeyi 1 numaralı konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(1, 95)</code>.</p>
-<p>Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
+<p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> elemanı sona ekler; <code>Ekle(notlar, 95, 1)</code> ise elemanı 1 numaralı konuma yerleştirir ve sonraki elemanları birer sıra kaydırır: önce eklenecek değer, sonra konum yazılır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(95, 1)</code>.</p>
+<p>Bir elemanı silmenin üç yazımı vardır ve üçü de aynı işi yapar:</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>notlar.Sil(2)
+notlar(2).Sil
+notlar listesindeki 2. elemanı Sil</code></pre></div>
+<p>Üçü de 2 numaralı elemanı, yani <code>notlar[2]</code>’yi siler. Listede elemanlar 0’dan numaralandığı için bu, baştan üçüncü sıradaki elemandır. Konumu hesaplayarak vermek isterseniz cümle biçiminde ayraç kullanabilirsiniz: <code>notlar listesindeki (i + 1). elemanı Sil</code>. <code>Sil</code> çıkardığı elemanı döndürür; <code>x := notlar.Sil(0)</code> yazarak onu bir değişkene alabilirsiniz.</p>
+<p>Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Eleman ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
 </section><section class="bolum-blok" id="b10" data-baslik="Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci"><h2>Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</h2>
 <p>Yöntem’de fonksiyonlar sıradan değerlerdir: bir değişkene konabilir, başka bir fonksiyona verilebilir. Bu özellik veri işlemede, özellikle yapay zekâ programlarında çok kullanılır.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Fonksiyonel
@@ -1164,15 +1169,15 @@ Sayaç    : 3</code></pre></div>
 </tr>
 <tr class="odd">
 <td><code>Eşle(L, f)</code></td>
-<td>Her öğeye <code>f</code> uygular, yeni liste döndürür</td>
+<td>Her elemana <code>f</code> uygular, yeni liste döndürür</td>
 </tr>
 <tr class="even">
 <td><code>Süz(L, f)</code></td>
-<td><code>f</code> doğru döndüren öğeleri tutar</td>
+<td><code>f</code> doğru döndüren elemanları tutar</td>
 </tr>
 <tr class="odd">
 <td><code>İndirge(L, f)</code></td>
-<td>Öğeleri ikili ikili birleştirerek tek değere indirir</td>
+<td>Elemanları ikili ikili birleştirerek tek değere indirir</td>
 </tr>
 <tr class="even">
 <td><code>Sırala(L, anahtar)</code></td>
@@ -1419,7 +1424,7 @@ Tekir bir Köpek mi?    yanlış</code></pre></div>
     <span class="ya">bitir</span>
   <span class="ya">bitir</span>
 
-  İddia(Uzunluk(sayılar) = <span class="ys">3</span>, <span class="ym">'Liste 3 öğeli olmalı'</span>)
+  İddia(Uzunluk(sayılar) = <span class="ys">3</span>, <span class="ym">'Liste 3 elemanlı olmalı'</span>)
   yaz(<span class="ym">'İddia doğrulandı.'</span>, <span class="ys">1</span>)
 <span class="ya">bitir</span>.</code></pre></div>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Yakalandı: Liste dizini sınır dışı: 5 (uzunluk 3)
@@ -2016,7 +2021,7 @@ q0 = 0, q1 = 0</code></pre></div>
 </table>
 </div>
 <h3 id="kuantum-araması-grover-algoritması">Kuantum araması: Grover algoritması</h3>
-<p>Sırasız bir listede bir öğeyi bulmak için klasik bir bilgisayar ortalama N/2 deneme yapar. Grover algoritması bunu yaklaşık √N adımda yapar. <code>KuantumAlgoritmaları</code> birimi algoritmayı hazır sunar.</p>
+<p>Sırasız bir listede bir elemanı bulmak için klasik bir bilgisayar ortalama N/2 deneme yapar. Grover algoritması bunu yaklaşık √N adımda yapar. <code>KuantumAlgoritmaları</code> birimi algoritmayı hazır sunar.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> GroverArama
 <span class="ya">kullan</span> Kuantum, KuantumAlgoritmaları
 <span class="ya">değişken</span>

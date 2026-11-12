@@ -154,7 +154,7 @@
    "icindeki"
   ],
   "body": [
-   "${1:liste} içindeki her ${2:öğe} için",
+   "${1:liste} içindeki her ${2:eleman} için",
    "başla",
    "  $0",
    "bitir"

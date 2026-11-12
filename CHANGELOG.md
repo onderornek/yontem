@@ -19,11 +19,17 @@ uyumsuz değişiklik içerebilir.
 - **Sınırlı diziler (`T dizisi[a..b]`) sabit boyutludur:** `Ekle` ve `Sil` bu dizilerde hata verir
   (katı kipte derleme sırasında). Boyutu değişen veri için liste kullanılır; `liste(D)` diziyi listeye kopyalar.
 - **`Araya` kaldırıldı; yerine `Ekle`'nin üç parametreli biçimi geldi:** `Ekle(L, x)` sona ekler,
-  `Ekle(L, konum, x)` verilen konuma yerleştirir (metod olarak `L.Ekle(x)` ve `L.Ekle(konum, x)`).
+  `Ekle(L, x, konum)` verilen konuma yerleştirir (metod olarak `L.Ekle(x)` ve `L.Ekle(x, konum)`).
   `Araya` yazıldığında derleyici yeni yazımı gösteren bir hata verir.
+
+### Eklenenler
+
+- **Silmenin iki yeni yazımı:** `L(2).Sil` ve `L listesindeki 2. elemanı Sil` (dizilerde `D dizisindeki …`);
+  ikisi de `L.Sil(2)` ile aynı anlama gelir.
 
 ### Değişenler
 
+- Liste ve dizilerde "öğe" yerine "eleman" terimi kullanılıyor (belgeler ve hata iletileri).
 - Kitap, kılavuzlar, site (Belgeler → Döngüler, Liste ve dizi), VS Code eklentisi ve oyun alanı yeni yazıma göre güncellendi.
 
 - Kurulum belgeleri npm paketine göre güncellendi: `npm install -g yontem`.

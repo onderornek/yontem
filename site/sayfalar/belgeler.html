@@ -83,7 +83,7 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
           <tr><td><code>ondalık</code></td><td><code>3.14</code></td><td>Çift duyarlıklı kayan nokta</td></tr>
           <tr><td><code>metin</code></td><td><code>'Merhaba'</code></td><td>Karakterler 1'den numaralanır</td></tr>
           <tr><td><code>mantıksal</code></td><td><code>doğru</code>, <code>yanlış</code></td><td></td></tr>
-          <tr><td><code>tamsayı listesi</code></td><td><code>[1, 2, 3]</code></td><td>Öğeler 0'dan numaralanır; tipsiz biçimi <code>liste</code></td></tr>
+          <tr><td><code>tamsayı listesi</code></td><td><code>[1, 2, 3]</code></td><td>Elemanlar 0'dan numaralanır; tipsiz biçimi <code>liste</code></td></tr>
           <tr><td><code>metin sözlüğü</code></td><td><code>['a': 'x', 'b': 'y']</code></td><td>Boş sözlük <code>[:]</code>; tipsiz biçimi <code>sözlük</code></td></tr>
           <tr><td><code>ondalık dizisi[1..12]</code></td><td></td><td>Sabit boyutlu, sınırları sizin belirlediğiniz dizi</td></tr>
           <tr><td><code>herhangi</code></td><td></td><td>Tipi çalışma anında belli olan değer</td></tr>
@@ -95,7 +95,7 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
 
   <section id="liste-dizi">
     <h2>Liste ve dizi</h2>
-    <p>İkisi de sıralı öğeler tutar; aralarındaki fark boyuttadır. Listenin boyutu program çalışırken değişebilir, sınırlarıyla tanımlanan dizinin boyutu ise sabittir.</p>
+    <p>İkisi de sıralı elemanlar tutar; aralarındaki fark boyuttadır. Listenin boyutu program çalışırken değişebilir, sınırlarıyla tanımlanan dizinin boyutu ise sabittir.</p>
     <div class="tablo" tabindex="0" role="region" aria-label="Liste ve dizi karşılaştırması">
       <table>
         <thead><tr><th></th><th>Liste</th><th>Dizi</th></tr></thead>
@@ -104,16 +104,23 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
           <tr><td>Numaralama</td><td>0'dan başlar</td><td>Sizin verdiğiniz sınırlar (ör. 1..12)</td></tr>
           <tr><td>Boyut</td><td>Değişebilir</td><td>Sabittir</td></tr>
           <tr><td>Sona ekleme</td><td><code>Ekle(L, x)</code></td><td>Yapılamaz</td></tr>
-          <tr><td>Araya yerleştirme</td><td><code>Ekle(L, konum, x)</code></td><td>Yapılamaz</td></tr>
-          <tr><td>Silme</td><td><code>Sil(L, konum)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Araya yerleştirme</td><td><code>Ekle(L, x, konum)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Silme</td><td><code>L.Sil(konum)</code>, <code>L(konum).Sil</code></td><td>Yapılamaz</td></tr>
           <tr><td>Okuma ve değiştirme</td><td><code>L[0]</code>, <code>L[0] := 5</code></td><td><code>D[1]</code>, <code>D[1] := 5</code></td></tr>
-          <tr><td>Öğe sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(D)</code></td></tr>
+          <tr><td>Eleman sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(D)</code></td></tr>
         </tbody>
       </table>
     </div>
 <yontem dosya="ornekler/liste_dizi.y"></yontem>
-    <p>Listede konumlar 0'dan sayıldığı için üçüncü öğeyi silmek isterseniz <code>Sil(L, 2)</code> yazabilirsiniz; <code>Sil</code> çıkardığı öğeyi döndürür, eksi konum sondan sayar (<code>Sil(L, -1)</code> son öğeyi siler). <code>Ekle</code> iki biçimde kullanılır: <code>Ekle(L, x)</code> öğeyi sona ekler, <code>Ekle(L, konum, x)</code> ise verilen konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemler nokta ile de yazılabilir: <code>L.Sil(2)</code>, <code>L.Ekle(x)</code>, <code>L.Ekle(konum, x)</code>.</p>
-    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden öğe çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
+    <p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(L, x)</code> elemanı sona ekler, <code>Ekle(L, x, konum)</code> ise verilen konuma yerleştirir ve sonraki elemanları birer sıra kaydırır. Nokta ile de yazabilirsiniz: <code>L.Ekle(x)</code>, <code>L.Ekle(x, konum)</code>.</p>
+    <p>Bir elemanı silmenin üç yazımı vardır; üçü de aynı anlama gelir ve 2 numaralı elemanı (<code>L[2]</code>) siler:</p>
+<yontem>
+L.Sil(2)
+L(2).Sil
+L listesindeki 2. elemanı Sil
+</yontem>
+    <p>Listede elemanlar 0'dan numaralandığı için 2 numaralı eleman baştan üçüncü sıradadır. <code>Sil</code> çıkardığı elemanı döndürür; eksi konum sondan sayar (<code>L.Sil(-1)</code> son elemanı siler). Cümle biçiminde hesaplanan konum ayraç içine yazılır: <code>L listesindeki (i + 1). elemanı Sil</code>.</p>
+    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden eleman çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
   </section>
 
   <section id="komutlar">

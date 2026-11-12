@@ -29,6 +29,6 @@ başla
     bitir
   bitir
 
-  İddia(Uzunluk(sayılar) = 3, 'Liste 3 öğeli olmalı')
+  İddia(Uzunluk(sayılar) = 3, 'Liste 3 elemanlı olmalı')
   yaz('İddia doğrulandı.', 1)
 bitir.

@@ -1,5 +1,5 @@
 program Fannkuch
-{ 1..N sayılarının tüm permütasyonlarını üretir; her birinde baştaki sayı kadar öğeyi ters
+{ 1..N sayılarının tüm permütasyonlarını üretir; her birinde baştaki sayı kadar elemanı ters
   çevirmeyi 1 başa gelene dek sürdürür. En çok çevirme sayısını ve bir sağlama toplamını
   yazar: tamsayı dizileri üzerinde yoğun döngü. }
 sabit N: tamsayı = 8

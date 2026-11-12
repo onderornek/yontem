@@ -11,10 +11,15 @@
 60
 [5, 10, 20, 30, 40, 45, 50, 70]
 Ekle: konum tamsayı olmalı
-'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)
-Sil: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Ekle: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Ekle: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+'Araya' kaldırıldı; şöyle yazın: Ekle(L, x, konum)
+[0, 10, 50, 60]
+10
+[60]
+Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+Ekle: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+Ekle: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
 [10, 20, 30, 40, 50]
 5
 [10, 20, 40, 50]

@@ -240,11 +240,11 @@ class Cozumleyici:
         """Tip: tamsayı · Birim.Ad · tamsayı dizisi · ondalık dizisi[1..3] · metin listesi · tamsayı sözlüğü"""
         satir = self.t.satir
         if self.as_mi('dizi'):
-            # öğe tipi belirtilmemiş dizi: dizi · dizi[1..5]
+            # eleman tipi belirtilmemiş dizi: dizi · dizi[1..5]
             self.ilerle()
             alt, ust = self._dizi_sinirlari()
             if self.as_mi('turunde'):
-                self.hata("'dizi türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı dizisi' "
+                self.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi' "
                           "(sınırlıysa 'tamsayı dizisi[1..5]')")
             tip = N('tip_dizi', satir, alt=alt, ust=ust, eleman=None)
         else:
@@ -257,11 +257,11 @@ class Cozumleyici:
                 modul, ad, ham = tok.deger, t2.deger, t2.ham
             if self.as_mi('turunde'):
                 if ad == 'sozluk':
-                    self.hata("'sözlük türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı sözlüğü'")
-                self.hata("'liste türünde tip' yazımı kaldırıldı; öğe tipini başa yazın: 'tamsayı listesi'")
+                    self.hata("'sözlük türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı sözlüğü'")
+                self.hata("'liste türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı listesi'")
             tip = N('tip_ad', satir, ad=ad, ham=ham, modul=modul)
-        # Öğe tipi başa yazılır, kap sona: tamsayı dizisi · metin listesi · tamsayı sözlüğü (aynı satırda).
-        # Liste ve sözlük öğe tipi bilgi amaçlıdır; derleme zamanı denetimi JavaScript derleyicisinin katı kipindedir.
+        # Eleman tipi başa yazılır, kap sona: tamsayı dizisi · metin listesi · tamsayı sözlüğü (aynı satırda).
+        # Liste ve sözlük eleman tipi bilgi amaçlıdır; derleme zamanı denetimi JavaScript derleyicisinin katı kipindedir.
         while self.t.tip == 'AD' and not self.satir_sonu_mu() and self.t.deger in ('dizisi', 'listesi', 'sozlugu'):
             ek = self.ilerle().deger
             if ek == 'dizisi':
@@ -441,7 +441,7 @@ class Cozumleyici:
             if k == 'icin':
                 self.hata("Sayaçlı döngü şöyle yazılır: 1'den 10'a kadar her i için")
             if k == 'her':
-                self.hata("Liste döngüsü şöyle yazılır: liste içindeki her öğe için")
+                self.hata("Liste döngüsü şöyle yazılır: liste içindeki her eleman için")
             if k == 'iken':
                 self.hata("Koşullu döngüde koşul önce gelir: x < 10 iken")
             if k == 'tekrarla':
@@ -516,7 +516,7 @@ class Cozumleyici:
                      govde=self.deyim_veya_bos())
         if t.tip == 'SONEK':
             self.hata("Burada ek beklenmiyordu")
-        # liste içindeki her öğe için
+        # liste içindeki her eleman için
         if self.as_mi('icindeki'):
             self.ilerle()
             self.bekle_as('her')
@@ -527,6 +527,18 @@ class Cozumleyici:
                 v2 = self.bekle_ad().deger
             self.bekle_as('icin')
             return N('her', s, ad=v.deger, ad2=v2, kaynak=hedef, govde=self.deyim_veya_bos())
+        # L listesindeki 2. elemanı Sil   ≡   Sil(L, 2)   ≡   L.Sil(2)   ≡   L(2).Sil
+        if self.ad_mi('listesindeki') or self.ad_mi('dizisindeki'):
+            self.ilerle()
+            e = self.ifade()
+            if not (e.tur == 'alan' and e.ad in ('elemani', 'elemanini')):
+                self.hata("Konumdan sonra '. elemanı' bekleniyordu (ör. L listesindeki 2. elemanı Sil; "
+                          "hesaplanan konum ayraç içine yazılır: (i + 1). elemanı)")
+            if not self.ad_mi('sil'):
+                self.hata("'Sil' bekleniyordu (ör. L listesindeki 2. elemanı Sil)")
+            st = self.ilerle()
+            cagrilan = N('ad', st.satir, ad='sil', ham=st.ham)
+            return N('cagri_deyim', s, ifade=N('cagri', s, cagrilan=cagrilan, argumanlar=[hedef, e.nesne]))
         # koşul iken
         if self.as_mi('iken'):
             self.ilerle()

@@ -874,7 +874,7 @@ Katı kipte şunlar derleme hatasıdır:
 - Mantıksal olmayan koşul; sayı ile metni çıkarmak ya da karşılaştırmak gibi tanımsız işlemler.
 - Tanımlanmamış bir ad kullanmak.
 
-Listelerin ve sözlüklerin öğe tipini de bildirebilirsiniz; katı kip öğeleri de denetler:
+Listelerin ve sözlüklerin eleman tipini de bildirebilirsiniz; katı kip elemanları de denetler:
 
 ```pascal
 değişken
@@ -883,19 +883,19 @@ değişken
   tablo: ondalık listesi listesi
   ad: metin
 başla
-  notlar := [70, 85, 'doksan']     { hata: metin bir öğe konamaz }
+  notlar := [70, 85, 'doksan']     { hata: metin bir eleman konamaz }
   notlar.Ekle(100)
   ad := notlar[0]                  { hata: 'ad' metin tipinde; tamsayı bir değer atanamaz }
-  yaşlar['Ali'] := 'otuz'          { hata: metin bir öğe konamaz }
+  yaşlar['Ali'] := 'otuz'          { hata: metin bir eleman konamaz }
 ```
 
-Öğe tipi atamada, `Ekle` çağrısında, `liste[i] := değer` atamasında, `içindeki her` döngüsünün değişkeninde ve parametrelerde denetlenir; diziler için öğe tipi başa yazılır: `tamsayı dizisi`, sınırlı diziler için `ondalık dizisi[1..12]`, iç içe `ondalık dizisi dizisi`. Öğe tipi yazılmamış düz bir `liste` her yere verilebilir ve çalışırken denetlenir.
+Eleman tipi atamada, `Ekle` çağrısında, `liste[i] := değer` atamasında, `içindeki her` döngüsünün değişkeninde ve parametrelerde denetlenir; diziler için eleman tipi başa yazılır: `tamsayı dizisi`, sınırlı diziler için `ondalık dizisi[1..12]`, iç içe `ondalık dizisi dizisi`. Eleman tipi yazılmamış düz bir `liste` her yere verilebilir ve çalışırken denetlenir.
 
 Sınırlı diziler sabit boyutludur: `ondalık dizisi[1..12]` tipindeki bir değişkene `Ekle` ya da `Sil` uygulamak katı kipte derleme hatasıdır (katı kip dışında çalışma anında hata verir). Boyutu değişen veri için liste kullanabilirsiniz; `liste(D)` diziyi listeye kopyalar.
 
 Sınıf ve kayıt tipleri de izlenir. Tipi `Daire` olan bir değişkende olmayan bir alana ya da metoda erişmek (`d.çap`), bir alana uymayan değer atamak (`d.yarıçap := 'iki'`), bir metodu ya da kurucuyu eksik veya yanlış tipte argümanla çağırmak ve bir sınıfın nesnesini ilgisiz bir sınıfın değişkenine atamak derleme hatasıdır. Alt sınıfın nesnesi üst sınıf tipindeki değişkene atanabilir (`şekil := daire`); ama o değişken üzerinden yalnızca üst sınıfın üyelerine erişilir. Alt sınıfa özgü bir üyeye ulaşmak için değeri alt sınıf tipinde bir değişkene atayabilirsiniz.
 
-Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildirilmiş değişkenler, parametreler, alanlar ve öğeler, dönüş tipi bildirilmiş fonksiyonlar ve metodlar, sonucu belli olan yerleşik işlevler (`Uzunluk`, `Metin`, `Tamsayı`, `BüyükHarf`, `Ayır`, `İçerir` gibi), `Takvim`, `Desen`, `Güvenlik` ve `Ağ` birimlerinin işlevleri (`TarihYaz` bir metin, `GünFarkı` bir tamsayı, `Eşleşir` bir mantıksal değer verir) ve bunlarla kurulan ifadeler. Yerleşik işlevler ve yerleşik birimlerin bütün işlevleri için argüman sayısı da denetlenir: `TarihYap(2026, 1)` derleme hatasıdır. Sonucu argümana göre değişen işlevler (`Maks`, `Yuvarla`, `Bul`) ile `Pencere`, `Meşale` gibi birimlerin döndürdüğü nesneler gibi tipi önceden bilinemeyen değerler eskisi gibi çalışırken denetlenir; katı kip çalışma zamanı denetimlerini kaldırmaz, onların önüne bir denetim daha koyar. Öğe tipi bildirimi yalnızca derleme zamanında denetlenir: çalışırken bir listeye konan öğelerin tipine bakılmaz. Bir değişkeni bilerek her tipe açık bırakmak için tipini `herhangi` yazabilirsiniz.
+Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildirilmiş değişkenler, parametreler, alanlar ve elemanlar, dönüş tipi bildirilmiş fonksiyonlar ve metodlar, sonucu belli olan yerleşik işlevler (`Uzunluk`, `Metin`, `Tamsayı`, `BüyükHarf`, `Ayır`, `İçerir` gibi), `Takvim`, `Desen`, `Güvenlik` ve `Ağ` birimlerinin işlevleri (`TarihYaz` bir metin, `GünFarkı` bir tamsayı, `Eşleşir` bir mantıksal değer verir) ve bunlarla kurulan ifadeler. Yerleşik işlevler ve yerleşik birimlerin bütün işlevleri için argüman sayısı da denetlenir: `TarihYap(2026, 1)` derleme hatasıdır. Sonucu argümana göre değişen işlevler (`Maks`, `Yuvarla`, `Bul`) ile `Pencere`, `Meşale` gibi birimlerin döndürdüğü nesneler gibi tipi önceden bilinemeyen değerler eskisi gibi çalışırken denetlenir; katı kip çalışma zamanı denetimlerini kaldırmaz, onların önüne bir denetim daha koyar. Eleman tipi bildirimi yalnızca derleme zamanında denetlenir: çalışırken bir listeye konan elemanların tipine bakılmaz. Bir değişkeni bilerek her tipe açık bırakmak için tipini `herhangi` yazabilirsiniz.
 
 Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için `yontem.json` dosyasına `"kati": true` eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.
 

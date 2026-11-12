@@ -1,7 +1,7 @@
 program KatıTesti
 {$katı}
 { Katı kip: bu dosya derleme zamanında tip denetiminden geçer. Tipi belirtilmeyen değişkenin tipi ilk
-  değerinden çıkarılır; tipi derleme anında bilinemeyen değerler (liste öğeleri) çalışırken denetlenir. }
+  değerinden çıkarılır; tipi derleme anında bilinemeyen değerler (liste elemanları) çalışırken denetlenir. }
 
 tip
   Nokta = kayıt
@@ -53,12 +53,12 @@ başla
   değişken kısa := toplam < 100
   eğer kısa ise yaz('küçük', 1)
   dene
-    toplam := sayılar[0] + 'x'     { tipi bilinmeyen öğe: çalışırken denetlenir }
+    toplam := sayılar[0] + 'x'     { tipi bilinmeyen eleman: çalışırken denetlenir }
   yakala (h)
     yaz('çalışma zamanı denetimi sürüyor', 1)
   bitir
 
-  { Öğe tipi bildirilmiş listeler ve sözlükler: öğeler derleme zamanında denetlenir }
+  { Eleman tipi bildirilmiş listeler ve sözlükler: elemanlar derleme zamanında denetlenir }
   notlar := [70, 85, 90]
   notlar.Ekle(100)
   notlar[0] := 75

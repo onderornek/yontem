@@ -23,7 +23,7 @@ def _konum_tam(i):
 
 
 def _araya_kaldirildi():
-    raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: L.Ekle(konum, x)")
+    raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: L.Ekle(x, konum)")
 
 
 def yf(ad, en_az=0, en_cok=None, oto=False, ref=()):
@@ -52,7 +52,7 @@ def _sayi(v, ad='değer'):
 def _boyut_degisir(v, ad):
     """Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder."""
     if type(v) is PascalDizi:
-        raise YontemHatasi(f"{ad}: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; "
+        raise YontemHatasi(f"{ad}: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; "
                            "bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)")
     return _liste(v, ad)
 
@@ -229,10 +229,10 @@ def kur(y):
     @ekle('Ekle')
     @yf('Ekle', 2, 3)
     def _ekle(y, L, a, *b):
-        # Ekle(L, x) sona ekler; Ekle(L, konum, x) verilen konuma yerleştirir
+        # Ekle(L, x) sona ekler; Ekle(L, x, konum) verilen konuma yerleştirir
         D = _boyut_degisir(L, 'Ekle')
         if b:
-            D.insert(_konum_tam(a), b[0])
+            D.insert(_konum_tam(b[0]), a)
         else:
             D.append(a)
 
@@ -247,10 +247,12 @@ def kur(y):
         except IndexError:
             raise YontemHatasi(f"Sil: dizin sınır dışı: {i}")
 
+    y.yerlesik_sil = _sil
+
     @ekle('Araya')
     @yf('Araya', 0, 64)
     def _araya(y, *a):
-        raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)")
+        raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: Ekle(L, x, konum)")
 
     @ekle('Aralık')
     @yf('Aralık', 1, 3)
@@ -292,7 +294,7 @@ def kur(y):
                 return sorted(ogeler, reverse=ters)
             return sorted(ogeler, key=lambda x: y.cagir(anahtar, [x]), reverse=ters)
         except TypeError:
-            raise YontemHatasi("Sırala: öğeler karşılaştırılamıyor")
+            raise YontemHatasi("Sırala: elemanlar karşılaştırılamıyor")
 
     @ekle('Ters')
     @yf('Ters', 1, 1)
@@ -388,7 +390,7 @@ def kur(y):
     @ekle('Say')
     @yf('Say', 1, 1)
     def _say(y, L):
-        """Öğe sıklıkları: ['a': 2, 'b': 1]"""
+        """Eleman sıklıkları: ['a': 2, 'b': 1]"""
         out = {}
         for x in y.yinelenebilir(L):
             out[x] = out.get(x, 0) + 1
@@ -628,7 +630,7 @@ def _tablolar():
 
     # ---------------- liste
     tablo(L, 'Uzunluk')(_m('Uzunluk', oto=True)(lambda y, o: len(o)))
-    tablo(L, 'Ekle')(_m('Ekle', 1, 2)(lambda y, o, a, *b: o.insert(_konum_tam(a), b[0]) if b else o.append(a)))
+    tablo(L, 'Ekle')(_m('Ekle', 1, 2)(lambda y, o, a, *b: o.insert(_konum_tam(b[0]), a) if b else o.append(a)))
     tablo(L, 'Çıkar')(_m('Çıkar', 0, 1, oto=True)(
         lambda y, o, i=-1: o.pop(i) if o else (_ for _ in ()).throw(YontemHatasi("Boş listeden çıkarılamaz"))))
     tablo(L, 'Sil')(_m('Sil', 1, 1)(lambda y, o, i: o.pop(i)))
