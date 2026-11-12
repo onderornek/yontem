@@ -15,8 +15,8 @@ Ay%C5%9Fe%20%26%20Ali%20%3D%20%C3%A7%2F%C4%9F%3F çay + simit -_.!~*'() 42
 a=1&b=x%20y&%C3%A7=do%C4%9Fru ""
 zaman aşımı: Ağ hatası: <sunucu>/yavas zaman aşımına uğradı (1 sn)
 kapalı kapı: Ağ hatası: http://127.0.0.1:9/yok adresine bağlanılamadı
-geçersiz adres: Geçersiz adres: 'ftp://ornek.com' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
-boşluklu adres: Geçersiz adres: 'http://ornek.com/a b' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
+geçersiz adres: Geçersiz adres: 'ftp://ornek.de' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
+boşluklu adres: Geçersiz adres: 'http://ornek.de/a b' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
 yöntem: Bilinmeyen HTTP yöntemi: 'SİL' (GET, POST, PUT, PATCH, DELETE, HEAD)
 GET gövdesi: GET isteğinin gövdesi olamaz
 başlık adı: Geçersiz başlık adı: 'Kötü Ad'

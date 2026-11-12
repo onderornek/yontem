@@ -2,7 +2,7 @@ program SiparişAyıklama
 { Desen birimi: düzenli ifadelerle doğrulama, ayıklama ve değiştirme. }
 kullan Desen
 
-sabit YAZI: metin = 'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 123 45 67'
+sabit YAZI: metin = 'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: edaece@ornek.de, 0532 123 45 67'
 
 değişken g: herhangi
 

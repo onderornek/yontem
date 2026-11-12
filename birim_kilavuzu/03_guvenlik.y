@@ -22,7 +22,7 @@ başla
   yaz('Dosya: ' + DosyaAdıTemizle('../../etc/passwd') + ', yol güvenli mi: ' + Metin(YolGüvenli('../../etc/passwd')), 1)
 
   { 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }
-  oturum := BelirteçÜret(ANAHTAR, 'zeynep', 1800)
+  oturum := BelirteçÜret(ANAHTAR, 'edaece', 1800)
   yaz('Oturum sahibi: ' + Metin(BelirteçDoğrula(ANAHTAR, oturum)), 1)
   yaz('Sahte anahtar: ' + Metin(BelirteçDoğrula('tahmin', oturum)), 1)
   BenzetimZamanı(1800000000 + 1801)

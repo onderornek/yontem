@@ -72,12 +72,12 @@ başla
   sahteKayıt := ParolaÖzeti(Belirteç, TEKRAR)
 
   yaz('Kayıtlar:', 1)
-  yaz('  ' + Kaydol('ay', 'ayse@ornek.com', 'Deniz-Feneri-1907'), 1)
+  yaz('  ' + Kaydol('ay', 'ayse@ornek.de', 'Deniz-Feneri-1907'), 1)
   yaz('  ' + Kaydol('ayşe', 'ayse@', 'Deniz-Feneri-1907'), 1)
-  yaz('  ' + Kaydol('ayşe', 'ayse@ornek.com', 'ayse1234'), 1)
-  yaz('  ' + Kaydol('ayşe', 'ayse@ornek.com', 'Deniz-Feneri-1907'), 1)
-  yaz('  ' + Kaydol('ayşe', 'baska@ornek.com', 'Baska-Parola-2026'), 1)
-  yaz('  ' + Kaydol('<b>ali</b>', 'ali@ornek.com', 'Baska-Parola-2026'), 1)
+  yaz('  ' + Kaydol('ayşe', 'ayse@ornek.de', 'ayse1234'), 1)
+  yaz('  ' + Kaydol('ayşe', 'ayse@ornek.de', 'Deniz-Feneri-1907'), 1)
+  yaz('  ' + Kaydol('ayşe', 'baska@ornek.de', 'Baska-Parola-2026'), 1)
+  yaz('  ' + Kaydol('<b>ali</b>', 'ali@ornek.de', 'Baska-Parola-2026'), 1)
   yaz('', 1)
 
   yaz('Girişler:', 1)

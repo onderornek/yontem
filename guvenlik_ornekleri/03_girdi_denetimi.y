@@ -27,11 +27,11 @@ başla
    '///'] içindeki her ad için
     yaz('  ' + '"' + ad + '"' + ' → ' + DosyaAdıTemizle(ad), 1)
   yaz('— E-posta', 1)
-  ['ayse@ornek.com.tr', 'ali.veli+bulten@posta.org', 'eksik@alan', 'iki..nokta@ornek.com', 'boşluk var@ornek.com',
-   '@ornek.com'] içindeki her e için
+  ['ayse@ornek.com.tr', 'ali.veli+bulten@posta.org', 'eksik@alan', 'iki..nokta@ornek.de', 'boşluk var@ornek.de',
+   '@ornek.de'] içindeki her e için
     yaz('  ' + e + ' → ' + Metin(EpostaGeçerli(e)), 1)
   yaz('— Bağlantılar', 1)
-  ['https://yontem.pro/kitaplar', 'http://ornek.com', '/profil?id=5', 'javascript:alert(1)', '//saldirgan.com',
+  ['https://yontem.pro/kitaplar', 'http://ornek.de', '/profil?id=5', 'javascript:alert(1)', '//saldirgan.com',
    'data:text/html;base64,PHNjcmlwdD4=', 'https://yontem.pro@saldirgan.com', ' JAVASCRIPT:alert(1)'] içindeki her u için
     yaz('  ' + u + ' → ' + Metin(UrlGüvenli(u)), 1)
   yaz('— Beyaz liste', 1)

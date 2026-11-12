@@ -47,7 +47,7 @@
 
 <span class="ya">başla</span>
   <span class="ya">dene</span>
-    yanıt := HttpAl(<span class="ym">'https://api.ornek.com/hava?'</span> + SorguYap([<span class="ym">'şehir'</span>: <span class="ym">'İzmir'</span>, <span class="ym">'birim'</span>: <span class="ym">'C'</span>]))
+    yanıt := HttpAl(<span class="ym">'https://api.ornek.de/hava?'</span> + SorguYap([<span class="ym">'şehir'</span>: <span class="ym">'İzmir'</span>, <span class="ym">'birim'</span>: <span class="ym">'C'</span>]))
     <span class="ya">eğer</span> yanıt[<span class="ym">'durum'</span>] = <span class="ys">200</span> <span class="ya">ise</span>
     <span class="ya">başla</span>
       veri := JSONÇöz(yanıt[<span class="ym">'gövde'</span>])
@@ -96,7 +96,7 @@
 </table>
 </div>
 <p>JSON göndermek için gövdeyi <code>Veri.JSONYap</code> ile üretip türünü başlıkta bildirebilirsiniz:</p>
-<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.com/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.de/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
                     [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>, <span class="ym">'Authorization'</span>: <span class="ym">'Bearer '</span> + anahtar])</code></pre></div>
 <p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
 <p>Komut satırında ve Python’da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.</p>

@@ -4,11 +4,11 @@ program GirişRaporu
 kullan Desen, Takvim, Güvenlik
 
 sabit
-  GÜNLÜK: metin = '2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com' + #10 +
-           '2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 14:30:00 giriş-başarısız can@ornek.com'
+  GÜNLÜK: metin = '2026-11-10 08:59:40 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 09:00:05 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.de' + #10 +
+           '2026-11-10 09:01:02 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 14:30:00 giriş-başarısız can@ornek.de'
   KALIP: metin = '^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'
   RAPOR_ANAHTARI: metin = 'rapor-imza-anahtari'
 

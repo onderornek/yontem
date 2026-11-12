@@ -40,8 +40,8 @@ başla
   yaz('299 sn sonra: ' + Metin(BelirteçDoğrula(GİZLİ, b)), 1)
   BenzetimZamanı(2000300)
   yaz('300 sn sonra (süresi doldu): ' + Metin(BelirteçDoğrula(GİZLİ, b)), 1)
-  sıfırlama := BelirteçÜret(GİZLİ, 'parola-sıfırla:ayşe@ornek.com', 900)
-  yaz('Parola sıfırlama bağlantısı: https://ornek.com/sifirla?b=' + sıfırlama, 1)
+  sıfırlama := BelirteçÜret(GİZLİ, 'parola-sıfırla:ayşe@ornek.de', 900)
+  yaz('Parola sıfırlama bağlantısı: https://ornek.de/sifirla?b=' + sıfırlama, 1)
   yaz('', 1)
 
   Günlük('giriş başarısız', 'kullanıcı=ayşe, ip=203.0.113.7')

@@ -1,7 +1,7 @@
 Önce adını yaz.
-Merhaba, Zeynep!
+Merhaba, EdaEce!
 Pencere "Selamlayıcı"
   Yatay
-    GirişKutusu "Zeynep" (ipucu "Adın")
+    GirişKutusu "EdaEce" (ipucu "Adın")
     Düğme "Selam ver"
-  Etiket "Merhaba, Zeynep!"
+  Etiket "Merhaba, EdaEce!"

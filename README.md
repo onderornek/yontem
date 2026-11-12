@@ -532,9 +532,9 @@ Sonuç bir sözlüktür: `['durum': 200, 'gövde': '…', 'başlıklar': […]]`
 kullan Ağ, Veri
 değişken y: sözlük
 başla
-  y := HttpAl('https://api.ornek.com/hava?' + SorguYap(['şehir': 'İzmir']))
+  y := HttpAl('https://api.ornek.de/hava?' + SorguYap(['şehir': 'İzmir']))
   eğer y['durum'] = 200 ise yaz(JSONÇöz(y['gövde'])['sıcaklık'], 1)
-  y := HttpGönder('https://api.ornek.com/not', JSONYap(['metin': 'merhaba']),
+  y := HttpGönder('https://api.ornek.de/not', JSONYap(['metin': 'merhaba']),
                   ['Content-Type': 'application/json', 'Authorization': 'Bearer …'])
 bitir.
 ```

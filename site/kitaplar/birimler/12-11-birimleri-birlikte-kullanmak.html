@@ -44,11 +44,11 @@
 <span class="ya">kullan</span> Desen, Takvim, Güvenlik
 
 <span class="ya">sabit</span>
-  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.com'</span>
+  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.de'</span>
   KALIP: <span class="ya">metin</span> = <span class="ym">'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'</span>
   RAPOR_ANAHTARI: <span class="ya">metin</span> = <span class="ym">'rapor-imza-anahtari'</span>
 
@@ -88,9 +88,9 @@
   <span class="ya">bitir</span>
   yaz(<span class="ym">'Rapor imzası: '</span> + AltMetin(İmza(RAPOR_ANAHTARI, rapor), <span class="ys">1</span>, <span class="ys">16</span>) + <span class="ym">'…'</span>, <span class="ys">1</span>)
 <span class="ya">bitir</span>.</code></pre></div>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>****@ornek.com: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
-***@ornek.com: 1 başarısız giriş
-Rapor imzası: 0953a164a97dc05b…</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>***e@ornek.de: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
+**n@ornek.de: 1 başarısız giriş
+Rapor imzası: 1d84ef2e1d17c6bf…</code></pre></div>
 <p>Raporu alan kişi aynı anahtarla <code>İmzaDoğru(RAPOR_ANAHTARI, rapor, imza)</code> çağırarak metnin yolda değişmediğinden emin olur. Programın yapısı tipiktir: her birim kendi işini yapar, aralarındaki veri sıradan metin, tamsayı ve sözlüklerdir.</p>
 <p><strong>Sırada ne var?</strong></p>
 <ul>

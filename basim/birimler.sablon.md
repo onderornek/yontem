@@ -203,7 +203,7 @@ değişken
 
 başla
   dene
-    yanıt := HttpAl('https://api.ornek.com/hava?' + SorguYap(['şehir': 'İzmir', 'birim': 'C']))
+    yanıt := HttpAl('https://api.ornek.de/hava?' + SorguYap(['şehir': 'İzmir', 'birim': 'C']))
     eğer yanıt['durum'] = 200 ise
     başla
       veri := JSONÇöz(yanıt['gövde'])
@@ -229,7 +229,7 @@ Bu program örnek bir adrese bağlandığı için çıktısı verilmemiştir; ad
 JSON göndermek için gövdeyi `Veri.JSONYap` ile üretip türünü başlıkta bildirebilirsiniz:
 
 ```pascal
-yanıt := HttpGönder('https://api.ornek.com/notlar', JSONYap(['metin': 'süt al']),
+yanıt := HttpGönder('https://api.ornek.de/notlar', JSONYap(['metin': 'süt al']),
                     ['Content-Type': 'application/json', 'Authorization': 'Bearer ' + anahtar])
 ```
 

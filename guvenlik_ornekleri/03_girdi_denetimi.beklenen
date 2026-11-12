@@ -26,12 +26,12 @@
   ayse@ornek.com.tr → doğru
   ali.veli+bulten@posta.org → doğru
   eksik@alan → yanlış
-  iki..nokta@ornek.com → yanlış
-  boşluk var@ornek.com → yanlış
-  @ornek.com → yanlış
+  iki..nokta@ornek.de → yanlış
+  boşluk var@ornek.de → yanlış
+  @ornek.de → yanlış
 — Bağlantılar
   https://yontem.pro/kitaplar → doğru
-  http://ornek.com → doğru
+  http://ornek.de → doğru
   /profil?id=5 → doğru
   javascript:alert(1) → yanlış
   //saldirgan.com → yanlış

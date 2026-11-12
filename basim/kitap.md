@@ -929,7 +929,7 @@ bitir
 değişken
   h: Hesap
 başla
-  h := Hesap.Oluştur('Zeynep', 100)
+  h := Hesap.Oluştur('EdaEce', 100)
   h.Yatır(250)
   h.Çek(80)
   yaz(h, 1)
@@ -943,7 +943,7 @@ bitir.
 ```
 
 ```
-Zeynep hesabı: 270.00 TL
+EdaEce hesabı: 270.00 TL
 Bakiye: 270.0
 BankaHatası: Yetersiz bakiye
 ```

@@ -368,7 +368,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
   <span class="ya">başla</span>
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, <span class="ys">1</span>)
-    Gir(adKutusu, <span class="ym">'Zeynep'</span>)
+    Gir(adKutusu, <span class="ym">'EdaEce'</span>)
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, <span class="ys">1</span>)
   <span class="ya">bitir</span>
@@ -376,12 +376,12 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <span class="ya">bitir</span>.</code></pre></div>
 <p>Komut satırındaki çıktısı şöyledir:</p>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Önce adını yaz.
-Merhaba, Zeynep!
+Merhaba, EdaEce!
 Pencere &quot;Selamlayıcı&quot;
   Yatay
-    GirişKutusu &quot;Zeynep&quot; (ipucu &quot;Adın&quot;)
+    GirişKutusu &quot;EdaEce&quot; (ipucu &quot;Adın&quot;)
     Düğme &quot;Selam ver&quot;
-  Etiket &quot;Merhaba, Zeynep!&quot;</code></pre></div>
+  Etiket &quot;Merhaba, EdaEce!&quot;</code></pre></div>
 <p><code>Canlı</code>, program gerçek bir arayüzde çalışıyorsa <code>doğru</code>dur. <code>eğer değil Canlı ise</code> bloğu yalnızca benzetimde çalışır: <code>Gir</code> kutuya metin yazar, <code>Tıkla</code> düğmeye basar. Sondaki <code>Çalıştır</code> canlı ortamda olayları beklemeye başlar; benzetimde arayüzün son hâlini ağaç olarak yazar. Testler bu ağacı beklenen çıktıyla karşılaştırır.</p>
 <p><strong>Bileşenler</strong></p>
 <div class="tablo">
@@ -578,7 +578,7 @@ Pencere &quot;Su Takibi&quot;
   yaz(<span class="ym">'Dosya: '</span> + DosyaAdıTemizle(<span class="ym">'../../etc/passwd'</span>) + <span class="ym">', yol güvenli mi: '</span> + Metin(YolGüvenli(<span class="ym">'../../etc/passwd'</span>)), <span class="ys">1</span>)
 
   <span class="yy">{ 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }</span>
-  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'zeynep'</span>, <span class="ys">1800</span>)
+  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'edaece'</span>, <span class="ys">1800</span>)
   yaz(<span class="ym">'Oturum sahibi: '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
   yaz(<span class="ym">'Sahte anahtar: '</span> + Metin(BelirteçDoğrula(<span class="ym">'tahmin'</span>, oturum)), <span class="ys">1</span>)
   BenzetimZamanı(<span class="ys">1800000000</span> + <span class="ys">1801</span>)
@@ -591,7 +591,7 @@ Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
 HTML : &amp;lt;script&amp;gt;çal()&amp;lt;/script&amp;gt;
 SQL  : 'x'' OR ''1''=''1'
 Dosya: passwd, yol güvenli mi: yanlış
-Oturum sahibi: zeynep
+Oturum sahibi: edaece
 Sahte anahtar: boş
 31 dk sonra  : boş</code></pre></div>
 <div class="tablo">
@@ -772,7 +772,7 @@ Sınav : 15 Ocak 2027 Cuma — 66 gün kaldı
 <span class="yy">{ Desen birimi: düzenli ifadelerle doğrulama, ayıklama ve değiştirme. }</span>
 <span class="ya">kullan</span> Desen
 
-<span class="ya">sabit</span> YAZI: <span class="ya">metin</span> = <span class="ym">'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 123 45 67'</span>
+<span class="ya">sabit</span> YAZI: <span class="ya">metin</span> = <span class="ym">'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: edaece@ornek.de, 0532 123 45 67'</span>
 
 <span class="ya">değişken</span> g: <span class="ya">herhangi</span>
 
@@ -791,9 +791,9 @@ Sınav : 15 Ocak 2027 Cuma — 66 gün kaldı
 Adetler    : ['3 adet', '12 adet']
   çay × 3
   simit × 12
-E-posta    : zeynep@ornek.com
+E-posta    : edaece@ornek.de
 Telefon mu : doğru
-Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 *** ** 67
+Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: edaece@ornek.de, 0532 *** ** 67
 Parçalar   : ['çay', 'simit', 'peynir']
 Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 <p>Desenleri tek tırnak içinde yazmanızı öneririz; tek tırnaklı metinlerde <code>\</code> olduğu gibi kalır.</p>
@@ -926,7 +926,7 @@ Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 
 <span class="ya">başla</span>
   <span class="ya">dene</span>
-    yanıt := HttpAl(<span class="ym">'https://api.ornek.com/hava?'</span> + SorguYap([<span class="ym">'şehir'</span>: <span class="ym">'İzmir'</span>, <span class="ym">'birim'</span>: <span class="ym">'C'</span>]))
+    yanıt := HttpAl(<span class="ym">'https://api.ornek.de/hava?'</span> + SorguYap([<span class="ym">'şehir'</span>: <span class="ym">'İzmir'</span>, <span class="ym">'birim'</span>: <span class="ym">'C'</span>]))
     <span class="ya">eğer</span> yanıt[<span class="ym">'durum'</span>] = <span class="ys">200</span> <span class="ya">ise</span>
     <span class="ya">başla</span>
       veri := JSONÇöz(yanıt[<span class="ym">'gövde'</span>])
@@ -975,7 +975,7 @@ Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 </table>
 </div>
 <p>JSON göndermek için gövdeyi <code>Veri.JSONYap</code> ile üretip türünü başlıkta bildirebilirsiniz:</p>
-<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.com/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.de/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
                     [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>, <span class="ym">'Authorization'</span>: <span class="ym">'Bearer '</span> + anahtar])</code></pre></div>
 <p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
 <p>Komut satırında ve Python’da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.</p>
@@ -1742,11 +1742,11 @@ yontem paket ekle ../ortak-birimler                # yerel klasör</code></pre><
 <span class="ya">kullan</span> Desen, Takvim, Güvenlik
 
 <span class="ya">sabit</span>
-  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com'</span> + #<span class="ys">10</span> +
-           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.com'</span>
+  GÜNLÜK: <span class="ya">metin</span> = <span class="ym">'2026-11-10 08:59:40 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:05 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 09:01:02 giriş-başarısız ayse@ornek.de'</span> + #<span class="ys">10</span> +
+           <span class="ym">'2026-11-10 14:30:00 giriş-başarısız can@ornek.de'</span>
   KALIP: <span class="ya">metin</span> = <span class="ym">'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'</span>
   RAPOR_ANAHTARI: <span class="ya">metin</span> = <span class="ym">'rapor-imza-anahtari'</span>
 
@@ -1786,9 +1786,9 @@ yontem paket ekle ../ortak-birimler                # yerel klasör</code></pre><
   <span class="ya">bitir</span>
   yaz(<span class="ym">'Rapor imzası: '</span> + AltMetin(İmza(RAPOR_ANAHTARI, rapor), <span class="ys">1</span>, <span class="ys">16</span>) + <span class="ym">'…'</span>, <span class="ys">1</span>)
 <span class="ya">bitir</span>.</code></pre></div>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>****@ornek.com: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
-***@ornek.com: 1 başarısız giriş
-Rapor imzası: 0953a164a97dc05b…</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>***e@ornek.de: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
+**n@ornek.de: 1 başarısız giriş
+Rapor imzası: 1d84ef2e1d17c6bf…</code></pre></div>
 <p>Raporu alan kişi aynı anahtarla <code>İmzaDoğru(RAPOR_ANAHTARI, rapor, imza)</code> çağırarak metnin yolda değişmediğinden emin olur. Programın yapısı tipiktir: her birim kendi işini yapar, aralarındaki veri sıradan metin, tamsayı ve sözlüklerdir.</p>
 <p><strong>Sırada ne var?</strong></p>
 <ul>

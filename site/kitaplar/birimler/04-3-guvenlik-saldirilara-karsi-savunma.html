@@ -62,7 +62,7 @@
   yaz(<span class="ym">'Dosya: '</span> + DosyaAdıTemizle(<span class="ym">'../../etc/passwd'</span>) + <span class="ym">', yol güvenli mi: '</span> + Metin(YolGüvenli(<span class="ym">'../../etc/passwd'</span>)), <span class="ys">1</span>)
 
   <span class="yy">{ 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }</span>
-  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'zeynep'</span>, <span class="ys">1800</span>)
+  oturum := BelirteçÜret(ANAHTAR, <span class="ym">'edaece'</span>, <span class="ys">1800</span>)
   yaz(<span class="ym">'Oturum sahibi: '</span> + Metin(BelirteçDoğrula(ANAHTAR, oturum)), <span class="ys">1</span>)
   yaz(<span class="ym">'Sahte anahtar: '</span> + Metin(BelirteçDoğrula(<span class="ym">'tahmin'</span>, oturum)), <span class="ys">1</span>)
   BenzetimZamanı(<span class="ys">1800000000</span> + <span class="ys">1801</span>)
@@ -75,7 +75,7 @@ Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
 HTML : &amp;lt;script&amp;gt;çal()&amp;lt;/script&amp;gt;
 SQL  : 'x'' OR ''1''=''1'
 Dosya: passwd, yol güvenli mi: yanlış
-Oturum sahibi: zeynep
+Oturum sahibi: edaece
 Sahte anahtar: boş
 31 dk sonra  : boş</code></pre></div>
 <div class="tablo">

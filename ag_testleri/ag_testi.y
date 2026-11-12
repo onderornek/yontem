@@ -62,8 +62,8 @@ başla
 
   Sına('zaman aşımı', prosedür başla HttpAl(taban + '/yavas', boş, 1) bitir)
   Sına('kapalı kapı', prosedür başla HttpAl('http://127.0.0.1:9/yok') bitir)
-  Sına('geçersiz adres', prosedür başla HttpAl('ftp://ornek.com') bitir)
-  Sına('boşluklu adres', prosedür başla HttpAl('http://ornek.com/a b') bitir)
+  Sına('geçersiz adres', prosedür başla HttpAl('ftp://ornek.de') bitir)
+  Sına('boşluklu adres', prosedür başla HttpAl('http://ornek.de/a b') bitir)
   Sına('yöntem', prosedür başla Httpİstek('SİL', taban) bitir)
   Sına('GET gövdesi', prosedür başla Httpİstek('GET', taban, 'x') bitir)
   Sına('başlık adı', prosedür başla HttpAl(taban, ['Kötü Ad': 'x']) bitir)

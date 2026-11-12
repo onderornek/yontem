@@ -68,7 +68,7 @@ başla
   başla
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, 1)
-    Gir(adKutusu, 'Zeynep')
+    Gir(adKutusu, 'EdaEce')
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, 1)
   bitir
@@ -80,12 +80,12 @@ Komut satırındaki çıktısı şöyledir:
 
 ```
 Önce adını yaz.
-Merhaba, Zeynep!
+Merhaba, EdaEce!
 Pencere "Selamlayıcı"
   Yatay
-    GirişKutusu "Zeynep" (ipucu "Adın")
+    GirişKutusu "EdaEce" (ipucu "Adın")
     Düğme "Selam ver"
-  Etiket "Merhaba, Zeynep!"
+  Etiket "Merhaba, EdaEce!"
 ```
 
 `Canlı`, program gerçek bir arayüzde çalışıyorsa `doğru`dur. `eğer değil Canlı ise` bloğu yalnızca benzetimde çalışır: `Gir` kutuya metin yazar, `Tıkla` düğmeye basar. Sondaki `Çalıştır` canlı ortamda olayları beklemeye başlar; benzetimde arayüzün son hâlini ağaç olarak yazar. Testler bu ağacı beklenen çıktıyla karşılaştırır.
@@ -214,7 +214,7 @@ başla
   yaz('Dosya: ' + DosyaAdıTemizle('../../etc/passwd') + ', yol güvenli mi: ' + Metin(YolGüvenli('../../etc/passwd')), 1)
 
   { 3) Oturum: imzalı ve 30 dakika geçerli belirteç. }
-  oturum := BelirteçÜret(ANAHTAR, 'zeynep', 1800)
+  oturum := BelirteçÜret(ANAHTAR, 'edaece', 1800)
   yaz('Oturum sahibi: ' + Metin(BelirteçDoğrula(ANAHTAR, oturum)), 1)
   yaz('Sahte anahtar: ' + Metin(BelirteçDoğrula('tahmin', oturum)), 1)
   BenzetimZamanı(1800000000 + 1801)
@@ -230,7 +230,7 @@ Zayıf parola : ['en az 8 karakter olmalı', 'büyük harf yok', 'simge yok']
 HTML : &lt;script&gt;çal()&lt;/script&gt;
 SQL  : 'x'' OR ''1''=''1'
 Dosya: passwd, yol güvenli mi: yanlış
-Oturum sahibi: zeynep
+Oturum sahibi: edaece
 Sahte anahtar: boş
 31 dk sonra  : boş
 ```
@@ -318,7 +318,7 @@ program SiparişAyıklama
 { Desen birimi: düzenli ifadelerle doğrulama, ayıklama ve değiştirme. }
 kullan Desen
 
-sabit YAZI: metin = 'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 123 45 67'
+sabit YAZI: metin = 'Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: edaece@ornek.de, 0532 123 45 67'
 
 değişken g: herhangi
 
@@ -340,9 +340,9 @@ Sipariş no : #A-1042
 Adetler    : ['3 adet', '12 adet']
   çay × 3
   simit × 12
-E-posta    : zeynep@ornek.com
+E-posta    : edaece@ornek.de
 Telefon mu : doğru
-Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: zeynep@ornek.com, 0532 *** ** 67
+Gizlenmiş  : Sipariş #A-1042: 3 adet çay, 12 adet simit; iletişim: edaece@ornek.de, 0532 *** ** 67
 Parçalar   : ['çay', 'simit', 'peynir']
 Harf ayrımı: yanlış, "i" ile: doğru
 ```
@@ -394,7 +394,7 @@ değişken
 
 başla
   dene
-    yanıt := HttpAl('https://api.ornek.com/hava?' + SorguYap(['şehir': 'İzmir', 'birim': 'C']))
+    yanıt := HttpAl('https://api.ornek.de/hava?' + SorguYap(['şehir': 'İzmir', 'birim': 'C']))
     eğer yanıt['durum'] = 200 ise
     başla
       veri := JSONÇöz(yanıt['gövde'])
@@ -420,7 +420,7 @@ Bu program örnek bir adrese bağlandığı için çıktısı verilmemiştir; ad
 JSON göndermek için gövdeyi `Veri.JSONYap` ile üretip türünü başlıkta bildirebilirsiniz:
 
 ```pascal
-yanıt := HttpGönder('https://api.ornek.com/notlar', JSONYap(['metin': 'süt al']),
+yanıt := HttpGönder('https://api.ornek.de/notlar', JSONYap(['metin': 'süt al']),
                     ['Content-Type': 'application/json', 'Authorization': 'Bearer ' + anahtar])
 ```
 
@@ -1074,11 +1074,11 @@ program GirişRaporu
 kullan Desen, Takvim, Güvenlik
 
 sabit
-  GÜNLÜK: metin = '2026-11-10 08:59:40 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 09:00:05 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.com' + #10 +
-           '2026-11-10 09:01:02 giriş-başarısız ayse@ornek.com' + #10 +
-           '2026-11-10 14:30:00 giriş-başarısız can@ornek.com'
+  GÜNLÜK: metin = '2026-11-10 08:59:40 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 09:00:05 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 09:00:31 giriş-başarılı mehmet@ornek.de' + #10 +
+           '2026-11-10 09:01:02 giriş-başarısız ayse@ornek.de' + #10 +
+           '2026-11-10 14:30:00 giriş-başarısız can@ornek.de'
   KALIP: metin = '^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) giriş-başarısız (\S+)$'
   RAPOR_ANAHTARI: metin = 'rapor-imza-anahtari'
 
@@ -1121,9 +1121,9 @@ bitir.
 ```
 
 ```
-****@ornek.com: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
-***@ornek.com: 1 başarısız giriş
-Rapor imzası: 0953a164a97dc05b…
+***e@ornek.de: 3 başarısız giriş, 82 saniye içinde — ŞÜPHELİ (09:01)
+**n@ornek.de: 1 başarısız giriş
+Rapor imzası: 1d84ef2e1d17c6bf…
 ```
 
 Raporu alan kişi aynı anahtarla `İmzaDoğru(RAPOR_ANAHTARI, rapor, imza)` çağırarak metnin yolda değişmediğinden emin olur. Programın yapısı tipiktir: her birim kendi işini yapar, aralarındaki veri sıradan metin, tamsayı ve sözlüklerdir.

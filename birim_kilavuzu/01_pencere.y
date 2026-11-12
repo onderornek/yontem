@@ -24,7 +24,7 @@ başla
   başla
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, 1)
-    Gir(adKutusu, 'Zeynep')
+    Gir(adKutusu, 'EdaEce')
     Tıkla(selamDüğmesi)
     yaz(sonuç.Metin, 1)
   bitir
