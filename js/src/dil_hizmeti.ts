@@ -20,7 +20,7 @@ export interface Analiz {
 export type BirimBul = (ad: string, ham: string, kimden: string) => { yol: string; kaynak: string } | null;
 
 export const ANAHTARLAR = ['program', 'birim', 'kullan', 'arayüz', 'uygulama', 'değişken', 'sabit', 'tip', 'prosedür', 'fonksiyon',
-  'kurucu', 'başla', 'bitir', 'eğer', 'ise', 'değilse', 'iken', 'için', 'kadar', 'azalarak', 'her', 'içinde', 'içindeki', 'tekrarla',
+  'kurucu', 'başla', 'bitir', 'eğer', 'ise', 'değilse', 'iken', 'için', 'kadar', 'adımda', 'artan', 'azalan', 'her', 'içinde', 'içindeki', 'tekrarla',
   'dene', 'yakala', 'sonunda', 'fırlat', 'dön', 'çık', 'kır', 'devam', 'sınıf', 'kayıt', 'miras', 'kendi', 'doğru', 'yanlış', 'boş',
   've', 'veya', 'yada', 'değil', 'mod', 'böl', 'dizi', 'türünde', 'adım', 'kez', 'olana', 'dek', 'değerine', 'göre',
   'sanal', 'ezer', 'soyut', 'ileri', 'özel', 'genel', 'korumalı'];

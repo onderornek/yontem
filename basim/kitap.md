@@ -413,7 +413,7 @@ başla
     yaz('', 1)
   bitir
   yaz('Geri sayım: ')
-  10'dan 0'a azalarak adım 2 her i için
+  10'dan 0'a adımda 2 azalan her i için
     yaz(i + ' ')
   yaz('Ateş!', 1)
 bitir.
@@ -428,7 +428,18 @@ bitir.
 Geri sayım: 10 8 6 4 2 0 Ateş!
 ```
 
-İç içe iki döngü bir tablo üretti. `{:4}` her sayıyı 4 karakterlik alana sağa yaslayarak yazdı. `azalarak` geriye doğru sayar, `adım 2` ikişer atlar.
+İç içe iki döngü bir tablo üretti. `{:4}` her sayıyı 4 karakterlik alana sağa yaslayarak yazdı. Son döngüdeki `adımda 2 azalan`, sayacın ikişer ikişer azalacağını söyler.
+
+Sayan döngünün dört biçimi vardır:
+
+| Yazım | Ne yapar |
+|---|---|
+| `1'den 10'a kadar her i için` | Birer birer artar |
+| `10'dan 1'e kadar her i için` | İki sınır da sabit sayıysa yön sınırlardan anlaşılır: birer birer azalır |
+| `a'dan b'ye adımda c artan her i için` | `c`'şer artar |
+| `b'den a'ya adımda c azalan her i için` | `c`'şer azalır |
+
+Sınırlardan biri değişkense `kadar` her zaman artarak sayar; başlangıç bitişten büyükse döngü hiç çalışmaz. Değişken sınırlarla geriye saymak için yönü açıkça yazmanız gerekir: `n'den 1'e adımda 1 azalan her i için`. Adım her zaman pozitif bir tamsayıdır; yönü `artan` ya da `azalan` sözcüğü belirler.
 
 ### `iken` döngüsü: sayı tahmin oyunu
 
@@ -635,7 +646,7 @@ başla
   yaz('Ayır         : ' + kelimeler, 1)
   yaz('Birleştir    : ' + Birleştir(kelimeler, ' + '), 1)
   yaz('Tersten      : ')
-  Uzunluk(s)'den 1'e azalarak her i için yaz(s[i])
+  Uzunluk(s)'den 1'e adımda 1 azalan her i için yaz(s[i])
   yaz('', 1)
 bitir.
 ```
@@ -740,7 +751,7 @@ Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]
 
 ### Sınırları belli diziler
 
-Turbo Pascal'daki gibi, sınırları bildirimde belirlenen diziler de vardır. Sınır dışına çıkmak anında yakalanır.
+Turbo Pascal'daki gibi, sınırları bildirimde belirlenen diziler de vardır. Bu dizilerin boyutu sabittir ve dizinleri sizin yazdığınız sınırlar arasındadır; sınır dışına çıkmak anında yakalanır.
 
 ```pascal
 program SabitDizi
@@ -761,6 +772,17 @@ bitir.
 Sınırlar: 1..7
 Çalışma hatası [d5.y, satır 10] Dizi dizini sınır dışı: 8 (geçerli 1..7)
 ```
+
+Liste ile dizi arasındaki farkı akılda tutmakta yarar vardır:
+
+| | Liste | Sınırlı dizi |
+|---|---|---|
+| Bildirim | `notlar: tamsayı listesi` | `sıcaklık: ondalık dizisi[1..7]` |
+| Dizinler | 0'dan başlar | Sizin yazdığınız sınırlar (burada 1..7) |
+| Boyut | Değişir: `Ekle`, `Sil`, `Araya` | Sabittir |
+| 3. öğeyi silmek | `Sil(notlar, 2)` | Silinemez |
+
+Sınırlı bir diziye `Ekle`, `Sil` ya da `Araya` uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
 
 ## Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci
 
@@ -1706,7 +1728,8 @@ Devre, enerjiyi en aza indiren açıyı kendi kendine buldu: θ = π. Molekülle
 | `eğer … ise … değilse` | if … then … else | Karar |
 | `x değerine göre … bitir` | case … of … end | Çok seçenekli karar |
 | `koşul iken …` | while … do | Koşullu döngü |
-| `a'dan b'ye kadar / azalarak her i için …` | for … to / downto … do | Sayan döngü |
+| `a'dan b'ye kadar her i için …` | for … to … do | Sayan döngü (birer birer) |
+| `a'dan b'ye adımda c artan / azalan her i için …` | for … to / downto … do | Adımlı ve geriye sayan döngü |
 | `tekrarla … koşul olana dek` | repeat … until | En az bir kez çalışan döngü |
 | `L içindeki her x için …` | for … in … do | Koleksiyon döngüsü |
 | `n kez tekrarla …` | — | Belirli sayıda tekrar |

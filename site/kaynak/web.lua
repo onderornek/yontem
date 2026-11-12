@@ -7,7 +7,7 @@ local ANAHTAR = {}
 for w in ([[program birim kullan arayüz uygulama değişken sabit tip başla bitir eğer ise değilse
   için her kadar iken tekrarla olana dek kez kır devam dön fonksiyon prosedür sınıf kayıt kurucu
   yıkıcı miras sanal ezer ve veya değil mod div böl doğru yanlış boş dene yakala sonunda fırlat
-  değerine göre azalarak içindeki türünde dizi tamsayı ondalık metin mantıksal liste
+  değerine göre adımda artan azalan içindeki türünde dizi tamsayı ondalık metin mantıksal liste
   sözlük tensör herhangi yada kendi]]):gmatch('%S+') do ANAHTAR[w] = true end
 
 local function esc(s)

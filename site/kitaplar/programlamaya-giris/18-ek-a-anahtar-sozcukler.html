@@ -31,7 +31,7 @@
     <details open>
       <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html" aria-current="page">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 223 KB)</small></a>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 226 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -98,61 +98,66 @@
 <td>Koşullu döngü</td>
 </tr>
 <tr class="even">
-<td><code>a'dan b'ye kadar / azalarak her i için …</code></td>
-<td>for … to / downto … do</td>
-<td>Sayan döngü</td>
+<td><code>a'dan b'ye kadar her i için …</code></td>
+<td>for … to … do</td>
+<td>Sayan döngü (birer birer)</td>
 </tr>
 <tr class="odd">
+<td><code>a'dan b'ye adımda c artan / azalan her i için …</code></td>
+<td>for … to / downto … do</td>
+<td>Adımlı ve geriye sayan döngü</td>
+</tr>
+<tr class="even">
 <td><code>tekrarla … koşul olana dek</code></td>
 <td>repeat … until</td>
 <td>En az bir kez çalışan döngü</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>L içindeki her x için …</code></td>
 <td>for … in … do</td>
 <td>Koleksiyon döngüsü</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>n kez tekrarla …</code></td>
 <td>—</td>
 <td>Belirli sayıda tekrar</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>kır</code>, <code>devam</code></td>
 <td>break, continue</td>
 <td>Döngü denetimi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>dön</code>, <code>çık</code></td>
 <td>Result + Exit, Exit</td>
 <td>Alt programdan çıkış</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>dene</code>, <code>yakala</code>, <code>sonunda</code>, <code>fırlat</code></td>
 <td>try, except, finally, raise</td>
 <td>Hata yönetimi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sınıf</code>, <code>kayıt</code>, <code>miras</code>, <code>kendi</code></td>
 <td>class, record, inherited, Self</td>
 <td>Nesneler</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ve</code>, <code>veya</code>, <code>yada</code>, <code>değil</code></td>
 <td>and, or, xor, not</td>
 <td>Mantıksal işleçler</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>böl</code>, <code>mod</code></td>
 <td>div, mod</td>
 <td>Tam sayı bölmesi ve kalan</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>doğru</code>, <code>yanlış</code>, <code>boş</code></td>
 <td>True, False, nil</td>
 <td>Sabit değerler</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>… dizisi</code></td>
 <td>array of …</td>
 <td>Dizi: <code>tamsayı dizisi</code>, sınırlıysa <code>ondalık dizisi[1..7]</code></td>

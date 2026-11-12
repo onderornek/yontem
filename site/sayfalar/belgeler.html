@@ -2,7 +2,7 @@
 dosya: belgeler.html
 menu: belgeler
 baslik: Yöntem belgeleri
-ustyazi: Belgeler · Yöntem 0.5.0
+ustyazi: Belgeler · Yöntem 0.6.0
 h1: Aradığınız belgeyi buradan bulabilirsiniz.
 ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu sayfada toplanmıştır. Aşağıda ayrıca dilin temel yazımını tek bakışta gösteren bir hızlı başvuru yer alır.
 -->
@@ -10,7 +10,9 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
   <span>Bu sayfada</span>
   <a href="#kilavuzlar">Kılavuzlar</a>
   <a href="#hizli">Hızlı başvuru</a>
+  <a href="#donguler">Döngüler</a>
   <a href="#tipler">Tipler</a>
+  <a href="#liste-dizi">Liste ve dizi</a>
   <a href="#komutlar">Komutlar</a>
   <a href="#birimler">Birimler</a>
 </aside>
@@ -53,6 +55,24 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
     <div class="not"><p><strong>Gövde kuralı:</strong> Döngü ve koşulların gövdesi tek bir komuttur. Birden çok komut için gövdeyi <code>başla … bitir</code> arasına almanız gerekir. Açıklamalar <code>{ süslü ayraç }</code> içine ya da <code>//</code> işaretinden sonra yazılır.</p></div>
   </section>
 
+  <section id="donguler">
+    <h2>Döngüler</h2>
+    <p>Sayan döngünün dört yazımı vardır. Adımı yazmadığınızda sayaç birer birer ilerler; adımı kendiniz belirlemek istediğinizde <code>adımda</code> sözcüğünü, ardından da yönü gösteren <code>artan</code> ya da <code>azalan</code> sözcüğünü kullanabilirsiniz.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Döngü yazımları tablosu">
+      <table>
+        <thead><tr><th>Yazım</th><th>Sayaç</th></tr></thead>
+        <tbody>
+          <tr><td><code>1'den 10'a kadar her i için …</code></td><td>1, 2, 3, … 10</td></tr>
+          <tr><td><code>10'dan 0'a kadar her j için …</code></td><td>10, 9, 8, … 0</td></tr>
+          <tr><td><code>a'dan b'ye adımda c artan her d için …</code></td><td>a, a+c, a+2c, … (b'yi geçmeden)</td></tr>
+          <tr><td><code>z'den y'ye adımda v azalan her u için …</code></td><td>z, z−v, z−2v, … (y'nin altına inmeden)</td></tr>
+        </tbody>
+      </table>
+    </div>
+<yontem dosya="ornekler/donguler.y"></yontem>
+    <div class="not"><p><strong>Yön kuralı:</strong> <code>kadar</code> ile yazılan döngü, iki sınır da doğrudan sayı olarak yazıldığında ve ilk sayı daha büyük olduğunda kendiliğinden geriye sayar (<code>10'dan 0'a kadar</code>). Sınırlardan biri değişken ya da hesaplanan bir değerse <code>kadar</code> yalnızca ileriye sayar; başlangıç bitişten büyükse döngü hiç çalışmaz. Değişkenlerle geriye saymak için yönü açıkça yazabilirsiniz: <code>n'den 1'e adımda 1 azalan her i için</code>. Adım her zaman pozitif bir tamsayıdır.</p></div>
+  </section>
+
   <section id="tipler">
     <h2>Tipler</h2>
     <div class="tablo" tabindex="0" role="region" aria-label="Tipler tablosu">
@@ -71,6 +91,29 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
       </table>
     </div>
     <p>Dosyanın başına <code>{$katı}</code> yazdığınızda derleyici tipleri program çalışmadan önce denetler ve bütün tip hatalarını bir arada listeler.</p>
+  </section>
+
+  <section id="liste-dizi">
+    <h2>Liste ve dizi</h2>
+    <p>İkisi de sıralı öğeler tutar; aralarındaki fark boyuttadır. Listenin boyutu program çalışırken değişebilir, sınırlarıyla tanımlanan dizinin boyutu ise sabittir.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Liste ve dizi karşılaştırması">
+      <table>
+        <thead><tr><th></th><th>Liste</th><th>Dizi</th></tr></thead>
+        <tbody>
+          <tr><td>Tanım</td><td><code>notlar: tamsayı listesi</code></td><td><code>aylar: tamsayı dizisi[1..12]</code></td></tr>
+          <tr><td>Numaralama</td><td>0'dan başlar</td><td>Sizin verdiğiniz sınırlar (ör. 1..12)</td></tr>
+          <tr><td>Boyut</td><td>Değişebilir</td><td>Sabittir</td></tr>
+          <tr><td>Sona ekleme</td><td><code>Ekle(L, x)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Araya yerleştirme</td><td><code>Araya(L, konum, x)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Silme</td><td><code>Sil(L, konum)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Okuma ve değiştirme</td><td><code>L[0]</code>, <code>L[0] := 5</code></td><td><code>D[1]</code>, <code>D[1] := 5</code></td></tr>
+          <tr><td>Öğe sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(D)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+<yontem dosya="ornekler/liste_dizi.y"></yontem>
+    <p>Listede konumlar 0'dan sayıldığı için üçüncü öğeyi silmek isterseniz <code>Sil(L, 2)</code> yazabilirsiniz; <code>Sil</code> çıkardığı öğeyi döndürür, eksi konum sondan sayar (<code>Sil(L, -1)</code> son öğeyi siler). Aynı işlemler nokta ile de yazılabilir: <code>L.Sil(2)</code>, <code>L.Ekle(x)</code>.</p>
+    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code>, <code>Araya</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden öğe çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
   </section>
 
   <section id="komutlar">

@@ -581,12 +581,14 @@ class Yorumlayici:
     def d_icin(self, d, k):
         bas, bit = self.deg(d.bas, k), self.deg(d.bit, k)
         adim = self.deg(d.adim, k) if d.adim is not None else 1
-        if type(bas) is not int or type(bit) is not int or type(adim) is not int or adim == 0:
+        if type(bas) is not int or type(bit) is not int or type(adim) is not int:
             raise YontemHatasi("'için' döngüsünde başlangıç, bitiş ve adım tamsayı olmalı")
+        if adim <= 0:
+            raise YontemHatasi(f"'için' döngüsünde adım pozitif olmalı ({adim} verildi); yön 'artan' ya da 'azalan' ile belirtilir")
         if d.yon < 0:
-            aralik = range(bas, bit - 1, -abs(adim))
+            aralik = range(bas, bit - 1, -adim)
         else:
-            aralik = range(bas, bit + 1, abs(adim))
+            aralik = range(bas, bit + 1, adim)
         self._dongu_degiskeni(k, d.ad)
         ad, govde, y, ata = d.ad, d.govde, self.yurut, self.ad_ata
         for i in aralik:

@@ -1,6 +1,6 @@
 # Yöntem Programlama Dili
 
-Açık kaynak · Yazılım MIT, kitaplar CC BY 4.0 · Sürüm 0.5.0 · [yontem.pro](https://yontem.pro)
+Açık kaynak · Yazılım MIT, kitaplar CC BY 4.0 · Sürüm 0.6.0 · [yontem.pro](https://yontem.pro)
 
 **Yöntem**, Türkçe anahtar sözcükleri olan, Turbo Pascal soyundan gelen, nesne tabanlı ve
 modüler bir programlama dilidir. Dilin çekirdeğinde **otomatik türevli tensörler**
@@ -92,7 +92,7 @@ Birimlerin ve araçların örneklerle anlatımı *Yöntem Birimler ve Araçlar K
 | `yontem ayikla program.y` | Hata ayıklayıcı: adım adım çalıştırma, (koşullu) kesme noktaları, değişkenleri ve çağrı yığınını inceleme, ifade değerlendirme, çalışma hatasında durma. Uçbirimde komutlarla, VS Code'da `F6` ile (Debug Adapter Protocol: `yontem ayikla --dap`) |
 | `yontem dil-sunucusu` | Dil sunucusu (Language Server Protocol, stdio): yazarken hata gösterimi, tanımlı görünmeyen adlar için yazım hatası uyarısı, tamamlama, imza bilgisi, tanıma git, simge listesi, biçimlendirme. VS Code eklentisi kendiliğinden kullanır; Neovim, Helix, Emacs gibi LSP destekleyen düzenleyicilerde sunucu komutu olarak `yontem lsp` verilir |
 | `yontem derle` / `gomulu` / `paketle` | JavaScript dosyası, ESP32 projesi ya da web/telefon uygulaması üretir |
-| VS Code eklentisi | `araclar/vscode/`: sözdizimi renklendirme, tamamlama, hata gösterimi, tanıma git, kod parçacıkları, biçimlendirme, F5 ile çalıştırma. Kurulum: `code --install-extension araclar/vscode/yontem-dili-0.5.0.vsix` |
+| VS Code eklentisi | `araclar/vscode/`: sözdizimi renklendirme, tamamlama, hata gösterimi, tanıma git, kod parçacıkları, biçimlendirme, F5 ile çalıştırma. Kurulum: `code --install-extension araclar/vscode/yontem-dili-0.6.0.vsix` |
 | Oyun alanı | `oyun_alani/index.html`: kurulum gerektirmeyen tarayıcı ortamı |
 
 Testler `iddia(koşul, mesaj)` ile yazılır; koşul yanlışsa program hatayla durur ve test başarısız
@@ -157,7 +157,7 @@ Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları i
 | `program` | program | | `eğer … ise … değilse` | if … then … else |
 | `birim` | unit | | `koşul iken …` | while … do |
 | `kullan` | uses | | `1'den 10'a kadar her i için …` | for … to … do |
-| `arayüz` / `uygulama` | interface / implementation | | `10'dan 1'e azalarak her i için …` | for … downto … do |
+| `arayüz` / `uygulama` | interface / implementation | | `n'den 1'e adımda 1 azalan her i için …` | for … downto … do |
 | `değişken` | var | | `tekrarla … koşul olana dek` | repeat … until |
 | `sabit` | const | | `x değerine göre … bitir` | case x of … end |
 | `tip` | type | | `L içindeki her x için …` | for x in L do |
@@ -236,7 +236,7 @@ Bloklar içinde de değişken tanımlanabilir: `değişken toplam := 0`
 | `mantıksal` | `doğru`, `yanlış` | |
 | `liste` | `[1, 2, 3]`, `[1..10]` | dinamik, **dizinler 0'dan başlar** |
 | `sözlük` | `['a': 1, 'b': 2]`, `[:]` | |
-| `T dizisi[a..b]` | `ondalık dizisi[1..12]` | sınırları denetlenen sabit dizi |
+| `T dizisi[a..b]` | `ondalık dizisi[1..12]` | sınırları denetlenen, **sabit boyutlu** dizi; dizinler `a..b` |
 | `tensör` | `Tensör([[1, 2], [3, 4]])` | YZ birimi |
 | `herhangi` | | dinamik tip, denetim yapılmaz |
 | sınıf / kayıt adları | `Nokta`, `Hayvan` | |
@@ -282,7 +282,10 @@ değilse yaz('sıfır', 1)
 n > 0 iken n := n böl 2
 
 1'den 10'a kadar her i için toplam += i
-10'dan 0'a azalarak adım 2 her i için yaz(i + ' ')
+10'dan 1'e kadar her i için yaz(i + ' ')            // iki sınır da sabit sayı: birer birer azalır
+0'dan 10'a adımda 5 artan her i için yaz(i + ' ')    // 0 5 10
+10'dan 0'a adımda 2 azalan her i için yaz(i + ' ')   // 10 8 6 4 2 0
+n'den 1'e adımda 1 azalan her i için yaz(i + ' ')    // değişken sınırla geriye sayma
 
 tekrarla
   n := n + 1
@@ -298,6 +301,12 @@ puan değerine göre
   değilse: harf := 'F'
 bitir
 ```
+
+Sayan döngüde `kadar` birer birer sayar. İki sınır da sabit sayıysa yön sınırlardan anlaşılır
+(`10'dan 1'e kadar` azalır); sınırlardan biri değişken ya da ifadeyse `kadar` her zaman artar ve
+başlangıç bitişten büyükse döngü hiç çalışmaz (boş bir listede `0'dan Uzunluk(L) - 1'e kadar`
+güvenle yazılabilsin diye). Adımlı ya da değişken sınırlı geriye sayma `adımda c artan` /
+`adımda c azalan` ile yazılır; adım pozitif bir tamsayı olmalıdır.
 
 Döngü ve karar yapılarının gövdesi **tek bir komuttur**. Birden çok komut çalıştırmak
 için gövde `başla … bitir` ile sarılır (Pascal kuralı). `tekrarla … olana dek`,
@@ -460,6 +469,12 @@ alt klasörü, Yöntem'in `kutuphane/` klasörü ve `YONTEM_YOL` ortam değişke
 
 Biçimli çıktı Turbo Pascal'daki gibidir: `yaz(x:8:2, 1)` (genişlik 8, 2 ondalık basamak). Karma metinlerde
 `Biçimle('{} = {:8.2}', ad, x)` kullanılır (`{:.2}` basamak, `{:8}` genişlik).
+
+**Öğe ekleme ve silme.** `Ekle(L, v)` sona ekler, `Araya(L, i, v)` `i` konumuna yerleştirir,
+`Sil(L, i)` `i` konumundaki öğeyi çıkarıp döndürür. Konumlar 0'dan sayılır (3. öğe: `Sil(L, 2)`);
+eksi konum sondan sayar (`Sil(L, -1)` son öğe). Bu üç işlem yalnızca listelerde çalışır: sınırlı
+diziler (`T dizisi[a..b]`) sabit boyutludur ve `Ekle`/`Sil`/`Araya` hata verir. Diziyi listeye
+kopyalamak için `liste(D)` kullanılır. Sınır yazılmadan bildirilen `T dizisi`, liste gibi davranır.
 
 Liste, metin ve sözlüklerin metod sözdizimi de vardır: `L.Ekle(5)`, `L.Uzunluk`,
 `L.Eşle(f)`, `s.BüyükHarf`, `s.Ayır(',')`, `d.Anahtarlar`, `d.Al('k', 0)` …
@@ -1014,4 +1029,4 @@ Kitap ve kılavuz metinleri [Creative Commons Atıf 4.0 (CC BY 4.0)](https://cre
 lisanslıdır: yazar adı belirtilerek paylaşılabilir ve uyarlanabilir; içlerindeki örnek programlar MIT lisanslıdır.
 Ayrıntılar: [`LICENSE`](LICENSE) (bağlayıcı İngilizce metin) ve [`LISANS.md`](LISANS.md) (Türkçe özet).
 
-Telif hakkı © 2026 Önder Örnek · Sürüm 0.5.0
+Telif hakkı © 2026 Önder Örnek · Sürüm 0.6.0

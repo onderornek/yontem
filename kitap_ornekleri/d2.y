@@ -16,6 +16,6 @@ başla
   yaz('Ayır         : ' + kelimeler, 1)
   yaz('Birleştir    : ' + Birleştir(kelimeler, ' + '), 1)
   yaz('Tersten      : ')
-  Uzunluk(s)'den 1'e azalarak her i için yaz(s[i])
+  Uzunluk(s)'den 1'e adımda 1 azalan her i için yaz(s[i])
   yaz('', 1)
 bitir.

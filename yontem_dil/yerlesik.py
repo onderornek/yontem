@@ -39,6 +39,14 @@ def _sayi(v, ad='değer'):
     raise YontemHatasi(f"{ad} sayı olmalı")
 
 
+def _boyut_degisir(v, ad):
+    """Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder."""
+    if type(v) is PascalDizi:
+        raise YontemHatasi(f"{ad}: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; "
+                           "bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)")
+    return _liste(v, ad)
+
+
 def _liste(v, ad='değer'):
     if type(v) is list:
         return v
@@ -211,7 +219,7 @@ def kur(y):
     @ekle('Ekle')
     @yf('Ekle', 2, 2)
     def _ekle(y, L, v):
-        _liste(L, 'Ekle').append(v)
+        _boyut_degisir(L, 'Ekle').append(v)
 
     @ekle('Sil')
     @yf('Sil', 2, 2)
@@ -220,14 +228,14 @@ def kur(y):
             L.pop(i, None)
             return
         try:
-            return _liste(L, 'Sil').pop(i)
+            return _boyut_degisir(L, 'Sil').pop(i)
         except IndexError:
             raise YontemHatasi(f"Sil: dizin sınır dışı: {i}")
 
     @ekle('Araya')
     @yf('Araya', 3, 3)
     def _araya(y, L, i, v):
-        _liste(L).insert(i, v)
+        _boyut_degisir(L, 'Araya').insert(i, v)
 
     @ekle('Aralık')
     @yf('Aralık', 1, 3)

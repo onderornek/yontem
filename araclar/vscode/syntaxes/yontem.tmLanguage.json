@@ -138,7 +138,7 @@
    "patterns": [
     {
      "name": "keyword.control.yontem",
-     "match": "(?<![\\p{L}\\p{N}_])(?:[aA][zZ][aA][lL][aA][rR][aA][kK]|[dD][eE][gGğĞ][eE][rR][iİıI][nN][eE]|[iİıI][cCçÇ][iİıI][nN][dD][eE][kK][iİıI]|[tT][eE][kK][rR][aA][rR][lL][aA]|[dD][eE][gGğĞ][iİıI][lL][sSşŞ][eE]|[sSşŞ][oOöÖ][nN][uUüÜ][nN][dD][aA]|[fF][iİıI][rR][lL][aA][tT]|[iİıI][cCçÇ][iİıI][nN][dD][eE]|[yY][aA][kK][aA][lL][aA]|[bB][aA][sSşŞ][lL][aA]|[bB][iİıI][tT][iİıI][rR]|[dD][eE][vV][aA][mM]|[kK][aA][dD][aA][rR]|[oOöÖ][lL][aA][nN][aA]|[aA][dD][iİıI][mM]|[dD][eE][nN][eE]|[eE][gGğĞ][eE][rR]|[gGğĞ][oOöÖ][rR][eE]|[iİıI][kK][eE][nN]|[iİıI][cCçÇ][iİıI][nN]|[dD][eE][kK]|[dD][oOöÖ][nN]|[hH][eE][rR]|[iİıI][sSşŞ][eE]|[kK][eE][zZ]|[kK][iİıI][rR]|[cCçÇ][iİıI][kK])(?![\\p{L}\\p{N}_])"
+     "match": "(?<![\\p{L}\\p{N}_])(?:[dD][eE][gGğĞ][eE][rR][iİıI][nN][eE]|[iİıI][cCçÇ][iİıI][nN][dD][eE][kK][iİıI]|[tT][eE][kK][rR][aA][rR][lL][aA]|[dD][eE][gGğĞ][iİıI][lL][sSşŞ][eE]|[sSşŞ][oOöÖ][nN][uUüÜ][nN][dD][aA]|[aA][dD][iİıI][mM][dD][aA]|[aA][zZ][aA][lL][aA][nN]|[fF][iİıI][rR][lL][aA][tT]|[iİıI][cCçÇ][iİıI][nN][dD][eE]|[yY][aA][kK][aA][lL][aA]|[aA][rR][tT][aA][nN]|[bB][aA][sSşŞ][lL][aA]|[bB][iİıI][tT][iİıI][rR]|[dD][eE][vV][aA][mM]|[kK][aA][dD][aA][rR]|[oOöÖ][lL][aA][nN][aA]|[aA][dD][iİıI][mM]|[dD][eE][nN][eE]|[eE][gGğĞ][eE][rR]|[gGğĞ][oOöÖ][rR][eE]|[iİıI][kK][eE][nN]|[iİıI][cCçÇ][iİıI][nN]|[dD][eE][kK]|[dD][oOöÖ][nN]|[hH][eE][rR]|[iİıI][sSşŞ][eE]|[kK][eE][zZ]|[kK][iİıI][rR]|[cCçÇ][iİıI][kK])(?![\\p{L}\\p{N}_])"
     },
     {
      "name": "storage.type.function.yontem",

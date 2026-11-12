@@ -58,9 +58,9 @@ başla
   n := Uzunluk(kübitler)
   0'dan (n böl 2 - 1)'e kadar her i için
     d.Takas(kübitler[i], kübitler[n - 1 - i])
-  (n - 1)'den 0'a azalarak her i için
+  (n - 1)'den 0'a adımda 1 azalan her i için
   başla
-    (n - 1)'den (i + 1)'e azalarak her j için
+    (n - 1)'den (i + 1)'e adımda 1 azalan her j için
       d.KFaz(kübitler[j], kübitler[i], -pi / (2 ** (j - i)))
     d.H(kübitler[i])
   bitir

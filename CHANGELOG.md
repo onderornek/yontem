@@ -4,9 +4,24 @@ Bu dosya Yöntem'in sürümler arasındaki önemli değişikliklerini listeler. 
 [anlamsal sürümleme](https://semver.org/lang/tr/) kurallarını izler; 1.0 öncesinde küçük sürümler
 uyumsuz değişiklik içerebilir.
 
-## Yayımlanmamış
+## 0.6.0 — 2026-11-12
+
+### Uyumsuz değişiklikler
+
+- **Sayan döngünün yazımı yenilendi.** Dört biçim vardır:
+  `1'den 10'a kadar her i için` (birer artar), `10'dan 0'a kadar her j için` (birer azalır),
+  `a'dan b'ye adımda c artan her d için` ve `z'den y'ye adımda v azalan her u için`.
+  `kadar` ile yazılan döngünün yönü, iki sınır da sayı olarak yazıldığında derleme sırasında belirlenir;
+  sınırlardan biri değişkense döngü ileriye sayar ve başlangıç bitişten büyükse hiç çalışmaz.
+  Adım pozitif bir tamsayı olmalıdır.
+- Eski `azalarak` ve `kadar adım N` yazımları kaldırıldı; derleyici bu yazımlarla karşılaştığında
+  yenisini gösteren bir hata iletisi verir.
+- **Sınırlı diziler (`T dizisi[a..b]`) sabit boyutludur:** `Ekle`, `Araya` ve `Sil` bu dizilerde hata verir
+  (katı kipte derleme sırasında). Boyutu değişen veri için liste kullanılır; `liste(D)` diziyi listeye kopyalar.
 
 ### Değişenler
+
+- Kitap, kılavuzlar, site (Belgeler → Döngüler, Liste ve dizi), VS Code eklentisi ve oyun alanı yeni yazıma göre güncellendi.
 
 - Kurulum belgeleri npm paketine göre güncellendi: `npm install -g yontem`.
 - Site: Öğren, Belgeler, Öğretmenler, Gömülü, Topluluk, Blog ve Gizlilik sayfaları yazıldı (`site/sayfalar/`);

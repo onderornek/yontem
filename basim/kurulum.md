@@ -13,7 +13,7 @@ Nov 9, 2026 · @Önder Örnek
 | Gömülü arka uç: masaüstü benzetimi | Programı C++'a derleyip bilgisayarda çalıştırır | JavaScript derleyicisi + C++17 derleyicisi (g++ ya da clang++) | ESP32 programı yazacaksanız |
 | Gömülü arka uç: ESP32'ye yükleme | Üretilen projeyi karta yükler | Arduino IDE, `arduino-cli` ya da PlatformIO; ESP32 Arduino çekirdeği 3.x | Kartınız varsa |
 
-Kaynak dosyaların uzantısı `.y`'dir. Bu kılavuz Yöntem 0.5.0 içindir.
+Kaynak dosyaların uzantısı `.y`'dir. Bu kılavuz Yöntem 0.6.0 içindir.
 
 ## 1. Hazırlık: Node.js ve Python
 
@@ -68,7 +68,7 @@ bitir.
 ```bash
 yontem merhaba.y                   # derler ve çalıştırır
 yontem derle merhaba.y -o m.js     # yalnızca JavaScript üretir; node m.js ile çalışır
-yontem --surum                     # Yöntem 0.5.0 (JavaScript)
+yontem --surum                     # Yöntem 0.6.0 (JavaScript)
 yontem --yardim                    # tüm komutlar
 ```
 
@@ -99,7 +99,7 @@ Python yorumlayıcısı npm paketinde yer almaz; Yöntem'in kaynak klasörüyle 
 cd yontem
 python3 yontem.py merhaba.y   # programı çalıştırır (Windows'ta: py yontem.py merhaba.y)
 python3 yontem.py             # etkileşimli kabuk; çıkmak için: çıkış
-python3 yontem.py --surum     # Yöntem 0.5.0
+python3 yontem.py --surum     # Yöntem 0.6.0
 ```
 
 Kabukta ifadeleri doğrudan yazıp sonucunu görebilirsiniz; örneğin `değişken x := 5` ve ardından `x * 2`.

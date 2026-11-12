@@ -9,6 +9,18 @@ from .sozcuk import katla
 DIREKTIFLER = {'sanal', 'ezer', 'soyut', 'ileri', 'asiri', 'statik'}
 GORUNURLUK = {'ozel', 'genel', 'korumali', 'yayinlanmis'}
 ATAMA_OPLARI = (':=', '+=', '-=', '*=', '/=')
+def _sabit_tam(d):
+    """Düğüm bir tamsayı sabitiyse (-5 gibi işaretli olanlar dahil) değerini, değilse None döndürür."""
+    if d is None:
+        return None
+    if d.tur == 'sabitdeger' and type(d.deger) is int:
+        return d.deger
+    if d.tur == 'tekli' and d.op in ('-', '+'):
+        v = _sabit_tam(d.ifade)
+        return None if v is None else (-v if d.op == '-' else v)
+    return None
+
+
 DEYIM_ANAHTARLARI = {'basla', 'eger', 'icin', 'her', 'iken', 'tekrarla', 'dene', 'firlat', 'don',
                      'cik', 'kir', 'devam', 'degisken'}
 ILISKI_OPLARI = ('=', '<>', '<', '>', '<=', '>=')
@@ -472,17 +484,31 @@ class Cozumleyici:
             if not (self.t.tip == 'SONEK' and self.t.deger == 'yonelme'):
                 self.hata("Bitiş değerinde yönelme eki bekleniyordu (ör. 10'a, n'e)")
             self.ilerle()
+            # 1'den 10'a kadar          → birer birer; iki sınır da sabit sayıysa yön sınırlardan anlaşılır
+            # a'dan b'ye adımda c artan → c'şer artarak;  a'dan b'ye adımda c azalan → c'şer azalarak
+            yon, adim = 1, None
             if self.as_mi('kadar'):
-                yon = 1
-            elif self.as_mi('azalarak'):
-                yon = -1
-            else:
-                self.hata("'kadar' ya da 'azalarak' bekleniyordu")
-            self.ilerle()
-            adim = None
-            if self.ad_mi('adim'):
+                self.ilerle()
+                if self.ad_mi('adim'):
+                    self.hata("'kadar adım …' yazımı kaldırıldı; şöyle yazın: 1'den 10'a adımda 2 artan her i için")
+                sb, se = _sabit_tam(hedef), _sabit_tam(bit)
+                if sb is not None and se is not None and sb > se:
+                    yon = -1
+            elif self.ad_mi('adimda'):
                 self.ilerle()
                 adim = self.ifade()
+                if self.ad_mi('artan'):
+                    yon = 1
+                elif self.ad_mi('azalan'):
+                    yon = -1
+                else:
+                    self.hata("Adımdan sonra 'artan' ya da 'azalan' bekleniyordu (ör. 1'den 10'a adımda 2 artan her i için)")
+                self.ilerle()
+            elif self.as_mi('azalarak'):
+                self.hata("'azalarak' yazımı kaldırıldı; şöyle yazın: n'den 1'e adımda 1 azalan her i için "
+                          "(iki sınır da sabit sayıysa: 10'dan 1'e kadar her i için)")
+            else:
+                self.hata("'kadar' ya da 'adımda' bekleniyordu (ör. 1'den 10'a kadar her i için)")
             self.bekle_as('her')
             v = self.bekle_ad()
             self.bekle_as('icin')

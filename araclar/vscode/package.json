@@ -2,7 +2,7 @@
   "name": "yontem-dili",
   "displayName": "Yöntem",
   "description": "Yöntem programlama dili: sözdizimi renklendirme, hata gösterimi, tamamlama, tanıma git, biçimlendirme, çalıştırma ve hata ayıklama",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "publisher": "yontem",
   "license": "MIT",
   "author": "Önder Örnek",

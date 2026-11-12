@@ -60,6 +60,7 @@ değişken
   rk, rk2: Renk
   f: herhangi
   hataOldu: mantıksal
+  alt: tamsayı
   Mt: tensör
 
 başla
@@ -77,8 +78,22 @@ başla
 
   // döngüler
   t := 0
-  10'dan 1'e azalarak adım 3 her i için t := t + i      // 10+7+4+1
-  Sına(t = 22, 'azalarak adım')
+  10'dan 1'e adımda 3 azalan her i için t := t + i      // 10+7+4+1
+  Sına(t = 22, 'adımda 3 azalan')
+  t := 0
+  0'dan 10'a adımda 5 artan her i için t := t + i       // 0+5+10
+  Sına(t = 15, 'adımda 5 artan')
+  t := 0
+  3'ten 1'e kadar her i için t := t * 10 + i            // sabit sınırlar: yön sınırlardan anlaşılır
+  Sına(t = 321, 'sabit sınırlarla azalan kadar')
+  t := 0
+  alt := 3
+  alt'tan 1'e kadar her i için t := t + 1               // değişken sınır: 'kadar' yalnızca artar
+  Sına(t = 0, 'değişken sınırla kadar boş kalır')
+  alt'tan 1'e adımda 1 azalan her i için t := t + 1
+  Sına(t = 3, 'değişken sınırla adımda 1 azalan')
+  1'den 0'a adımda 1 artan her i için t := t + 100
+  Sına(t = 3, 'artan döngü, başlangıç bitişten büyükse dönmez')
   t := 0
   1'den 100'e kadar her i için
   başla

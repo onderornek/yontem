@@ -16,7 +16,7 @@
 Depodan paketlenmiş dosyayı kurun:
 
 ```bash
-code --install-extension araclar/vscode/yontem-dili-0.5.0.vsix
+code --install-extension araclar/vscode/yontem-dili-0.6.0.vsix
 ```
 
 Ya da VS Code'da Eklentiler → `…` → **VSIX'ten Yükle**.

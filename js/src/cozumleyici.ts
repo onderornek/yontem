@@ -5,6 +5,16 @@ import { Sozcuk, sozcukle } from './sozcuk';
 const DIREKTIFLER = new Set(['sanal', 'ezer', 'soyut', 'ileri', 'asiri', 'statik']);
 const GORUNURLUK = new Set(['ozel', 'genel', 'korumali', 'yayinlanmis']);
 const ATAMA_OPLARI = [':=', '+=', '-=', '*=', '/='];
+/** Düğüm bir tamsayı sabitiyse (-5 gibi işaretli olanlar dahil) değerini, değilse null döndürür. */
+function sabitTam(d: any): bigint | null {
+  if (d && d.tur === 'sabitdeger' && typeof d.deger === 'bigint') return d.deger;
+  if (d && d.tur === 'tekli' && (d.op === '-' || d.op === '+')) {
+    const v = sabitTam(d.ifade);
+    return v === null ? null : d.op === '-' ? -v : v;
+  }
+  return null;
+}
+
 const DEYIM_ANAHTARLARI = new Set(['basla', 'eger', 'icin', 'her', 'iken', 'tekrarla', 'dene', 'firlat', 'don',
   'cik', 'kir', 'devam', 'degisken']);
 const ILISKI_OPLARI = ['=', '<>', '<', '>', '<=', '>='];
@@ -406,13 +416,25 @@ export class Cozumleyici {
       const bit = this.ifade();
       if (!(this.t.tip === 'SONEK' && this.t.deger === 'yonelme')) this.hata("Bitiş değerinde yönelme eki bekleniyordu (ör. 10'a, n'e)");
       this.ilerle();
-      let yon = 1;
-      if (this.asMi('kadar')) yon = 1;
-      else if (this.asMi('azalarak')) yon = -1;
-      else this.hata("'kadar' ya da 'azalarak' bekleniyordu");
-      this.ilerle();
-      let adim = null;
-      if (this.adMi('adim')) { this.ilerle(); adim = this.ifade(); }
+      // 1'den 10'a kadar            → birer birer; iki sınır da sabit sayıysa yön sınırlardan anlaşılır
+      // a'dan b'ye adımda c artan   → c'şer artarak      a'dan b'ye adımda c azalan → c'şer azalarak
+      let yon = 1, adim = null;
+      if (this.asMi('kadar')) {
+        this.ilerle();
+        if (this.adMi('adim'))
+          this.hata("'kadar adım …' yazımı kaldırıldı; şöyle yazın: 1'den 10'a adımda 2 artan her i için");
+        const sb = sabitTam(hedef), se = sabitTam(bit);
+        if (sb !== null && se !== null && sb > se) yon = -1;
+      } else if (this.adMi('adimda')) {
+        this.ilerle();
+        adim = this.ifade();
+        if (this.adMi('artan')) yon = 1;
+        else if (this.adMi('azalan')) yon = -1;
+        else this.hata("Adımdan sonra 'artan' ya da 'azalan' bekleniyordu (ör. 1'den 10'a adımda 2 artan her i için)");
+        this.ilerle();
+      } else if (this.asMi('azalarak')) {
+        this.hata("'azalarak' yazımı kaldırıldı; şöyle yazın: n'den 1'e adımda 1 azalan her i için (iki sınır da sabit sayıysa: 10'dan 1'e kadar her i için)");
+      } else this.hata("'kadar' ya da 'adımda' bekleniyordu (ör. 1'den 10'a kadar her i için)");
       this.bekleAs('her');
       const v = this.bekleAd();
       this.bekleAs('icin');

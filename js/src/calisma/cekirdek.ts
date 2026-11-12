@@ -645,8 +645,9 @@ $.yineleCift = (v: any) => {
   return yinele(v).map((x, i) => [BigInt(i), x]);
 };
 $.icinKontrol = (a: any, b: any, c: any) => {
-  if (typeof a !== 'bigint' || typeof b !== 'bigint' || typeof c !== 'bigint' || c === 0n)
+  if (typeof a !== 'bigint' || typeof b !== 'bigint' || typeof c !== 'bigint')
     hata("'için' döngüsünde başlangıç, bitiş ve adım tamsayı olmalı");
+  if (c <= 0n) hata(`'için' döngüsünde adım pozitif olmalı (${c} verildi); yön 'artan' ya da 'azalan' ile belirtilir`);
 };
 $.kezSayisi = (n: any) => {
   if (typeof n !== 'bigint') hata(`'kez tekrarla' tamsayı bekler, ${turAdi(n)} verildi`);

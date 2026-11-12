@@ -906,7 +906,7 @@ export class Uretici {
         const pre = `const ${b} = ${this.ifade(d.bas, k)}, ${e} = ${this.ifade(d.bit, k)}, ${s} = ${adim}; $.icinKontrol(${b}, ${e}, ${s});`;
         this.donguDegiskeni(k, d.ad, d.ham);
         const ata = this.ata({ tur: 'ad', ad: d.ad, ham: d.ham, satir: d.satir }, i, k, 'tamsayi');
-        const kos = d.yon < 0 ? `${i} >= ${e}; ${i} -= $.mutlakB(${s})` : `${i} <= ${e}; ${i} += $.mutlakB(${s})`;
+        const kos = d.yon < 0 ? `${i} >= ${e}; ${i} -= ${s}` : `${i} <= ${e}; ${i} += ${s}`;
         return `{ ${pre}\nfor (let ${i} = ${b}; ${kos}) {\n${ata}\n${this.donguGovde(d.govde, k)}\n} }`;
       }
       case 'her': {
@@ -1404,6 +1404,12 @@ export class Uretici {
       if (c.tur === 'alan' && c.ad === 'ekle' && args.length === 1) this.ogeDenetle(this.tipK(c.nesne, k), args[0], k, `'${c.nesne.ham ?? 'liste'}'`, n.satir);
       if (c.tur === 'alan') { const u = this.uyeBul(c, k); if (u && u.metod) this.metodArgDenetle(u.metod, `${u.sinif.ham}.${c.ham ?? c.ad}`, args, k, n.satir); }
       else if (c.tur === 'ad') { const r = this.bul(k, c.ad) as any; if (r && r.tur === 'metod') this.metodArgDenetle(r.m, c.ham ?? c.ad, args, k, n.satir); }
+      // Ekle/Sil/Araya: sınırları bildirilmiş (sabit boyutlu) bir diziye uygulanamaz
+      if (c.tur === 'ad' && (c.ad === 'ekle' || c.ad === 'sil' || c.ad === 'araya') && args.length >= 1 && args[0].tur === 'ad') {
+        const f = this.bul(k, c.ad) as any, r = this.bul(k, args[0].ad) as any;
+        if (f && f.tur === 'yerlesik' && r && r.tur === 'sembol' && r.s.tip && r.s.tip.k === 'dizi')
+          this.tani(`'${r.s.ham}' sabit boyutlu bir dizidir; ${c.ham ?? c.ad} ile öğe eklenemez ya da silinemez (liste kullanın)`, n.satir);
+      }
       if (c.tur === 'ad' && c.ad === 'ekle' && args.length === 2) { const r = this.bul(k, 'ekle'); if (r && (r as any).tur === 'yerlesik') this.ogeDenetle(this.tipK(args[0], k), args[1], k, `'${args[0].ham ?? 'liste'}'`, n.satir); }
     }
     if (c.tur === 'ad') {

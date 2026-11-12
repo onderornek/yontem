@@ -609,7 +609,7 @@ export class CppUretici {
         this.donguDegiskeni(k, d.ad, d.ham, TAM);
         const ata = this.ata({ tur: 'ad', ad: d.ad, ham: d.ham, satir: d.satir }, { c: i, t: TAM }, k, d);
         const kos = d.yon < 0 ? `${i} >= ${e}; ${i} -= ${s}` : `${i} <= ${e}; ${i} += ${s}`;
-        return `{ const y::Tam ${b} = ${bas}, ${e} = ${bit}, ${s} = std::abs((y::Tam)(${adim})); if (${s} == 0) y::hata("'için' döngüsünde adım sıfır olamaz");\nfor (y::Tam ${i} = ${b}; ${kos}) {\n${ata};\n${this.govdeDongu(d.govde, k)}\n} }`;
+        return `{ const y::Tam ${b} = ${bas}, ${e} = ${bit}, ${s} = (y::Tam)(${adim}); if (${s} <= 0) y::hata("'için' döngüsünde adım pozitif olmalı; yön 'artan' ya da 'azalan' ile belirtilir");\nfor (y::Tam ${i} = ${b}; ${kos}) {\n${ata};\n${this.govdeDongu(d.govde, k)}\n} }`;
       }
       case 'her': {
         const kay = this.ifade(d.kaynak, k);
@@ -1397,9 +1397,9 @@ export class CppUretici {
           if (v.t.k === 'tensor') return { c: `(y::Tam)((${v.c}).sekil.empty() ? 1 : (${v.c}).sekil[0])`, t: TAM };
           this.hata(`Uzunluk tanımsız: ${tipAdi(v.t)}`, n);
         }
-        case 'ekle': sayi(2, 2); { const l = A(0); if (l.t.k !== 'liste') this.hata('Ekle liste olmalı', n); return { c: `y::ekle(${l.c}, ${D(1, l.t.e, 'öğe')})`, t: YOK }; }
-        case 'sil': sayi(2, 2); { const l = A(0); if (l.t.k === 'sozluk') return { c: `(${l.c}).sil(${D(1, l.t.a, 'anahtar')})`, t: YOK }; if (l.t.k !== 'liste') this.hata('Sil liste olmalı', n); return { c: `y::sil(${l.c}, ${D(1, TAM, 'dizin')})`, t: l.t.e }; }
-        case 'araya': sayi(3, 3); { const l = A(0); if (l.t.k !== 'liste') this.hata('Araya liste olmalı', n); return { c: `y::araya(${l.c}, ${D(1, TAM, 'dizin')}, ${D(2, l.t.e, 'öğe')})`, t: YOK }; }
+        case 'ekle': sayi(2, 2); { const l = A(0); if (l.t.k === 'dizi') this.hata('Ekle: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Ekle liste olmalı', n); return { c: `y::ekle(${l.c}, ${D(1, l.t.e, 'öğe')})`, t: YOK }; }
+        case 'sil': sayi(2, 2); { const l = A(0); if (l.t.k === 'sozluk') return { c: `(${l.c}).sil(${D(1, l.t.a, 'anahtar')})`, t: YOK }; if (l.t.k === 'dizi') this.hata('Sil: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Sil liste olmalı', n); return { c: `y::sil(${l.c}, ${D(1, TAM, 'dizin')})`, t: l.t.e }; }
+        case 'araya': sayi(3, 3); { const l = A(0); if (l.t.k === 'dizi') this.hata('Araya: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın', n); if (l.t.k !== 'liste') this.hata('Araya liste olmalı', n); return { c: `y::araya(${l.c}, ${D(1, TAM, 'dizin')}, ${D(2, l.t.e, 'öğe')})`, t: YOK }; }
         case 'aralik': {
           sayi(1, 3);
           if (args.length === 1) return { c: `y::aralik(0, ${D(0, TAM)}, 1)`, t: liste(TAM) };

@@ -65,6 +65,13 @@ export function liste(v: any, ad = 'değer'): any[] {
   hata(`${ad} liste olmalı`);
 }
 
+/** Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder. */
+function boyutDegisir(v: any, ad: string): any[] {
+  if (v instanceof PascalDizi)
+    hata(`${ad}: dizinin boyutu sabittir, öğe eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)`);
+  return liste(v, ad);
+}
+
 export function buyukHarf(s: string) { return s.replace(/i/g, 'İ').replace(/ı/g, 'I').toUpperCase(); }
 export function kucukHarf(s: string) { return s.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase(); }
 
@@ -333,12 +340,12 @@ ekle(['Uzunluk'], yf('Uzunluk', 1, 1, (v: any) => {
   if (v && v.$tensor) return BigInt(v.sekil.length ? v.sekil[0] : 1);
   hata(`Uzunluk tanımsız: ${pyTipAdi(v)}`);
 }));
-ekle(['Ekle'], yf('Ekle', 2, 2, (L: any, v: any) => { liste(L, 'Ekle').push(v); return null; }));
+ekle(['Ekle'], yf('Ekle', 2, 2, (L: any, v: any) => { boyutDegisir(L, 'Ekle').push(v); return null; }));
 ekle(['Sil'], yf('Sil', 2, 2, (L: any, i: any) => {
   if (L instanceof Map) { L.delete(i); return null; }
-  return pyPop(liste(L, 'Sil'), i, `Sil: dizin sınır dışı: ${metne(i)}`);
+  return pyPop(boyutDegisir(L, 'Sil'), i, `Sil: dizin sınır dışı: ${metne(i)}`);
 }));
-ekle(['Araya'], yf('Araya', 3, 3, (L: any, i: any, v: any) => { pyInsert(liste(L), i, v); return null; }));
+ekle(['Araya'], yf('Araya', 3, 3, (L: any, i: any, v: any) => { pyInsert(boyutDegisir(L, 'Araya'), i, v); return null; }));
 ekle(['Aralık'], yf('Aralık', 1, 3, aralikListe));
 ekle(['Eşle'], yf('Eşle', 2, 2, (L: any, f: any) => yinele(L).map(x => cagir(f, [x]))));
 ekle(['Süz'], yf('Süz', 2, 2, (L: any, f: any) => yinele(L).filter(x => cagir(f, [x]) === true)));

@@ -121,17 +121,31 @@
   ],
   "description": "1'den 10'a kadar her i için"
  },
- "Azalarak döngü": {
+ "Adımlı artan döngü": {
   "prefix": [
-   "azalarak"
+   "artan",
+   "adımda"
   ],
   "body": [
-   "${1:10}'dan ${2:1}'e azalarak her ${3:i} için",
+   "${1:0}'dan ${2:10}'a adımda ${3:2} artan her ${4:i} için",
    "başla",
    "  $0",
    "bitir"
   ],
-  "description": "10'dan 1'e azalarak her i için"
+  "description": "0'dan 10'a adımda 2 artan her i için"
+ },
+ "Azalan döngü": {
+  "prefix": [
+   "azalan",
+   "geri"
+  ],
+  "body": [
+   "${1:n}'den ${2:1}'e adımda ${3:1} azalan her ${4:i} için",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "n'den 1'e adımda 1 azalan her i için"
  },
  "İçindeki her": {
   "prefix": [

@@ -32,7 +32,7 @@ def sozcuk(sozcukler):
     return r'(?<![\p{L}\p{N}_])(?:' + secenek(sozcukler) + r')(?![\p{L}\p{N}_])'
 
 
-DENETIM = ['eğer', 'ise', 'değilse', 'iken', 'için', 'kadar', 'azalarak', 'her', 'içinde', 'içindeki', 'tekrarla',
+DENETIM = ['eğer', 'ise', 'değilse', 'iken', 'için', 'kadar', 'adımda', 'artan', 'azalan', 'her', 'içinde', 'içindeki', 'tekrarla',
            'dene', 'yakala', 'sonunda', 'fırlat', 'dön', 'çık', 'kır', 'devam', 'başla', 'bitir', 'kez', 'adım',
            'olana', 'dek', 'değerine', 'göre']
 BILDIRIM = ['program', 'birim', 'kullan', 'arayüz', 'uygulama', 'değişken', 'sabit', 'tip', 'prosedür', 'fonksiyon',

@@ -9,7 +9,7 @@ başla
     yaz('', 1)
   bitir
   yaz('Geri sayım: ')
-  10'dan 0'a azalarak adım 2 her i için
+  10'dan 0'a adımda 2 azalan her i için
     yaz(i + ' ')
   yaz('Ateş!', 1)
 bitir.

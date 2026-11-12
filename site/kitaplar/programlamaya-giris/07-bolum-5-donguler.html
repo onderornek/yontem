@@ -31,7 +31,7 @@
     <details open>
       <summary><a href="index.html">Yöntem ile Programlamaya Giriş</a></summary>
       <ol><li><a href="01-onsoz.html">Önsöz</a></li><li><a href="02-baslamadan-once.html">Başlamadan önce</a></li><li><a href="03-bolum-1-program-yapisi.html">Bölüm 1 — Program yapısı</a></li><li><a href="04-bolum-2-degiskenler-tipler-ve-islecler.html">Bölüm 2 — Değişkenler, tipler ve işleçler</a></li><li><a href="05-bolum-3-giris-ve-cikis-yaz-ve-oku.html">Bölüm 3 — Giriş ve çıkış: <code>yaz</code> ve <code>oku</code></a></li><li><a href="06-bolum-4-karar-vermek-eger-ve-degerine-gore.html">Bölüm 4 — Karar vermek: <code>eğer</code> ve <code>değerine göre</code></a></li><li><a href="07-bolum-5-donguler.html" aria-current="page">Bölüm 5 — Döngüler</a></li><li><a href="08-bolum-6-prosedurler-ve-fonksiyonlar.html">Bölüm 6 — Prosedürler ve fonksiyonlar</a></li><li><a href="09-bolum-7-metinler-listeler-sozlukler-ve-diziler.html">Bölüm 7 — Metinler, listeler, sözlükler ve diziler</a></li><li><a href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html">Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></li><li><a href="11-bolum-9-kayitlar-ve-siniflar.html">Bölüm 9 — Kayıtlar ve sınıflar</a></li><li><a href="12-bolum-10-hatalarla-basa-cikmak.html">Bölüm 10 — Hatalarla başa çıkmak</a></li><li><a href="13-bolum-11-birimler-programi-parcalara-bolmek.html">Bölüm 11 — Birimler: programı parçalara bölmek</a></li><li><a href="14-bolum-12-tensorler-ve-otomatik-turev.html">Bölüm 12 — Tensörler ve otomatik türev</a></li><li><a href="15-bolum-13-sinir-aglari.html">Bölüm 13 — Sinir ağları</a></li><li><a href="16-bolum-14-klasik-yapay-zeka-arama-uzman-sistemler-dil-isleme.html">Bölüm 14 — Klasik yapay zekâ: arama, uzman sistemler, dil işleme</a></li><li><a href="17-bolum-15-kuantum-programlama.html">Bölüm 15 — Kuantum programlama</a></li><li><a href="18-ek-a-anahtar-sozcukler.html">Ek A — Anahtar sözcükler</a></li><li><a href="19-ek-b-sik-yapilan-hatalar.html">Ek B — Sık yapılan hatalar</a></li><li><a href="20-ek-c-alistirma-cozumleri.html">Ek C — Alıştırma çözümleri</a></li></ol>
-      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 223 KB)</small></a>
+      <a class="pdf" href="Yontem_ile_Programlamaya_Giris.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 226 KB)</small></a>
     </details>
   </aside>
   <main id="icerik" class="metin">
@@ -88,7 +88,7 @@
     yaz(<span class="ym">''</span>, <span class="ys">1</span>)
   <span class="ya">bitir</span>
   yaz(<span class="ym">'Geri sayım: '</span>)
-  <span class="ys">10</span>'dan <span class="ys">0</span>'a <span class="ya">azalarak</span> adım <span class="ys">2</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ys">10</span>'dan <span class="ys">0</span>'a <span class="ya">adımda</span> <span class="ys">2</span> <span class="ya">azalan</span> <span class="ya">her</span> i <span class="ya">için</span>
     yaz(i + <span class="ym">' '</span>)
   yaz(<span class="ym">'Ateş!'</span>, <span class="ys">1</span>)
 <span class="ya">bitir</span>.</code></pre></div>
@@ -98,7 +98,41 @@
    4   8  12  16  20
    5  10  15  20  25
 Geri sayım: 10 8 6 4 2 0 Ateş!</code></pre></div>
-<p>İç içe iki döngü bir tablo üretti. <code>{:4}</code> her sayıyı 4 karakterlik alana sağa yaslayarak yazdı. <code>azalarak</code> geriye doğru sayar, <code>adım 2</code> ikişer atlar.</p>
+<p>İç içe iki döngü bir tablo üretti. <code>{:4}</code> her sayıyı 4 karakterlik alana sağa yaslayarak yazdı. Son döngüdeki <code>adımda 2 azalan</code>, sayacın ikişer ikişer azalacağını söyler.</p>
+<p>Sayan döngünün dört biçimi vardır:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1'den 10'a kadar her i için</code></td>
+<td>Birer birer artar</td>
+</tr>
+<tr class="even">
+<td><code>10'dan 1'e kadar her i için</code></td>
+<td>İki sınır da sabit sayıysa yön sınırlardan anlaşılır: birer birer azalır</td>
+</tr>
+<tr class="odd">
+<td><code>a'dan b'ye adımda c artan her i için</code></td>
+<td><code>c</code>’şer artar</td>
+</tr>
+<tr class="even">
+<td><code>b'den a'ya adımda c azalan her i için</code></td>
+<td><code>c</code>’şer azalır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sınırlardan biri değişkense <code>kadar</code> her zaman artarak sayar; başlangıç bitişten büyükse döngü hiç çalışmaz. Değişken sınırlarla geriye saymak için yönü açıkça yazmanız gerekir: <code>n'den 1'e adımda 1 azalan her i için</code>. Adım her zaman pozitif bir tamsayıdır; yönü <code>artan</code> ya da <code>azalan</code> sözcüğü belirler.</p>
 <h3 id="iken-döngüsü-sayı-tahmin-oyunu"><code>iken</code> döngüsü: sayı tahmin oyunu</h3>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> SayıTahmini
 <span class="ya">değişken</span>

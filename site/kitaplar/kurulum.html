@@ -282,7 +282,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 </tbody>
 </table>
 </div>
-<p>Kaynak dosyaların uzantısı <code>.y</code>’dir. Bu kılavuz Yöntem 0.5.0 içindir.</p>
+<p>Kaynak dosyaların uzantısı <code>.y</code>’dir. Bu kılavuz Yöntem 0.6.0 içindir.</p>
 </section><section class="bolum-blok" id="b02" data-baslik="1. Hazırlık: Node.js ve Python"><h2>1. Hazırlık: Node.js ve Python</h2>
 <p>Node.js 18 veya üstü gerekir; Python yalnızca yorumlayıcıyı kullanacaksanız gerekir. Önce bunların zaten kurulu olup olmadığına bakabilirsiniz:</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>node --version     # v18.0.0 veya üstü olmalı
@@ -315,7 +315,7 @@ node --version</code></pre></div>
 <span class="ya">bitir</span>.</code></pre></div>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem merhaba.y                   # derler ve çalıştırır
 yontem derle merhaba.y -o m.js     # yalnızca JavaScript üretir; node m.js ile çalışır
-yontem --surum                     # Yöntem 0.5.0 (JavaScript)
+yontem --surum                     # Yöntem 0.6.0 (JavaScript)
 yontem --yardim                    # tüm komutlar</code></pre></div>
 <p><strong>Notlar</strong></p>
 <ul>
@@ -336,7 +336,7 @@ npm link          # &quot;yontem&quot; komutunu bu klasöre bağlar</code></pre>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem
 python3 yontem.py merhaba.y   # programı çalıştırır (Windows'ta: py yontem.py merhaba.y)
 python3 yontem.py             # etkileşimli kabuk; çıkmak için: çıkış
-python3 yontem.py --surum     # Yöntem 0.5.0</code></pre></div>
+python3 yontem.py --surum     # Yöntem 0.6.0</code></pre></div>
 <p>Kabukta ifadeleri doğrudan yazıp sonucunu görebilirsiniz; örneğin <code>değişken x := 5</code> ve ardından <code>x * 2</code>.</p>
 </section><section class="bolum-blok" id="b05" data-baslik="4. Gömülü arka uç (ESP32)"><h2>4. Gömülü arka uç (ESP32)</h2>
 <p>Gömülü arka uç 2. adımdaki <code>yontem</code> komutuyla gelir; ayrıca bir C++17 derleyicisi (masaüstü benzetimi için) ve kartınız varsa bir yükleme aracı gerekir. Program, statik tipli bir alt kümeye uyduğu sürece C++’a derlenir.</p>
