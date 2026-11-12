@@ -104,7 +104,7 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
           <tr><td>Numaralama</td><td>0'dan başlar</td><td>Sizin verdiğiniz sınırlar (ör. 1..12)</td></tr>
           <tr><td>Boyut</td><td>Değişebilir</td><td>Sabittir</td></tr>
           <tr><td>Sona ekleme</td><td><code>Ekle(L, x)</code></td><td>Yapılamaz</td></tr>
-          <tr><td>Araya yerleştirme</td><td><code>Araya(L, konum, x)</code></td><td>Yapılamaz</td></tr>
+          <tr><td>Araya yerleştirme</td><td><code>Ekle(L, konum, x)</code></td><td>Yapılamaz</td></tr>
           <tr><td>Silme</td><td><code>Sil(L, konum)</code></td><td>Yapılamaz</td></tr>
           <tr><td>Okuma ve değiştirme</td><td><code>L[0]</code>, <code>L[0] := 5</code></td><td><code>D[1]</code>, <code>D[1] := 5</code></td></tr>
           <tr><td>Öğe sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(D)</code></td></tr>
@@ -112,8 +112,8 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
       </table>
     </div>
 <yontem dosya="ornekler/liste_dizi.y"></yontem>
-    <p>Listede konumlar 0'dan sayıldığı için üçüncü öğeyi silmek isterseniz <code>Sil(L, 2)</code> yazabilirsiniz; <code>Sil</code> çıkardığı öğeyi döndürür, eksi konum sondan sayar (<code>Sil(L, -1)</code> son öğeyi siler). Aynı işlemler nokta ile de yazılabilir: <code>L.Sil(2)</code>, <code>L.Ekle(x)</code>.</p>
-    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code>, <code>Araya</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden öğe çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
+    <p>Listede konumlar 0'dan sayıldığı için üçüncü öğeyi silmek isterseniz <code>Sil(L, 2)</code> yazabilirsiniz; <code>Sil</code> çıkardığı öğeyi döndürür, eksi konum sondan sayar (<code>Sil(L, -1)</code> son öğeyi siler). <code>Ekle</code> iki biçimde kullanılır: <code>Ekle(L, x)</code> öğeyi sona ekler, <code>Ekle(L, konum, x)</code> ise verilen konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemler nokta ile de yazılabilir: <code>L.Sil(2)</code>, <code>L.Ekle(x)</code>, <code>L.Ekle(konum, x)</code>.</p>
+    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden öğe çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
   </section>
 
   <section id="komutlar">

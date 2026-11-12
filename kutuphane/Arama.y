@@ -20,7 +20,7 @@ başla
   d := hedef
   d <> boş iken
   başla
-    Araya(yol, 0, d)
+    Ekle(yol, 0, d)
     d := önceki[d]
   bitir
   dön yol
@@ -151,7 +151,7 @@ başla
       k := anahtar
       k <> boş iken
       başla
-        Araya(yol, 0, Eşle(Ayır(k, ','), fonksiyon(s) => tamsayı(s)))
+        Ekle(yol, 0, Eşle(Ayır(k, ','), fonksiyon(s) => tamsayı(s)))
         k := önceki[k]
       bitir
       dön yol

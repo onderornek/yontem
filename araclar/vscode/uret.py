@@ -43,7 +43,7 @@ SABIT = ['doğru', 'yanlış', 'boş']
 OZEL = ['kendi', 'miras']
 TIPLER = ['tamsayı', 'ondalık', 'gerçek', 'metin', 'karakter', 'mantıksal', 'liste', 'sözlük', 'tensör', 'herhangi',
           'nesne', 'işlev']
-YERLESIK = ['yaz', 'oku', 'Uzunluk', 'Metin', 'Tamsayı', 'Ondalık', 'Ekle', 'Sil', 'Araya', 'İçerir', 'Sırala', 'Ters',
+YERLESIK = ['yaz', 'oku', 'Uzunluk', 'Metin', 'Tamsayı', 'Ondalık', 'Ekle', 'Sil', 'İçerir', 'Sırala', 'Ters',
             'Aralık', 'Toplam', 'Min', 'Maks', 'Mutlak', 'Yuvarla', 'Kök', 'Kare', 'Rastgele', 'Biçimle', 'Ayır',
             'Birleştir', 'BüyükHarf', 'KüçükHarf', 'Kırp', 'Değiştir', 'AltMetin', 'Konum', 'Anahtarlar', 'Değerler',
             'Eşle', 'Süz', 'İndirge', 'Kopya', 'Tür', 'iddia', 'Hata', 'Durdur', 'Say', 'Benzersiz', 'Dilim',

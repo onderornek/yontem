@@ -6,7 +6,7 @@ başla
   { liste: öğeler 0'dan numaralanır, boyut değişebilir }
   notlar := [70, 85, 90, 60]
   Ekle(notlar, 100)        { sona ekler }
-  Araya(notlar, 1, 75)     { 1 numaralı konuma yerleştirir }
+  Ekle(notlar, 1, 75)      { 1 numaralı konuma yerleştirir }
   Sil(notlar, 2)           { 3. öğeyi (konum 2) siler }
   yaz(notlar, 1)
 

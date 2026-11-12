@@ -1,5 +1,5 @@
 program DöngüVeDizi
-{ Sayan döngünün dört biçimi ile liste/dizi ayrımı (Ekle, Sil, Araya) }
+{ Sayan döngünün dört biçimi ile liste/dizi ayrımı (Ekle, Sil) }
 değişken
   a, b, c: tamsayı
   dz: tamsayı dizisi[1..5]
@@ -37,10 +37,24 @@ başla
   L := [10, 20, 30, 40, 50]
   yaz(Sil(L, 2), 1)
   yaz(L, 1)
-  Araya(L, 2, 30)
+  Ekle(L, 2, 30)
   Ekle(L, 60)
   yaz(L, 1)
   yaz(L.Sil(-1), 1)
+  L.Ekle(0, 5)
+  Ekle(L, -1, 45)
+  Ekle(L, 99, 70)
+  yaz(L, 1)
+  dene
+    Ekle(L, 'iki', 7)
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
+  dene
+    Araya(L, 0, 1)
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
 
   { sınırlı dizi: boyutu sabittir }
   1'den 5'e kadar her i için dz[i] := i * 10
@@ -55,7 +69,7 @@ başla
     yaz(h.mesaj, 1)
   bitir
   dene
-    Araya(dz, 1, 5)
+    Ekle(dz, 1, 5)
   yakala (h)
     yaz(h.mesaj, 1)
   bitir

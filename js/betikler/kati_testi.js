@@ -105,7 +105,7 @@ if (py.error) console.log('atlandı    Python bulunamadı'); else denetle('Pytho
 // Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren dokuz satır işaretlenir (yanlış alarm yok)
 r = y(['denetle', 'ornekler', 'testler', 'kitap_ornekleri', 'birim_kilavuzu', 'guvenlik_ornekleri', 'ml_kilavuz', '--kati'], KOK);
 const bulunan = (r.stderr.match(/Tip hatası \[[^\]]*\]/g) || []).map(s => s.replace(/\\/g, '/')).sort();
-denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 172]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 48]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 53]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 58]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
+denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 172]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 62]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 67]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 72]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
 
 // Dil sunucusu ve hata ayıklayıcı
 const { cozumle } = require(path.join(__dirname, '..', 'dist', 'dil_hizmeti.js'));

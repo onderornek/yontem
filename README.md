@@ -462,7 +462,7 @@ alt klasörü, Yöntem'in `kutuphane/` klasörü ve `YONTEM_YOL` ortam değişke
 |---|---|
 | G/Ç | `yaz(değer, satır)`, `oku(değişken, satır)` (bkz. bölüm 6.1) |
 | Dönüşüm | `tamsayı`, `ondalık`, `metin`, `mantıksal`, `liste`, `Tür`, `ÖrneğiMi` |
-| Koleksiyon | `Uzunluk`, `Ekle`, `Sil`, `Araya`, `Aralık`, `Eşle`, `Süz`, `İndirge`, `Sırala`, `Ters`, `Toplam`, `Maks`, `Min`, `Eşleştir`, `Numaralandır`, `Dilim`, `Kopya`, `Anahtarlar`, `Değerler`, `İçerir`, `Benzersiz`, `Say` |
+| Koleksiyon | `Uzunluk`, `Ekle`, `Sil`, `Aralık`, `Eşle`, `Süz`, `İndirge`, `Sırala`, `Ters`, `Toplam`, `Maks`, `Min`, `Eşleştir`, `Numaralandır`, `Dilim`, `Kopya`, `Anahtarlar`, `Değerler`, `İçerir`, `Benzersiz`, `Say` |
 | Metin | `AltMetin`, `Konum`, `BüyükHarf`, `KüçükHarf` (Türkçe kurallarına uygun: i→İ, ı→I), `Ayır`, `Birleştir`, `Kırp`, `Değiştir`, `Biçimle('{} {:.2}', a, b)`, `Sıra`, `Karakter`, `HarfMi`, `RakamMı` |
 | Sayısal | `Mutlak`, `Kare`, `Kök`, `Yuvarla`, `Kes`, `Rastgele`, `Rastgeleleştir`, `Artır`, `Azalt`, `Değiş`, `pi` |
 | Denetim | `Hata`, `İddia`, `Durdur`, `Çağır`, `ParametreSayısı`, `Parametre` |
@@ -470,10 +470,10 @@ alt klasörü, Yöntem'in `kutuphane/` klasörü ve `YONTEM_YOL` ortam değişke
 Biçimli çıktı Turbo Pascal'daki gibidir: `yaz(x:8:2, 1)` (genişlik 8, 2 ondalık basamak). Karma metinlerde
 `Biçimle('{} = {:8.2}', ad, x)` kullanılır (`{:.2}` basamak, `{:8}` genişlik).
 
-**Öğe ekleme ve silme.** `Ekle(L, v)` sona ekler, `Araya(L, i, v)` `i` konumuna yerleştirir,
+**Öğe ekleme ve silme.** `Ekle(L, v)` sona ekler, `Ekle(L, i, v)` `i` konumuna yerleştirir,
 `Sil(L, i)` `i` konumundaki öğeyi çıkarıp döndürür. Konumlar 0'dan sayılır (3. öğe: `Sil(L, 2)`);
-eksi konum sondan sayar (`Sil(L, -1)` son öğe). Bu üç işlem yalnızca listelerde çalışır: sınırlı
-diziler (`T dizisi[a..b]`) sabit boyutludur ve `Ekle`/`Sil`/`Araya` hata verir. Diziyi listeye
+eksi konum sondan sayar (`Sil(L, -1)` son öğe). Bu işlemler yalnızca listelerde çalışır: sınırlı
+diziler (`T dizisi[a..b]`) sabit boyutludur ve `Ekle`/`Sil` hata verir. Diziyi listeye
 kopyalamak için `liste(D)` kullanılır. Sınır yazılmadan bildirilen `T dizisi`, liste gibi davranır.
 
 Liste, metin ve sözlüklerin metod sözdizimi de vardır: `L.Ekle(5)`, `L.Uzunluk`,

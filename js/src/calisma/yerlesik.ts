@@ -340,12 +340,18 @@ ekle(['Uzunluk'], yf('Uzunluk', 1, 1, (v: any) => {
   if (v && v.$tensor) return BigInt(v.sekil.length ? v.sekil[0] : 1);
   hata(`Uzunluk tanımsız: ${pyTipAdi(v)}`);
 }));
-ekle(['Ekle'], yf('Ekle', 2, 2, (L: any, v: any) => { boyutDegisir(L, 'Ekle').push(v); return null; }));
+function konumTam(i: any) { if (typeof i !== 'bigint') hata('Ekle: konum tamsayı olmalı'); return i; }
+// Ekle(L, x) sona ekler; Ekle(L, konum, x) verilen konuma yerleştirir
+ekle(['Ekle'], yf('Ekle', 2, 3, (L: any, a: any, b?: any) => {
+  const D = boyutDegisir(L, 'Ekle');
+  if (b === undefined) D.push(a); else pyInsert(D, konumTam(a), b);
+  return null;
+}));
 ekle(['Sil'], yf('Sil', 2, 2, (L: any, i: any) => {
   if (L instanceof Map) { L.delete(i); return null; }
   return pyPop(boyutDegisir(L, 'Sil'), i, `Sil: dizin sınır dışı: ${metne(i)}`);
 }));
-ekle(['Araya'], yf('Araya', 3, 3, (L: any, i: any, v: any) => { pyInsert(boyutDegisir(L, 'Araya'), i, v); return null; }));
+ekle(['Araya'], yf('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)")));
 ekle(['Aralık'], yf('Aralık', 1, 3, aralikListe));
 ekle(['Eşle'], yf('Eşle', 2, 2, (L: any, f: any) => yinele(L).map(x => cagir(f, [x]))));
 ekle(['Süz'], yf('Süz', 2, 2, (L: any, f: any) => yinele(L).filter(x => cagir(f, [x]) === true)));
@@ -489,10 +495,10 @@ function tablo(t: Record<string, any>, ad: string, u: any) { t[katla(ad)] = u; }
 const L: Record<string, any> = {}, S: Record<string, any> = {}, M: Record<string, any> = {}, D: Record<string, any> = {};
 const B = (v: any) => BigInt(v);
 tablo(L, 'Uzunluk', m('Uzunluk', 0, null, o => B(o.length), true));
-tablo(L, 'Ekle', m('Ekle', 1, 1, (o, v) => { o.push(v); return null; }));
+tablo(L, 'Ekle', m('Ekle', 1, 2, (o, a, b?: any) => { if (b === undefined) o.push(a); else pyInsert(o, konumTam(a), b); return null; }));
 tablo(L, 'Çıkar', m('Çıkar', 0, 1, (o, i = -1n) => { if (!o.length) hata('Boş listeden çıkarılamaz'); return pyPop(o, i, null); }, true));
 tablo(L, 'Sil', m('Sil', 1, 1, (o, i) => pyPop(o, i, null)));
-tablo(L, 'Araya', m('Araya', 2, 2, (o, i, v) => { pyInsert(o, i, v); return null; }));
+tablo(L, 'Araya', m('Araya', 0, 64, () => hata("'Araya' kaldırıldı; şöyle yazın: L.Ekle(konum, x)")));
 tablo(L, 'Temizle', m('Temizle', 0, null, o => { o.length = 0; return null; }, true));
 tablo(L, 'Bul', m('Bul', 1, 1, (o, v) => { const i = o.findIndex((x: any) => esit(x, v)); return B(i); }));
 tablo(L, 'İçerir', m('İçerir', 1, 1, (o, v) => o.some((x: any) => esit(x, v))));

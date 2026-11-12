@@ -183,8 +183,18 @@ Sınırlar: 1..7
 </tr>
 <tr class="odd">
 <td>Boyut</td>
-<td>Değişir: <code>Ekle</code>, <code>Sil</code>, <code>Araya</code></td>
+<td>Değişir: <code>Ekle</code>, <code>Sil</code></td>
 <td>Sabittir</td>
+</tr>
+<tr class="even">
+<td>Sona eklemek</td>
+<td><code>Ekle(notlar, 95)</code></td>
+<td>Eklenemez</td>
+</tr>
+<tr class="odd">
+<td>Araya eklemek</td>
+<td><code>Ekle(notlar, 1, 95)</code> (konum 1’e)</td>
+<td>Eklenemez</td>
 </tr>
 <tr class="even">
 <td>3. öğeyi silmek</td>
@@ -194,7 +204,8 @@ Sınırlar: 1..7
 </tbody>
 </table>
 </div>
-<p>Sınırlı bir diziye <code>Ekle</code>, <code>Sil</code> ya da <code>Araya</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
+<p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> öğeyi sona ekler; <code>Ekle(notlar, 1, 95)</code> ise öğeyi 1 numaralı konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(1, 95)</code>.</p>
+<p>Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi <code>liste(sıcaklık)</code> ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (<code>tamsayı dizisi</code>) ise liste gibi davranır.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-bolum-6-prosedurler-ve-fonksiyonlar.html"><small>Önceki</small>Bölüm 6 — Prosedürler ve fonksiyonlar</a><a class="sonraki" href="10-bolum-8-fonksiyonlar-deger-olarak-lambda-ve-boru-isleci.html"><small>Sonraki</small>Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci</a></nav>
   </main>

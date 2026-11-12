@@ -779,10 +779,14 @@ Liste ile dizi arasındaki farkı akılda tutmakta yarar vardır:
 |---|---|---|
 | Bildirim | `notlar: tamsayı listesi` | `sıcaklık: ondalık dizisi[1..7]` |
 | Dizinler | 0'dan başlar | Sizin yazdığınız sınırlar (burada 1..7) |
-| Boyut | Değişir: `Ekle`, `Sil`, `Araya` | Sabittir |
+| Boyut | Değişir: `Ekle`, `Sil` | Sabittir |
+| Sona eklemek | `Ekle(notlar, 95)` | Eklenemez |
+| Araya eklemek | `Ekle(notlar, 1, 95)` (konum 1'e) | Eklenemez |
 | 3. öğeyi silmek | `Sil(notlar, 2)` | Silinemez |
 
-Sınırlı bir diziye `Ekle`, `Sil` ya da `Araya` uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
+`Ekle` iki biçimde kullanılır: `Ekle(notlar, 95)` öğeyi sona ekler; `Ekle(notlar, 1, 95)` ise öğeyi 1 numaralı konuma yerleştirir ve sonraki öğeleri birer sıra kaydırır. Aynı işlemleri nokta ile de yazabilirsiniz: `notlar.Ekle(95)`, `notlar.Ekle(1, 95)`.
+
+Sınırlı bir diziye `Ekle` ya da `Sil` uygulamak hata verir, çünkü dizinin boyutu değişemez. Öğe ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
 
 ## Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci
 

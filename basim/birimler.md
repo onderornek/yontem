@@ -891,7 +891,7 @@ başla
 
 Öğe tipi atamada, `Ekle` çağrısında, `liste[i] := değer` atamasında, `içindeki her` döngüsünün değişkeninde ve parametrelerde denetlenir; diziler için öğe tipi başa yazılır: `tamsayı dizisi`, sınırlı diziler için `ondalık dizisi[1..12]`, iç içe `ondalık dizisi dizisi`. Öğe tipi yazılmamış düz bir `liste` her yere verilebilir ve çalışırken denetlenir.
 
-Sınırlı diziler sabit boyutludur: `ondalık dizisi[1..12]` tipindeki bir değişkene `Ekle`, `Araya` ya da `Sil` uygulamak katı kipte derleme hatasıdır (katı kip dışında çalışma anında hata verir). Boyutu değişen veri için liste kullanabilirsiniz; `liste(D)` diziyi listeye kopyalar.
+Sınırlı diziler sabit boyutludur: `ondalık dizisi[1..12]` tipindeki bir değişkene `Ekle` ya da `Sil` uygulamak katı kipte derleme hatasıdır (katı kip dışında çalışma anında hata verir). Boyutu değişen veri için liste kullanabilirsiniz; `liste(D)` diziyi listeye kopyalar.
 
 Sınıf ve kayıt tipleri de izlenir. Tipi `Daire` olan bir değişkende olmayan bir alana ya da metoda erişmek (`d.çap`), bir alana uymayan değer atamak (`d.yarıçap := 'iki'`), bir metodu ya da kurucuyu eksik veya yanlış tipte argümanla çağırmak ve bir sınıfın nesnesini ilgisiz bir sınıfın değişkenine atamak derleme hatasıdır. Alt sınıfın nesnesi üst sınıf tipindeki değişkene atanabilir (`şekil := daire`); ama o değişken üzerinden yalnızca üst sınıfın üyelerine erişilir. Alt sınıfa özgü bir üyeye ulaşmak için değeri alt sınıf tipinde bir değişkene atayabilirsiniz.
 

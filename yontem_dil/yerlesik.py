@@ -16,6 +16,16 @@ from .degerler import (YerelFonksiyon, KFonksiyon, BagliMetod, KurucuBagli, KSin
 _rng = random.Random()
 
 
+def _konum_tam(i):
+    if isinstance(i, bool) or not isinstance(i, int):
+        raise YontemHatasi('Ekle: konum tamsayı olmalı')
+    return i
+
+
+def _araya_kaldirildi():
+    raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: L.Ekle(konum, x)")
+
+
 def yf(ad, en_az=0, en_cok=None, oto=False, ref=()):
     """Python fonksiyonunu Yöntem yerleşiğine sarar; argüman sayısını denetler."""
     def sar(f):
@@ -217,9 +227,14 @@ def kur(y):
         raise YontemHatasi(f"Uzunluk tanımsız: {type(v).__name__}")
 
     @ekle('Ekle')
-    @yf('Ekle', 2, 2)
-    def _ekle(y, L, v):
-        _boyut_degisir(L, 'Ekle').append(v)
+    @yf('Ekle', 2, 3)
+    def _ekle(y, L, a, *b):
+        # Ekle(L, x) sona ekler; Ekle(L, konum, x) verilen konuma yerleştirir
+        D = _boyut_degisir(L, 'Ekle')
+        if b:
+            D.insert(_konum_tam(a), b[0])
+        else:
+            D.append(a)
 
     @ekle('Sil')
     @yf('Sil', 2, 2)
@@ -233,9 +248,9 @@ def kur(y):
             raise YontemHatasi(f"Sil: dizin sınır dışı: {i}")
 
     @ekle('Araya')
-    @yf('Araya', 3, 3)
-    def _araya(y, L, i, v):
-        _boyut_degisir(L, 'Araya').insert(i, v)
+    @yf('Araya', 0, 64)
+    def _araya(y, *a):
+        raise YontemHatasi("'Araya' kaldırıldı; şöyle yazın: Ekle(L, konum, x)")
 
     @ekle('Aralık')
     @yf('Aralık', 1, 3)
@@ -613,11 +628,11 @@ def _tablolar():
 
     # ---------------- liste
     tablo(L, 'Uzunluk')(_m('Uzunluk', oto=True)(lambda y, o: len(o)))
-    tablo(L, 'Ekle')(_m('Ekle', 1, 1)(lambda y, o, v: o.append(v)))
+    tablo(L, 'Ekle')(_m('Ekle', 1, 2)(lambda y, o, a, *b: o.insert(_konum_tam(a), b[0]) if b else o.append(a)))
     tablo(L, 'Çıkar')(_m('Çıkar', 0, 1, oto=True)(
         lambda y, o, i=-1: o.pop(i) if o else (_ for _ in ()).throw(YontemHatasi("Boş listeden çıkarılamaz"))))
     tablo(L, 'Sil')(_m('Sil', 1, 1)(lambda y, o, i: o.pop(i)))
-    tablo(L, 'Araya')(_m('Araya', 2, 2)(lambda y, o, i, v: o.insert(i, v)))
+    tablo(L, 'Araya')(_m('Araya', 0, 64)(lambda y, o, *a: _araya_kaldirildi()))
     tablo(L, 'Temizle')(_m('Temizle', oto=True)(lambda y, o: o.clear()))
     tablo(L, 'Bul')(_m('Bul', 1, 1)(lambda y, o, v: o.index(v) if v in o else -1))
     tablo(L, 'İçerir')(_m('İçerir', 1, 1)(lambda y, o, v: v in o))
