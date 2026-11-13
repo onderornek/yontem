@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. Tipler ve değerler · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html" aria-current="page">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html">4. İfadeler</a></li><li><a href="06-5-deyimler.html">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 4 / 15</p>
+    <h2 id="tipler-ve-değerler">3. Tipler ve değerler</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>tip:        tip_tabani tip_eki*
+tip_tabani: 'dizi' | [AD '.'] AD
+tip_eki:    'listesi' | 'dizisi' | 'sözlüğü'</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tip</th>
+<th>Değerler</th>
+<th>Not</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tamsayı</code></td>
+<td><code>42</code>, <code>-7</code>, <code>10 ** 30</code></td>
+<td>Masaüstünde büyüklük sınırı yoktur</td>
+</tr>
+<tr class="even">
+<td><code>ondalık</code> (<code>gerçek</code>)</td>
+<td><code>3.14</code></td>
+<td>Çift duyarlıklı kayan nokta</td>
+</tr>
+<tr class="odd">
+<td><code>metin</code></td>
+<td><code>'abc'</code></td>
+<td>Karakterler 1’den numaralanır</td>
+</tr>
+<tr class="even">
+<td><code>karakter</code></td>
+<td><code>'a'</code></td>
+<td>Tek karakterlik metin</td>
+</tr>
+<tr class="odd">
+<td><code>mantıksal</code></td>
+<td><code>doğru</code>, <code>yanlış</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>liste</code></td>
+<td><code>[1, 2, 3]</code></td>
+<td>Elemanlar 0’dan numaralanır</td>
+</tr>
+<tr class="odd">
+<td><code>sözlük</code></td>
+<td><code>['a': 1]</code>, <code>[:]</code></td>
+<td>Ekleme sırasını korur</td>
+</tr>
+<tr class="even">
+<td><code>tensör</code></td>
+<td><code>Tensör([[1, 2]])</code></td>
+<td><code>YZ</code> ve <code>Meşale</code> birimleri</td>
+</tr>
+<tr class="odd">
+<td><code>herhangi</code></td>
+<td>her değer</td>
+<td>Tip denetimi yapılmaz</td>
+</tr>
+<tr class="even">
+<td>sınıf ve kayıt adları</td>
+<td>nesneler</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>boş</code>, “değer yok” anlamına gelen tek değerdir.</p>
+<h3 id="bileşik-tip-adları">Bileşik tip adları</h3>
+<p>Eleman tipi başa, kap sona yazılır; ekler soldan sağa birikir:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tamsayı listesi</code></td>
+<td>tamsayılardan oluşan liste</td>
+</tr>
+<tr class="even">
+<td><code>metin sözlüğü</code></td>
+<td>değerleri metin olan sözlük</td>
+</tr>
+<tr class="odd">
+<td><code>ondalık listesi listesi</code></td>
+<td>ondalık listelerinin listesi</td>
+</tr>
+<tr class="even">
+<td><code>tamsayı dizisi</code></td>
+<td><code>tamsayı listesi</code> ile aynıdır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>dizisi</code> ile <code>listesi</code> eş anlamlıdır. Köşeli ayraçla sınır yazımı (<code>dizisi[1..12]</code>) dilden kaldırılmıştır; sabit boyut programda verilir (bkz. “Boyutu sabit liste”).</p>
+<h3 id="tip-denetimi">Tip denetimi</h3>
+<p>Tipi bildirilmiş bir değişkene, parametreye ya da alana uymayan bir değer atandığında program çalışırken hata verir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> n: <span class="ya">tamsayı</span>
+n := <span class="ym">'metin'</span></code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Çalışma hatası: 'n' için tip uyuşmazlığı: tamsayı bekleniyordu, metin verildi</code></pre></div>
+<p>Tek örtük dönüşüm <code>tamsayı → ondalık</code> yönündedir: <code>ondalık</code> tipli bir değişkene <code>3</code> atanırsa değer <code>3.0</code> olur. Katı kipte aynı denetimler program çalışmadan önce yapılır ve eleman tipleri de denetlenir.</p>
+<p>Tip adları aynı zamanda dönüştürücüdür: <code>tamsayı('42')</code>, <code>ondalık('3,5')</code>, <code>metin(12)</code>, <code>liste(x)</code>. <code>Tür(x)</code> değerin tip adını metin olarak verir.</p>
+<h3 id="değer-ve-referans">Değer ve referans</h3>
+<p>Sayılar, metinler ve mantıksal değerler değiştirilemez. Kayıtlar değer olarak davranır: atandıklarında ve parametre olarak verildiklerinde kopyalanır. Listeler, sözlükler, tensörler ve sınıf nesneleri referansla paylaşılır: <code>b := a</code> yazdıktan sonra <code>b</code> üzerinden yapılan değişiklik <code>a</code>’da da görünür. Bağımsız bir kopya için <code>Kopya(a)</code> ya da <code>liste(a)</code> kullanılabilir.</p>
+<h3 id="liste">Liste</h3>
+<p>Liste sıralı ve boyutu değişebilen bir elemanlar topluluğudur.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>İşlem</th>
+<th>Yazım</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Okuma, değiştirme</td>
+<td><code>L[0]</code>, <code>L[0] := 5</code></td>
+</tr>
+<tr class="even">
+<td>Sondan sayma</td>
+<td><code>L[-1]</code> son elemandır</td>
+</tr>
+<tr class="odd">
+<td>Eleman sayısı</td>
+<td><code>Uzunluk(L)</code>, <code>L.Uzunluk</code></td>
+</tr>
+<tr class="even">
+<td>Sona ekleme</td>
+<td><code>Ekle(L, x)</code>, <code>L.Ekle(x)</code></td>
+</tr>
+<tr class="odd">
+<td>Konuma ekleme</td>
+<td><code>Ekle(L, x, konum)</code>, <code>L.Ekle(x, konum)</code></td>
+</tr>
+<tr class="even">
+<td>Silme</td>
+<td><code>Sil(L, 2)</code>, <code>L.Sil(2)</code>, <code>L(2).Sil</code>, <code>L listesindeki 2. elemanı Sil</code></td>
+</tr>
+<tr class="odd">
+<td>Birleştirme</td>
+<td><code>L + M</code></td>
+</tr>
+<tr class="even">
+<td>Üyelik</td>
+<td><code>x içinde L</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Silmenin dört yazımı aynı anlama gelir ve 2 numaralı elemanı (<code>L[2]</code>) siler; <code>Sil</code> çıkardığı elemanı döndürür. Sınır dışındaki bir numaraya erişmek hata verir.</p>
+<h3 id="boyutu-sabit-liste">Boyutu sabit liste</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> aylar: <span class="ya">metin</span> listesi
+<span class="ya">başla</span>
+  aylar.Uzunluk(<span class="ys">12</span>, <span class="ys">1</span>)
+  aylar[<span class="ys">1</span>] := <span class="ym">'Ocak'</span></code></pre></div>
+<p><code>L.Uzunluk(n)</code> listeyi <code>n</code> elemanlı yapar ve boyutunu sabitler; numaralar 0’dan başlar. <code>L.Uzunluk(n, ilk)</code> numaralamayı <code>ilk</code>’ten başlatır. Yeni elemanlar eleman tipinin başlangıç değeriyle dolar (eleman tipi bilinmiyorsa <code>boş</code>); listede önceden eleman varsa baştan itibaren korunur.</p>
+<p>Boyutu sabit listede:</p>
+<ul>
+<li>geçerli numaralar <code>L.Alt</code> ile <code>L.Üst</code> arasındadır; dışına çıkmak hata verir, sondan sayma yoktur;</li>
+<li><code>Ekle</code> ve <code>Sil</code> hata verir;</li>
+<li>okuyan liste metodları (<code>İçerir</code>, <code>Sırala</code>, <code>Toplam</code> gibi) aynen çalışır;</li>
+<li>boyut yalnızca yeni bir <code>Uzunluk</code> çağrısıyla değişir; <code>liste(L)</code> serbest bir kopya verir.</li>
+</ul>
+<p><code>Uzunluk</code> çağrısı değişkene yeni bir liste atar; aynı listeyi gösteren başka değişkenler eski listeyi göstermeyi sürdürür.</p>
+<h3 id="sözlük">Sözlük</h3>
+<p>Sözlük anahtarları değerlere eşler. Sabit yazımı <code>['a': 1, 'b': 2]</code>, boş sözlük <code>[:]</code> biçimindedir. <code>S['a']</code> okur, <code>S['a'] := 3</code> yazar ya da ekler; olmayan bir anahtarı okumak hata verir. <code>x içinde S</code> anahtar üyeliğini sınar, <code>Sil(S, anahtar)</code> anahtarı kaldırır. Anahtarlar ekleme sırasını korur.</p>
+<h3 id="metin">Metin</h3>
+<p>Metin karakterleri 1’den numaralanır: <code>s[1]</code> ilk karakterdir. <code>Uzunluk(s)</code> karakter sayısını verir. <code>+</code> iki metni birleştirir; işlenenlerden biri metinse diğeri metne çevrilir: <code>'x = ' + 5</code>.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="03-2-program-yapisi.html"><small>Önceki</small>2. Program yapısı</a><a class="sonraki" href="05-4-ifadeler.html"><small>Sonraki</small>4. İfadeler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#bileşik-tip-adları">Bileşik tip adları</a></li><li><a href="#tip-denetimi">Tip denetimi</a></li><li><a href="#değer-ve-referans">Değer ve referans</a></li><li><a href="#liste">Liste</a></li><li><a href="#boyutu-sabit-liste">Boyutu sabit liste</a></li><li><a href="#sözlük">Sözlük</a></li><li><a href="#metin">Metin</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

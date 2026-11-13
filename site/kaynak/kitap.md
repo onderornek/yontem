@@ -797,7 +797,7 @@ Yeni elemanlar tipin başlangıç değeriyle dolar (sayılarda 0, metinlerde bo�
 
 Bir elemanı silmenin üç yazımı vardır ve üçü de aynı işi yapar:
 
-```yontem
+```pascal
 notlar.Sil(2)
 notlar(2).Sil
 notlar listesindeki 2. elemanı Sil

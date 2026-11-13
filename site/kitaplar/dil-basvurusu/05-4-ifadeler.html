@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. İfadeler · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html" aria-current="page">4. İfadeler</a></li><li><a href="06-5-deyimler.html">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 5 / 15</p>
+    <h2 id="ifadeler">4. İfadeler</h2>
+<p>İşleçler öncelik sırasına göre, en az bağlayandan en çok bağlayana doğru:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Düzey</th>
+<th>İşleçler</th>
+<th>Birleşme</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>boru işleci (bkz. “Boru”)</td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>veya</code>, <code>yada</code></td>
+<td>soldan</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>ve</code></td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>değil</code></td>
+<td>tekli</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>içinde</code></td>
+<td>zincirlenmez</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><code>+</code>, <code>-</code></td>
+<td>soldan</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><code>*</code>, <code>/</code>, <code>böl</code>, <code>mod</code>, <code>@</code></td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>tekli <code>-</code>, <code>+</code></td>
+<td>tekli</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><code>**</code></td>
+<td>sağdan</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>çağrı <code>f(x)</code>, dizin <code>L[i]</code>, üye <code>n.ad</code></td>
+<td>soldan</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ifade:   veya ('|&gt;' veya)*
+veya:    ve (('veya' | 'yada') ve)*
+ve:      degil ('ve' degil)*
+degil:   'değil' degil | iliski
+iliski:  toplama [('=' | '&lt;&gt;' | '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | 'içinde') toplama]
+toplama: carpma (('+' | '-') carpma)*
+carpma:  tekli (('*' | '/' | '@' | 'böl' | 'mod') tekli)*
+tekli:   ('-' | '+') tekli | '@' sonek | sonek ['**' tekli]
+sonek:   birincil ('(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' AD)*</code></pre></div>
+<h3 id="aritmetik">Aritmetik</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>İşleç</th>
+<th>Anlamı</th>
+<th>Örnek</th>
+<th>Sonuç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>+</code>, <code>-</code>, <code>*</code></td>
+<td>toplama, çıkarma, çarpma</td>
+<td><code>2 + 3 * 4</code></td>
+<td><code>14</code></td>
+</tr>
+<tr class="even">
+<td><code>/</code></td>
+<td>bölme; sonuç her zaman ondalıktır</td>
+<td><code>7 / 2</code></td>
+<td><code>3.5</code></td>
+</tr>
+<tr class="odd">
+<td><code>böl</code></td>
+<td>tamsayı bölmesi; sıfıra doğru keser</td>
+<td><code>-7 böl 2</code></td>
+<td><code>-3</code></td>
+</tr>
+<tr class="even">
+<td><code>mod</code></td>
+<td>kalan; işareti bölünenin işaretidir</td>
+<td><code>-7 mod 3</code></td>
+<td><code>-1</code></td>
+</tr>
+<tr class="odd">
+<td><code>**</code></td>
+<td>üs; sağdan birleşir</td>
+<td><code>2 ** 3 ** 2</code></td>
+<td><code>512</code></td>
+</tr>
+<tr class="even">
+<td><code>@</code></td>
+<td>matris çarpımı (tensörlerde)</td>
+<td><code>A @ B</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tekli eksi üsten sonra uygulanır: <code>-2 ** 2</code> değeri <code>-4</code>’tür. İki tamsayının <code>+</code>, <code>-</code>, <code>*</code>, <code>böl</code>, <code>mod</code> ve <code>**</code> sonucu tamsayıdır; işlenenlerden biri ondalıksa sonuç ondalıktır. Sıfıra bölmek “Sıfıra bölme” hatası verir.</p>
+<h3 id="karşılaştırma">Karşılaştırma</h3>
+<p><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code> mantıksal sonuç verir. Sayılar değerleriyle karşılaştırılır (<code>1 = 1.0</code> doğrudur), metinler sözlük sırasıyla. Listeler ve sözlükler yalnızca eşitlik bakımından (<code>=</code>, <code>&lt;&gt;</code>) karşılaştırılabilir; eşitlik eleman eleman sınanır. İlişki işleçleri zincirlenmez: <code>1 &lt; x &lt; 5</code> sözdizimi hatasıdır; <code>1 &lt; x ve x &lt; 5</code> yazılır.</p>
+<p><code>x içinde K</code>, <code>x</code> değeri <code>K</code> listesinin elemanı, <code>K</code> sözlüğünün anahtarı ya da <code>K</code> metninin bir parçası olduğunda doğrudur.</p>
+<h3 id="mantık">Mantık</h3>
+<p><code>ve</code>, <code>veya</code> kısa devrelidir: sonuç sol işlenenle belli oluyorsa sağ işlenen hesaplanmaz. <code>yada</code> iki işlenenden yalnızca biri doğru olduğunda doğrudur. <code>değil</code> değeri tersine çevirir.</p>
+<p>Mantık işleçleri karşılaştırmalardan sonra bağlar; bu yüzden <code>a &gt; 1 ve b &lt; 2</code> ayraç gerektirmez. İşlenenler tamsayıysa aynı işleçler bit işlemi yapar: <code>6 ve 3</code> değeri <code>2</code>, <code>6 veya 3</code> değeri <code>7</code>, <code>6 yada 3</code> değeri <code>5</code>’tir.</p>
+<h3 id="boru">Boru</h3>
+<p><code>x |&gt; f</code> ifadesi <code>f(x)</code> ile, <code>x |&gt; f(y)</code> ifadesi <code>f(x, y)</code> ile aynıdır: soldaki değer sağdaki çağrının ilk argümanı olur. Zincirleme soldan sağa okunur:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz([<span class="ys">3</span>, <span class="ys">1</span>, <span class="ys">2</span>] |&gt; Sırala |&gt; Ters, <span class="ys">1</span>)</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[3, 2, 1]</code></pre></div>
+<h3 id="birincil-ifadeler">Birincil ifadeler</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+        | 'eğer' ifade 'ise' ifade 'değilse' ifade
+        | 'miras' [AD]
+        | adsiz_altprogram
+        | '(' ifade ')'
+        | koleksiyon</code></pre></div>
+<p><strong>Koşullu ifade.</strong> <code>eğer k ise a değilse b</code>, <code>k</code> doğruysa <code>a</code>’nın, değilse <code>b</code>’nin değerini verir; yalnızca seçilen dal hesaplanır.</p>
+<p><strong>Koleksiyon sabitleri.</strong></p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Değer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>[]</code></td>
+<td>boş liste</td>
+</tr>
+<tr class="even">
+<td><code>[1, 2, 3]</code></td>
+<td>liste</td>
+</tr>
+<tr class="odd">
+<td><code>[1..5]</code></td>
+<td><code>[1, 2, 3, 4, 5]</code></td>
+</tr>
+<tr class="even">
+<td><code>[:]</code></td>
+<td>boş sözlük</td>
+</tr>
+<tr class="odd">
+<td><code>['a': 1, 'b': 2]</code></td>
+<td>sözlük</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Son elemandan sonra virgül bırakılabilir.</p>
+<p><strong>Çağrı.</strong> <code>f(a, b)</code> alt programı çağırır. Parametresi olmayan bir alt program ayraçsız da çağrılabilir: <code>Selamla</code> ile <code>Selamla()</code> aynıdır. Deyim olarak tek başına yazılan bir alt program adı ise parametreleri olsa da çağrıdır; eksik argümanlar varsayılan değerlerini alır. Bir alt programı çağırmadan değer olarak almak için başına <code>@</code> yazılır: <code>@Selamla</code>.</p>
+<p><strong>Dizin.</strong> <code>L[i]</code> liste, sözlük, metin ve tensörlere uygulanır. Çok boyutlu erişim <code>M[i, j]</code> ya da <code>M[i][j]</code> biçiminde yazılır.</p>
+<p><strong>Üye erişimi.</strong> <code>n.ad</code> bir nesnenin alanına, metoduna ya da bir birimin dışa aktardığı ada erişir.</p>
+<p><strong>Biçimli argüman.</strong> Bir çağrının argümanı <code>değer:genişlik</code> ya da <code>değer:genişlik:basamak</code> biçiminde yazılabilir; değer metne çevrilip sağa yaslanır. <code>yaz(3.14159:8:2, 1)</code> çıktısı <code>3.14</code> olur.</p>
+<h3 id="adsız-alt-programlar">Adsız alt programlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adsiz_altprogram:
+    ('fonksiyon' | 'prosedür') [parametreler] [':' tip] '=&gt;' ifade
+  | ('fonksiyon' | 'prosedür') [parametreler] [':' tip] bildirim* blok</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>kare := <span class="ya">fonksiyon</span>(x) =&gt; x * x
+artır := <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> x + <span class="ys">1</span>
+<span class="ya">bitir</span></code></pre></div>
+<p>Adsız alt programlar tanımlandıkları kapsamdaki değişkenleri yakalar ve onlar üzerinde çalışmayı, tanımlandıkları alt program döndükten sonra da sürdürür.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="04-3-tipler-ve-degerler.html"><small>Önceki</small>3. Tipler ve değerler</a><a class="sonraki" href="06-5-deyimler.html"><small>Sonraki</small>5. Deyimler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#aritmetik">Aritmetik</a></li><li><a href="#karşılaştırma">Karşılaştırma</a></li><li><a href="#mantık">Mantık</a></li><li><a href="#boru">Boru</a></li><li><a href="#birincil-ifadeler">Birincil ifadeler</a></li><li><a href="#adsız-alt-programlar">Adsız alt programlar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -27,11 +27,15 @@ uyumsuz değişiklik içerebilir.
 
 ### Eklenenler
 
+- **Dilbilgisi dosyası ve dil başvurusu:** `yontem.gram` dilin sözdizimini PEG gösterimiyle tanımlar;
+  *Yöntem Dil Başvurusu* (`basim/basvuru.md`, sitede Belgeler → Dil Başvurusu) sözcük yapısını, tipleri,
+  ifadeleri, deyimleri, sınıfları ve birimleri kural kural anlatır.
 - **Silmenin iki yeni yazımı:** `L(2).Sil` ve `L listesindeki 2. elemanı Sil` (dizilerde `D dizisindeki …`);
   ikisi de `L.Sil(2)` ile aynı anlama gelir.
 
 ### Değişenler
 
+- Olmayan sözlük anahtarı hatasında Python yorumlayıcısı da anahtarı tırnak içinde gösterir (JavaScript ile aynı).
 - Liste ve dizilerde "öğe" yerine "eleman" terimi kullanılıyor (belgeler ve hata iletileri).
 - Kitap, kılavuzlar, site (Belgeler → Döngüler, Liste ve dizi), VS Code eklentisi ve oyun alanı yeni yazıma göre güncellendi.
 

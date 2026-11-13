@@ -1096,7 +1096,7 @@ class Yorumlayici:
             try:
                 return c[i]
             except KeyError:
-                raise YontemHatasi(f"Sözlükte anahtar yok: {self.temsil(i)}")
+                raise YontemHatasi(f"Sözlükte anahtar yok: {self.temsil(i, 1)}")
             except TypeError:
                 raise YontemHatasi("Bu değer sözlük anahtarı olamaz")
         if t is str:

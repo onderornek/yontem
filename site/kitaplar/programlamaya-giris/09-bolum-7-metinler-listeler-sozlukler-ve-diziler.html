@@ -237,9 +237,9 @@ Sınırlar: 1..7
 </div>
 <p><code>Ekle</code> iki biçimde kullanılır: <code>Ekle(notlar, 95)</code> elemanı sona ekler; <code>Ekle(notlar, 95, 1)</code> ise elemanı 1 numaralı konuma yerleştirir ve sonraki elemanları birer sıra kaydırır: önce eklenecek değer, sonra konum yazılır. Aynı işlemleri nokta ile de yazabilirsiniz: <code>notlar.Ekle(95)</code>, <code>notlar.Ekle(95, 1)</code>.</p>
 <p>Bir elemanı silmenin üç yazımı vardır ve üçü de aynı işi yapar:</p>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>notlar.Sil(2)
-notlar(2).Sil
-notlar listesindeki 2. elemanı Sil</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>notlar.Sil(<span class="ys">2</span>)
+notlar(<span class="ys">2</span>).Sil
+notlar listesindeki <span class="ys">2.</span> elemanı Sil</code></pre></div>
 <p>Üçü de 2 numaralı elemanı, yani <code>notlar[2]</code>’yi siler. Listede elemanlar 0’dan numaralandığı için bu, baştan üçüncü sıradaki elemandır. Konumu hesaplayarak vermek isterseniz cümle biçiminde ayraç kullanabilirsiniz: <code>notlar listesindeki (i + 1). elemanı Sil</code>. <code>Sil</code> çıkardığı elemanı döndürür; <code>x := notlar.Sil(0)</code> yazarak onu bir değişkene alabilirsiniz.</p>
 <p>Boyutu sabitlenmiş bir listeye <code>Ekle</code> ya da <code>Sil</code> uygulamak hata verir. Boyutu değiştirmek isterseniz <code>Uzunluk</code> çağrısını yeni değerlerle yineleyebilir, serbest bir kopya gerekiyorsa <code>liste(sıcaklık)</code> yazabilirsiniz. Tip adlarında <code>tamsayı dizisi</code> ile <code>tamsayı listesi</code> aynı anlama gelir.</p>
 

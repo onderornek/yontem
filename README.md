@@ -104,6 +104,7 @@ Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları i
 
 | Yol | İçerik |
 |---|---|
+| `yontem.gram` | Dilbilgisi (PEG gösterimiyle); *Yöntem Dil Başvurusu* bu dosyaya dayanır (`basim/basvuru.md`, PDF: `basim/Yontem_Dil_Basvurusu.pdf`) |
 | `yontem.py` | Komut satırı aracı ve REPL |
 | `yontem_dil/sozcuk.py` | Sözcük çözümleyici (lexer) |
 | `yontem_dil/cozumleyici.py` | Sözdizimi çözümleyici (parser) → soyut sözdizimi ağacı |

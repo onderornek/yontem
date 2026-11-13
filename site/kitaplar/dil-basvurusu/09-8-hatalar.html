@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. Hatalar · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html">4. İfadeler</a></li><li><a href="06-5-deyimler.html">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html" aria-current="page">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 9 / 15</p>
+    <h2 id="hatalar">8. Hatalar</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>dene_deyimi: 'dene' deyimler
+             ['yakala' ['(' AD ')'] deyimler]
+             ['sonunda' deyimler]
+             'bitir'</code></pre></div>
+<p><code>dene</code> bölümündeki deyimler çalışırken bir hata oluşursa denetim <code>yakala</code> bölümüne geçer; ayraç içindeki ad hata nesnesine bağlanır. <code>sonunda</code> bölümü, hata olsa da olmasa da, <code>dene</code> deyiminden çıkılırken çalışır. Yakalanmayan hata dıştaki <code>dene</code> deyimine, o da yoksa programın sonuna kadar yayılır; program “Çalışma hatası” iletisi ve 1 çıkış koduyla biter.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">dene</span>
+  <span class="ya">fırlat</span> Hata(<span class="ym">'Geçersiz giriş'</span>, <span class="ym">'DoğrulamaHatası'</span>)
+<span class="ya">yakala</span> (h)
+  yaz(h.mesaj + <span class="ym">' / '</span> + h.tür, <span class="ys">1</span>)
+<span class="ya">sonunda</span>
+  yaz(<span class="ym">'bitti'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span></code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Geçersiz giriş / DoğrulamaHatası
+bitti</code></pre></div>
+<p><code>fırlat ifade</code> bir hata başlatır. <code>Hata(mesaj)</code> ya da <code>Hata(mesaj, tür)</code> bir hata nesnesi oluşturur; nesnenin <code>mesaj</code> ve <code>tür</code> alanları vardır. Kendi sınıflarınızın nesneleri de fırlatılabilir. Çalışma zamanı hataları (sıfıra bölme, sınır aşımı, tip uyuşmazlığı, tanımsız ad) aynı yolla yakalanır; türleri <code>Hata</code>’dır. <code>İddia(koşul, mesaj)</code> koşul yanlışsa hata fırlatır.</p>
+<p>Sözdizimi hataları program çalışmadan önce bildirilir ve yakalanamaz.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-7-siniflar-ve-kayitlar.html"><small>Önceki</small>7. Sınıflar ve kayıtlar</a><a class="sonraki" href="10-9-birimler.html"><small>Sonraki</small>9. Birimler</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

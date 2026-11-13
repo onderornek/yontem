@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Sözcük yapısı · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html" aria-current="page">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html">4. İfadeler</a></li><li><a href="06-5-deyimler.html">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 2 / 15</p>
+    <h2 id="sözcük-yapısı">1. Sözcük yapısı</h2>
+<p>Bir Yöntem programı UTF-8 kodlu bir metin dosyasıdır; uzantısı <code>.y</code>’dir. Derleyici dosyayı önce sözcüklere ayırır.</p>
+<h3 id="harf-duyarsızlığı">Harf duyarsızlığı</h3>
+<p>Adlar ve anahtar sözcükler karşılaştırılırken büyük/küçük harf ayrımı yapılmaz ve Türkçe harfler ASCII karşılıklarına katlanır: <code>ç→c</code>, <code>ğ→g</code>, <code>ı→i</code>, <code>ö→o</code>, <code>ş→s</code>, <code>ü→u</code>. Bu yüzden <code>Başla</code>, <code>BAŞLA</code> ve <code>basla</code> aynı sözcüktür; Türkçe klavyesi olmayan biri de program yazabilir.</p>
+<p>Bunun bir sonucu vardır: <code>sayı</code> ile <code>sayi</code>, <code>ış</code> ile <code>is</code>, <code>x</code> ile <code>X</code> aynı addır. Aynı kapsamda böyle iki ad bildirilirse derleyici hata verir. Hata iletilerinde ve çıktıda adlar sizin yazdığınız biçimiyle görünür.</p>
+<h3 id="yorumlar">Yorumlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>{ süslü ayraç içinde }
+(* yıldızlı ayraç içinde *)
+// satır sonuna kadar</code></pre></div>
+<p>Yorumlar birden çok satıra yayılabilir, iç içe yazılamaz. Dosyada <code>{$katı}</code> yorumu bulunuyorsa derleyici o dosyayı katı kipte denetler (bkz. “Katı kip”).</p>
+<h3 id="adlar">Adlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>AD: (harf | '_') (harf | rakam | '_')*</code></pre></div>
+<p>Harf, Unicode’daki herhangi bir harftir. Anahtar sözcükler ad olarak kullanılamaz.</p>
+<h3 id="anahtar-sözcükler">Anahtar sözcükler</h3>
+<p>Aşağıdaki sözcükler ayrılmıştır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span>    <span class="ya">birim</span>     <span class="ya">kullan</span>    <span class="ya">arayüz</span>    <span class="ya">uygulama</span>   <span class="ya">değişken</span>
+<span class="ya">sabit</span>      <span class="ya">tip</span>       <span class="ya">prosedür</span>  <span class="ya">fonksiyon</span> <span class="ya">kurucu</span>     <span class="ya">başla</span>
+<span class="ya">bitir</span>      <span class="ya">eğer</span>      <span class="ya">ise</span>       <span class="ya">değilse</span>   <span class="ya">iken</span>       <span class="ya">için</span>
+<span class="ya">kadar</span>      <span class="ya">her</span>       içinde    <span class="ya">içindeki</span>  <span class="ya">tekrarla</span>   <span class="ya">dene</span>
+<span class="ya">yakala</span>     <span class="ya">sonunda</span>   <span class="ya">fırlat</span>    <span class="ya">dön</span>       çık        <span class="ya">kır</span>
+<span class="ya">devam</span>      <span class="ya">sınıf</span>     <span class="ya">kayıt</span>     <span class="ya">miras</span>     <span class="ya">kendi</span>      <span class="ya">doğru</span>
+<span class="ya">yanlış</span>     <span class="ya">boş</span>       <span class="ya">ve</span>        <span class="ya">veya</span>      <span class="ya">yada</span>       <span class="ya">değil</span>
+<span class="ya">mod</span>        <span class="ya">böl</span>       <span class="ya">dizi</span>      azalarak  <span class="ya">türünde</span></code></pre></div>
+<p><code>azalarak</code> ve <code>türünde</code> eski sürümlerin yazımından kalmıştır; yalnızca yeni yazımı gösteren hata iletisi verebilmek için ayrılmıştır.</p>
+<p>Bazı sözcükler yalnızca belirli bir yerde özel anlam taşır, başka yerlerde sıradan ad olarak kullanılabilir:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sözcük</th>
+<th>Özel anlam taşıdığı yer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>adımda</code>, <code>artan</code>, <code>azalan</code></td>
+<td>sayan döngü başlığı</td>
+</tr>
+<tr class="even">
+<td><code>kez</code></td>
+<td><code>n kez tekrarla</code></td>
+</tr>
+<tr class="odd">
+<td><code>olana dek</code></td>
+<td><code>tekrarla</code> döngüsünün sonu</td>
+</tr>
+<tr class="even">
+<td><code>değerine göre</code></td>
+<td>çok seçenekli karar</td>
+</tr>
+<tr class="odd">
+<td><code>listesindeki</code>, <code>dizisindeki</code>, <code>elemanı</code></td>
+<td>eleman silme cümlesi</td>
+</tr>
+<tr class="even">
+<td><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code></td>
+<td>tip ekleri</td>
+</tr>
+<tr class="odd">
+<td><code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code></td>
+<td>alt program direktifleri</td>
+</tr>
+<tr class="even">
+<td><code>özel</code>, <code>genel</code>, <code>korumalı</code>, <code>yayınlanmış</code></td>
+<td>sınıf içinde görünürlük bölümleri</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="sayılar">Sayılar</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Biçim</th>
+<th>Örnek</th>
+<th>Tip</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Onluk tamsayı</td>
+<td><code>42</code>, <code>1_000_000</code></td>
+<td><code>tamsayı</code></td>
+</tr>
+<tr class="even">
+<td>Onaltılık tamsayı</td>
+<td><code>$FF</code></td>
+<td><code>tamsayı</code></td>
+</tr>
+<tr class="odd">
+<td>Ondalık</td>
+<td><code>3.14</code>, <code>1e-3</code>, <code>2.5E+4</code></td>
+<td><code>ondalık</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alt çizgi yalnızca okunaklılık içindir. Noktadan sonra en az bir rakam gelmelidir; <code>2.</code> bir ondalık sayı değildir.</p>
+<h3 id="metinler">Metinler</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Biçim</th>
+<th>Kaçış kuralı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>'tek tırnak'</code></td>
+<td>İçindeki tırnak iki kez yazılır: <code>'Ali''nin'</code></td>
+</tr>
+<tr class="even">
+<td><code>"çift tırnak"</code></td>
+<td><code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\\</code>, <code>\"</code>, <code>\'</code>, <code>\0</code></td>
+</tr>
+<tr class="odd">
+<td><code>#10</code></td>
+<td>Onluk karakter kodu</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bir metin satır sonunu aşamaz.</p>
+<h3 id="ekler">Ekler</h3>
+<p>Türkçede olduğu gibi sayılara, adlara ve ayraçlı ifadelere kesme işaretiyle ek getirilebilir. Dil iki eki tanır ve yalnızca sayan döngüde kullanır:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Ek</th>
+<th>Yazımları</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ayrılma</td>
+<td><code>'den</code>, <code>'dan</code>, <code>'ten</code>, <code>'tan</code>, <code>'nden</code>, <code>'ndan</code></td>
+</tr>
+<tr class="even">
+<td>Yönelme</td>
+<td><code>'e</code>, <code>'a</code>, <code>'ye</code>, <code>'ya</code>, <code>'ne</code>, <code>'na</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kesme işareti bir sayıya, ada, <code>)</code> ya da <code>]</code> işaretine bitişikse ve ardından bu eklerden biri geliyorsa ek sayılır; diğer her durumda metin başlatır. Ses uyumu denetlenmez: <code>1'dan</code> da kabul edilir.</p>
+<h3 id="işleçler-ve-ayırıcılar">İşleçler ve ayırıcılar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>:=  +=  -=  *=  /=  **  &lt;&gt;  &lt;=  &gt;=  ..  |&gt;  =&gt;
++   -   *   /   @   =   &lt;   &gt;
+(   )   [   ]   ,   ;   :   .</code></pre></div>
+<h3 id="satır-sonları">Satır sonları</h3>
+<p>Deyimler ve bildirimler satır sonuyla ayrılır; <code>;</code> isteğe bağlıdır ve aynı satıra birden çok deyim yazmak için kullanılır: <code>a := 1; b := 2</code>. Satır sonu şu yerlerde de anlam taşır:</p>
+<ul>
+<li>Bir çağrının <code>(</code> ve bir dizinin <code>[</code> işareti, uygulandığı ifadeyle aynı satırda başlamalıdır.</li>
+<li><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code> ekleri tiple aynı satırda olmalıdır.</li>
+<li><code>dön</code> deyiminin değeri <code>dön</code> ile aynı satırda başlamalıdır.</li>
+</ul>
+<p>Bir ifade, ikili bir işleçten sonra alt satırda sürebilir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="01-bu-basvuru-ne-anlatir.html"><small>Önceki</small>Bu başvuru ne anlatır?</a><a class="sonraki" href="03-2-program-yapisi.html"><small>Sonraki</small>2. Program yapısı</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#harf-duyarsızlığı">Harf duyarsızlığı</a></li><li><a href="#yorumlar">Yorumlar</a></li><li><a href="#adlar">Adlar</a></li><li><a href="#anahtar-sözcükler">Anahtar sözcükler</a></li><li><a href="#sayılar">Sayılar</a></li><li><a href="#metinler">Metinler</a></li><li><a href="#ekler">Ekler</a></li><li><a href="#işleçler-ve-ayırıcılar">İşleçler ve ayırıcılar</a></li><li><a href="#satır-sonları">Satır sonları</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

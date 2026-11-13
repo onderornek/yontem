@@ -1,0 +1,362 @@
+# yontem.gram — Yöntem 0.6.0 dilbilgisi
+#
+# Bu dosya Yöntem'in sözdizimini PEG (ayrıştırma ifadesi dilbilgisi) gösterimiyle tanımlar.
+# Başvuru uygulamaları elle yazılmış özyinelemeli iniş çözümleyicileridir:
+#   js/src/sozcuk.ts, js/src/cozumleyici.ts         (JavaScript derleyicisi)
+#   yontem_dil/sozcuk.py, yontem_dil/cozumleyici.py (Python yorumlayıcısı)
+# Bu dosya o çözümleyicilerin kabul ettiği dili belgeler; çözümleyiciler bu dosyadan üretilmez.
+# İkisi arasında bir fark görürseniz doğru olan çözümleyicidir.
+#
+# Gösterim
+#   kural: seçenek_1 | seçenek_2     sıralı seçim: ilk uyan seçenek geçerlidir
+#   a b                              art arda
+#   [a]                              isteğe bağlı
+#   a*   a+                          sıfır ya da daha çok / bir ya da daha çok
+#   s.a+                             s ile ayrılmış bir ya da daha çok a   (örnek: ','.AD+)
+#   &a   !a                          ileri bakış: a gelir / gelmez (sözcük tüketilmez)
+#   'başla'                          anahtar sözcük, bağlamsal sözcük ya da işleç
+#   AD SAYI METIN ...                sözcük türleri (aşağıdaki "Sözcükler" bölümü)
+#
+# Sözcük karşılaştırması büyük/küçük harfe ve Türkçe harflere duyarsızdır: 'başla', 'BAŞLA' ve
+# 'basla' aynı sözcüktür (ç→c, ğ→g, ı→i, ö→o, ş→s, ü→u; İ→i, I→ı→i). Bu dosyada sözcükler
+# Türkçe yazımlarıyla verilmiştir.
+
+
+# ====================================================================================
+# 1. Sözcükler
+# ====================================================================================
+#
+# AD        Harf ya da '_' ile başlayan, harf, rakam ve '_' ile süren sözcük (Unicode harfleri);
+#           anahtar sözcük olmamalıdır.
+# AS        Anahtar sözcük (ayrılmış; ad olarak kullanılamaz):
+#             program birim kullan arayüz uygulama değişken sabit tip prosedür fonksiyon kurucu
+#             başla bitir eğer ise değilse iken için kadar azalarak her içinde içindeki tekrarla
+#             dene yakala sonunda fırlat dön çık kır devam sınıf kayıt miras kendi doğru yanlış
+#             boş ve veya yada değil mod böl dizi türünde
+#           ('azalarak' ve 'türünde' yalnızca eski yazımı yakalayıp yol gösteren hata vermek
+#           için ayrılmıştır.)
+# SAYI      tamsayı:    rakam (rakam | '_')*                     42   1_000_000
+#           onaltılık:  '$' onaltılık_rakam+                     $FF
+#           ondalık:    tamsayı '.' rakam+ [üs]  |  tamsayı üs   3.14   1e-3   2.5E+4
+#           üs:         ('e' | 'E') ['+' | '-'] rakam+
+# METIN     Yan yana yazılmış bir ya da daha çok parça tek bir metin olur:
+#             'tek tırnak'      içinde tırnak iki kez yazılır: 'Ali''nin'
+#             "çift tırnak"     kaçışlar: \n \t \r \\ \" \' \0
+#             #kod              karakter kodu: #10
+#           Örnek: 'a'#10'b'. Metin satır sonunu aşamaz.
+# AYRILMA   Kesme işaretiyle yazılan ayrılma eki:  'den 'dan 'ten 'tan 'nden 'ndan
+# YONELME   Kesme işaretiyle yazılan yönelme eki:  'e 'a 'ye 'ya 'ne 'na
+#           Kesme işareti (' ya da ’) bir SAYI, AD, ')' ya da ']' sözcüğüne bitişikse ve ardından
+#           bu eklerden biri geliyorsa ek sayılır; diğer her durumda metin başlatır.
+# İşleçler  := += -= *= /= ** <> <= >= .. |> =>  + - * / @ = < > ( ) [ ] , ; : . ^
+# Yorumlar  { ... }     (* ... *)     // satır sonuna kadar          (iç içe yazılamaz)
+#           Dosyanın başındaki {$katı} yorumu derleyici yönergesidir (katı kip).
+# SON       Dosya sonu.
+#
+# Satır sonları anlamlıdır:
+#   - Deyimler ve bildirimler satır sonuyla ya da ';' ile ayrılır (aşağıda: ayirici).
+#   - Çağrının '(' ve dizinin '[' işareti, uygulandığı ifadeyle aynı satırda başlamalıdır.
+#   - Tip ekleri ('listesi', 'dizisi', 'sözlüğü') tiple aynı satırda olmalıdır.
+#   - 'dön' deyiminin değeri 'dön' ile aynı satırda başlamalıdır.
+
+ayirici: ';' | &SATIR_SONU | &SON
+
+
+# ====================================================================================
+# 2. Dosya: program ve birim
+# ====================================================================================
+
+dosya:
+    | birim
+    | program
+
+program:
+    | ['program' AD ayirici] kullan* bildirim* blok ('.' | &SON) SON
+
+birim:
+    | 'birim' AD ayirici kullan*
+      ['arayüz' kullan* arayuz_bildirimi* 'uygulama' kullan*]
+      bildirim*
+      ['başla' deyimler]
+      'bitir' ['.']
+
+kullan:
+    | 'kullan' ','.AD+ ayirici
+
+
+# ====================================================================================
+# 3. Bildirimler
+# ====================================================================================
+
+bildirim:
+    | sabit_bolumu
+    | degisken_bolumu
+    | tip_bolumu
+    | altprogram
+
+# 'arayüz' bölümünde alt programlar yalnızca başlık olarak yazılır (gövdesiz).
+arayuz_bildirimi:
+    | sabit_bolumu
+    | degisken_bolumu
+    | tip_bolumu
+    | altprogram_basligi
+
+sabit_bolumu:
+    | 'sabit' (AD [':' tip] ('=' | ':=') ifade ayirici)*
+
+degisken_bolumu:
+    | 'değişken' (degisken_grubu ayirici)*
+
+# Tip ya da ilk değerden en az biri yazılmalıdır.
+degisken_grubu:
+    | ','.AD+ ':' tip [('=' | ':=') ifade]
+    | ','.AD+ ('=' | ':=') ifade
+
+tip_bolumu:
+    | 'tip' (AD '=' tip_tanimi ayirici)*
+
+tip_tanimi:
+    | sinif
+    | kayit
+    | tip
+
+
+# ------------------------------------------------------------------------------------
+# 3.1 Tipler
+# ------------------------------------------------------------------------------------
+# Eleman tipi başa, kap sona yazılır ve ekler soldan sağa birikir:
+#   tamsayı listesi          metin sözlüğü          ondalık dizisi dizisi
+# 'dizisi' ile 'listesi' eş anlamlıdır. Köşeli ayraçla sınır yazımı (dizisi[1..12]) kaldırılmıştır;
+# sabit boyut programda L.Uzunluk(n, ilk) ile verilir.
+
+tip:
+    | tip_tabani tip_eki*
+
+tip_tabani:
+    | 'dizi'
+    | [AD '.'] AD            # tamsayı, metin, Nokta, Birim.Tip ...
+
+tip_eki:
+    | 'dizisi'
+    | 'listesi'
+    | 'sözlüğü'
+
+# Yerleşik tip adları (AD olarak): tamsayı, ondalık (gerçek), metin, karakter, mantıksal,
+# liste, sözlük, tensör, herhangi.
+
+
+# ------------------------------------------------------------------------------------
+# 3.2 Sınıflar ve kayıtlar
+# ------------------------------------------------------------------------------------
+
+sinif:
+    | 'sınıf' ['(' AD ')'] sinif_uyesi* 'bitir'
+
+kayit:
+    | 'kayıt' kayit_uyesi* 'bitir'
+
+sinif_uyesi:
+    | gorunurluk
+    | 'değişken'
+    | metod
+    | degisken_grubu ayirici
+
+kayit_uyesi:
+    | gorunurluk
+    | 'değişken'
+    | degisken_grubu ayirici
+
+# Görünürlük sözcükleri ayrıştırılır ama denetlenmez. Ardından ':' ya da ',' geliyorsa alan adıdır.
+gorunurluk:
+    | ('özel' | 'genel' | 'korumalı' | 'yayınlanmış') !(':' | ',')
+
+# Sınıf içindeki metod: başlığın ardından 'başla', 'değişken' ya da 'sabit' geliyorsa gövdesi
+# oradadır; gelmiyorsa gövde sınıfın dışında Sınıf.Metod adıyla yazılır.
+metod:
+    | altprogram_basligi &('başla' | 'değişken' | 'sabit') yerel_bildirim* blok ayirici
+    | altprogram_basligi
+
+
+# ------------------------------------------------------------------------------------
+# 3.3 Alt programlar
+# ------------------------------------------------------------------------------------
+
+altprogram:
+    | altprogram_basligi yerel_bildirim* blok ayirici
+    | altprogram_basligi                         # 'ileri' ya da 'soyut' direktifliyse gövdesiz
+
+altprogram_basligi:
+    | ('prosedür' | 'fonksiyon' | 'kurucu') [AD '.'] AD [parametreler] [':' tip]
+      (ayirici | &direktif) (direktif ayirici)*
+
+direktif:
+    | ('sanal' | 'ezer' | 'soyut' | 'ileri' | 'aşırı' | 'statik') !(':' | ',')
+
+yerel_bildirim:
+    | bildirim
+
+parametreler:
+    | '(' [parametre_grubu ((';' | ',') parametre_grubu)*] ')'
+
+# 'değişken': referansla aktarım. 'sabit': belgeleme amaçlıdır. '= ifade': varsayılan değer.
+parametre_grubu:
+    | ['değişken' | 'sabit'] ','.AD+ [':' tip] [('=' | ':=') ifade]
+
+
+# ====================================================================================
+# 4. Deyimler
+# ====================================================================================
+
+blok:
+    | 'başla' deyimler 'bitir'
+
+deyimler:
+    | (';'* deyim ayirici)* ';'*
+
+# Döngü ve koşulların gövdesi tek bir deyimdir; birden çok deyim için 'başla … bitir' kullanılır.
+# Gövde boş bırakılabilir (ardından ';', 'değilse', 'bitir', 'yakala' ya da 'sonunda' geliyorsa).
+govde:
+    | deyim
+    | &(';' | 'değilse' | 'bitir' | 'yakala' | 'sonunda')
+
+deyim:
+    | blok
+    | eger_deyimi
+    | tekrarla_deyimi
+    | dene_deyimi
+    | 'fırlat' ifade
+    | 'dön' [ifade]
+    | 'çık'
+    | 'kır'
+    | 'devam'
+    | 'değişken' degisken_grubu
+    | sayan_dongu
+    | her_dongusu
+    | eleman_silme
+    | iken_dongusu
+    | kez_dongusu
+    | degerine_gore
+    | atama
+    | cagri_deyimi
+
+eger_deyimi:
+    | 'eğer' ifade 'ise' govde [[';'] 'değilse' govde]
+
+# Sayan döngü. 'kadar' birer birer sayar; iki sınır da tamsayı sabitiyse ve ilki büyükse azalır.
+# 'adımda' ifadesi pozitif bir tamsayı olmalıdır; yönü 'artan' ya da 'azalan' belirler.
+sayan_dongu:
+    | ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
+    | ifade AYRILMA ifade YONELME 'adımda' ifade ('artan' | 'azalan') 'her' AD 'için' govde
+
+her_dongusu:
+    | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+
+iken_dongusu:
+    | ifade 'iken' govde
+
+kez_dongusu:
+    | ifade 'kez' 'tekrarla' govde
+
+tekrarla_deyimi:
+    | 'tekrarla' deyimler ifade 'olana' 'dek'
+
+degerine_gore:
+    | ifade 'değerine' 'göre' kol* ['değilse' [':'] deyimler] 'bitir'
+
+kol:
+    | ','.etiket+ ':' govde ayirici
+
+etiket:
+    | ifade ['..' ifade]
+
+dene_deyimi:
+    | 'dene' deyimler ['yakala' ['(' AD ')'] deyimler] ['sonunda' deyimler] 'bitir'
+
+# L listesindeki 2. elemanı Sil   ≡   Sil(L, 2)   ≡   L.Sil(2)   ≡   L(2).Sil
+# Konum bir sonek ifadesidir; hesaplanan konum ayraç içine yazılır: (i + 1). elemanı
+eleman_silme:
+    | ifade ('listesindeki' | 'dizisindeki') sonek '.' ('elemanı' | 'elemanını') 'Sil'
+
+atama:
+    | hedef (':=' | '+=' | '-=' | '*=' | '/=') ifade
+
+# Atamanın sol tarafı bir ad, alan ya da dizin erişimiyle biten bir sonek ifadesidir.
+hedef:
+    | sonek
+
+# Tek başına deyim olabilen ifadeler: çağrı, ad, alan erişimi (parametresiz çağrı sayılır),
+# 'miras' ve boru ifadesi.
+cagri_deyimi:
+    | ifade
+
+
+# ====================================================================================
+# 5. İfadeler (öncelik düşükten yükseğe)
+# ====================================================================================
+
+ifade:
+    | veya_ifadesi ('|>' veya_ifadesi)*          # x |> f(y)  ≡  f(x, y)
+
+veya_ifadesi:
+    | ve_ifadesi (('veya' | 'yada') ve_ifadesi)*
+
+ve_ifadesi:
+    | degil_ifadesi ('ve' degil_ifadesi)*
+
+degil_ifadesi:
+    | 'değil' degil_ifadesi
+    | iliski
+
+# İlişki işleçleri zincirlenmez: 1 < x < 5 sözdizimi hatasıdır.
+iliski:
+    | toplama [('=' | '<>' | '<' | '>' | '<=' | '>=' | 'içinde') toplama]
+
+toplama:
+    | carpma (('+' | '-') carpma)*
+
+carpma:
+    | tekli (('*' | '/' | '@' | 'böl' | 'mod') tekli)*
+
+# '**' sağdan birleşir ve tekli eksiden önce uygulanır: -2 ** 2 = -4,  2 ** 3 ** 2 = 512.
+# Tekli '@' bir alt programı çağırmadan değer olarak verir: @Topla
+tekli:
+    | ('-' | '+') tekli
+    | '@' sonek
+    | sonek ['**' tekli]
+
+sonek:
+    | birincil sonek_eki*
+
+sonek_eki:
+    | '(' [','.arguman+] ')'                     # çağrı
+    | '[' ','.ifade+ ']'                         # dizin: L[i], M[i, j]
+    | '.' (AD | AS)                              # alan ya da metod
+
+# Turbo Pascal biçimli alan genişliği: yaz(x:8:2, 1)
+arguman:
+    | ifade [':' ifade [':' ifade]]
+
+birincil:
+    | SAYI
+    | METIN
+    | AD
+    | 'doğru'
+    | 'yanlış'
+    | 'boş'
+    | 'kendi'
+    | 'eğer' ifade 'ise' ifade 'değilse' ifade     # koşullu ifade
+    | 'miras' [AD]
+    | adsiz_altprogram
+    | '(' ifade ')'
+    | koleksiyon
+
+adsiz_altprogram:
+    | ('fonksiyon' | 'prosedür') [parametreler] [':' tip] '=>' ifade
+    | ('fonksiyon' | 'prosedür') [parametreler] [':' tip] yerel_bildirim* blok
+
+koleksiyon:
+    | '[' ']'                                             # boş liste
+    | '[' ':' ']'                                         # boş sözlük
+    | '[' ifade '..' ifade ']'                            # aralık listesi: [1..10]
+    | '[' ifade ':' ifade (',' ifade ':' ifade)* [','] ']'   # sözlük
+    | '[' ','.ifade+ [','] ']'                            # liste

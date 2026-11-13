@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Deyimler · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html">4. İfadeler</a></li><li><a href="06-5-deyimler.html" aria-current="page">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 6 / 15</p>
+    <h2 id="deyimler">5. Deyimler</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>deyimler: (deyim (';' | satır sonu))*
+govde:    deyim | boş</code></pre></div>
+<p>Döngü ve koşul yapılarının gövdesi <strong>tek bir deyimdir</strong>. Birden çok deyim çalıştırmak için gövde <code>başla … bitir</code> arasına alınır. <code>tekrarla … olana dek</code>, <code>değerine göre … bitir</code> ve <code>dene … bitir</code> kendi sınırlarını taşır.</p>
+<h3 id="atama">Atama</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>atama: hedef (':=' | '+=' | '-=' | '*=' | '/=') ifade</code></pre></div>
+<p>Hedef bir değişken, alan (<code>n.x</code>) ya da dizin (<code>L[i]</code>) olabilir. <code>a += b</code>, <code>a := a + b</code> ile aynıdır. Atama bir ifade değildir; karşılaştırma <code>=</code>, atama <code>:=</code> ile yazılır.</p>
+<h3 id="çağrı-deyimi">Çağrı deyimi</h3>
+<p>Tek başına yazılan bir çağrı, ad ya da üye erişimi alt programı çağırır ve varsa sonucunu atar: <code>Selamla</code>, <code>yaz('a', 1)</code>, <code>liste.Temizle</code>.</p>
+<h3 id="blok-içi-değişken">Blok içi değişken</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> toplam := <span class="ys">0</span></code></pre></div>
+<p>Deyimlerin arasında yazılan <code>değişken</code> bildirimi, içinde bulunduğu alt programın kapsamında yeni bir değişken tanımlar.</p>
+<h3 id="koşul">Koşul</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>eger_deyimi: 'eğer' ifade 'ise' govde ['değilse' govde]</code></pre></div>
+<p>Koşul mantıksal olmalıdır. <code>değilse</code> en yakın <code>eğer</code>’e bağlanır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">eğer</span> x &gt; <span class="ys">0</span> <span class="ya">ise</span> yaz(<span class="ym">'pozitif'</span>, <span class="ys">1</span>)
+<span class="ya">değilse</span> <span class="ya">eğer</span> x &lt; <span class="ys">0</span> <span class="ya">ise</span> yaz(<span class="ym">'negatif'</span>, <span class="ys">1</span>)
+<span class="ya">değilse</span> yaz(<span class="ym">'sıfır'</span>, <span class="ys">1</span>)</code></pre></div>
+<h3 id="çok-seçenekli-karar">Çok seçenekli karar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>degerine_gore: ifade 'değerine' 'göre' kol* ['değilse' [':'] deyimler] 'bitir'
+kol:           ','.etiket+ ':' govde
+etiket:        ifade ['..' ifade]</code></pre></div>
+<p>İfade bir kez hesaplanır ve kollar yukarıdan aşağıya denenir; uyan ilk kolun gövdesi çalışır, diğerleri atlanır. Etiket tek bir değer ya da <code>alt..üst</code> aralığı olabilir. Hiçbir kol uymazsa <code>değilse</code> bölümü çalışır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>puan <span class="ya">değerine</span> <span class="ya">göre</span>
+  <span class="ys">90..100</span>: harf := <span class="ym">'A'</span>
+  <span class="ys">80..89</span>:  harf := <span class="ym">'B'</span>
+  <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">2</span>: harf := <span class="ym">'X'</span>
+  <span class="ya">değilse</span> harf := <span class="ym">'F'</span>
+<span class="ya">bitir</span></code></pre></div>
+<h3 id="sayan-döngü">Sayan döngü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sayan_dongu:
+    ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
+  | ifade AYRILMA ifade YONELME 'adımda' ifade ('artan' | 'azalan')
+    'her' AD 'için' govde</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Sayaç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1'den 10'a kadar her i için</code></td>
+<td>1, 2, … 10</td>
+</tr>
+<tr class="even">
+<td><code>10'dan 0'a kadar her j için</code></td>
+<td>10, 9, … 0</td>
+</tr>
+<tr class="odd">
+<td><code>a'dan b'ye adımda c artan her d için</code></td>
+<td>a, a+c, … (b’yi geçmeden)</td>
+</tr>
+<tr class="even">
+<td><code>z'den y'ye adımda v azalan her u için</code></td>
+<td>z, z−v, … (y’nin altına inmeden)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kurallar:</p>
+<ul>
+<li>Başlangıç, bitiş ve adım döngüye girilirken <strong>bir kez</strong> hesaplanır ve tamsayı olmalıdır.</li>
+<li><code>kadar</code> birer birer sayar. İki sınır da tamsayı sabiti olarak yazılmışsa ve ilki büyükse sayaç azalır; bu karar derleme sırasında verilir.</li>
+<li>Sınırlardan biri değişken ya da hesaplanan bir ifadeyse <code>kadar</code> yalnızca ileriye sayar; başlangıç bitişten büyükse gövde hiç çalışmaz. Böylece boş bir listede <code>0'dan Uzunluk(L) - 1'e kadar</code> güvenle yazılabilir.</li>
+<li><code>adımda</code> ile verilen adım pozitif bir tamsayı olmalıdır; yönü <code>artan</code> ya da <code>azalan</code> belirler. Yön sınırlarla uyuşmuyorsa gövde hiç çalışmaz.</li>
+<li>Sayaç bildirilmemişse döngü onu tanımlar. Döngü bittikten sonra sayacın değeri son turdaki değeridir.</li>
+</ul>
+<h3 id="koleksiyon-döngüsü">Koleksiyon döngüsü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>her_dongusu: ifade 'içindeki' 'her' AD [',' AD] 'için' govde</code></pre></div>
+<p>Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adlar <span class="ya">içindeki</span> <span class="ya">her</span> ad <span class="ya">için</span> yaz(ad, <span class="ys">1</span>)
+yaşlar <span class="ya">içindeki</span> <span class="ya">her</span> ad, yaş <span class="ya">için</span> yaz(ad + <span class="ym">': '</span> + yaş, <span class="ys">1</span>)</code></pre></div>
+<h3 id="koşullu-döngüler">Koşullu döngüler</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>iken_dongusu:    ifade 'iken' govde
+tekrarla_deyimi: 'tekrarla' deyimler ifade 'olana' 'dek'
+kez_dongusu:     ifade 'kez' 'tekrarla' govde</code></pre></div>
+<p><code>koşul iken gövde</code>, koşul doğru olduğu sürece gövdeyi çalıştırır; koşul her turdan önce sınanır. <code>tekrarla … koşul olana dek</code> gövdeyi en az bir kez çalıştırır ve koşul doğru olunca durur. <code>n kez tekrarla gövde</code> gövdeyi <code>n</code> kez çalıştırır.</p>
+<h3 id="döngü-denetimi">Döngü denetimi</h3>
+<p><code>kır</code> en içteki döngüden çıkar. <code>devam</code> en içteki döngünün sıradaki turuna geçer.</p>
+<h3 id="eleman-silme-cümlesi">Eleman silme cümlesi</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>eleman_silme: ifade ('listesindeki' | 'dizisindeki') konum '.' 'elemanı' 'Sil'</code></pre></div>
+<p><code>L listesindeki 2. elemanı Sil</code>, <code>Sil(L, 2)</code> ile aynıdır. Konum bir sayı, bir ad ya da ayraç içinde bir ifade olabilir: <code>L listesindeki (i + 1). elemanı Sil</code>.</p>
+<h3 id="dönüş">Dönüş</h3>
+<p><code>dön ifade</code> fonksiyonun sonucunu belirler ve fonksiyondan çıkar. <code>dön</code> tek başına ya da <code>çık</code> deyimi, sonucu değiştirmeden alt programdan çıkar. Ana gövdede <code>çık</code> programı bitirir.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-4-ifadeler.html"><small>Önceki</small>4. İfadeler</a><a class="sonraki" href="07-6-alt-programlar.html"><small>Sonraki</small>6. Alt programlar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#atama">Atama</a></li><li><a href="#çağrı-deyimi">Çağrı deyimi</a></li><li><a href="#blok-içi-değişken">Blok içi değişken</a></li><li><a href="#koşul">Koşul</a></li><li><a href="#çok-seçenekli-karar">Çok seçenekli karar</a></li><li><a href="#sayan-döngü">Sayan döngü</a></li><li><a href="#koleksiyon-döngüsü">Koleksiyon döngüsü</a></li><li><a href="#koşullu-döngüler">Koşullu döngüler</a></li><li><a href="#döngü-denetimi">Döngü denetimi</a></li><li><a href="#eleman-silme-cümlesi">Eleman silme cümlesi</a></li><li><a href="#dönüş">Dönüş</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yöntem Dil Başvurusu · yontem.pro</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+/* yontem.pro — çevrim içi kitaplar */
+:root {
+  --zemin: #FFFFFF; --zemin2: #F5F7FA; --murekkep: #0F1B2D; --metin: #1E293B; --soluk: #475569;
+  --cizgi: #E3E8EF; --vurgu: #0B7A75; --vurgu-koyu: #07514D; --vurgu-acik: #E7F4F3;
+  --kod-zemin: #0F1B2D; --kod-metin: #E2E8F0; --cikti-zemin: #F5F7FA; --cikti-metin: #1E293B;
+  --ya: #5EEAD4; --ym: #FBBF77; --ys: #F9A8D4; --yy: #94A3B8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --zemin: #0B1320; --zemin2: #111C2E; --murekkep: #F1F5F9; --metin: #D7DEE8; --soluk: #9AA8BA;
+    --cizgi: #22324A; --vurgu: #5EEAD4; --vurgu-koyu: #99F6E4; --vurgu-acik: #12302F;
+    --kod-zemin: #060C16; --cikti-zemin: #111C2E; --cikti-metin: #D7DEE8;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 88px; }
+body { margin: 0; background: var(--zemin); color: var(--metin); font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--vurgu-koyu); }
+a:hover { color: var(--vurgu); }
+h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(--murekkep); letter-spacing: -0.015em; }
+.atla { position: absolute; left: -9999px; }
+.atla:focus { left: 16px; top: 16px; z-index: 10; background: var(--zemin); padding: 8px 12px; }
+
+/* üst menü */
+.ust { position: sticky; top: 0; z-index: 5; background: var(--zemin); border-bottom: 1px solid var(--cizgi); }
+.ust nav { max-width: 1320px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 8px 24px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--murekkep);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21px; }
+.menu { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 15px; font-weight: 500; }
+.menu a { color: var(--soluk); text-decoration: none; padding: 10px 0; }
+.menu a[aria-current="page"], .menu a[aria-current="true"] { color: var(--murekkep); font-weight: 600; }
+.menu a.dugme { background: var(--murekkep); color: var(--zemin); padding: 10px 16px; border-radius: 10px; font-weight: 600; }
+
+/* ortak */
+.tur { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--vurgu-koyu); }
+.eylemler { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.birincil { background: var(--vurgu); color: #fff; text-decoration: none; padding: 13px 20px; border-radius: 11px; font-weight: 600; }
+.birincil:hover { color: #fff; filter: brightness(1.08); }
+@media (prefers-color-scheme: dark) { .birincil, .birincil:hover { color: #06201F; } }
+.pdf { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: var(--soluk);
+  text-decoration: none; padding: 10px 2px; }
+.pdf small { font-size: 13px; color: var(--soluk); }
+.pdf:hover { color: var(--murekkep); }
+.kapak { width: 96px; height: 136px; border-radius: 6px; padding: 12px; display: flex; flex-direction: column;
+  justify-content: space-between; box-shadow: 0 10px 22px -12px rgba(15, 27, 45, 0.55); flex: none; }
+.kapak span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; line-height: 1.2; color: #fff; hyphens: auto; overflow-wrap: anywhere; }
+.kart-kapak { text-decoration: none; }
+.kapak i { display: block; width: 32px; height: 4px; border-radius: 2px; background: #5EEAD4; }
+.kapak.acik { border: 1px solid #CBD5E1; }
+.kapak.acik span { color: #0F1B2D; }
+.kapak.acik i { background: #0B7A75; }
+.kapak.buyuk { width: 180px; height: 256px; padding: 20px; border-radius: 8px; }
+.kapak.buyuk span { font-size: 22px; }
+.kapak.buyuk i { width: 48px; height: 6px; }
+
+/* kitaplık */
+.kitaplik-ana { max-width: 1080px; margin: 0 auto; padding: 64px 24px 88px; }
+.kitaplik-ana h1 { font-size: 48px; line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.03em; }
+.ozet { font-size: 19px; line-height: 1.6; color: var(--soluk); max-width: 640px; margin: 0; }
+.kartlar { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 32px; }
+@media (max-width: 520px) { .kartlar { grid-template-columns: 1fr; } }
+.kart { display: flex; gap: 24px; align-items: flex-start; padding: 24px; border: 1px solid var(--cizgi); border-radius: 16px; }
+.kart h2 { font-size: 22px; margin: 6px 0 8px; line-height: 1.25; }
+.kart h2 a { color: var(--murekkep); text-decoration: none; }
+.kart p { margin: 0 0 16px; color: var(--soluk); font-size: 16px; }
+
+/* kitap ana sayfası */
+.kitap-giris { max-width: 960px; margin: 0 auto; padding: 56px 24px 88px; }
+.kitap-ust { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; padding-bottom: 48px; border-bottom: 1px solid var(--cizgi); }
+.kitap-bilgi { flex: 1 1 360px; min-width: 0; }
+.kitap-bilgi h1 { font-size: 44px; line-height: 1.08; margin: 8px 0 12px; letter-spacing: -0.03em; }
+.yazar { color: var(--soluk); margin: 12px 0 24px; }
+.icindekiler h2 { font-size: 26px; margin: 48px 0 16px; }
+.icindekiler > ol { list-style: none; padding: 0; margin: 0; counter-reset: b; }
+.icindekiler > ol > li { padding: 14px 0; border-bottom: 1px solid var(--cizgi); }
+.icindekiler a.bolum { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--murekkep); text-decoration: none; }
+.icindekiler a.bolum code { font-size: 0.9em; }
+.icindekiler ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 18px; }
+.icindekiler ul a { font-size: 15px; color: var(--soluk); text-decoration: none; }
+.icindekiler ul a:hover { color: var(--vurgu-koyu); text-decoration: underline; }
+
+/* okuma düzeni */
+.okuma { max-width: 1320px; margin: 0 auto; padding: 32px 24px 88px; display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 220px; gap: 48px; align-items: start; }
+.yan, .bu-bolumde { position: sticky; top: 88px; max-height: calc(100vh - 112px); overflow-y: auto; font-size: 14.5px; }
+.yan summary { list-style: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; margin-bottom: 12px; cursor: default; }
+.yan summary::-webkit-details-marker { display: none; }
+.yan summary a { color: var(--murekkep); text-decoration: none; }
+.yan ol, .bu-bolumde ol { list-style: none; margin: 0; padding: 0; }
+.yan li a { display: block; padding: 6px 10px; border-radius: 8px; color: var(--soluk); text-decoration: none; line-height: 1.4; }
+.yan li a:hover { background: var(--zemin2); color: var(--murekkep); }
+.yan li a[aria-current="page"] { background: var(--vurgu-acik); color: var(--vurgu-koyu); font-weight: 600; }
+.yan code { font-size: 0.9em; }
+.yan .pdf { margin-top: 12px; }
+.bu-bolumde span { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--soluk); margin-bottom: 8px; }
+.bu-bolumde a { display: block; padding: 4px 0; color: var(--soluk); text-decoration: none; line-height: 1.4; }
+.bu-bolumde a:hover { color: var(--vurgu-koyu); }
+@media (max-width: 1200px) { .okuma { grid-template-columns: 240px minmax(0, 1fr); } .bu-bolumde { display: none; } }
+@media (max-width: 860px) {
+  .okuma { grid-template-columns: 1fr; gap: 24px; padding-top: 16px; }
+  .yan { position: static; max-height: none; border: 1px solid var(--cizgi); border-radius: 12px; padding: 12px 14px; }
+  .yan details:not([open]) summary { margin: 0; }
+  .yan summary { cursor: pointer; }
+  .yan ol { max-height: 320px; overflow-y: auto; }
+}
+
+/* metin */
+.metin { max-width: 760px; min-width: 0; font-size: 18px; line-height: 1.75; }
+.metin .iz { font-size: 14px; color: var(--soluk); margin: 0 0 8px; }
+.metin .iz a { color: var(--soluk); }
+.metin h2 { font-size: 38px; line-height: 1.12; margin: 8px 0 28px; letter-spacing: -0.03em; }
+.metin h3 { font-size: 25px; line-height: 1.25; margin: 48px 0 12px; }
+.metin h4 { font-size: 20px; margin: 32px 0 8px; }
+.metin p, .metin li { color: var(--metin); }
+.metin p { margin: 0 0 18px; }
+.metin ul, .metin ol { padding-left: 24px; margin: 0 0 18px; }
+.metin li { margin: 4px 0; }
+.metin strong { color: var(--murekkep); }
+.metin code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.86em; background: var(--zemin2);
+  padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+.metin h2 code, .metin h3 code { background: none; padding: 0; font-size: 0.9em; }
+.metin blockquote { margin: 0 0 18px; padding: 4px 20px; border-left: 3px solid var(--vurgu); color: var(--soluk); }
+.metin figure { margin: 28px 0; }
+.metin figure img, .metin p img { max-width: 100%; height: auto; border: 1px solid var(--cizgi); border-radius: 10px; background: #fff; }
+.metin figcaption { font-size: 14.5px; color: var(--soluk); margin-top: 8px; text-align: center; }
+.metin math[display="block"] { margin: 20px 0; overflow-x: auto; font-size: 1.05em; }
+.tablo { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--cizgi); border-radius: 10px; }
+.metin table { border-collapse: collapse; width: 100%; font-size: 15.5px; line-height: 1.5; }
+.metin th, .metin td { padding: 10px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--cizgi); }
+.metin thead th { background: var(--zemin2); border-top: none; font-weight: 600; color: var(--murekkep); }
+
+/* kod */
+.kod { position: relative; margin: 0 0 22px; border-radius: 12px; overflow: hidden; }
+.kod pre { margin: 0; padding: 38px 20px 18px; overflow-x: auto; font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14.5px; line-height: 1.65; tab-size: 4; }
+.kod pre code { background: none; padding: 0; font-size: inherit; border-radius: 0; overflow-wrap: normal; }
+.kod.program, .kod.kabuk { background: var(--kod-zemin); color: var(--kod-metin); }
+.kod.cikti { background: var(--cikti-zemin); color: var(--cikti-metin); border: 1px solid var(--cizgi); }
+.kod-etiket { position: absolute; top: 10px; left: 20px; font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--yy); }
+.kod.cikti .kod-etiket { color: var(--soluk); }
+.kopyala { position: absolute; top: 6px; right: 8px; font: 500 12.5px 'Inter', sans-serif; color: var(--yy);
+  background: transparent; border: 1px solid transparent; border-radius: 7px; padding: 6px 10px; cursor: pointer; min-height: 32px; }
+.kopyala:hover, .kopyala:focus-visible { border-color: currentColor; }
+.kod.cikti .kopyala { color: var(--soluk); }
+.ya { color: var(--ya); font-weight: 600; }
+.ym { color: var(--ym); }
+.ys { color: var(--ys); }
+.yy { color: var(--yy); font-style: italic; }
+
+/* bölümler arası */
+.sayfala { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--cizgi); }
+.sayfala a { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--cizgi); border-radius: 12px;
+  text-decoration: none; color: var(--murekkep); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.35; }
+.sayfala a:hover { border-color: var(--vurgu); }
+.sayfala small { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13px; color: var(--soluk); }
+.sayfala .sonraki { text-align: right; grid-column: 2; }
+@media (max-width: 560px) { .sayfala { grid-template-columns: 1fr; } .sayfala .sonraki { grid-column: 1; } }
+
+/* alt bilgi */
+.alt { max-width: 1320px; margin: 0 auto; padding: 32px 24px 40px; border-top: 1px solid var(--cizgi); display: flex;
+  flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--soluk); }
+.alt a { color: var(--soluk); }
+
+@media print {
+  .ust, .yan, .bu-bolumde, .sayfala, .alt, .kopyala { display: none !important; }
+  .okuma { display: block; padding: 0; }
+  .metin { max-width: none; }
+}
+
+.tek .okuma { grid-template-columns: 280px minmax(0, 1fr); }
+.tek .bolum-blok { scroll-margin-top: 88px; }
+.tek.js .bolum-blok { display: none; }
+.tek.js .bolum-blok.acik { display: block; }
+.tek .bolum-blok + .bolum-blok { margin-top: 72px; }
+.tek.js .bolum-blok + .bolum-blok { margin-top: 0; }
+.tek .sayfala button { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--cizgi);
+  border-radius: 12px; background: none; color: var(--murekkep); font: 600 16px 'Space Grotesk', sans-serif; text-align: left;
+  line-height: 1.35; cursor: pointer; }
+.tek .sayfala button:hover { border-color: var(--vurgu); }
+.tek .sayfala button.sonraki { text-align: right; grid-column: 2; align-items: flex-end; }
+.tek .sayfala small { font: 500 13px 'Inter', sans-serif; color: var(--soluk); }
+.tek .sayfala { display: none; }
+.tek.js .sayfala { display: grid; }
+.tek-kapak { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end; padding: 8px 0 40px; margin-bottom: 40px; border-bottom: 1px solid var(--cizgi); }
+.tek-kapak h1 { font-size: 40px; line-height: 1.08; margin: 8px 0 10px; letter-spacing: -0.03em; }
+.tek-kapak .ozet { font-size: 18px; }
+@media (max-width: 1200px) { .tek .okuma { grid-template-columns: 240px minmax(0, 1fr); } }
+@media (max-width: 860px) { .tek .okuma { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .tek .sayfala button.sonraki { grid-column: 1; } }
+@media print { .tek .bolum-blok { display: block !important; } .tek-kapak .eylemler { display: none; } }
+
+</style>
+</head>
+<body class="tek">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="https://yontem.pro/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="https://yontem.pro/kitaplar/">Kitaplar</a>
+      <a class="dugme" href="https://yontem.pro/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="#b01">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="#b01">Bu başvuru ne anlatır?</a></li><li><a href="#b02">1. Sözcük yapısı</a></li><li><a href="#b03">2. Program yapısı</a></li><li><a href="#b04">3. Tipler ve değerler</a></li><li><a href="#b05">4. İfadeler</a></li><li><a href="#b06">5. Deyimler</a></li><li><a href="#b07">6. Alt programlar</a></li><li><a href="#b08">7. Sınıflar ve kayıtlar</a></li><li><a href="#b09">8. Hatalar</a></li><li><a href="#b10">9. Birimler</a></li><li><a href="#b11">10. Giriş ve çıkış</a></li><li><a href="#b12">11. Katı kip</a></li><li><a href="#b13">12. Uygulama farkları</a></li><li><a href="#b14">Ek A — Dilbilgisinin tamamı</a></li><li><a href="#b15">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="dil-basvurusu/Yontem_Dil_Basvurusu.pdf" download>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <div class="tek-kapak">
+      <div class="kapak" style="background:#7A3E0B" aria-hidden="true"><span>Yöntem Dil Başvurusu</span><i></i></div>
+      <div>
+        <span class="tur">Başvuru · 15 bölüm · Önder Örnek</span>
+        <h1>Yöntem Dil Başvurusu</h1>
+        <p class="ozet">Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı</p>
+      </div>
+    </div>
+    <section class="bolum-blok" id="b01" data-baslik="Bu başvuru ne anlatır?"><h2>Bu başvuru ne anlatır?</h2>
+<p>Bu belge Yöntem dilinin sözdizimini ve anlamını tanımlar: bir programın hangi sözcüklerden oluştuğunu, bu sözcüklerin hangi kurallarla bir araya geldiğini ve yazılan her yapının çalışırken ne yaptığını. Dili öğrenmek için yazılmamıştır; öğrenmek isterseniz <em>Yöntem ile Programlamaya Giriş</em> kitabından başlayabilirsiniz. Bu başvuruya, bir kuralın tam olarak ne dediğini görmek istediğinizde bakabilirsiniz.</p>
+<p>Belge Yöntem 0.6.0 sürümünü anlatır. Dilbilgisinin tamamı depodaki <code>yontem.gram</code> dosyasındadır; buradaki kurallar o dosyadan alınmıştır.</p>
+<h3 id="uygulamalar">Uygulamalar</h3>
+<p>Yöntem’in üç uygulaması vardır ve bu başvuru üçü için de geçerlidir:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Uygulama</th>
+<th>Ne yapar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JavaScript derleyicisi</td>
+<td>Programı JavaScript’e çevirip Node.js’te ya da tarayıcıda çalıştırır</td>
+</tr>
+<tr class="even">
+<td>Python yorumlayıcısı</td>
+<td>Programı doğrudan yorumlar; etkileşimli kabuk buradadır</td>
+</tr>
+<tr class="odd">
+<td>Gömülü arka uç</td>
+<td>Programın statik tipli bir alt kümesini C++17’ye çevirir (ESP32)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>İlk ikisi aynı programa aynı çıktıyı verir. Gömülü arka uç dilin tamamını değil, tipleri derleme sırasında belirlenebilen bölümünü kabul eder; farklar “Uygulama farkları” bölümündedir.</p>
+<h3 id="gösterim">Gösterim</h3>
+<p>Sözdizimi kuralları şu gösterimle yazılmıştır:</p>
+<ul>
+<li><code>kural: a b</code> — <code>kural</code>, art arda gelen <code>a</code> ve <code>b</code>’den oluşur.</li>
+<li><code>a | b</code> — <code>a</code> ya da <code>b</code>; ilk uyan seçenek geçerlidir.</li>
+<li><code>[a]</code> — <code>a</code> isteğe bağlıdır.</li>
+<li><code>a*</code>, <code>a+</code> — <code>a</code> sıfır ya da daha çok kez, bir ya da daha çok kez.</li>
+<li><code>','.a+</code> — virgülle ayrılmış bir ya da daha çok <code>a</code>.</li>
+<li><code>'başla'</code> — sözcüğün kendisi (anahtar sözcük ya da işleç).</li>
+<li><code>AD</code>, <code>SAYI</code>, <code>METIN</code> — sözcük türleri.</li>
+</ul>
+<p>Örneklerde program çıktısı, kodun hemen ardındaki ayrı blokta gösterilir.</p>
+</section><section class="bolum-blok" id="b02" data-baslik="1. Sözcük yapısı"><h2>1. Sözcük yapısı</h2>
+<p>Bir Yöntem programı UTF-8 kodlu bir metin dosyasıdır; uzantısı <code>.y</code>’dir. Derleyici dosyayı önce sözcüklere ayırır.</p>
+<h3 id="harf-duyarsızlığı">Harf duyarsızlığı</h3>
+<p>Adlar ve anahtar sözcükler karşılaştırılırken büyük/küçük harf ayrımı yapılmaz ve Türkçe harfler ASCII karşılıklarına katlanır: <code>ç→c</code>, <code>ğ→g</code>, <code>ı→i</code>, <code>ö→o</code>, <code>ş→s</code>, <code>ü→u</code>. Bu yüzden <code>Başla</code>, <code>BAŞLA</code> ve <code>basla</code> aynı sözcüktür; Türkçe klavyesi olmayan biri de program yazabilir.</p>
+<p>Bunun bir sonucu vardır: <code>sayı</code> ile <code>sayi</code>, <code>ış</code> ile <code>is</code>, <code>x</code> ile <code>X</code> aynı addır. Aynı kapsamda böyle iki ad bildirilirse derleyici hata verir. Hata iletilerinde ve çıktıda adlar sizin yazdığınız biçimiyle görünür.</p>
+<h3 id="yorumlar">Yorumlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>{ süslü ayraç içinde }
+(* yıldızlı ayraç içinde *)
+// satır sonuna kadar</code></pre></div>
+<p>Yorumlar birden çok satıra yayılabilir, iç içe yazılamaz. Dosyada <code>{$katı}</code> yorumu bulunuyorsa derleyici o dosyayı katı kipte denetler (bkz. “Katı kip”).</p>
+<h3 id="adlar">Adlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>AD: (harf | '_') (harf | rakam | '_')*</code></pre></div>
+<p>Harf, Unicode’daki herhangi bir harftir. Anahtar sözcükler ad olarak kullanılamaz.</p>
+<h3 id="anahtar-sözcükler">Anahtar sözcükler</h3>
+<p>Aşağıdaki sözcükler ayrılmıştır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span>    <span class="ya">birim</span>     <span class="ya">kullan</span>    <span class="ya">arayüz</span>    <span class="ya">uygulama</span>   <span class="ya">değişken</span>
+<span class="ya">sabit</span>      <span class="ya">tip</span>       <span class="ya">prosedür</span>  <span class="ya">fonksiyon</span> <span class="ya">kurucu</span>     <span class="ya">başla</span>
+<span class="ya">bitir</span>      <span class="ya">eğer</span>      <span class="ya">ise</span>       <span class="ya">değilse</span>   <span class="ya">iken</span>       <span class="ya">için</span>
+<span class="ya">kadar</span>      <span class="ya">her</span>       içinde    <span class="ya">içindeki</span>  <span class="ya">tekrarla</span>   <span class="ya">dene</span>
+<span class="ya">yakala</span>     <span class="ya">sonunda</span>   <span class="ya">fırlat</span>    <span class="ya">dön</span>       çık        <span class="ya">kır</span>
+<span class="ya">devam</span>      <span class="ya">sınıf</span>     <span class="ya">kayıt</span>     <span class="ya">miras</span>     <span class="ya">kendi</span>      <span class="ya">doğru</span>
+<span class="ya">yanlış</span>     <span class="ya">boş</span>       <span class="ya">ve</span>        <span class="ya">veya</span>      <span class="ya">yada</span>       <span class="ya">değil</span>
+<span class="ya">mod</span>        <span class="ya">böl</span>       <span class="ya">dizi</span>      azalarak  <span class="ya">türünde</span></code></pre></div>
+<p><code>azalarak</code> ve <code>türünde</code> eski sürümlerin yazımından kalmıştır; yalnızca yeni yazımı gösteren hata iletisi verebilmek için ayrılmıştır.</p>
+<p>Bazı sözcükler yalnızca belirli bir yerde özel anlam taşır, başka yerlerde sıradan ad olarak kullanılabilir:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sözcük</th>
+<th>Özel anlam taşıdığı yer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>adımda</code>, <code>artan</code>, <code>azalan</code></td>
+<td>sayan döngü başlığı</td>
+</tr>
+<tr class="even">
+<td><code>kez</code></td>
+<td><code>n kez tekrarla</code></td>
+</tr>
+<tr class="odd">
+<td><code>olana dek</code></td>
+<td><code>tekrarla</code> döngüsünün sonu</td>
+</tr>
+<tr class="even">
+<td><code>değerine göre</code></td>
+<td>çok seçenekli karar</td>
+</tr>
+<tr class="odd">
+<td><code>listesindeki</code>, <code>dizisindeki</code>, <code>elemanı</code></td>
+<td>eleman silme cümlesi</td>
+</tr>
+<tr class="even">
+<td><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code></td>
+<td>tip ekleri</td>
+</tr>
+<tr class="odd">
+<td><code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code></td>
+<td>alt program direktifleri</td>
+</tr>
+<tr class="even">
+<td><code>özel</code>, <code>genel</code>, <code>korumalı</code>, <code>yayınlanmış</code></td>
+<td>sınıf içinde görünürlük bölümleri</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="sayılar">Sayılar</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Biçim</th>
+<th>Örnek</th>
+<th>Tip</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Onluk tamsayı</td>
+<td><code>42</code>, <code>1_000_000</code></td>
+<td><code>tamsayı</code></td>
+</tr>
+<tr class="even">
+<td>Onaltılık tamsayı</td>
+<td><code>$FF</code></td>
+<td><code>tamsayı</code></td>
+</tr>
+<tr class="odd">
+<td>Ondalık</td>
+<td><code>3.14</code>, <code>1e-3</code>, <code>2.5E+4</code></td>
+<td><code>ondalık</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alt çizgi yalnızca okunaklılık içindir. Noktadan sonra en az bir rakam gelmelidir; <code>2.</code> bir ondalık sayı değildir.</p>
+<h3 id="metinler">Metinler</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Biçim</th>
+<th>Kaçış kuralı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>'tek tırnak'</code></td>
+<td>İçindeki tırnak iki kez yazılır: <code>'Ali''nin'</code></td>
+</tr>
+<tr class="even">
+<td><code>"çift tırnak"</code></td>
+<td><code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\\</code>, <code>\"</code>, <code>\'</code>, <code>\0</code></td>
+</tr>
+<tr class="odd">
+<td><code>#10</code></td>
+<td>Onluk karakter kodu</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bir metin satır sonunu aşamaz.</p>
+<h3 id="ekler">Ekler</h3>
+<p>Türkçede olduğu gibi sayılara, adlara ve ayraçlı ifadelere kesme işaretiyle ek getirilebilir. Dil iki eki tanır ve yalnızca sayan döngüde kullanır:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Ek</th>
+<th>Yazımları</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ayrılma</td>
+<td><code>'den</code>, <code>'dan</code>, <code>'ten</code>, <code>'tan</code>, <code>'nden</code>, <code>'ndan</code></td>
+</tr>
+<tr class="even">
+<td>Yönelme</td>
+<td><code>'e</code>, <code>'a</code>, <code>'ye</code>, <code>'ya</code>, <code>'ne</code>, <code>'na</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kesme işareti bir sayıya, ada, <code>)</code> ya da <code>]</code> işaretine bitişikse ve ardından bu eklerden biri geliyorsa ek sayılır; diğer her durumda metin başlatır. Ses uyumu denetlenmez: <code>1'dan</code> da kabul edilir.</p>
+<h3 id="işleçler-ve-ayırıcılar">İşleçler ve ayırıcılar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>:=  +=  -=  *=  /=  **  &lt;&gt;  &lt;=  &gt;=  ..  |&gt;  =&gt;
++   -   *   /   @   =   &lt;   &gt;
+(   )   [   ]   ,   ;   :   .</code></pre></div>
+<h3 id="satır-sonları">Satır sonları</h3>
+<p>Deyimler ve bildirimler satır sonuyla ayrılır; <code>;</code> isteğe bağlıdır ve aynı satıra birden çok deyim yazmak için kullanılır: <code>a := 1; b := 2</code>. Satır sonu şu yerlerde de anlam taşır:</p>
+<ul>
+<li>Bir çağrının <code>(</code> ve bir dizinin <code>[</code> işareti, uygulandığı ifadeyle aynı satırda başlamalıdır.</li>
+<li><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code> ekleri tiple aynı satırda olmalıdır.</li>
+<li><code>dön</code> deyiminin değeri <code>dön</code> ile aynı satırda başlamalıdır.</li>
+</ul>
+<p>Bir ifade, ikili bir işleçten sonra alt satırda sürebilir.</p>
+</section><section class="bolum-blok" id="b03" data-baslik="2. Program yapısı"><h2>2. Program yapısı</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>dosya:   birim | program
+program: ['program' AD] kullan* bildirim* blok '.'
+kullan:  'kullan' ','.AD+
+blok:    'başla' deyimler 'bitir'</code></pre></div>
+<p>Bir dosya ya bir program ya da bir birimdir. Program başlığı isteğe bağlıdır; ardından kullanılan birimler, bildirimler ve <code>başla … bitir.</code> ile yazılan ana gövde gelir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Selam
+<span class="ya">kullan</span> Matematik
+
+<span class="ya">sabit</span>
+  KEZ = <span class="ys">3</span>
+<span class="ya">değişken</span>
+  i: <span class="ya">tamsayı</span>
+
+<span class="ya">prosedür</span> Selamla(kime: <span class="ya">metin</span> = <span class="ym">'dünya'</span>)
+<span class="ya">başla</span>
+  yaz(<span class="ym">'Merhaba, '</span> + kime, <span class="ys">1</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den KEZ'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span> Selamla
+  Selamla(<span class="ym">'Yöntem'</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<h3 id="bildirim-bölümleri">Bildirim bölümleri</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>bildirim: 'sabit' (AD [':' tip] '=' ifade)*
+        | 'değişken' (','.AD+ [':' tip] ['=' ifade])*
+        | 'tip' (AD '=' tip_tanimi)*
+        | altprogram</code></pre></div>
+<p>Bölümler istenen sırada ve istenen sayıda yazılabilir. Değişken bildiriminde tip ya da ilk değerden en az biri bulunmalıdır; <code>=</code> yerine <code>:=</code> de yazılabilir.</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Bildirim</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sayaç: tamsayı</code></td>
+<td>Tipli değişken; tipin başlangıç değerini alır</td>
+</tr>
+<tr class="even">
+<td><code>ad: metin = 'Yöntem'</code></td>
+<td>Tipli ve ilk değerli</td>
+</tr>
+<tr class="odd">
+<td><code>oran := 0.5</code></td>
+<td>Tipsiz; her tipte değer alabilir</td>
+</tr>
+<tr class="even">
+<td><code>a, b: ondalık</code></td>
+<td>Aynı tipte birden çok değişken</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Başlangıç değerleri: <code>tamsayı</code> için <code>0</code>, <code>ondalık</code> için <code>0.0</code>, <code>metin</code> için boş metin, <code>mantıksal</code> için <code>yanlış</code>, <code>liste</code> için <code>[]</code>, <code>sözlük</code> için <code>[:]</code>, kayıt tipleri için alanları başlangıç değerinde bir kayıt, sınıf tipleri ve <code>herhangi</code> için <code>boş</code>.</p>
+<p>Sabite atama yapılamaz; denenirse program “Sabite atama yapılamaz” hatasıyla durur.</p>
+<h3 id="kapsam">Kapsam</h3>
+<p>Bir ad, bildirildiği yerden itibaren o kapsamda ve içteki kapsamlarda görünür. Kapsamlar şunlardır: program (ya da birim), her alt program, her sınıf (alanlar ve metodlar, metod gövdelerinde doğrudan görünür). Bir blok içinde <code>değişken</code> ile bildirilen ad, içinde bulunduğu alt programın (ya da ana gövdenin) kapsamına girer.</p>
+<p>İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir.</p>
+</section><section class="bolum-blok" id="b04" data-baslik="3. Tipler ve değerler"><h2>3. Tipler ve değerler</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>tip:        tip_tabani tip_eki*
+tip_tabani: 'dizi' | [AD '.'] AD
+tip_eki:    'listesi' | 'dizisi' | 'sözlüğü'</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tip</th>
+<th>Değerler</th>
+<th>Not</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tamsayı</code></td>
+<td><code>42</code>, <code>-7</code>, <code>10 ** 30</code></td>
+<td>Masaüstünde büyüklük sınırı yoktur</td>
+</tr>
+<tr class="even">
+<td><code>ondalık</code> (<code>gerçek</code>)</td>
+<td><code>3.14</code></td>
+<td>Çift duyarlıklı kayan nokta</td>
+</tr>
+<tr class="odd">
+<td><code>metin</code></td>
+<td><code>'abc'</code></td>
+<td>Karakterler 1’den numaralanır</td>
+</tr>
+<tr class="even">
+<td><code>karakter</code></td>
+<td><code>'a'</code></td>
+<td>Tek karakterlik metin</td>
+</tr>
+<tr class="odd">
+<td><code>mantıksal</code></td>
+<td><code>doğru</code>, <code>yanlış</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>liste</code></td>
+<td><code>[1, 2, 3]</code></td>
+<td>Elemanlar 0’dan numaralanır</td>
+</tr>
+<tr class="odd">
+<td><code>sözlük</code></td>
+<td><code>['a': 1]</code>, <code>[:]</code></td>
+<td>Ekleme sırasını korur</td>
+</tr>
+<tr class="even">
+<td><code>tensör</code></td>
+<td><code>Tensör([[1, 2]])</code></td>
+<td><code>YZ</code> ve <code>Meşale</code> birimleri</td>
+</tr>
+<tr class="odd">
+<td><code>herhangi</code></td>
+<td>her değer</td>
+<td>Tip denetimi yapılmaz</td>
+</tr>
+<tr class="even">
+<td>sınıf ve kayıt adları</td>
+<td>nesneler</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>boş</code>, “değer yok” anlamına gelen tek değerdir.</p>
+<h3 id="bileşik-tip-adları">Bileşik tip adları</h3>
+<p>Eleman tipi başa, kap sona yazılır; ekler soldan sağa birikir:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tamsayı listesi</code></td>
+<td>tamsayılardan oluşan liste</td>
+</tr>
+<tr class="even">
+<td><code>metin sözlüğü</code></td>
+<td>değerleri metin olan sözlük</td>
+</tr>
+<tr class="odd">
+<td><code>ondalık listesi listesi</code></td>
+<td>ondalık listelerinin listesi</td>
+</tr>
+<tr class="even">
+<td><code>tamsayı dizisi</code></td>
+<td><code>tamsayı listesi</code> ile aynıdır</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>dizisi</code> ile <code>listesi</code> eş anlamlıdır. Köşeli ayraçla sınır yazımı (<code>dizisi[1..12]</code>) dilden kaldırılmıştır; sabit boyut programda verilir (bkz. “Boyutu sabit liste”).</p>
+<h3 id="tip-denetimi">Tip denetimi</h3>
+<p>Tipi bildirilmiş bir değişkene, parametreye ya da alana uymayan bir değer atandığında program çalışırken hata verir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> n: <span class="ya">tamsayı</span>
+n := <span class="ym">'metin'</span></code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Çalışma hatası: 'n' için tip uyuşmazlığı: tamsayı bekleniyordu, metin verildi</code></pre></div>
+<p>Tek örtük dönüşüm <code>tamsayı → ondalık</code> yönündedir: <code>ondalık</code> tipli bir değişkene <code>3</code> atanırsa değer <code>3.0</code> olur. Katı kipte aynı denetimler program çalışmadan önce yapılır ve eleman tipleri de denetlenir.</p>
+<p>Tip adları aynı zamanda dönüştürücüdür: <code>tamsayı('42')</code>, <code>ondalık('3,5')</code>, <code>metin(12)</code>, <code>liste(x)</code>. <code>Tür(x)</code> değerin tip adını metin olarak verir.</p>
+<h3 id="değer-ve-referans">Değer ve referans</h3>
+<p>Sayılar, metinler ve mantıksal değerler değiştirilemez. Kayıtlar değer olarak davranır: atandıklarında ve parametre olarak verildiklerinde kopyalanır. Listeler, sözlükler, tensörler ve sınıf nesneleri referansla paylaşılır: <code>b := a</code> yazdıktan sonra <code>b</code> üzerinden yapılan değişiklik <code>a</code>’da da görünür. Bağımsız bir kopya için <code>Kopya(a)</code> ya da <code>liste(a)</code> kullanılabilir.</p>
+<h3 id="liste">Liste</h3>
+<p>Liste sıralı ve boyutu değişebilen bir elemanlar topluluğudur.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>İşlem</th>
+<th>Yazım</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Okuma, değiştirme</td>
+<td><code>L[0]</code>, <code>L[0] := 5</code></td>
+</tr>
+<tr class="even">
+<td>Sondan sayma</td>
+<td><code>L[-1]</code> son elemandır</td>
+</tr>
+<tr class="odd">
+<td>Eleman sayısı</td>
+<td><code>Uzunluk(L)</code>, <code>L.Uzunluk</code></td>
+</tr>
+<tr class="even">
+<td>Sona ekleme</td>
+<td><code>Ekle(L, x)</code>, <code>L.Ekle(x)</code></td>
+</tr>
+<tr class="odd">
+<td>Konuma ekleme</td>
+<td><code>Ekle(L, x, konum)</code>, <code>L.Ekle(x, konum)</code></td>
+</tr>
+<tr class="even">
+<td>Silme</td>
+<td><code>Sil(L, 2)</code>, <code>L.Sil(2)</code>, <code>L(2).Sil</code>, <code>L listesindeki 2. elemanı Sil</code></td>
+</tr>
+<tr class="odd">
+<td>Birleştirme</td>
+<td><code>L + M</code></td>
+</tr>
+<tr class="even">
+<td>Üyelik</td>
+<td><code>x içinde L</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Silmenin dört yazımı aynı anlama gelir ve 2 numaralı elemanı (<code>L[2]</code>) siler; <code>Sil</code> çıkardığı elemanı döndürür. Sınır dışındaki bir numaraya erişmek hata verir.</p>
+<h3 id="boyutu-sabit-liste">Boyutu sabit liste</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> aylar: <span class="ya">metin</span> listesi
+<span class="ya">başla</span>
+  aylar.Uzunluk(<span class="ys">12</span>, <span class="ys">1</span>)
+  aylar[<span class="ys">1</span>] := <span class="ym">'Ocak'</span></code></pre></div>
+<p><code>L.Uzunluk(n)</code> listeyi <code>n</code> elemanlı yapar ve boyutunu sabitler; numaralar 0’dan başlar. <code>L.Uzunluk(n, ilk)</code> numaralamayı <code>ilk</code>’ten başlatır. Yeni elemanlar eleman tipinin başlangıç değeriyle dolar (eleman tipi bilinmiyorsa <code>boş</code>); listede önceden eleman varsa baştan itibaren korunur.</p>
+<p>Boyutu sabit listede:</p>
+<ul>
+<li>geçerli numaralar <code>L.Alt</code> ile <code>L.Üst</code> arasındadır; dışına çıkmak hata verir, sondan sayma yoktur;</li>
+<li><code>Ekle</code> ve <code>Sil</code> hata verir;</li>
+<li>okuyan liste metodları (<code>İçerir</code>, <code>Sırala</code>, <code>Toplam</code> gibi) aynen çalışır;</li>
+<li>boyut yalnızca yeni bir <code>Uzunluk</code> çağrısıyla değişir; <code>liste(L)</code> serbest bir kopya verir.</li>
+</ul>
+<p><code>Uzunluk</code> çağrısı değişkene yeni bir liste atar; aynı listeyi gösteren başka değişkenler eski listeyi göstermeyi sürdürür.</p>
+<h3 id="sözlük">Sözlük</h3>
+<p>Sözlük anahtarları değerlere eşler. Sabit yazımı <code>['a': 1, 'b': 2]</code>, boş sözlük <code>[:]</code> biçimindedir. <code>S['a']</code> okur, <code>S['a'] := 3</code> yazar ya da ekler; olmayan bir anahtarı okumak hata verir. <code>x içinde S</code> anahtar üyeliğini sınar, <code>Sil(S, anahtar)</code> anahtarı kaldırır. Anahtarlar ekleme sırasını korur.</p>
+<h3 id="metin">Metin</h3>
+<p>Metin karakterleri 1’den numaralanır: <code>s[1]</code> ilk karakterdir. <code>Uzunluk(s)</code> karakter sayısını verir. <code>+</code> iki metni birleştirir; işlenenlerden biri metinse diğeri metne çevrilir: <code>'x = ' + 5</code>.</p>
+</section><section class="bolum-blok" id="b05" data-baslik="4. İfadeler"><h2>4. İfadeler</h2>
+<p>İşleçler öncelik sırasına göre, en az bağlayandan en çok bağlayana doğru:</p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Düzey</th>
+<th>İşleçler</th>
+<th>Birleşme</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>boru işleci (bkz. “Boru”)</td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>veya</code>, <code>yada</code></td>
+<td>soldan</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>ve</code></td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>değil</code></td>
+<td>tekli</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>içinde</code></td>
+<td>zincirlenmez</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><code>+</code>, <code>-</code></td>
+<td>soldan</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><code>*</code>, <code>/</code>, <code>böl</code>, <code>mod</code>, <code>@</code></td>
+<td>soldan</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>tekli <code>-</code>, <code>+</code></td>
+<td>tekli</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><code>**</code></td>
+<td>sağdan</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>çağrı <code>f(x)</code>, dizin <code>L[i]</code>, üye <code>n.ad</code></td>
+<td>soldan</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ifade:   veya ('|&gt;' veya)*
+veya:    ve (('veya' | 'yada') ve)*
+ve:      degil ('ve' degil)*
+degil:   'değil' degil | iliski
+iliski:  toplama [('=' | '&lt;&gt;' | '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | 'içinde') toplama]
+toplama: carpma (('+' | '-') carpma)*
+carpma:  tekli (('*' | '/' | '@' | 'böl' | 'mod') tekli)*
+tekli:   ('-' | '+') tekli | '@' sonek | sonek ['**' tekli]
+sonek:   birincil ('(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' AD)*</code></pre></div>
+<h3 id="aritmetik">Aritmetik</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>İşleç</th>
+<th>Anlamı</th>
+<th>Örnek</th>
+<th>Sonuç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>+</code>, <code>-</code>, <code>*</code></td>
+<td>toplama, çıkarma, çarpma</td>
+<td><code>2 + 3 * 4</code></td>
+<td><code>14</code></td>
+</tr>
+<tr class="even">
+<td><code>/</code></td>
+<td>bölme; sonuç her zaman ondalıktır</td>
+<td><code>7 / 2</code></td>
+<td><code>3.5</code></td>
+</tr>
+<tr class="odd">
+<td><code>böl</code></td>
+<td>tamsayı bölmesi; sıfıra doğru keser</td>
+<td><code>-7 böl 2</code></td>
+<td><code>-3</code></td>
+</tr>
+<tr class="even">
+<td><code>mod</code></td>
+<td>kalan; işareti bölünenin işaretidir</td>
+<td><code>-7 mod 3</code></td>
+<td><code>-1</code></td>
+</tr>
+<tr class="odd">
+<td><code>**</code></td>
+<td>üs; sağdan birleşir</td>
+<td><code>2 ** 3 ** 2</code></td>
+<td><code>512</code></td>
+</tr>
+<tr class="even">
+<td><code>@</code></td>
+<td>matris çarpımı (tensörlerde)</td>
+<td><code>A @ B</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tekli eksi üsten sonra uygulanır: <code>-2 ** 2</code> değeri <code>-4</code>’tür. İki tamsayının <code>+</code>, <code>-</code>, <code>*</code>, <code>böl</code>, <code>mod</code> ve <code>**</code> sonucu tamsayıdır; işlenenlerden biri ondalıksa sonuç ondalıktır. Sıfıra bölmek “Sıfıra bölme” hatası verir.</p>
+<h3 id="karşılaştırma">Karşılaştırma</h3>
+<p><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code> mantıksal sonuç verir. Sayılar değerleriyle karşılaştırılır (<code>1 = 1.0</code> doğrudur), metinler sözlük sırasıyla. Listeler ve sözlükler yalnızca eşitlik bakımından (<code>=</code>, <code>&lt;&gt;</code>) karşılaştırılabilir; eşitlik eleman eleman sınanır. İlişki işleçleri zincirlenmez: <code>1 &lt; x &lt; 5</code> sözdizimi hatasıdır; <code>1 &lt; x ve x &lt; 5</code> yazılır.</p>
+<p><code>x içinde K</code>, <code>x</code> değeri <code>K</code> listesinin elemanı, <code>K</code> sözlüğünün anahtarı ya da <code>K</code> metninin bir parçası olduğunda doğrudur.</p>
+<h3 id="mantık">Mantık</h3>
+<p><code>ve</code>, <code>veya</code> kısa devrelidir: sonuç sol işlenenle belli oluyorsa sağ işlenen hesaplanmaz. <code>yada</code> iki işlenenden yalnızca biri doğru olduğunda doğrudur. <code>değil</code> değeri tersine çevirir.</p>
+<p>Mantık işleçleri karşılaştırmalardan sonra bağlar; bu yüzden <code>a &gt; 1 ve b &lt; 2</code> ayraç gerektirmez. İşlenenler tamsayıysa aynı işleçler bit işlemi yapar: <code>6 ve 3</code> değeri <code>2</code>, <code>6 veya 3</code> değeri <code>7</code>, <code>6 yada 3</code> değeri <code>5</code>’tir.</p>
+<h3 id="boru">Boru</h3>
+<p><code>x |&gt; f</code> ifadesi <code>f(x)</code> ile, <code>x |&gt; f(y)</code> ifadesi <code>f(x, y)</code> ile aynıdır: soldaki değer sağdaki çağrının ilk argümanı olur. Zincirleme soldan sağa okunur:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz([<span class="ys">3</span>, <span class="ys">1</span>, <span class="ys">2</span>] |&gt; Sırala |&gt; Ters, <span class="ys">1</span>)</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[3, 2, 1]</code></pre></div>
+<h3 id="birincil-ifadeler">Birincil ifadeler</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+        | 'eğer' ifade 'ise' ifade 'değilse' ifade
+        | 'miras' [AD]
+        | adsiz_altprogram
+        | '(' ifade ')'
+        | koleksiyon</code></pre></div>
+<p><strong>Koşullu ifade.</strong> <code>eğer k ise a değilse b</code>, <code>k</code> doğruysa <code>a</code>’nın, değilse <code>b</code>’nin değerini verir; yalnızca seçilen dal hesaplanır.</p>
+<p><strong>Koleksiyon sabitleri.</strong></p>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Değer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>[]</code></td>
+<td>boş liste</td>
+</tr>
+<tr class="even">
+<td><code>[1, 2, 3]</code></td>
+<td>liste</td>
+</tr>
+<tr class="odd">
+<td><code>[1..5]</code></td>
+<td><code>[1, 2, 3, 4, 5]</code></td>
+</tr>
+<tr class="even">
+<td><code>[:]</code></td>
+<td>boş sözlük</td>
+</tr>
+<tr class="odd">
+<td><code>['a': 1, 'b': 2]</code></td>
+<td>sözlük</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Son elemandan sonra virgül bırakılabilir.</p>
+<p><strong>Çağrı.</strong> <code>f(a, b)</code> alt programı çağırır. Parametresi olmayan bir alt program ayraçsız da çağrılabilir: <code>Selamla</code> ile <code>Selamla()</code> aynıdır. Deyim olarak tek başına yazılan bir alt program adı ise parametreleri olsa da çağrıdır; eksik argümanlar varsayılan değerlerini alır. Bir alt programı çağırmadan değer olarak almak için başına <code>@</code> yazılır: <code>@Selamla</code>.</p>
+<p><strong>Dizin.</strong> <code>L[i]</code> liste, sözlük, metin ve tensörlere uygulanır. Çok boyutlu erişim <code>M[i, j]</code> ya da <code>M[i][j]</code> biçiminde yazılır.</p>
+<p><strong>Üye erişimi.</strong> <code>n.ad</code> bir nesnenin alanına, metoduna ya da bir birimin dışa aktardığı ada erişir.</p>
+<p><strong>Biçimli argüman.</strong> Bir çağrının argümanı <code>değer:genişlik</code> ya da <code>değer:genişlik:basamak</code> biçiminde yazılabilir; değer metne çevrilip sağa yaslanır. <code>yaz(3.14159:8:2, 1)</code> çıktısı <code>3.14</code> olur.</p>
+<h3 id="adsız-alt-programlar">Adsız alt programlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adsiz_altprogram:
+    ('fonksiyon' | 'prosedür') [parametreler] [':' tip] '=&gt;' ifade
+  | ('fonksiyon' | 'prosedür') [parametreler] [':' tip] bildirim* blok</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>kare := <span class="ya">fonksiyon</span>(x) =&gt; x * x
+artır := <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> x + <span class="ys">1</span>
+<span class="ya">bitir</span></code></pre></div>
+<p>Adsız alt programlar tanımlandıkları kapsamdaki değişkenleri yakalar ve onlar üzerinde çalışmayı, tanımlandıkları alt program döndükten sonra da sürdürür.</p>
+</section><section class="bolum-blok" id="b06" data-baslik="5. Deyimler"><h2>5. Deyimler</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>deyimler: (deyim (';' | satır sonu))*
+govde:    deyim | boş</code></pre></div>
+<p>Döngü ve koşul yapılarının gövdesi <strong>tek bir deyimdir</strong>. Birden çok deyim çalıştırmak için gövde <code>başla … bitir</code> arasına alınır. <code>tekrarla … olana dek</code>, <code>değerine göre … bitir</code> ve <code>dene … bitir</code> kendi sınırlarını taşır.</p>
+<h3 id="atama">Atama</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>atama: hedef (':=' | '+=' | '-=' | '*=' | '/=') ifade</code></pre></div>
+<p>Hedef bir değişken, alan (<code>n.x</code>) ya da dizin (<code>L[i]</code>) olabilir. <code>a += b</code>, <code>a := a + b</code> ile aynıdır. Atama bir ifade değildir; karşılaştırma <code>=</code>, atama <code>:=</code> ile yazılır.</p>
+<h3 id="çağrı-deyimi">Çağrı deyimi</h3>
+<p>Tek başına yazılan bir çağrı, ad ya da üye erişimi alt programı çağırır ve varsa sonucunu atar: <code>Selamla</code>, <code>yaz('a', 1)</code>, <code>liste.Temizle</code>.</p>
+<h3 id="blok-içi-değişken">Blok içi değişken</h3>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">değişken</span> toplam := <span class="ys">0</span></code></pre></div>
+<p>Deyimlerin arasında yazılan <code>değişken</code> bildirimi, içinde bulunduğu alt programın kapsamında yeni bir değişken tanımlar.</p>
+<h3 id="koşul">Koşul</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>eger_deyimi: 'eğer' ifade 'ise' govde ['değilse' govde]</code></pre></div>
+<p>Koşul mantıksal olmalıdır. <code>değilse</code> en yakın <code>eğer</code>’e bağlanır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">eğer</span> x &gt; <span class="ys">0</span> <span class="ya">ise</span> yaz(<span class="ym">'pozitif'</span>, <span class="ys">1</span>)
+<span class="ya">değilse</span> <span class="ya">eğer</span> x &lt; <span class="ys">0</span> <span class="ya">ise</span> yaz(<span class="ym">'negatif'</span>, <span class="ys">1</span>)
+<span class="ya">değilse</span> yaz(<span class="ym">'sıfır'</span>, <span class="ys">1</span>)</code></pre></div>
+<h3 id="çok-seçenekli-karar">Çok seçenekli karar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>degerine_gore: ifade 'değerine' 'göre' kol* ['değilse' [':'] deyimler] 'bitir'
+kol:           ','.etiket+ ':' govde
+etiket:        ifade ['..' ifade]</code></pre></div>
+<p>İfade bir kez hesaplanır ve kollar yukarıdan aşağıya denenir; uyan ilk kolun gövdesi çalışır, diğerleri atlanır. Etiket tek bir değer ya da <code>alt..üst</code> aralığı olabilir. Hiçbir kol uymazsa <code>değilse</code> bölümü çalışır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>puan <span class="ya">değerine</span> <span class="ya">göre</span>
+  <span class="ys">90..100</span>: harf := <span class="ym">'A'</span>
+  <span class="ys">80..89</span>:  harf := <span class="ym">'B'</span>
+  <span class="ys">0</span>, <span class="ys">1</span>, <span class="ys">2</span>: harf := <span class="ym">'X'</span>
+  <span class="ya">değilse</span> harf := <span class="ym">'F'</span>
+<span class="ya">bitir</span></code></pre></div>
+<h3 id="sayan-döngü">Sayan döngü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sayan_dongu:
+    ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
+  | ifade AYRILMA ifade YONELME 'adımda' ifade ('artan' | 'azalan')
+    'her' AD 'için' govde</code></pre></div>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Sayaç</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1'den 10'a kadar her i için</code></td>
+<td>1, 2, … 10</td>
+</tr>
+<tr class="even">
+<td><code>10'dan 0'a kadar her j için</code></td>
+<td>10, 9, … 0</td>
+</tr>
+<tr class="odd">
+<td><code>a'dan b'ye adımda c artan her d için</code></td>
+<td>a, a+c, … (b’yi geçmeden)</td>
+</tr>
+<tr class="even">
+<td><code>z'den y'ye adımda v azalan her u için</code></td>
+<td>z, z−v, … (y’nin altına inmeden)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kurallar:</p>
+<ul>
+<li>Başlangıç, bitiş ve adım döngüye girilirken <strong>bir kez</strong> hesaplanır ve tamsayı olmalıdır.</li>
+<li><code>kadar</code> birer birer sayar. İki sınır da tamsayı sabiti olarak yazılmışsa ve ilki büyükse sayaç azalır; bu karar derleme sırasında verilir.</li>
+<li>Sınırlardan biri değişken ya da hesaplanan bir ifadeyse <code>kadar</code> yalnızca ileriye sayar; başlangıç bitişten büyükse gövde hiç çalışmaz. Böylece boş bir listede <code>0'dan Uzunluk(L) - 1'e kadar</code> güvenle yazılabilir.</li>
+<li><code>adımda</code> ile verilen adım pozitif bir tamsayı olmalıdır; yönü <code>artan</code> ya da <code>azalan</code> belirler. Yön sınırlarla uyuşmuyorsa gövde hiç çalışmaz.</li>
+<li>Sayaç bildirilmemişse döngü onu tanımlar. Döngü bittikten sonra sayacın değeri son turdaki değeridir.</li>
+</ul>
+<h3 id="koleksiyon-döngüsü">Koleksiyon döngüsü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>her_dongusu: ifade 'içindeki' 'her' AD [',' AD] 'için' govde</code></pre></div>
+<p>Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adlar <span class="ya">içindeki</span> <span class="ya">her</span> ad <span class="ya">için</span> yaz(ad, <span class="ys">1</span>)
+yaşlar <span class="ya">içindeki</span> <span class="ya">her</span> ad, yaş <span class="ya">için</span> yaz(ad + <span class="ym">': '</span> + yaş, <span class="ys">1</span>)</code></pre></div>
+<h3 id="koşullu-döngüler">Koşullu döngüler</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>iken_dongusu:    ifade 'iken' govde
+tekrarla_deyimi: 'tekrarla' deyimler ifade 'olana' 'dek'
+kez_dongusu:     ifade 'kez' 'tekrarla' govde</code></pre></div>
+<p><code>koşul iken gövde</code>, koşul doğru olduğu sürece gövdeyi çalıştırır; koşul her turdan önce sınanır. <code>tekrarla … koşul olana dek</code> gövdeyi en az bir kez çalıştırır ve koşul doğru olunca durur. <code>n kez tekrarla gövde</code> gövdeyi <code>n</code> kez çalıştırır.</p>
+<h3 id="döngü-denetimi">Döngü denetimi</h3>
+<p><code>kır</code> en içteki döngüden çıkar. <code>devam</code> en içteki döngünün sıradaki turuna geçer.</p>
+<h3 id="eleman-silme-cümlesi">Eleman silme cümlesi</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>eleman_silme: ifade ('listesindeki' | 'dizisindeki') konum '.' 'elemanı' 'Sil'</code></pre></div>
+<p><code>L listesindeki 2. elemanı Sil</code>, <code>Sil(L, 2)</code> ile aynıdır. Konum bir sayı, bir ad ya da ayraç içinde bir ifade olabilir: <code>L listesindeki (i + 1). elemanı Sil</code>.</p>
+<h3 id="dönüş">Dönüş</h3>
+<p><code>dön ifade</code> fonksiyonun sonucunu belirler ve fonksiyondan çıkar. <code>dön</code> tek başına ya da <code>çık</code> deyimi, sonucu değiştirmeden alt programdan çıkar. Ana gövdede <code>çık</code> programı bitirir.</p>
+</section><section class="bolum-blok" id="b07" data-baslik="6. Alt programlar"><h2>6. Alt programlar</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>altprogram: ('prosedür' | 'fonksiyon' | 'kurucu') [AD '.'] AD
+            [parametreler] [':' tip] direktif*
+            bildirim* blok
+
+parametreler:    '(' [parametre_grubu ((';' | ',') parametre_grubu)*] ')'
+parametre_grubu: ['değişken' | 'sabit'] ','.AD+ [':' tip] ['=' ifade]</code></pre></div>
+<p><code>prosedür</code> değer döndürmez, <code>fonksiyon</code> döndürür. Alt programların kendi <code>sabit</code>, <code>değişken</code>, <code>tip</code> bölümleri ve iç içe alt programları olabilir.</p>
+<h3 id="sonuç">Sonuç</h3>
+<p>Bir fonksiyonun sonucu iki yoldan verilir: <code>dön ifade</code> ile ya da <code>sonuç</code> adlı örtük değişkene atayarak. <code>sonuç</code>, dönüş tipinin başlangıç değeriyle başlar; fonksiyon <code>dön</code> yazılmadan biterse <code>sonuç</code>’un değeri döner.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">fonksiyon</span> Topla(a, b: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sonuç := a + b
+<span class="ya">bitir</span></code></pre></div>
+<h3 id="parametreler">Parametreler</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Aktarım</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>a: tamsayı</code></td>
+<td>Değerle; liste, sözlük ve nesnelerde aynı nesne paylaşılır</td>
+</tr>
+<tr class="even">
+<td><code>değişken a: tamsayı</code></td>
+<td>Referansla; alt programdaki atama çağıranın değişkenini değiştirir</td>
+</tr>
+<tr class="odd">
+<td><code>sabit a: tamsayı</code></td>
+<td>Değerle; sözcük belgeleme amaçlıdır</td>
+</tr>
+<tr class="even">
+<td><code>b: tamsayı = 10</code></td>
+<td>Varsayılan değerli; çağrıda yazılmayabilir</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tipi yazılmayan parametre her tipte değer alır. Parametre grupları <code>;</code> ya da <code>,</code> ile ayrılır. <code>değişken</code> parametreye yalnızca bir değişken, alan ya da dizin verilebilir. Eksik ya da fazla argüman hata verir.</p>
+<h3 id="direktifler">Direktifler</h3>
+<p>Başlığın ardından yazılabilir: <code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code>. <code>ileri</code>, gövdesi daha sonra yazılacak bir alt programı önceden bildirir. <code>soyut</code>, gövdesi olmayan bir metodu bildirir; çağrılırsa hata verir. Diğerleri ayrıştırılır ama davranışı değiştirmez: bütün metodlar zaten sanaldır.</p>
+<h3 id="özyineleme-ve-iç-içe-alt-programlar">Özyineleme ve iç içe alt programlar</h3>
+<p>Alt programlar kendilerini çağırabilir. İçteki bir alt program, dıştakinin değişkenlerini görür ve değiştirebilir.</p>
+</section><section class="bolum-blok" id="b08" data-baslik="7. Sınıflar ve kayıtlar"><h2>7. Sınıflar ve kayıtlar</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sinif: 'sınıf' ['(' AD ')'] uye* 'bitir'
+kayit: 'kayıt' alan* 'bitir'
+uye:   gorunurluk | alan | metod
+alan:  ','.AD+ [':' tip] ['=' ifade]</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">tip</span>
+  Hayvan = <span class="ya">sınıf</span>
+    ad: <span class="ya">metin</span>
+    <span class="ya">kurucu</span> Oluştur(a: <span class="ya">metin</span>)
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">sanal</span>
+    <span class="ya">fonksiyon</span> Tanıt: <span class="ya">metin</span>
+  <span class="ya">bitir</span>
+
+  Kedi = <span class="ya">sınıf</span>(Hayvan)
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">ezer</span>
+  <span class="ya">bitir</span>
+
+<span class="ya">kurucu</span> Hayvan.Oluştur(a: <span class="ya">metin</span>)
+<span class="ya">başla</span>
+  ad := a
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hayvan.Ses: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'...'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hayvan.Tanıt: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> ad + <span class="ym">': '</span> + Ses
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Kedi.Ses: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'Miyav'</span>
+<span class="ya">bitir</span></code></pre></div>
+<h3 id="metodlar">Metodlar</h3>
+<p>Bir metodun gövdesi sınıfın içinde ya da dışında yazılabilir. Sınıf içinde başlığın ardından <code>başla</code> (ya da yerel <code>değişken</code>/<code>sabit</code> bölümü) geliyorsa gövde oradadır; gelmiyorsa gövde sınıfın dışında <code>Sınıf.Metod</code> adıyla yazılır.</p>
+<p>Metod gövdesinde nesnenin alanlarına ve metodlarına adlarıyla doğrudan ya da <code>kendi.ad</code> biçiminde erişilir. Bütün metodlar dinamik bağlanır: çağrılan metod, değişkenin bildirilen tipine göre değil, nesnenin gerçek sınıfına göre seçilir.</p>
+<h3 id="nesne-oluşturma">Nesne oluşturma</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Kedi.Oluştur('Tekir')</code></td>
+<td>Kurucuyu adıyla çağırır</td>
+</tr>
+<tr class="even">
+<td><code>Kedi('Tekir')</code></td>
+<td>Aynı kurucuyu sınıf adıyla çağırır</td>
+</tr>
+<tr class="odd">
+<td><code>Nokta.Oluştur(3, 4)</code></td>
+<td>Kurucusu olmayan sınıf ya da kayıtta alanları sırayla doldurur</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alanlar önce bildirimdeki ilk değerlerini (<code>sayaç: tamsayı = 0</code>) ya da tiplerinin başlangıç değerini alır, sonra kurucu çalışır.</p>
+<h3 id="kalıtım">Kalıtım</h3>
+<p>Bir sınıfın en çok bir ebeveyni olabilir: <code>sınıf(Ebeveyn)</code>. Alt sınıf ebeveynin alanlarını ve metodlarını devralır, aynı adla yeniden tanımladığı metod ebeveyninkinin yerini alır.</p>
+<p>Ebeveynin metodu <code>miras</code> ile çağrılır: <code>miras Oluştur(a)</code> adı verilen metodu, tek başına <code>miras</code> ise içinde bulunulan metodun ebeveyndeki karşılığını aynı argümanlarla çağırır. <code>ÖrneğiMi(nesne, Sınıf)</code> nesnenin o sınıftan ya da alt sınıflarından olup olmadığını söyler.</p>
+<h3 id="görünürlük">Görünürlük</h3>
+<p><code>özel</code>, <code>genel</code>, <code>korumalı</code> ve <code>yayınlanmış</code> sözcükleri sınıf içinde bölüm başlığı olarak yazılabilir. Bu sözcükler belgeleme amaçlıdır: derleyici erişimi kısıtlamaz.</p>
+<h3 id="özel-adlı-metodlar">Özel adlı metodlar</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Metod</th>
+<th>Kullanıldığı yer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>MetneÇevir</code></td>
+<td><code>yaz(nesne)</code> ve metne çevirme</td>
+</tr>
+<tr class="even">
+<td><code>Topla</code>, <code>Çıkar</code>, <code>Çarp</code>, <code>Bölme</code></td>
+<td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></td>
+</tr>
+<tr class="odd">
+<td><code>Eşit</code></td>
+<td><code>=</code> ve <code>&lt;&gt;</code></td>
+</tr>
+<tr class="even">
+<td><code>Küçük</code>, <code>Büyük</code></td>
+<td><code>&lt;</code>, <code>&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="kayıtlar">Kayıtlar</h3>
+<p>Kayıt, metodu olmayan ve değer olarak davranan bir sınıftır: atandığında ve parametre olarak verildiğinde kopyalanır. Kayıt tipli bir değişken bildirildiğinde alanları başlangıç değerinde hazır gelir; sınıf tipli bir değişken ise bir nesne atanana kadar <code>boş</code>tur.</p>
+</section><section class="bolum-blok" id="b09" data-baslik="8. Hatalar"><h2>8. Hatalar</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>dene_deyimi: 'dene' deyimler
+             ['yakala' ['(' AD ')'] deyimler]
+             ['sonunda' deyimler]
+             'bitir'</code></pre></div>
+<p><code>dene</code> bölümündeki deyimler çalışırken bir hata oluşursa denetim <code>yakala</code> bölümüne geçer; ayraç içindeki ad hata nesnesine bağlanır. <code>sonunda</code> bölümü, hata olsa da olmasa da, <code>dene</code> deyiminden çıkılırken çalışır. Yakalanmayan hata dıştaki <code>dene</code> deyimine, o da yoksa programın sonuna kadar yayılır; program “Çalışma hatası” iletisi ve 1 çıkış koduyla biter.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">dene</span>
+  <span class="ya">fırlat</span> Hata(<span class="ym">'Geçersiz giriş'</span>, <span class="ym">'DoğrulamaHatası'</span>)
+<span class="ya">yakala</span> (h)
+  yaz(h.mesaj + <span class="ym">' / '</span> + h.tür, <span class="ys">1</span>)
+<span class="ya">sonunda</span>
+  yaz(<span class="ym">'bitti'</span>, <span class="ys">1</span>)
+<span class="ya">bitir</span></code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Geçersiz giriş / DoğrulamaHatası
+bitti</code></pre></div>
+<p><code>fırlat ifade</code> bir hata başlatır. <code>Hata(mesaj)</code> ya da <code>Hata(mesaj, tür)</code> bir hata nesnesi oluşturur; nesnenin <code>mesaj</code> ve <code>tür</code> alanları vardır. Kendi sınıflarınızın nesneleri de fırlatılabilir. Çalışma zamanı hataları (sıfıra bölme, sınır aşımı, tip uyuşmazlığı, tanımsız ad) aynı yolla yakalanır; türleri <code>Hata</code>’dır. <code>İddia(koşul, mesaj)</code> koşul yanlışsa hata fırlatır.</p>
+<p>Sözdizimi hataları program çalışmadan önce bildirilir ve yakalanamaz.</p>
+</section><section class="bolum-blok" id="b10" data-baslik="9. Birimler"><h2>9. Birimler</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birim: 'birim' AD kullan*
+       ['arayüz' kullan* arayuz_bildirimi* 'uygulama' kullan*]
+       bildirim*
+       ['başla' deyimler]
+       'bitir' '.'</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">birim</span> Geometri
+
+<span class="ya">arayüz</span>
+  <span class="ya">sabit</span> UZUNLUK_BİRİMİ: <span class="ya">metin</span> = <span class="ym">'cm'</span>
+  <span class="ya">fonksiyon</span> DaireAlanı(r: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+
+<span class="ya">uygulama</span>
+  <span class="ya">kullan</span> Matematik
+
+  <span class="ya">fonksiyon</span> DaireAlanı(r: <span class="ya">ondalık</span>): <span class="ya">ondalık</span>
+  <span class="ya">başla</span>
+    <span class="ya">dön</span> pi * r * r
+  <span class="ya">bitir</span>
+
+<span class="ya">bitir</span>.</code></pre></div>
+<p><code>arayüz</code> bölümü birimin dışa açtığı adları bildirir; alt programlar burada yalnızca başlık olarak yazılır, gövdeleri <code>uygulama</code> bölümündedir. <code>uygulama</code> bölümünde bildirilip <code>arayüz</code>’de yer almayan adlar birimin dışından görünmez. <code>arayüz</code> bölümü yoksa birimdeki bütün adlar dışa açılır. İsteğe bağlı <code>başla</code> bölümü, birim ilk kez yüklendiğinde bir kez çalışır.</p>
+<p><code>kullan Geometri</code> birimi yükler. Dışa açılan adlar doğrudan (<code>DaireAlanı(2)</code>) ya da nitelikli (<code>Geometri.DaireAlanı(2)</code>) kullanılabilir. Bir birim, kaç yerden kullanılırsa kullanılsın, yalnızca bir kez yüklenir.</p>
+<p>Birim dosyaları şu sırayla aranır: programın klasörü, onun <code>kutuphane/</code> alt klasörü, Yöntem’in kendi <code>kutuphane/</code> klasörü ve <code>YONTEM_YOL</code> ortam değişkenindeki klasörler; <code>yontem paket</code> ile kurulan paketler projenin <code>paketler/</code> klasöründen bulunur. Yerleşik birimler (<code>Matematik</code>, <code>Sistem</code>, <code>YZ</code>, <code>Kuantum</code>, <code>Meşale</code>, <code>Pencere</code>, <code>Ağ</code> ve diğerleri) dosya aranmadan bulunur.</p>
+</section><section class="bolum-blok" id="b11" data-baslik="10. Giriş ve çıkış"><h2>10. Giriş ve çıkış</h2>
+<p>Dilde ayrı bir “satır sonu” komutu yoktur; <code>yaz</code> ve <code>oku</code> komutlarının ikinci parametresi kaç satır ilerleneceğini belirtir.</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Çağrı</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yaz(değer)</code></td>
+<td>Değeri yazar, aynı satırda kalır</td>
+</tr>
+<tr class="even">
+<td><code>yaz(değer, 1)</code></td>
+<td>Değeri yazar ve alt satıra geçer</td>
+</tr>
+<tr class="odd">
+<td><code>yaz('', 2)</code></td>
+<td>İki satır ilerler</td>
+</tr>
+<tr class="even">
+<td><code>oku(x)</code></td>
+<td><code>x</code> sayıysa sıradaki sözcüğü, metinse satırın kalanını okur</td>
+</tr>
+<tr class="odd">
+<td><code>oku(x, 1)</code></td>
+<td>Okur ve sonraki satıra geçer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>oku</code> okuduğu bilgiyi değişkenin tipine çevirir. Değerler metne şöyle çevrilir: tamsayılar olduğu gibi, ondalıklar en az bir basamakla (<code>3.0</code>), mantıksal değerler <code>doğru</code>/<code>yanlış</code>, <code>boş</code> değeri <code>boş</code>, listeler <code>[1, 2]</code>, sözlükler <code>['a': 1]</code>, nesneler <code>MetneÇevir</code> metoduyla.</p>
+</section><section class="bolum-blok" id="b12" data-baslik="11. Katı kip"><h2>11. Katı kip</h2>
+<p>Dosyada <code>{$katı}</code> yönergesi varsa (ya da <code>yontem.json</code> içinde <code>"kati": true</code> yazıyorsa, ya da derleyici <code>--kati</code> seçeneğiyle çalıştırılmışsa) derleyici tipleri program çalışmadan önce denetler ve bulduğu bütün tip hatalarını bir arada listeler.</p>
+<p>Katı kipte:</p>
+<ul>
+<li>her değişken, parametre ve fonksiyon sonucu tipiyle bildirilmelidir;</li>
+<li>atamalar, argümanlar, dönüş değerleri ve işleçlerin işlenenleri tiplerine göre denetlenir;</li>
+<li><code>tamsayı listesi</code> gibi eleman tipi bildirilmiş koleksiyonlara uymayan eleman konamaz;</li>
+<li>sınıf ve kayıt tiplerinde olmayan bir alana ya da metoda erişilemez;</li>
+<li>tanımsız adlar derleme sırasında bildirilir.</li>
+</ul>
+<p><code>herhangi</code> tipli değerler ve eleman tipi yazılmamış <code>liste</code> denetim dışında kalır ve çalışırken denetlenir. Yönerge yalnızca bulunduğu dosyayı etkiler: katı bir program katı olmayan bir birimi kullanabilir. Katı kip JavaScript derleyicisindedir; Python yorumlayıcısı yönergeyi yorum olarak görür ve programı aynı sonuçla çalıştırır.</p>
+</section><section class="bolum-blok" id="b13" data-baslik="12. Uygulama farkları"><h2>12. Uygulama farkları</h2>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Konu</th>
+<th>JavaScript</th>
+<th>Python</th>
+<th>Gömülü (C++)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tamsayı büyüklüğü</td>
+<td>sınırsız</td>
+<td>sınırsız</td>
+<td>64 bit</td>
+</tr>
+<tr class="even">
+<td>Katı kip denetimi</td>
+<td>var</td>
+<td>yönerge yok sayılır</td>
+<td>tipler her zaman statiktir</td>
+</tr>
+<tr class="odd">
+<td>Tipsiz değişken</td>
+<td>var</td>
+<td>var</td>
+<td>tipi ilk değerden çıkarılır</td>
+</tr>
+<tr class="even">
+<td><code>herhangi</code> tipi</td>
+<td>var</td>
+<td>var</td>
+<td>yok</td>
+</tr>
+<tr class="odd">
+<td>Hata ayıklayıcı, paket komutları</td>
+<td>var</td>
+<td>yok</td>
+<td>yok</td>
+</tr>
+<tr class="even">
+<td>Etkileşimli kabuk</td>
+<td>yok</td>
+<td>var</td>
+<td>yok</td>
+</tr>
+<tr class="odd">
+<td>Birimler</td>
+<td>hepsi</td>
+<td>hepsi</td>
+<td><code>Matematik</code>, <code>YZ</code>, <code>Donanım</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Gömülü arka uç, tipleri derleme sırasında belirlenemeyen programları açıklayıcı bir hatayla reddeder.</p>
+</section><section class="bolum-blok" id="b14" data-baslik="Ek A — Dilbilgisinin tamamı"><h2>Ek A — Dilbilgisinin tamamı</h2>
+<p>Aşağıdaki kurallar depodaki <code>yontem.gram</code> dosyasının açıklamaları çıkarılmış özetidir. Sözcük tanımları ve ayrıntılı açıklamalar için o dosyaya bakabilirsiniz.</p>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>dosya:    birim | program
+program:  ['program' AD ayirici] kullan* bildirim* blok ('.' | SON)
+birim:    'birim' AD ayirici kullan*
+          ['arayüz' kullan* arayuz_bildirimi* 'uygulama' kullan*]
+          bildirim* ['başla' deyimler] 'bitir' ['.']
+kullan:   'kullan' ','.AD+ ayirici
+ayirici:  ';' | satır sonu | SON
+
+bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram
+arayuz_bildirimi:
+          sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram_basligi
+sabit_bolumu:    'sabit' (AD [':' tip] ('=' | ':=') ifade ayirici)*
+degisken_bolumu: 'değişken' (degisken_grubu ayirici)*
+degisken_grubu:  ','.AD+ ':' tip [('=' | ':=') ifade]
+               | ','.AD+ ('=' | ':=') ifade
+tip_bolumu:      'tip' (AD '=' tip_tanimi ayirici)*
+tip_tanimi:      sinif | kayit | tip
+
+tip:        tip_tabani tip_eki*
+tip_tabani: 'dizi' | [AD '.'] AD
+tip_eki:    'dizisi' | 'listesi' | 'sözlüğü'
+
+sinif:       'sınıf' ['(' AD ')'] sinif_uyesi* 'bitir'
+kayit:       'kayıt' kayit_uyesi* 'bitir'
+sinif_uyesi: gorunurluk | 'değişken' | metod | degisken_grubu ayirici
+kayit_uyesi: gorunurluk | 'değişken' | degisken_grubu ayirici
+gorunurluk:  'özel' | 'genel' | 'korumalı' | 'yayınlanmış'
+metod:       altprogram_basligi [bildirim* blok ayirici]
+
+altprogram:  altprogram_basligi [bildirim* blok ayirici]
+altprogram_basligi:
+             ('prosedür' | 'fonksiyon' | 'kurucu') [AD '.'] AD
+             [parametreler] [':' tip] ayirici (direktif ayirici)*
+direktif:    'sanal' | 'ezer' | 'soyut' | 'ileri' | 'aşırı' | 'statik'
+parametreler:
+             '(' [parametre_grubu ((';' | ',') parametre_grubu)*] ')'
+parametre_grubu:
+             ['değişken' | 'sabit'] ','.AD+ [':' tip] [('=' | ':=') ifade]
+
+blok:     'başla' deyimler 'bitir'
+deyimler: (deyim ayirici)*
+govde:    deyim | boş
+deyim:    blok
+        | 'eğer' ifade 'ise' govde [[';'] 'değilse' govde]
+        | 'tekrarla' deyimler ifade 'olana' 'dek'
+        | 'dene' deyimler ['yakala' ['(' AD ')'] deyimler]
+          ['sonunda' deyimler] 'bitir'
+        | 'fırlat' ifade
+        | 'dön' [ifade]
+        | 'çık' | 'kır' | 'devam'
+        | 'değişken' degisken_grubu
+        | ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
+        | ifade AYRILMA ifade YONELME 'adımda' ifade
+          ('artan' | 'azalan') 'her' AD 'için' govde
+        | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+        | ifade ('listesindeki' | 'dizisindeki') sonek
+          '.' ('elemanı' | 'elemanını') 'Sil'
+        | ifade 'iken' govde
+        | ifade 'kez' 'tekrarla' govde
+        | ifade 'değerine' 'göre' kol*
+          ['değilse' [':'] deyimler] 'bitir'
+        | sonek (':=' | '+=' | '-=' | '*=' | '/=') ifade
+        | ifade
+kol:      ','.etiket+ ':' govde ayirici
+etiket:   ifade ['..' ifade]
+
+ifade:    veya ('|&gt;' veya)*
+veya:     ve (('veya' | 'yada') ve)*
+ve:       degil ('ve' degil)*
+degil:    'değil' degil | iliski
+iliski:   toplama [('=' | '&lt;&gt;' | '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | 'içinde')
+          toplama]
+toplama:  carpma (('+' | '-') carpma)*
+carpma:   tekli (('*' | '/' | '@' | 'böl' | 'mod') tekli)*
+tekli:    ('-' | '+') tekli | '@' sonek | sonek ['**' tekli]
+sonek:    birincil sonek_eki*
+sonek_eki:
+          '(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' (AD | AS)
+arguman:  ifade [':' ifade [':' ifade]]
+birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+        | 'eğer' ifade 'ise' ifade 'değilse' ifade
+        | 'miras' [AD]
+        | ('fonksiyon' | 'prosedür') [parametreler] [':' tip]
+          ('=&gt;' ifade | bildirim* blok)
+        | '(' ifade ')'
+        | '[' ']' | '[' ':' ']'
+        | '[' ifade '..' ifade ']'
+        | '[' ifade ':' ifade (',' ifade ':' ifade)* [','] ']'
+        | '[' ','.ifade+ [','] ']'</code></pre></div>
+</section><section class="bolum-blok" id="b15" data-baslik="Ek B — Yerleşik işlevler"><h2>Ek B — Yerleşik işlevler</h2>
+<p>Her programda, birim kullanmadan erişilebilen işlevler:</p>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Alan</th>
+<th>İşlevler</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Giriş ve çıkış</td>
+<td><code>yaz</code>, <code>oku</code></td>
+</tr>
+<tr class="even">
+<td>Dönüşüm ve tip</td>
+<td><code>tamsayı</code>, <code>ondalık</code>, <code>metin</code>, <code>mantıksal</code>, <code>liste</code>, <code>Tür</code>, <code>ÖrneğiMi</code></td>
+</tr>
+<tr class="odd">
+<td>Koleksiyon</td>
+<td><code>Uzunluk</code>, <code>Ekle</code>, <code>Sil</code>, <code>Aralık</code>, <code>Eşle</code>, <code>Süz</code>, <code>İndirge</code>, <code>Sırala</code>, <code>Ters</code>, <code>Toplam</code>, <code>Maks</code>, <code>Min</code>, <code>Eşleştir</code>, <code>Numaralandır</code>, <code>Dilim</code>, <code>Kopya</code>, <code>Anahtarlar</code>, <code>Değerler</code>, <code>İçerir</code>, <code>Benzersiz</code>, <code>Say</code></td>
+</tr>
+<tr class="even">
+<td>Metin</td>
+<td><code>AltMetin</code>, <code>Konum</code>, <code>BüyükHarf</code>, <code>KüçükHarf</code>, <code>Ayır</code>, <code>Birleştir</code>, <code>Kırp</code>, <code>Değiştir</code>, <code>Biçimle</code>, <code>Sıra</code>, <code>Karakter</code>, <code>HarfMi</code>, <code>RakamMı</code></td>
+</tr>
+<tr class="odd">
+<td>Sayısal</td>
+<td><code>Mutlak</code>, <code>Kare</code>, <code>Kök</code>, <code>Yuvarla</code>, <code>Kes</code>, <code>Rastgele</code>, <code>Rastgeleleştir</code>, <code>Artır</code>, <code>Azalt</code>, <code>Değiş</code>, <code>pi</code></td>
+</tr>
+<tr class="even">
+<td>Denetim</td>
+<td><code>Hata</code>, <code>İddia</code>, <code>Durdur</code>, <code>Çağır</code>, <code>ParametreSayısı</code>, <code>Parametre</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Birimlerin sunduğu işlevler <em>Yöntem Birimler ve Araçlar Kılavuzu</em>’nda ve README dosyasında anlatılır.</p>
+</section>
+    <nav class="sayfala" aria-label="Bölümler arası">
+      <button type="button" id="onceki" class="onceki"><small>Önceki bölüm</small><span></span></button>
+      <button type="button" id="sonraki" class="sonraki"><small>Sonraki bölüm</small><span></span></button>
+    </nav>
+  </main>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="https://yontem.pro/">yontem.pro</a> · <a href="https://yontem.pro/gizlilik.html">Gizlilik</a> · <a href="https://yontem.pro/kunye.html">Künye</a></span>
+</footer>
+<script>
+
+(function () {
+  var govde = document.body; govde.classList.add('js');
+  var bloklar = Array.prototype.slice.call(document.querySelectorAll('.bolum-blok'));
+  var linkler = Array.prototype.slice.call(document.querySelectorAll('.yan li a'));
+  var onceki = document.getElementById('onceki'), sonraki = document.getElementById('sonraki');
+  var aktif = 0;
+  function goster(i, hedef) {
+    aktif = Math.max(0, Math.min(bloklar.length - 1, i));
+    bloklar.forEach(function (b, j) { b.classList.toggle('acik', j === aktif); });
+    linkler.forEach(function (a, j) { if (j === aktif) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    var o = bloklar[aktif - 1], s = bloklar[aktif + 1];
+    onceki.style.visibility = o ? 'visible' : 'hidden';
+    if (o) onceki.querySelector('span').textContent = o.getAttribute('data-baslik');
+    sonraki.style.visibility = s ? 'visible' : 'hidden';
+    if (s) sonraki.querySelector('span').textContent = s.getAttribute('data-baslik');
+    var kapak = document.querySelector('.tek-kapak');
+    if (kapak) kapak.style.display = aktif === 0 ? '' : 'none';
+    var t = hedef ? document.getElementById(hedef) : null;
+    setTimeout(function () { if (t && t !== bloklar[aktif]) t.scrollIntoView(); else window.scrollTo(0, 0); }, 0);
+  }
+  function hashten() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) { goster(0); return; }
+    var el = document.getElementById(id);
+    if (!el) { goster(0); return; }
+    var blok = el.closest('.bolum-blok');
+    goster(blok ? bloklar.indexOf(blok) : 0, id);
+  }
+  window.addEventListener('hashchange', hashten);
+  onceki.addEventListener('click', function () { location.hash = bloklar[aktif - 1].id; });
+  sonraki.addEventListener('click', function () { location.hash = bloklar[aktif + 1].id; });
+  if (window.matchMedia('(max-width: 860px)').matches) {
+    document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+  }
+  hashten();
+})();
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+
+</script>
+</body>
+</html>

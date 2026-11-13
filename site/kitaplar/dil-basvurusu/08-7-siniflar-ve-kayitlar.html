@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Sınıflar ve kayıtlar · Yöntem Dil Başvurusu</title>
+<meta name="description" content="Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body class="bolum-sayfa">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="ust">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="/">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>yöntem</span>
+    </a>
+    <div class="menu">
+      <a href="/ogren">Öğren</a>
+      <a href="../index.html" aria-current="true">Kitaplar</a>
+      <a href="../kurulum/index.html">Kurulum</a>
+      <a class="dugme" href="/dene">Oyun alanı</a>
+    </div>
+  </nav>
+</header>
+<div class="okuma">
+  <aside class="yan" aria-label="Kitabın bölümleri">
+    <details open>
+      <summary><a href="index.html">Yöntem Dil Başvurusu</a></summary>
+      <ol><li><a href="01-bu-basvuru-ne-anlatir.html">Bu başvuru ne anlatır?</a></li><li><a href="02-1-sozcuk-yapisi.html">1. Sözcük yapısı</a></li><li><a href="03-2-program-yapisi.html">2. Program yapısı</a></li><li><a href="04-3-tipler-ve-degerler.html">3. Tipler ve değerler</a></li><li><a href="05-4-ifadeler.html">4. İfadeler</a></li><li><a href="06-5-deyimler.html">5. Deyimler</a></li><li><a href="07-6-alt-programlar.html">6. Alt programlar</a></li><li><a href="08-7-siniflar-ve-kayitlar.html" aria-current="page">7. Sınıflar ve kayıtlar</a></li><li><a href="09-8-hatalar.html">8. Hatalar</a></li><li><a href="10-9-birimler.html">9. Birimler</a></li><li><a href="11-10-giris-ve-cikis.html">10. Giriş ve çıkış</a></li><li><a href="12-11-kati-kip.html">11. Katı kip</a></li><li><a href="13-12-uygulama-farklari.html">12. Uygulama farkları</a></li><li><a href="14-ek-a-dilbilgisinin-tamami.html">Ek A — Dilbilgisinin tamamı</a></li><li><a href="15-ek-b-yerlesik-islevler.html">Ek B — Yerleşik işlevler</a></li></ol>
+      <a class="pdf" href="Yontem_Dil_Basvurusu.pdf" download><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF sürümü <small>(isteğe bağlı, 127 KB)</small></a>
+    </details>
+  </aside>
+  <main id="icerik" class="metin">
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem Dil Başvurusu</a> / Bölüm 8 / 15</p>
+    <h2 id="sınıflar-ve-kayıtlar">7. Sınıflar ve kayıtlar</h2>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sinif: 'sınıf' ['(' AD ')'] uye* 'bitir'
+kayit: 'kayıt' alan* 'bitir'
+uye:   gorunurluk | alan | metod
+alan:  ','.AD+ [':' tip] ['=' ifade]</code></pre></div>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">tip</span>
+  Hayvan = <span class="ya">sınıf</span>
+    ad: <span class="ya">metin</span>
+    <span class="ya">kurucu</span> Oluştur(a: <span class="ya">metin</span>)
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">sanal</span>
+    <span class="ya">fonksiyon</span> Tanıt: <span class="ya">metin</span>
+  <span class="ya">bitir</span>
+
+  Kedi = <span class="ya">sınıf</span>(Hayvan)
+    <span class="ya">fonksiyon</span> Ses: <span class="ya">metin</span>; <span class="ya">ezer</span>
+  <span class="ya">bitir</span>
+
+<span class="ya">kurucu</span> Hayvan.Oluştur(a: <span class="ya">metin</span>)
+<span class="ya">başla</span>
+  ad := a
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hayvan.Ses: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'...'</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Hayvan.Tanıt: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> ad + <span class="ym">': '</span> + Ses
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Kedi.Ses: <span class="ya">metin</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> <span class="ym">'Miyav'</span>
+<span class="ya">bitir</span></code></pre></div>
+<h3 id="metodlar">Metodlar</h3>
+<p>Bir metodun gövdesi sınıfın içinde ya da dışında yazılabilir. Sınıf içinde başlığın ardından <code>başla</code> (ya da yerel <code>değişken</code>/<code>sabit</code> bölümü) geliyorsa gövde oradadır; gelmiyorsa gövde sınıfın dışında <code>Sınıf.Metod</code> adıyla yazılır.</p>
+<p>Metod gövdesinde nesnenin alanlarına ve metodlarına adlarıyla doğrudan ya da <code>kendi.ad</code> biçiminde erişilir. Bütün metodlar dinamik bağlanır: çağrılan metod, değişkenin bildirilen tipine göre değil, nesnenin gerçek sınıfına göre seçilir.</p>
+<h3 id="nesne-oluşturma">Nesne oluşturma</h3>
+<div class="tablo">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Yazım</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Kedi.Oluştur('Tekir')</code></td>
+<td>Kurucuyu adıyla çağırır</td>
+</tr>
+<tr class="even">
+<td><code>Kedi('Tekir')</code></td>
+<td>Aynı kurucuyu sınıf adıyla çağırır</td>
+</tr>
+<tr class="odd">
+<td><code>Nokta.Oluştur(3, 4)</code></td>
+<td>Kurucusu olmayan sınıf ya da kayıtta alanları sırayla doldurur</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Alanlar önce bildirimdeki ilk değerlerini (<code>sayaç: tamsayı = 0</code>) ya da tiplerinin başlangıç değerini alır, sonra kurucu çalışır.</p>
+<h3 id="kalıtım">Kalıtım</h3>
+<p>Bir sınıfın en çok bir ebeveyni olabilir: <code>sınıf(Ebeveyn)</code>. Alt sınıf ebeveynin alanlarını ve metodlarını devralır, aynı adla yeniden tanımladığı metod ebeveyninkinin yerini alır.</p>
+<p>Ebeveynin metodu <code>miras</code> ile çağrılır: <code>miras Oluştur(a)</code> adı verilen metodu, tek başına <code>miras</code> ise içinde bulunulan metodun ebeveyndeki karşılığını aynı argümanlarla çağırır. <code>ÖrneğiMi(nesne, Sınıf)</code> nesnenin o sınıftan ya da alt sınıflarından olup olmadığını söyler.</p>
+<h3 id="görünürlük">Görünürlük</h3>
+<p><code>özel</code>, <code>genel</code>, <code>korumalı</code> ve <code>yayınlanmış</code> sözcükleri sınıf içinde bölüm başlığı olarak yazılabilir. Bu sözcükler belgeleme amaçlıdır: derleyici erişimi kısıtlamaz.</p>
+<h3 id="özel-adlı-metodlar">Özel adlı metodlar</h3>
+<div class="tablo">
+<table>
+<thead>
+<tr class="header">
+<th>Metod</th>
+<th>Kullanıldığı yer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>MetneÇevir</code></td>
+<td><code>yaz(nesne)</code> ve metne çevirme</td>
+</tr>
+<tr class="even">
+<td><code>Topla</code>, <code>Çıkar</code>, <code>Çarp</code>, <code>Bölme</code></td>
+<td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></td>
+</tr>
+<tr class="odd">
+<td><code>Eşit</code></td>
+<td><code>=</code> ve <code>&lt;&gt;</code></td>
+</tr>
+<tr class="even">
+<td><code>Küçük</code>, <code>Büyük</code></td>
+<td><code>&lt;</code>, <code>&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="kayıtlar">Kayıtlar</h3>
+<p>Kayıt, metodu olmayan ve değer olarak davranan bir sınıftır: atandığında ve parametre olarak verildiğinde kopyalanır. Kayıt tipli bir değişken bildirildiğinde alanları başlangıç değerinde hazır gelir; sınıf tipli bir değişken ise bir nesne atanana kadar <code>boş</code>tur.</p>
+
+    <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="07-6-alt-programlar.html"><small>Önceki</small>6. Alt programlar</a><a class="sonraki" href="09-8-hatalar.html"><small>Sonraki</small>8. Hatalar</a></nav>
+  </main>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#metodlar">Metodlar</a></li><li><a href="#nesne-oluşturma">Nesne oluşturma</a></li><li><a href="#kalıtım">Kalıtım</a></li><li><a href="#görünürlük">Görünürlük</a></li><li><a href="#özel-adlı-metodlar">Özel adlı metodlar</a></li><li><a href="#kayıtlar">Kayıtlar</a></li></ol></aside>
+</div>
+<footer class="alt">
+  <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>
+  <span><a href="/">yontem.pro</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/kunye">Künye</a></span>
+</footer>
+<script>
+if (window.matchMedia('(max-width: 860px)').matches) {
+  document.querySelectorAll('.yan details').forEach(function (d) { d.removeAttribute('open'); });
+}
+document.querySelectorAll('.kopyala').forEach(function (d) {
+  d.addEventListener('click', function () {
+    var kod = d.parentNode.querySelector('code').innerText;
+    navigator.clipboard.writeText(kod).then(function () {
+      d.textContent = 'Kopyalandı';
+      setTimeout(function () { d.textContent = 'Kopyala'; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

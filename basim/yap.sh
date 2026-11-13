@@ -17,7 +17,10 @@ pandoc kurulum_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-fil
 python3 hazirla.py birimler birimler.md birimler_h.md     # birimler.md, birimler_uret.py ile üretilir
 pandoc birimler_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-filter=kitap.lua --template=sablon.tex \
   -M title="Yöntem Birimler ve Araçlar Kılavuzu" -M author="Önder Örnek" -M kisa="Yöntem Birimler ve Araçlar Kılavuzu" -o birimler.tex
-for f in ${@:-kitap kilavuz llm kurulum birimler}; do
+python3 hazirla.py basvuru basvuru.md basvuru_h.md
+pandoc basvuru_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-filter=kitap.lua --template=sablon.tex \
+  -M title="Yöntem Dil Başvurusu" -M author="Önder Örnek" -M kisa="Yöntem Dil Başvurusu" -o basvuru.tex
+for f in ${@:-kitap kilavuz llm kurulum birimler basvuru}; do
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1 || { tail -40 $f.log1; exit 1; }
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1

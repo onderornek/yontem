@@ -35,6 +35,9 @@ KITAPLAR = [
     {'kisa': 'birimler', 'md': 'birimler.md', 'baslik': 'Yöntem Birimler ve Araçlar Kılavuzu',
      'alt': 'Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları',
      'tur': 'Kılavuz', 'pdf': 'Yontem_Birimler_ve_Araclar_Kilavuzu.pdf', 'renk': '#3B2F5C'},
+    {'kisa': 'dil-basvurusu', 'md': 'basvuru.md', 'baslik': 'Yöntem Dil Başvurusu',
+     'alt': 'Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı',
+     'tur': 'Başvuru', 'pdf': 'Yontem_Dil_Basvurusu.pdf', 'renk': '#7A3E0B'},
 ]
 
 
