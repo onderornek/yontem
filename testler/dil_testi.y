@@ -54,7 +54,7 @@ değişken
   s: metin
   L: liste
   d: sözlük
-  arr: ondalık dizisi[0..4]
+  arr: ondalık listesi
   k: Kedi
   v: Vektör
   rk, rk2: Renk
@@ -132,8 +132,11 @@ başla
   Sına(Say(['a', 'b', 'a'])['a'] = 2, 'Say')
 
   // Pascal dizisi
+  arr.Uzunluk(5)
   0'dan 4'e kadar her i için arr[i] := i * 0.5
-  Sına(arr[4] = 2.0, 'dizi')
+  Sına(arr[4] = 2.0, 'sabit boyutlu liste')
+  arr.Uzunluk(3, 1)
+  Sına(arr.Alt = 1 ve arr.Üst = 3 ve arr[3] = 1.0 ve Uzunluk(arr) = 3, 'Uzunluk(n, ilk)')
 
   // fonksiyonlar
   Sına(Fib(15) = 610, 'özyineleme')

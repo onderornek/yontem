@@ -52,8 +52,8 @@ def _sayi(v, ad='değer'):
 def _boyut_degisir(v, ad):
     """Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder."""
     if type(v) is PascalDizi:
-        raise YontemHatasi(f"{ad}: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; "
-                           "bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)")
+        raise YontemHatasi(f"{ad}: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez "
+                           "(yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)")
     return _liste(v, ad)
 
 
@@ -682,6 +682,11 @@ def _tablolar():
     D = {katla('Uzunluk'): _m('Uzunluk', oto=True)(lambda y, o: len(o.veri)),
          katla('Alt'): _m('Alt', oto=True)(lambda y, o: o.alt),
          katla('Üst'): _m('Üst', oto=True)(lambda y, o: o.alt + len(o.veri) - 1)}
+    # Boyutu sabitlenmiş liste de bir listedir: okuyan metodlar aynen çalışır, boyutu değiştirenler hata verir
+    for ad in ('İçerir', 'Sırala', 'Ters', 'Kopya', 'Eşle', 'Süz', 'İndirge', 'Toplam', 'Birleştir', 'İlk', 'Sonuncu', 'BoşMu'):
+        D[katla(ad)] = (lambda u: lambda o: u(o.veri))(L[katla(ad)])
+    for ad in ('Ekle', 'Sil', 'Çıkar', 'Temizle'):
+        D[katla(ad)] = _m(ad, 0, 64)(lambda y, o, *a, ad=ad: _boyut_degisir(o, ad))
     return {list: L, str: S, dict: M, PascalDizi: D}
 
 

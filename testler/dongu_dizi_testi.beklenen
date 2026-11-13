@@ -15,13 +15,19 @@ Ekle: konum tamsayı olmalı
 [0, 10, 50, 60]
 10
 [60]
-Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Ekle: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Ekle: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
-Sil: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)
+Sil: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Ekle: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Ekle: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Sil: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Sil: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Ekle: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)
+Liste dizini sınır dışı: 6 (geçerli 1..5)
 [10, 20, 30, 40, 50]
-5
+5 1..5
+[10, 20, 30, 40, 50, 0, 0]
+['Ocak', '', '']
+doğru
+Ocak
 [10, 20, 40, 50]
 [10, 20, 30, 40, 50]
 [2, 3, 4]

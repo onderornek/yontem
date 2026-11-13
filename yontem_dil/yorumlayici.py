@@ -47,11 +47,12 @@ if not os.path.isdir(KUTUPHANE_DIZINI):   # pip ile kurulduğunda standart birim
 
 
 class Kapsam:
-    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal')
+    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal', 'eleman')
 
     def __init__(self, ust=None):
         self.d = {}
         self.tip = {}
+        self.eleman = {}     # liste değişkenlerinin eleman tipi
         self.sabit = set()
         self.ust = ust
         self.ithal = set()   # birimlerden gelen (gölgelenebilir) adlar
@@ -291,6 +292,8 @@ class Yorumlayici:
             self.tanimla(k, ad, v, ham)
             if tip is not None:
                 k.tip[ad] = tip
+                if tip == 'liste':
+                    k.eleman[ad] = (b.tip, k)
 
     def altprogram_fonk(self, b, k, sinif):
         return KFonksiyon(b.ham, b.cesit, b.params, b.donus, b.yerel, b.govde, None, k, sinif,
@@ -312,7 +315,7 @@ class Yorumlayici:
                     s.metodlar[m.ad] = f
             self.tanimla(k, b.ad, s, b.ham)
         else:
-            self.tanimla(k, b.ad, KTip(self.tip_coz(t, k), b.ham), b.ham)
+            self.tanimla(k, b.ad, KTip(self.tip_coz(t, k), b.ham, self.eleman_coz(t, k)), b.ham)
 
     # ================================================================ tipler
     def tip_coz(self, n, k):
@@ -338,6 +341,61 @@ class Yorumlayici:
         if type(v) is KTip:
             return v.spec
         raise YontemHatasi(f"Bilinmeyen tip: '{n.ham}'")
+
+    def eleman_coz(self, n, k):
+        """Liste tipinin eleman tipi (bilinmiyorsa None)."""
+        if n is None:
+            return None
+        if n.tur == 'tip_dizi':
+            return self.tip_coz(n.eleman, k) if n.eleman is not None else None
+        if n.modul is None and n.ad in TEMEL_TIPLER:
+            el = getattr(n, 'eleman', None)
+            return self.tip_coz(el, k) if (TEMEL_TIPLER[n.ad] == 'liste' and el is not None) else None
+        if n.modul is not None:
+            mod = self.ad_al(k, n.modul, n)
+            v = mod.al(n.ad) if type(mod) is KModul else YOK
+        else:
+            v = self.ad_bul(k, n.ad)
+        return v.eleman if type(v) is KTip else None
+
+    def _eleman_tipi(self, h, k):
+        """h (ad düğümü) ile anılan liste değişkeninin ya da alanının eleman tipi."""
+        if h.tur != 'ad':
+            return None
+        s = k
+        while s is not None:
+            if type(s) is Kapsam:
+                if h.ad in s.d:
+                    e = s.eleman.get(h.ad)
+                    return self.eleman_coz(e[0], e[1]) if e else None
+            elif h.ad in s.nesne.alanlar:
+                sinif = s.nesne.sinif
+                while sinif is not None:
+                    for ad, _, tipn, _ in sinif.alanlar:
+                        if ad == h.ad:
+                            return self.eleman_coz(tipn, sinif.kapanis)
+                    sinif = sinif.ebeveyn
+                return None
+            s = s.ust
+        return None
+
+    def _boyutla(self, n, k):
+        """L.Uzunluk(n[, ilk]): listeyi sabit boyutlu yapar; L liste değilse YOK döner."""
+        h = n.cagrilan.nesne
+        x = self.ad_al(k, h.ad, h) if h.tur == 'ad' else self.deg(h, k)
+        if type(x) not in (list, PascalDizi):
+            return YOK
+        args = [self.deg(a, k) for a in n.argumanlar]
+        adet, ilk = args[0], (args[1] if len(args) > 1 else 0)
+        if type(adet) is not int or adet < 0:
+            raise YontemHatasi('Uzunluk: eleman sayısı sıfır ya da pozitif bir tamsayı olmalı')
+        if type(ilk) is not int:
+            raise YontemHatasi('Uzunluk: ilk eleman numarası tamsayı olmalı')
+        eski = x if type(x) is list else x.veri
+        el = self._eleman_tipi(h, k)
+        veri = [eski[i] if i < len(eski) else self.varsayilan(el) for i in range(adet)]
+        self.ata(h, PascalDizi(ilk, veri), k)
+        return None
 
     def varsayilan(self, tip):
         if tip is None:
@@ -1108,6 +1166,12 @@ class Yorumlayici:
         return c
 
     def i_cagri(self, n, k):
+        c = n.cagrilan
+        if (c.tur == 'alan' and c.ad == 'uzunluk' and 1 <= len(n.argumanlar) <= 2
+                and c.nesne.tur in ('ad', 'alan', 'indeks')):
+            r = self._boyutla(n, k)
+            if r is not YOK:
+                return r
         f = self.cagrilan(n.cagrilan, k)
         tf = type(f)
         fn = f.fn if tf is BagliMetod else f
@@ -1178,6 +1242,8 @@ class Yorumlayici:
                 tip = self.tip_coz(p.tip, kap)
                 v = self.uyumla(tip, v, p.ham)
                 k.tip[p.ad] = tip
+                if tip == 'liste':
+                    k.eleman[p.ad] = (p.tip, kap)
             d[p.ad] = v
         if nesne is not None:
             d['kendi'] = nesne

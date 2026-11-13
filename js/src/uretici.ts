@@ -1399,6 +1399,25 @@ export class Uretici {
     return '$.refYok()';
   }
 
+  /** L.Uzunluk(n[, ilk]): L atanabilir bir değişken, alan ya da dizinse listeyi sabit boyutlu yapar. */
+  boyutlaMi(h: Dugum, k: Kapsam): boolean {
+    if (h.tur === 'alan' || h.tur === 'indeks') return true;
+    if (h.tur !== 'ad') return false;
+    const r = this.bul(k, h.ad) as any;
+    return !!r && (r.tur === 'alan' || (r.tur === 'sembol' && r.s.tur === 'degisken'));
+  }
+  boyutla(c: Dugum, args: Dugum[], k: Kapsam): string {
+    const h = c.nesne;
+    let fab = 'null';
+    if (h.tur === 'ad') {
+      const r = this.bul(k, h.ad) as any;
+      const tip = r.tur === 'sembol' ? r.s.tip : r.tip;
+      if (tip && tip.k === 'temel' && tip.ad === 'liste' && tip.eleman) fab = `() => ${this.varsayilan(tip.eleman)}`;
+    }
+    const v = this.yeniAd('v');
+    return `$.boyutla(${this.ifade(h, k)}, [${this.argumanlar(args, [], k)}], ${fab}, (${v}) => { ${this.ata(h, v, k)} }, ${J(c.ham ?? c.ad)})`;
+  }
+
   /** L(2).Sil biçimi: L bir değişkense (fonksiyon, sınıf ya da yerleşik değilse) konumdaki elemanı siler. */
   konumSilMi(n: Dugum, k: Kapsam): boolean {
     const c = n.nesne;
@@ -1410,9 +1429,6 @@ export class Uretici {
   konumSil(n: Dugum, k: Kapsam): string {
     const c = n.nesne;
     if (this.kati) {
-      const r = this.bul(k, c.cagrilan.ad) as any;
-      if (r && r.tur === 'sembol' && r.s.tip && r.s.tip.k === 'dizi')
-        this.tani(`'${r.s.ham}' sabit boyutlu bir dizidir; ${n.ham ?? n.ad} ile eleman eklenemez ya da silinemez (liste kullanın)`, n.satir);
     }
     return `$.konumSil(${this.cagrilan(c.cagrilan, k)}, ${this.ifade(c.argumanlar[0], k)})`;
   }
@@ -1420,6 +1436,7 @@ export class Uretici {
   cagri(n: Dugum, k: Kapsam): string {
     const c = n.cagrilan, args: Dugum[] = n.argumanlar;
     if (c.tur === 'alan' && args.length === 0 && this.konumSilMi(c, k)) return this.konumSil(c, k);
+    if (c.tur === 'alan' && c.ad === 'uzunluk' && (args.length === 1 || args.length === 2) && this.boyutlaMi(c.nesne, k)) return this.boyutla(c, args, k);
     if (this.kati) {
       // liste.Ekle(eleman) ve Ekle(liste, eleman): eleman tipi bildirilmiş listeye uymayan eleman
       if (c.tur === 'alan' && c.ad === 'ekle' && (args.length === 1 || args.length === 2)) this.ogeDenetle(this.tipK(c.nesne, k), args[0], k, `'${c.nesne.ham ?? 'liste'}'`, n.satir);

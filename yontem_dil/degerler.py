@@ -127,11 +127,12 @@ class KModul:
 
 
 class KTip:
-    __slots__ = ('spec', 'ad')
+    __slots__ = ('spec', 'ad', 'eleman')
 
-    def __init__(self, spec, ad):
+    def __init__(self, spec, ad, eleman=None):
         self.spec = spec
         self.ad = ad
+        self.eleman = eleman    # liste tipiyse eleman tipi (L.Uzunluk(n) yeni elemanları bununla doldurur)
 
 
 class DiziTipi:
@@ -153,10 +154,10 @@ class PascalDizi:
 
     def _i(self, i):
         if type(i) is not int:
-            raise YontemHatasi("Dizi dizini tamsayı olmalı")
+            raise YontemHatasi("Liste dizini tamsayı olmalı")
         j = i - self.alt
         if j < 0 or j >= len(self.veri):
-            raise YontemHatasi(f"Dizi dizini sınır dışı: {i} (geçerli {self.alt}..{self.alt + len(self.veri) - 1})")
+            raise YontemHatasi(f"Liste dizini sınır dışı: {i} (geçerli {self.alt}..{self.alt + len(self.veri) - 1})")
         return j
 
     def al(self, i):

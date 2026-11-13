@@ -168,7 +168,7 @@ Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları i
 | `sınıf` / `kayıt` | class / record | | `kır` / `devam` | Break / Continue |
 | `miras` | inherited | | `ve`, `veya`, `yada`, `değil` | and, or, xor, not |
 | `kendi` | Self | | `böl`, `mod` | div, mod |
-| `doğru`, `yanlış`, `boş` | True, False, nil | | `T dizisi[a..b]` | array[a..b] of T |
+| `doğru`, `yanlış`, `boş` | True, False, nil | | `L.Uzunluk(n, ilk)` | array[ilk..] of T |
 
 Bağlama göre anlam kazanan (ayrılmış olmayan) sözcükler: `adım`, `kez`, `olana dek`,
 `değerine göre`, `sanal`, `ezer`, `soyut`, `ileri`, `özel`, `genel`, `korumalı`.
@@ -236,7 +236,7 @@ Bloklar içinde de değişken tanımlanabilir: `değişken toplam := 0`
 | `mantıksal` | `doğru`, `yanlış` | |
 | `liste` | `[1, 2, 3]`, `[1..10]` | dinamik, **dizinler 0'dan başlar** |
 | `sözlük` | `['a': 1, 'b': 2]`, `[:]` | |
-| `T dizisi[a..b]` | `ondalık dizisi[1..12]` | sınırları denetlenen, **sabit boyutlu** dizi; dizinler `a..b` |
+| `T listesi` + `L.Uzunluk(12, 1)` | `aylar.Uzunluk(12, 1)` | sınırları denetlenen, **sabit boyutlu** liste; numaralar `1..12` |
 | `tensör` | `Tensör([[1, 2], [3, 4]])` | YZ birimi |
 | `herhangi` | | dinamik tip, denetim yapılmaz |
 | sınıf / kayıt adları | `Nokta`, `Hayvan` | |
@@ -481,9 +481,25 @@ L listesindeki 2. elemanı Sil     { dizilerde: D dizisindeki 2. elemanı Sil }
 ```
 
 Üçü de 2 numaralı elemanı (`L[2]`) siler. Cümle biçiminde hesaplanan konum ayraç içine yazılır:
-`L listesindeki (i + 1). elemanı Sil`. Bu işlemler yalnızca listelerde çalışır: sınırlı
-diziler (`T dizisi[a..b]`) sabit boyutludur ve `Ekle`/`Sil` hata verir. Diziyi listeye
-kopyalamak için `liste(D)` kullanılır. Sınır yazılmadan bildirilen `T dizisi`, liste gibi davranır.
+`L listesindeki (i + 1). elemanı Sil`. 
+
+**Boyutu sabit liste.** Köşeli ayraçla sınır yazımı (`T dizisi[a..b]`) kaldırıldı; yerine liste
+bildirilir ve boyutu programda verilir:
+
+```
+tip
+  TAylar = metin listesi
+değişken
+  d: TAylar
+başla
+  d.Uzunluk(12, 1)        { 12 elemanlı, numaraları 1'den başlayan sabit boyutlu liste }
+  d[1] := 'Ocak'
+```
+
+`L.Uzunluk(n)` numaraları 0'dan, `L.Uzunluk(n, ilk)` `ilk`'ten başlatır. Yeni elemanlar eleman tipinin
+başlangıç değeriyle dolar, var olanlar korunur. Sınır dışı erişim hata verir; `L.Alt` ve `L.Üst`
+sınırları döndürür. Boyutu sabit listede `Ekle`/`Sil` hata verir; boyut yeni bir `Uzunluk` çağrısıyla
+değişir, `liste(L)` serbest bir kopya verir. Tip adlarında `T dizisi` ile `T listesi` eş anlamlıdır.
 
 Liste, metin ve sözlüklerin metod sözdizimi de vardır: `L.Ekle(5)`, `L.Uzunluk`,
 `L.Eşle(f)`, `s.BüyükHarf`, `s.Ayır(',')`, `d.Anahtarlar`, `d.Al('k', 0)` …

@@ -12,7 +12,7 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
   <a href="#hizli">Hızlı başvuru</a>
   <a href="#donguler">Döngüler</a>
   <a href="#tipler">Tipler</a>
-  <a href="#liste-dizi">Liste ve dizi</a>
+  <a href="#liste-dizi">Liste ve sabit boyut</a>
   <a href="#komutlar">Komutlar</a>
   <a href="#birimler">Birimler</a>
 </aside>
@@ -85,7 +85,7 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
           <tr><td><code>mantıksal</code></td><td><code>doğru</code>, <code>yanlış</code></td><td></td></tr>
           <tr><td><code>tamsayı listesi</code></td><td><code>[1, 2, 3]</code></td><td>Elemanlar 0'dan numaralanır; tipsiz biçimi <code>liste</code></td></tr>
           <tr><td><code>metin sözlüğü</code></td><td><code>['a': 'x', 'b': 'y']</code></td><td>Boş sözlük <code>[:]</code>; tipsiz biçimi <code>sözlük</code></td></tr>
-          <tr><td><code>ondalık dizisi[1..12]</code></td><td></td><td>Sabit boyutlu, sınırları sizin belirlediğiniz dizi</td></tr>
+          <tr><td><code>L.Uzunluk(12, 1)</code></td><td></td><td>Listeyi 12 elemanlı, numaraları 1'den başlayan sabit boyutlu listeye çevirir</td></tr>
           <tr><td><code>herhangi</code></td><td></td><td>Tipi çalışma anında belli olan değer</td></tr>
         </tbody>
       </table>
@@ -94,20 +94,20 @@ ozet: Kurulumdan dil başvurusuna, birimlerden araçlara bütün belgeler bu say
   </section>
 
   <section id="liste-dizi">
-    <h2>Liste ve dizi</h2>
-    <p>İkisi de sıralı elemanlar tutar; aralarındaki fark boyuttadır. Listenin boyutu program çalışırken değişebilir, sınırlarıyla tanımlanan dizinin boyutu ise sabittir.</p>
-    <div class="tablo" tabindex="0" role="region" aria-label="Liste ve dizi karşılaştırması">
+    <h2>Liste ve sabit boyut</h2>
+    <p>Sıralı elemanlar listede tutulur. Liste başlangıçta serbesttir: boyutu program çalışırken değişebilir ve elemanlar 0'dan numaralanır. Eleman sayısı baştan belliyse <code>L.Uzunluk(n, ilk)</code> ile boyutu sabitleyebilir ve numaralamayı istediğiniz sayıdan başlatabilirsiniz; <code>L.Uzunluk(n)</code> numaraları 0'dan başlatır. Yeni elemanlar tipin başlangıç değeriyle dolar, var olanlar korunur.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Serbest liste ile boyutu sabit liste karşılaştırması">
       <table>
-        <thead><tr><th></th><th>Liste</th><th>Dizi</th></tr></thead>
+        <thead><tr><th></th><th>Serbest liste</th><th>Boyutu sabit liste</th></tr></thead>
         <tbody>
-          <tr><td>Tanım</td><td><code>notlar: tamsayı listesi</code></td><td><code>aylar: tamsayı dizisi[1..12]</code></td></tr>
-          <tr><td>Numaralama</td><td>0'dan başlar</td><td>Sizin verdiğiniz sınırlar (ör. 1..12)</td></tr>
+          <tr><td>Tanım</td><td><code>notlar: tamsayı listesi</code></td><td><code>aylar: tamsayı listesi</code>, ardından <code>aylar.Uzunluk(12, 1)</code></td></tr>
+          <tr><td>Numaralama</td><td>0'dan başlar</td><td>Sizin verdiğiniz sayıdan başlar (ör. 1..12); sınırlar <code>L.Alt</code> ve <code>L.Üst</code></td></tr>
           <tr><td>Boyut</td><td>Değişebilir</td><td>Sabittir</td></tr>
           <tr><td>Sona ekleme</td><td><code>Ekle(L, x)</code></td><td>Yapılamaz</td></tr>
           <tr><td>Araya yerleştirme</td><td><code>Ekle(L, x, konum)</code></td><td>Yapılamaz</td></tr>
           <tr><td>Silme</td><td><code>L.Sil(konum)</code>, <code>L(konum).Sil</code></td><td>Yapılamaz</td></tr>
-          <tr><td>Okuma ve değiştirme</td><td><code>L[0]</code>, <code>L[0] := 5</code></td><td><code>D[1]</code>, <code>D[1] := 5</code></td></tr>
-          <tr><td>Eleman sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(D)</code></td></tr>
+          <tr><td>Okuma ve değiştirme</td><td><code>L[0]</code>, <code>L[0] := 5</code></td><td><code>L[1]</code>, <code>L[1] := 5</code></td></tr>
+          <tr><td>Eleman sayısı</td><td><code>Uzunluk(L)</code></td><td><code>Uzunluk(L)</code></td></tr>
         </tbody>
       </table>
     </div>
@@ -120,7 +120,7 @@ L(2).Sil
 L listesindeki 2. elemanı Sil
 </yontem>
     <p>Listede elemanlar 0'dan numaralandığı için 2 numaralı eleman baştan üçüncü sıradadır. <code>Sil</code> çıkardığı elemanı döndürür; eksi konum sondan sayar (<code>L.Sil(-1)</code> son elemanı siler). Cümle biçiminde hesaplanan konum ayraç içine yazılır: <code>L listesindeki (i + 1). elemanı Sil</code>.</p>
-    <div class="not"><p><strong>Dizide boyut değişmez:</strong> Sınırlı bir diziye <code>Ekle</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; <code>{$katı}</code> kipinde bu durum program çalışmadan önce bildirilir. Diziden eleman çıkarmanız gerekiyorsa <code>liste(D)</code> ile bir kopyasını listeye alabilirsiniz; dizinin kendisi değişmez. Sınır yazılmadan tanımlanan <code>tamsayı dizisi</code> bir liste gibi davranır.</p></div>
+    <div class="not"><p><strong>Sabit boyut:</strong> Boyutu <code>Uzunluk</code> ile sabitlenmiş listeye <code>Ekle</code> ya da <code>Sil</code> uygulandığında program açık bir hata iletisiyle durur; sınır dışındaki bir numaraya erişmek de hata verir. Boyutu değiştirmek için <code>Uzunluk</code> çağrısını yeni değerlerle yineleyebilir, serbest bir kopya gerekiyorsa <code>liste(L)</code> yazabilirsiniz. Tip adlarında <code>tamsayı dizisi</code> ile <code>tamsayı listesi</code> aynı anlama gelir; köşeli ayraçla sınır yazımı (<code>dizisi[1..12]</code>) kaldırılmıştır.</p></div>
   </section>
 
   <section id="komutlar">

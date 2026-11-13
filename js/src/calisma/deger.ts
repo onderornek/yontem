@@ -12,10 +12,10 @@ export class YNesne {
 export class PascalDizi {
   constructor(public alt: bigint, public veri: any[]) {}
   private j(i: any): number {
-    if (typeof i !== 'bigint') throw ($ as any).hataOlustur('Dizi dizini tamsayı olmalı');
+    if (typeof i !== 'bigint') throw ($ as any).hataOlustur('Liste dizini tamsayı olmalı');
     const j = Number(i - this.alt);
     if (j < 0 || j >= this.veri.length)
-      throw ($ as any).hataOlustur(`Dizi dizini sınır dışı: ${i} (geçerli ${this.alt}..${this.alt + BigInt(this.veri.length) - 1n})`);
+      throw ($ as any).hataOlustur(`Liste dizini sınır dışı: ${i} (geçerli ${this.alt}..${this.alt + BigInt(this.veri.length) - 1n})`);
     return j;
   }
   al(i: any) { return this.veri[this.j(i)]; }

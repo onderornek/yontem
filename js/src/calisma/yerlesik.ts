@@ -68,7 +68,7 @@ export function liste(v: any, ad = 'değer'): any[] {
 /** Boyutu değişen işlemler (Ekle, Sil, Araya) için: sabit boyutlu dizileri reddeder. */
 function boyutDegisir(v: any, ad: string): any[] {
   if (v instanceof PascalDizi)
-    hata(`${ad}: dizinin boyutu sabittir, eleman eklenemez ya da silinemez; bunun için liste kullanın (liste(dizi) diziyi listeye kopyalar)`);
+    hata(`${ad}: listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)`);
   return liste(v, ad);
 }
 
@@ -351,6 +351,18 @@ ekle(['Sil'], yf('Sil', 2, 2, (L: any, i: any) => {
   if (L instanceof Map) { L.delete(i); return null; }
   return pyPop(boyutDegisir(L, 'Sil'), i, `Sil: dizin sınır dışı: ${metne(i)}`);
 }));
+// L.Uzunluk(n) / L.Uzunluk(n, ilk): listeyi n elemanlı, 'ilk' numarasından başlayan sabit boyutlu bir listeye
+// çevirir (eski elemanlar korunur, yeniler eleman tipinin varsayılanıyla dolar) ve değişkene geri atar.
+$.boyutla = (x: any, args: any[], fab: (() => any) | null, ata: (v: any) => void, ham: string) => {
+  if (!(Array.isArray(x) || x instanceof PascalDizi)) return $.cU(x, 'uzunluk', ham, args);
+  const n = args[0], ilk = args.length > 1 ? args[1] : 0n;
+  if (typeof n !== 'bigint' || n < 0n) hata('Uzunluk: eleman sayısı sıfır ya da pozitif bir tamsayı olmalı');
+  if (typeof ilk !== 'bigint') hata('Uzunluk: ilk eleman numarası tamsayı olmalı');
+  const eski: any[] = Array.isArray(x) ? x : x.veri, veri = new Array(Number(n));
+  for (let i = 0; i < veri.length; i++) veri[i] = i < eski.length ? eski[i] : (fab ? fab() : null);
+  ata(new PascalDizi(ilk, veri));
+  return null;
+};
 // L(2).Sil: L bir liste, dizi ya da sözlükse Sil(L, 2) ile aynıdır; değilse sıradan çağrı ve üye erişimi
 $.konumSil = (x: any, i: any) => {
   if (Array.isArray(x) || x instanceof PascalDizi || x instanceof Map) return Y.sil(x, i);
@@ -546,6 +558,11 @@ tablo(M, 'Temizle', m('Temizle', 0, null, o => { o.clear(); return null; }, true
 tablo(M, 'BoşMu', m('BoşMu', 0, null, o => o.size === 0, true));
 
 tablo(D, 'Uzunluk', m('Uzunluk', 0, null, o => B(o.veri.length), true));
+// Boyutu sabitlenmiş liste de bir listedir: okuyan metodlar aynen çalışır, boyutu değiştirenler hata verir
+for (const ad of ['İçerir', 'Sırala', 'Ters', 'Kopya', 'Eşle', 'Süz', 'İndirge', 'Toplam', 'Birleştir', 'İlk', 'Sonuncu', 'BoşMu'])
+  D[katla(ad)] = (o: PascalDizi) => L[katla(ad)](o.veri);
+for (const ad of ['Ekle', 'Sil', 'Çıkar', 'Temizle'])
+  tablo(D, ad, m(ad, 0, 64, o => boyutDegisir(o, ad)));
 tablo(D, 'Alt', m('Alt', 0, null, o => o.alt, true));
 tablo(D, 'Üst', m('Üst', 0, null, o => o.alt + B(o.veri.length) - 1n, true));
 

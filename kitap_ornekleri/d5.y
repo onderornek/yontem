@@ -1,8 +1,9 @@
-program SabitDizi
+program SabitListe
 değişken
-  sıcaklık: ondalık dizisi[1..7]
+  sıcaklık: ondalık listesi
   gün: tamsayı
 başla
+  sıcaklık.Uzunluk(7, 1)
   1'den 7'ye kadar her gün için
     sıcaklık[gün] := 20 + gün * 1.5
   yaz(sıcaklık, 1)

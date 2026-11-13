@@ -89,7 +89,7 @@ değişken
   şekiller: liste
   ş: Şekil
   p, q: Nokta
-  notlar: tamsayı dizisi[1..5]
+  notlar: tamsayı listesi
   i: tamsayı
   syc: Sayac
   toplamAlan: ondalık
@@ -110,6 +110,7 @@ başla
   yaz('p = ' + p + '  q = ' + q + '  uzaklık = ' + Uzaklık(p, q), 1)
 
   // Pascal tarzı sınırlı dizi
+  notlar.Uzunluk(5, 1)
   1'den 5'e kadar her i için notlar[i] := i * 10
   yaz('Notlar: ' + notlar + ' (' + notlar.Alt + '..' + notlar.Üst + ')', 1)
 

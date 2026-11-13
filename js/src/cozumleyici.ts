@@ -205,6 +205,7 @@ export class Cozumleyici {
       this.bekleOp('..');
       const ust = this.ifade();
       this.bekleOp(']');
+      this.hata("Köşeli ayraçla sınır yazımı ('dizisi[1..12]') kaldırıldı; tipi liste olarak bildirip boyutu programda verin: d: metin listesi … d.Uzunluk(12, 1)");
       return [alt, ust];
     };
     let tip: Dugum;
@@ -212,7 +213,7 @@ export class Cozumleyici {
       // eleman tipi belirtilmemiş dizi: dizi · dizi[1..5]
       this.ilerle();
       const [alt, ust] = sinirlar();
-      if (this.asMi('turunde')) this.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi' (sınırlıysa 'tamsayı dizisi[1..5]')");
+      if (this.asMi('turunde')) this.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi'");
       tip = N('tip_dizi', satir, { alt, ust, eleman: null });
     } else {
       const tok = this.bekleAd();

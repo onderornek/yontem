@@ -6,7 +6,7 @@ Kare bir Dikdörtgen mi? doğru
 p = Nokta(x: 0.0, y: 0.0)  q = Nokta(x: 3.0, y: 4.0)  uzaklık = 5.0
 Notlar: [10, 20, 30, 40, 50] (1..5)
 Sayac<3>
-Yakalandı: Dizi dizini sınır dışı: 9 (geçerli 1..5)
+Yakalandı: Liste dizini sınır dışı: 9 (geçerli 1..5)
 Yakalandı: Soyut metod çağrılamaz: 'Alan'
 sonunda bloğu her zaman çalışır
 DoğrulamaHatası -> Kendi hatam

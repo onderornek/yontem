@@ -56,9 +56,9 @@ for (const [eski, yeni] of [['liste türünde metin', 'tamsayı listesi'], ['sö
 }
 const pyEski = spawnSync('python3', [path.join(KOK, 'yontem.py'), 'eski.y'], { cwd: dizin, encoding: 'utf-8' });
 if (!pyEski.error) denetle('Python yorumlayıcısı da aynı hatayı verir', pyEski.status !== 0 && /yazımı kaldırıldı/.test(pyEski.stderr + pyEski.stdout), pyEski);
-fs.writeFileSync(path.join(dizin, 'dizi.y'), "program Diziler\n{$katı}\ndeğişken\n  a: tamsayı dizisi\n  b: ondalık dizisi[1..3]\n  c: metin dizisi dizisi\n  d: tamsayı dizisi listesi\n  listesi: metin sözlüğü\n  dizisi: metin\nbaşla\n  a := [1, 2]\n  b[1] := 2.5\n  c := [['a'], ['b', 'c']]\n  d := [[1], [2, 3]]\n  listesi['a'] := 'b'\n  dizisi := c[1][0] + a[1] + b.Üst + Uzunluk(d)\n  yaz(dizisi, 1)\n  a := ['x']\nbitir.\n");
+fs.writeFileSync(path.join(dizin, 'dizi.y'), "program Diziler\n{$katı}\ndeğişken\n  a: tamsayı dizisi\n  b: ondalık listesi\n  c: metin dizisi dizisi\n  d: tamsayı dizisi listesi\n  listesi: metin sözlüğü\n  dizisi: metin\nbaşla\n  a := [1, 2]\n  b.Uzunluk(3, 1)\n  b[1] := 2.5\n  c := [['a'], ['b', 'c']]\n  d := [[1], [2, 3]]\n  listesi['a'] := 'b'\n  dizisi := c[1][0] + a[1] + b.Üst + Uzunluk(d)\n  yaz(dizisi, 1)\n  a := ['x']\nbitir.\n");
 r = y(['dizi.y']);
-denetle("'tip dizisi' yazımı: sınırlı, iç içe; elemanlar katı kipte denetlenir", r.status === 2 && /satır 18\] 'a' tamsayı listesi; metin bir eleman konamaz/.test(r.stderr) && /^1 tip hatası/m.test(r.stderr), r.stderr);
+denetle("'tip dizisi' yazımı: sabit boyutlu, iç içe; elemanlar katı kipte denetlenir", r.status === 2 && /satır 19\] 'a' tamsayı listesi; metin bir eleman konamaz/.test(r.stderr) && /^1 tip hatası/m.test(r.stderr), r.stderr);
 fs.writeFileSync(path.join(dizin, 'dizi.y'), fs.readFileSync(path.join(dizin, 'dizi.y'), 'utf-8').replace("  a := ['x']\n", ''));
 r = y(['dizi.y']);
 const pyDizi = spawnSync('python3', [path.join(KOK, 'yontem.py'), 'dizi.y'], { cwd: dizin, encoding: 'utf-8' });
@@ -102,10 +102,10 @@ denetle('geçerli katı program çalışır', r.status === 0 && r.stdout === cik
 const py = spawnSync('python3', [path.join(KOK, 'yontem.py'), gecerli], { encoding: 'utf-8' });
 if (py.error) console.log('atlandı    Python bulunamadı'); else denetle('Python aynı çıktıyı verir', py.status === 0 && py.stdout === cikti, py);
 
-// Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren on bir satır işaretlenir (yanlış alarm yok)
+// Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren altı satır işaretlenir (yanlış alarm yok)
 r = y(['denetle', 'ornekler', 'testler', 'kitap_ornekleri', 'birim_kilavuzu', 'guvenlik_ornekleri', 'ml_kilavuz', '--kati'], KOK);
 const bulunan = (r.stderr.match(/Tip hatası \[[^\]]*\]/g) || []).map(s => s.replace(/\\/g, '/')).sort();
-denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 172]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 74]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 79]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 84]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 89]', 'Tip hatası [testler/dongu_dizi_testi.y, satır 94]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
+denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 175]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
 
 // Dil sunucusu ve hata ayıklayıcı
 const { cozumle } = require(path.join(__dirname, '..', 'dist', 'dil_hizmeti.js'));

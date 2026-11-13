@@ -234,7 +234,7 @@ class Cozumleyici:
         self.bekle_op('..')
         ust = self.ifade()
         self.bekle_op(']')
-        return alt, ust
+        self.hata("Köşeli ayraçla sınır yazımı ('dizisi[1..12]') kaldırıldı; tipi liste olarak bildirip boyutu programda verin: d: metin listesi … d.Uzunluk(12, 1)")
 
     def tip_coz(self):
         """Tip: tamsayı · Birim.Ad · tamsayı dizisi · ondalık dizisi[1..3] · metin listesi · tamsayı sözlüğü"""
@@ -244,8 +244,7 @@ class Cozumleyici:
             self.ilerle()
             alt, ust = self._dizi_sinirlari()
             if self.as_mi('turunde'):
-                self.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi' "
-                          "(sınırlıysa 'tamsayı dizisi[1..5]')")
+                self.hata("'dizi türünde tip' yazımı kaldırıldı; eleman tipini başa yazın: 'tamsayı dizisi'")
             tip = N('tip_dizi', satir, alt=alt, ust=ust, eleman=None)
         else:
             tok = self.bekle_ad()
@@ -269,7 +268,7 @@ class Cozumleyici:
                 tip = N('tip_dizi', satir, alt=alt, ust=ust, eleman=tip)
             else:
                 tip = N('tip_ad', satir, ad='liste' if ek == 'listesi' else 'sozluk',
-                        ham='liste' if ek == 'listesi' else 'sözlük', modul=None)
+                        ham='liste' if ek == 'listesi' else 'sözlük', modul=None, eleman=tip)
         return tip
 
     def tip_tanimi_coz(self):

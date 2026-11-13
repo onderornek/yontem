@@ -1191,7 +1191,14 @@ export class CppUretici {
     if (t.k === 'liste') {
       const e = t.e;
       switch (ad) {
-        case 'uzunluk': sayiKontrol(0, 0); return { c: `(${o.c}).uz()`, t: TAM };
+        case 'uzunluk':
+          sayiKontrol(0, 2);
+          if (as.length === 0) return { c: `(${o.c}).uz()`, t: TAM };
+          // L.Uzunluk(n[, ilk]): sabit boyutlu liste; değişkene geri atanır
+          if (!o.lv) this.hata("'Uzunluk(n, ilk)' yalnızca bir değişkene ya da alana uygulanabilir", n);
+          return { c: `(${o.c} = y::boyutla(${o.c}, ${this.donustur(arg(0), TAM, 'eleman sayısı', n)}, ${as.length === 2 ? this.donustur(arg(1), TAM, 'ilk eleman numarası', n) : '0'}, [&](){ return ${this.varsayilan(e)}; }))`, t: YOK };
+        case 'alt': sayiKontrol(0, 0); return { c: `(${o.c}).alt`, t: TAM };
+        case 'ust': sayiKontrol(0, 0); return { c: `((${o.c}).alt + (${o.c}).uz() - 1)`, t: TAM };
         case 'ekle': sayiKontrol(1, 2); if (as.length === 2) return { c: `y::araya(${o.c}, ${this.donustur(arg(1), TAM, 'konum', n)}, ${this.donustur(arg(0, e), e, 'eleman', n)})`, t: YOK }; return { c: `y::ekle(${o.c}, ${this.donustur(arg(0, e), e, 'eleman', n)})`, t: YOK };
         case 'cikar': sayiKontrol(0, 1); return as.length ? { c: `y::sil(${o.c}, ${this.donustur(arg(0), TAM, 'dizin', n)})`, t: e } : { c: `y::cikar(${o.c})`, t: e };
         case 'sil': sayiKontrol(1, 1); return { c: `y::sil(${o.c}, ${this.donustur(arg(0), TAM, 'dizin', n)})`, t: e };

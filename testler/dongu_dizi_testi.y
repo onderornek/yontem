@@ -1,8 +1,9 @@
 program DöngüVeDizi
-{ Sayan döngünün dört biçimi ile liste/dizi ayrımı (Ekle, Sil) }
+{ Sayan döngünün dört biçimi; Ekle, Sil ve Uzunluk(n, ilk) ile sabit boyutlu liste }
 değişken
   a, b, c: tamsayı
-  dz: tamsayı dizisi[1..5]
+  dz: tamsayı listesi
+  aylar: metin listesi
   L: tamsayı listesi
   serbest: tamsayı dizisi
 başla
@@ -68,7 +69,8 @@ başla
   yaz(L(0).Sil, 1)
   yaz(L, 1)
 
-  { sınırlı dizi: boyutu sabittir }
+  { Uzunluk(n, ilk): boyutu sabit, numaraları 'ilk'ten başlayan liste }
+  dz.Uzunluk(5, 1)
   1'den 5'e kadar her i için dz[i] := i * 10
   dene
     Sil(dz, 2)
@@ -95,10 +97,29 @@ başla
   yakala (h)
     yaz(h.mesaj, 1)
   bitir
+  dene
+    dz.Ekle(7)
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
+  dene
+    dz[6] := 1
+  yakala (h)
+    yaz(h.mesaj, 1)
+  bitir
   yaz(dz, 1)
-  yaz(Uzunluk(dz), 1)
+  yaz(Uzunluk(dz) + ' ' + dz.Alt + '..' + dz.Üst, 1)
+  dz.Uzunluk(7, 1)
+  yaz(dz, 1)
+  dz.Uzunluk(5, 1)
+  aylar.Uzunluk(3, 1)
+  aylar[1] := 'Ocak'
+  yaz(aylar, 1)
+  yaz(aylar.İçerir('Ocak'), 1)
+  aylar.Uzunluk(2)
+  yaz(aylar[0], 1)
 
-  { diziyi listeye kopyalayıp silmek; dizi değişmez }
+  { sabit boyutlu listeyi serbest bir listeye kopyalayıp silmek; asıl liste değişmez }
   L := liste(dz)
   Sil(L, 2)
   yaz(L, 1)

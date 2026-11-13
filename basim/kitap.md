@@ -749,16 +749,17 @@ Sözcük sayıları: ['bir': 3, 'iki': 2, 'üç': 1]
 - `sözlük içindeki her a, d için` anahtarı ve değeri birlikte verir.
 - `Say` bir listedeki elemanları sayar. Metin çözümlemede çok işe yarar.
 
-### Sınırları belli diziler
+### Boyutu sabit listeler
 
-Turbo Pascal'daki gibi, sınırları bildirimde belirlenen diziler de vardır. Bu dizilerin boyutu sabittir ve dizinleri sizin yazdığınız sınırlar arasındadır; sınır dışına çıkmak anında yakalanır.
+Bazı veriler baştan belli sayıda elemandan oluşur: haftanın 7 günü, yılın 12 ayı. Böyle durumlarda listenin boyutunu `Uzunluk` ile sabitleyebilir ve elemanları istediğiniz sayıdan başlayarak numaralayabilirsiniz. `sıcaklık.Uzunluk(7, 1)` listeyi 7 elemanlı yapar ve ilk elemana 1 numarasını verir; sınır dışına çıkmak anında yakalanır.
 
 ```pascal
-program SabitDizi
+program SabitListe
 değişken
-  sıcaklık: ondalık dizisi[1..7]
+  sıcaklık: ondalık listesi
   gün: tamsayı
 başla
+  sıcaklık.Uzunluk(7, 1)
   1'den 7'ye kadar her gün için
     sıcaklık[gün] := 20 + gün * 1.5
   yaz(sıcaklık, 1)
@@ -770,16 +771,24 @@ bitir.
 ```
 [21.5, 23.0, 24.5, 26.0, 27.5, 29.0, 30.5]
 Sınırlar: 1..7
-Çalışma hatası [d5.y, satır 10] Dizi dizini sınır dışı: 8 (geçerli 1..7)
+Çalışma hatası [d5.y, satır 11] Liste dizini sınır dışı: 8 (geçerli 1..7)
 ```
 
-Liste ile dizi arasındaki farkı akılda tutmakta yarar vardır:
+`Uzunluk` çağrısının iki biçimi vardır:
 
-| | Liste | Sınırlı dizi |
+| Yazım | Sonuç |
+|---|---|
+| `L.Uzunluk(12)` | 12 elemanlı liste; numaralar 0'dan başlar (0..11) |
+| `L.Uzunluk(12, 1)` | 12 elemanlı liste; numaralar 1'den başlar (1..12) |
+
+Yeni elemanlar tipin başlangıç değeriyle dolar (sayılarda 0, metinlerde boş metin); listede önceden eleman varsa baştan itibaren korunur. Boyutu sabitlenen liste ile serbest liste arasındaki farkı akılda tutmakta yarar vardır:
+
+| | Serbest liste | Boyutu sabit liste |
 |---|---|---|
-| Bildirim | `notlar: tamsayı listesi` | `sıcaklık: ondalık dizisi[1..7]` |
-| Dizinler | 0'dan başlar | Sizin yazdığınız sınırlar (burada 1..7) |
-| Boyut | Değişir: `Ekle`, `Sil` | Sabittir |
+| Bildirim | `notlar: tamsayı listesi` | `sıcaklık: ondalık listesi`, ardından `sıcaklık.Uzunluk(7, 1)` |
+| Numaralar | 0'dan başlar | Sizin verdiğiniz sayıdan başlar (burada 1..7) |
+| Sınırlar | `0` ve `Uzunluk(notlar) - 1` | `sıcaklık.Alt` ve `sıcaklık.Üst` |
+| Boyut | Değişir: `Ekle`, `Sil` | Sabittir; yalnızca yeni bir `Uzunluk` çağrısıyla değişir |
 | Sona eklemek | `Ekle(notlar, 95)` | Eklenemez |
 | Araya eklemek | `Ekle(notlar, 95, 1)` (konum 1'e) | Eklenemez |
 | 2 numaralı elemanı silmek | `notlar.Sil(2)` | Silinemez |
@@ -796,7 +805,7 @@ notlar listesindeki 2. elemanı Sil
 
 Üçü de 2 numaralı elemanı, yani `notlar[2]`'yi siler. Listede elemanlar 0'dan numaralandığı için bu, baştan üçüncü sıradaki elemandır. Konumu hesaplayarak vermek isterseniz cümle biçiminde ayraç kullanabilirsiniz: `notlar listesindeki (i + 1). elemanı Sil`. `Sil` çıkardığı elemanı döndürür; `x := notlar.Sil(0)` yazarak onu bir değişkene alabilirsiniz.
 
-Sınırlı bir diziye `Ekle` ya da `Sil` uygulamak hata verir, çünkü dizinin boyutu değişemez. Eleman ekleyip silmeniz gerekiyorsa liste kullanabilirsiniz; elinizdeki bir diziyi `liste(sıcaklık)` ile listeye kopyalamanız da mümkündür. Sınır yazmadan bildirilen bir dizi (`tamsayı dizisi`) ise liste gibi davranır.
+Boyutu sabitlenmiş bir listeye `Ekle` ya da `Sil` uygulamak hata verir. Boyutu değiştirmek isterseniz `Uzunluk` çağrısını yeni değerlerle yineleyebilir, serbest bir kopya gerekiyorsa `liste(sıcaklık)` yazabilirsiniz. Tip adlarında `tamsayı dizisi` ile `tamsayı listesi` aynı anlama gelir.
 
 ## Bölüm 8 — Fonksiyonlar değer olarak: lambda ve boru işleci
 
@@ -1754,7 +1763,7 @@ Devre, enerjiyi en aza indiren açıyı kendi kendine buldu: θ = π. Molekülle
 | `ve`, `veya`, `yada`, `değil` | and, or, xor, not | Mantıksal işleçler |
 | `böl`, `mod` | div, mod | Tam sayı bölmesi ve kalan |
 | `doğru`, `yanlış`, `boş` | True, False, nil | Sabit değerler |
-| `… dizisi` | array of … | Dizi: `tamsayı dizisi`, sınırlıysa `ondalık dizisi[1..7]` |
+| `… dizisi` | array of … | `… listesi` ile aynıdır: `tamsayı dizisi`; boyutu sabitlemek için `L.Uzunluk(7, 1)` |
 
 Bu sözcükler değişken adı olarak kullanılamaz. `adım`, `kez`, `olana dek`, `değerine göre`, `özel`, `genel`, `sanal`, `ezer` gibi sözcükler ise yalnızca kendi yerlerinde anlam taşır ve ad olarak da kullanılabilir.
 

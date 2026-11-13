@@ -176,10 +176,18 @@ template <class T> struct Liste {
   Liste() : p(std::make_shared<std::vector<T>>()) {}
   Liste(std::initializer_list<T> l) : p(std::make_shared<std::vector<T>>(l)) {}
   explicit Liste(std::vector<T> v) : p(std::make_shared<std::vector<T>>(std::move(v))) {}
+  Tam alt = 0;          // L.Uzunluk(n, ilk) ile sabitlenen listede ilk elemanın numarası
+  bool sabit = false;   // boyutu sabitlenmiş mi (Ekle/Sil yapılamaz, dizinler alt..alt+n-1)
   std::vector<T>& v() const { return *p; }
   Tam uz() const { return (Tam)p->size(); }
+  void degisebilir(const char* ad) const { if (sabit) hata(Metin(ad) + ": listenin boyutu Uzunluk ile sabitlendi, eleman eklenemez ya da silinemez (yeni boyut için L.Uzunluk(n, ilk) yazın; liste(L) serbest bir kopya verir)"); }
   size_t j(Tam i) const {
     Tam n = (Tam)p->size();
+    if (sabit) {
+      Tam s = i - alt;
+      if (s < 0 || s >= n) hata("Liste dizini sınır dışı: " + metne(i) + " (geçerli " + metne(alt) + ".." + metne(alt + n - 1) + ")");
+      return (size_t)s;
+    }
     Tam k = i < 0 ? i + n : i;
     if (k < 0 || k >= n) hata("Liste dizini sınır dışı: " + metne(i) + " (uzunluk " + metne(n) + ")");
     return (size_t)k;
@@ -590,14 +598,23 @@ inline Tam rastgele(Tam a) { if (a <= 0) hata("İç hata: ValueError: empty rang
 inline Tam rastgele(Tam a, Tam b) { if (b < a) hata("İç hata: ValueError: empty range in randrange()"); return a + (Tam)rng().below((uint64_t)(b - a + 1)); }
 
 // ------------------------------------------------------------------ koleksiyon yerleşikleri
-template <class T> inline void ekle(const Liste<T>& l, const T& v) { l.p->push_back(v); }
+template <class T> inline void ekle(const Liste<T>& l, const T& v) { l.degisebilir("Ekle"); l.p->push_back(v); }
+/** L.Uzunluk(n, ilk): n elemanlı, 'ilk' numarasından başlayan sabit boyutlu liste (eski elemanlar korunur) */
+template <class T, class Fn> inline Liste<T> boyutla(const Liste<T>& l, Tam n, Tam ilk, Fn uret) {
+  if (n < 0) hata("Uzunluk: eleman sayısı sıfır ya da pozitif bir tamsayı olmalı");
+  Liste<T> r; r.alt = ilk; r.sabit = true;
+  for (Tam i = 0; i < n; i++) r.p->push_back(i < l.uz() ? (*l.p)[i] : (T)uret());
+  return r;
+}
 template <class T> inline T sil(const Liste<T>& l, Tam i) {
+  l.degisebilir("Sil");
   Tam n = l.uz(); Tam k = i < 0 ? i + n : i;
   if (k < 0 || k >= n) hata("Sil: dizin sınır dışı: " + metne(i));
   T v = (*l.p)[k]; l.p->erase(l.p->begin() + k); return v;
 }
-template <class T> inline T cikar(const Liste<T>& l) { if (l.p->empty()) hata("Boş listeden çıkarılamaz"); T v = l.p->back(); l.p->pop_back(); return v; }
+template <class T> inline T cikar(const Liste<T>& l) { l.degisebilir("Çıkar"); if (l.p->empty()) hata("Boş listeden çıkarılamaz"); T v = l.p->back(); l.p->pop_back(); return v; }
 template <class T> inline void araya(const Liste<T>& l, Tam i, const T& v) {
+  l.degisebilir("Ekle");
   Tam n = l.uz(); Tam k = i < 0 ? std::max<Tam>(0, i + n) : std::min(i, n);
   l.p->insert(l.p->begin() + k, v);
 }

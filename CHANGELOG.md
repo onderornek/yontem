@@ -16,8 +16,11 @@ uyumsuz değişiklik içerebilir.
   Adım pozitif bir tamsayı olmalıdır.
 - Eski `azalarak` ve `kadar adım N` yazımları kaldırıldı; derleyici bu yazımlarla karşılaştığında
   yenisini gösteren bir hata iletisi verir.
-- **Sınırlı diziler (`T dizisi[a..b]`) sabit boyutludur:** `Ekle` ve `Sil` bu dizilerde hata verir
-  (katı kipte derleme sırasında). Boyutu değişen veri için liste kullanılır; `liste(D)` diziyi listeye kopyalar.
+- **Köşeli ayraçla sınır yazımı (`T dizisi[a..b]`) kaldırıldı.** Sabit boyutlu veri için liste bildirilir ve
+  boyutu programda verilir: `d: metin listesi` … `d.Uzunluk(12, 1)` (12 eleman, numaralar 1'den başlar;
+  `d.Uzunluk(12)` 0'dan başlatır). Boyutu sabitlenen listede `Ekle` ve `Sil` hata verir, sınır dışı erişim
+  yakalanır, `d.Alt` ve `d.Üst` sınırları verir; `liste(d)` serbest bir kopya döndürür. Eski yazım yeni
+  yazımı gösteren bir hata verir. Sınırsız `T dizisi` tip adı `T listesi` ile eş anlamlı olarak kalır.
 - **`Araya` kaldırıldı; yerine `Ekle`'nin üç parametreli biçimi geldi:** `Ekle(L, x)` sona ekler,
   `Ekle(L, x, konum)` verilen konuma yerleştirir (metod olarak `L.Ekle(x)` ve `L.Ekle(x, konum)`).
   `Araya` yazıldığında derleyici yeni yazımı gösteren bir hata verir.
