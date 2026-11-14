@@ -1,0 +1,54 @@
+# yontem.pro — Apache ayarları (STRATO paylaşımlı barındırma)
+# Bu dosya site paketine ".htaccess" adıyla kopyalanır. Yüklemeden önce bir alt alanda ya da
+# sitenin sakin bir saatinde denemeniz, sorun çıkarsa dosyayı silerek eski duruma dönmeniz önerilir.
+
+AddDefaultCharset UTF-8
+AddType font/woff2 .woff2
+AddType text/plain .y .gram
+AddType image/svg+xml .svg
+Options -Indexes
+
+# ---------------------------------------------------------------- HTTP → HTTPS (YON-01)
+# Yol ve sorgu korunur. Koşullar birlikte sınanır: bağlantı zaten HTTPS ise yönlendirme yapılmaz.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{SERVER_PORT} !=443
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ---------------------------------------------------------------- Güvenlik başlıkları (YON-22)
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # İçerik güvenlik politikası önce yalnızca raporlama kipinde: hiçbir şeyi engellemez, ihlalleri tarayıcı
+  # konsoluna yazar. Oyun alanı satır içi betik, Blob üzerinden Worker ve üretilen kodun çalıştırılmasını
+  # (unsafe-eval) kullanır; Ağ birimi kullanıcının yazdığı adreslere istek gönderebilir (connect-src *).
+  # Konsolda ihlal görülmediği doğrulandıktan sonra başlık adı "Content-Security-Policy" yapılabilir.
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src *; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+
+  # HSTS: HTTPS'in alan adının tamamında sorunsuz çalıştığı doğrulandıktan sonra açılması önerilir.
+  # Önce kısa süreyle (bir gün) başlayıp sonra uzatabilirsiniz. Alt alan adlarını kapsayan
+  # "includeSubDomains" seçeneği, bütün alt alanlar HTTPS sunmadıkça eklenmemelidir.
+  # Header always set Strict-Transport-Security "max-age=86400" "expr=%{HTTPS} == 'on'"
+</IfModule>
+
+# ---------------------------------------------------------------- Önbellek (YON-21)
+# Dosya adları sürüm özeti taşımadığı için sayfalar her ziyarette sunucuya sorulur (değişmediyse 304 döner);
+# yazı tipleri uzun süre, görseller ve stil dosyaları kısa süre saklanır.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|xml|txt|json)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|svg|png|ico)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+  <FilesMatch "\.(pdf)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

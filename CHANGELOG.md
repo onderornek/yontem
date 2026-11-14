@@ -35,6 +35,18 @@ uyumsuz değişiklik içerebilir.
 - **Silmenin iki yeni yazımı:** `L(2).Sil` ve `L listesindeki 2. elemanı Sil` (dizilerde `D dizisindeki …`);
   ikisi de `L.Sil(2)` ile aynı anlama gelir.
 
+### Site ve oyun alanı
+
+- **Oyun alanı:** her örneğin taslağı ayrı saklanır (örnek değiştirince düzenleme kaybolmaz), "Özgün hâline dön / Geri al",
+  `.y` olarak indirme, örnek arama (ad, grup ve program metni), `#ornek=<kimlik>` ile doğrudan bağlantı, siteye dönüş
+  bağlantıları, dar ekranda okunabilir sonuç paneli, ok tuşlarıyla gezilen sekmeler, Esc + Tab ile düzenleyiciden çıkış.
+  Yeni kullanıcı kısa bir "Merhaba, dünya" örneğiyle karşılanır; bozuk örnek başlıkları elle düzeltildi.
+- **Site:** ortamlara göre destek tablosu ve ESP32 sınırları ana sayfada; hız ölçümü kapsamıyla birlikte ayrı sayfada
+  (`olcumler.html`); kitap kapsamı ("15 bölüm + 3 ek") tek kaynaktan üretilir; her sayfada açıklama, canonical ve
+  paylaşım etiketleri; `sitemap.xml`, `robots.txt`; ana sayfada `<main>` ve "İçeriğe geç"; sekmelerde klavye desteği.
+- **Sunucu ayarları:** `.htaccess` (HTTP → HTTPS yönlendirmesi, `nosniff`, raporlama kipinde içerik güvenlik politikası,
+  önbellek başlıkları). `site/kaynak/kabul_sinamasi.py` bu değişiklikleri gerçek tarayıcıda denetler.
+
 ### Değişenler
 
 - Olmayan sözlük anahtarı hatasında Python yorumlayıcısı da anahtarı tırnak içinde gösterir (JavaScript ile aynı).

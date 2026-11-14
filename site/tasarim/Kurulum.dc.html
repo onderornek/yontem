@@ -15,12 +15,15 @@
 body{margin:0;background:#FFFFFF;color:#0F1B2D;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0B6E69}a:hover{color:#07514D}
 h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
+.atla{position:absolute;left:-9999px;top:8px;z-index:20;background:#0F1B2D;color:#FFFFFF;padding:12px 16px;border-radius:8px;font-weight:600;text-decoration:none}
+.atla:focus{left:12px;color:#FFFFFF}
 </style>
 </helmet>
 
 <div style="width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: #FFFFFF">
 
   <!-- Üst menü -->
+  <a class="atla" href="#icerik">İçeriğe geç</a>
   <header style="width: 100%; border-bottom: 1px solid #E3E8EF; display: flex; justify-content: center; background: #FFFFFF">
     <nav aria-label="Ana menü" style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
       <a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F1B2D">
@@ -69,7 +72,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
       <a href="#sorunlar" style="color: #334155; text-decoration: none; padding: 8px 0">5. Doğrulama ve sorunlar</a>
     </aside>
 
-    <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 64px">
+    <main id="icerik" tabindex="-1" style="outline: none; flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 64px">
 
       <!-- Hangisi -->
       <section id="hangisi" style="display: flex; flex-direction: column; gap: 16px">
@@ -161,7 +164,7 @@ python3 yontem.py             <span style="color: #94A3B8"># etkileşimli kabuk;
       <section id="gomulu" style="display: flex; flex-direction: column; gap: 16px">
         <h2 style="margin: 0; font-size: 30px; letter-spacing: -0.02em">4. ESP32 ve gömülü arka uç</h2>
         <p style="margin: 0; font-size: 17px; line-height: 1.65; color: #334155">Gömülü arka uç <code style="font-family: 'JetBrains Mono', monospace; font-size: 15px">yontem</code> komutuyla gelir. Masaüstü benzetimi için bir C++17 derleyicisi, karta yüklemek için bir yükleme aracı gerekir.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px">
           <div style="border: 1px solid #E3E8EF; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-weight: 600">Linux</span><code style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #07514D">sudo apt install g++</code></div>
           <div style="border: 1px solid #E3E8EF; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-weight: 600">macOS</span><code style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #07514D">xcode-select --install</code></div>
           <div style="border: 1px solid #E3E8EF; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-weight: 600">Windows</span><span style="font-size: 14px; line-height: 1.5; color: #334155"><a href="https://www.msys2.org">MSYS2</a> ile MinGW g++ (henüz sınanmadı)</span></div>
@@ -188,7 +191,7 @@ node js/betikler/gomulu_test.js   <span style="color: #94A3B8"># gömülü arka 
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">node, npm ya da python3 bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden açabilirsiniz; Windows'ta py komutunu deneyebilir ya da Python'u PATH seçeneğiyle yeniden kurabilirsiniz</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">yontem komutu bulunamadı</td><td style="padding: 12px 16px; color: #334155">Terminali yeniden açıp npm install -g yontem komutunu yineleyebilirsiniz; olmazsa npx yontem kullanılabilir</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Kaynaktan kurarken npm run build: tsc ya da esbuild bulunamadı</td><td style="padding: 12px 16px; color: #334155">Önce npm install, sonra npm run build çalıştırılır</td></tr>
-              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Derleyici sözdizimi hatasıyla çöküyor</td><td style="padding: 12px 16px; color: #334155">Node.js 18'den eskidir; node --version ile sürüme bakıp güncelleyebilirsiniz</td></tr>
+              <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Derleyici, kendi dosyalarında "SyntaxError" vererek açılmıyor</td><td style="padding: 12px 16px; color: #334155">Olası neden eski bir Node.js sürümüdür. <code>node --version</code> ile bakabilirsiniz: 18'den eskiyse güncellemek sorunu giderir. Sürüm 18 ya da yeniyse hata iletisinin tamamını ve sürüm numarasını <a href="/topluluk">topluluk sayfasındaki</a> yoldan bildirebilirsiniz.</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">npm install -g "EACCES" veriyor</td><td style="padding: 12px 16px; color: #334155">Node.js'i nvm ile kurabilir ya da npx yontem kullanabilirsiniz</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">Türkçe karakterler bozuk (Windows)</td><td style="padding: 12px 16px; color: #334155">chcp 65001 yazabilir ya da Windows Terminal kullanabilirsiniz</td></tr>
               <tr style="border-top: 1px solid #E3E8EF"><td style="padding: 12px 16px">kullan ile açılan birim bulunamadı</td><td style="padding: 12px 16px; color: #334155">Dosyayı programın yanına ya da kutuphane alt klasörüne koyabilir veya YONTEM_YOL'a ekleyebilirsiniz</td></tr>

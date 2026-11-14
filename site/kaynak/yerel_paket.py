@@ -24,6 +24,7 @@ SITE = os.path.normpath(os.path.join(KAYNAK, '..'))
 KOK = os.path.normpath(os.path.join(SITE, '..'))
 CIKTI = os.path.join(SITE, 'yerel', 'yontem-site')
 VURGU = '#0B7A75'
+ALAN = 'https://yontem.pro/'      # sitenin yayımlandığı adres (canonical, sitemap, paylaşım)
 
 KITAP_SAYFASI = {
     'TWa36NMVWcS6m8eQh6Fg6E': 'programlamaya-giris',
@@ -41,6 +42,8 @@ def baglantilar(s, kok):
     esle = [
         ('https://yontem.pro/gizlilik.html', 'gizlilik.html'),
         ('https://yontem.pro/kunye.html', 'kunye.html'),
+        ('https://yontem.pro/ogren.html', 'ogren.html'),
+        ('https://yontem.pro/belgeler.html', 'belgeler.html'),
         ('https://yontem.pro/kitaplar/', 'kitaplar/index.html'),
         ('https://yontem.pro/dene', 'dene/index.html'),
         ('https://yontem.pro/', 'index.html'),
@@ -54,13 +57,14 @@ def baglantilar(s, kok):
         '/kitaplar': 'kitaplar/index.html', '/kurulum': 'kurulum.html', '/indir': 'kurulum.html',
         '/ogren': 'ogren.html', '/belgeler': 'belgeler.html', '/ogretmen': 'ogretmen.html',
         '/gomulu': 'gomulu.html', '/topluluk': 'topluluk.html', '/gizlilik': 'gizlilik.html', '/kunye': 'kunye.html',
-        '/blog': 'blog/index.html', '/blog/yontem-0-5-0': 'blog/yontem-0-5-0.html',
+        '/blog': 'blog/index.html', '/blog/yontem-0-5-0': 'blog/yontem-0-5-0.html', '/olcumler': 'olcumler.html',
     }
 
     def degistir(m):
-        h = m.group(1)
+        h, _, capa = m.group(1).partition('#')
+        capa = '#' + capa if capa else ''
         if h in yol:
-            return f'href="{kok}{yol[h]}"'
+            return f'href="{kok}{yol[h]}{capa}"'
         if h.startswith('/kitaplar/'):
             return f'href="{kok}{h[1:]}"'
         return m.group(0)
@@ -139,7 +143,7 @@ def ana_sayfa(dc):
     head_ic, govde = duz_html(dc, '')
     ornekler = ornekleri_oku(dc)
     sekmeler = ''.join(
-        f'<button type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}" data-sekme="{i}" style="{SEKME_STIL[i == 0]}">{html.escape(o["ad"])}</button>'
+        f'<button type="button" role="tab" id="ornek-sekme-{i}" aria-controls="ornek-panel-{i}" tabindex="{0 if i == 0 else -1}" aria-selected="{"true" if i == 0 else "false"}" data-sekme="{i}" style="{SEKME_STIL[i == 0]}">{html.escape(o["ad"])}</button>'
         for i, o in enumerate(ornekler))
     govde = re.sub(r'<sc-for list="\{\{tabs\}\}".*?</sc-for>', sekmeler, govde, count=1, flags=re.S)
     pre_ac = re.search(r'(<pre [^>]*>)<sc-for list="\{\{satirlar\}\}"', govde).group(1)
@@ -147,7 +151,7 @@ def ana_sayfa(dc):
     for i, o in enumerate(ornekler):
         satirlar = ''.join(f'<div style="white-space: pre; min-height: 1.65em">{satir_parcala(s) if s else " "}</div>'
                            for s in o['kod'].split('\n'))
-        kodlar += pre_ac.replace('<pre ', f'<pre data-ornek="{i}"{"" if i == 0 else " hidden"} ', 1) + satirlar + '</pre>'
+        kodlar += pre_ac.replace('<pre ', f'<pre data-ornek="{i}" role="tabpanel" id="ornek-panel-{i}" aria-labelledby="ornek-sekme-{i}" tabindex="0"{"" if i == 0 else " hidden"} ', 1) + satirlar + '</pre>'
     govde = re.sub(r'<pre [^>]*><sc-for list="\{\{satirlar\}\}".*?</sc-for></pre>', lambda m: kodlar, govde, count=1, flags=re.S)
     for alan in ('komut', 'cikti'):
         m = re.search(r'(<div [^>]*>)(\$ )?\{\{' + alan + r'\}\}</div>', govde)
@@ -162,13 +166,17 @@ document.querySelectorAll('[data-sekme]').forEach(function (b) {{
     document.querySelectorAll('[data-sekme]').forEach(function (x) {{
       var secili = x === b;
       x.setAttribute('aria-selected', secili ? 'true' : 'false');
+      x.tabIndex = secili ? 0 : -1;
       x.setAttribute('style', secili ? {SEKME_STIL[True]!r} : {SEKME_STIL[False]!r});
     }});
     document.querySelectorAll('[data-ornek]').forEach(function (x) {{ x.hidden = x.getAttribute('data-ornek') !== n; }});
   }});
 }});
+{SEKME_KLAVYE}
 </script>'''
-    return sayfa('Yöntem — Türkçe düşün, her yerde çalıştır', head_ic, govde, betik)
+    return sayfa('Yöntem — Türkçe düşün, her yerde çalıştır', head_ic, govde, betik,
+                 'Yöntem, Türkçe anahtar sözcüklerle yazılan açık kaynak bir programlama dilidir. Tarayıcıda kurulum yapmadan deneyebilir, '
+                 'ücretsiz kitaplarla öğrenebilir, bilgisayarınızda ve ESP32 kartlarında çalıştırabilirsiniz.')
 
 
 def kurulum_sayfasi(dc):
@@ -176,11 +184,11 @@ def kurulum_sayfasi(dc):
     sistemler = ['Windows', 'macOS', 'Linux']
     stil = {True: 'font: 600 15px Inter, sans-serif; padding: 12px 18px; min-height: 44px; border: 1px solid #E3E8EF; border-bottom: none; border-radius: 10px 10px 0 0; background: #FFFFFF; color: #0F1B2D; cursor: pointer; margin-bottom: -1px',
             False: 'font: 500 15px Inter, sans-serif; padding: 12px 18px; min-height: 44px; border: 1px solid transparent; border-radius: 10px 10px 0 0; background: transparent; color: #475569; cursor: pointer'}
-    dugmeler = ''.join(f'<button type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}" data-sistem-sec="{i}" style="{stil[i == 0]}">{s}</button>'
+    dugmeler = ''.join(f'<button type="button" role="tab" id="sistem-sekme-{i}" aria-controls="sistem-panel-{i}" aria-selected="{"true" if i == 0 else "false"}" data-sistem-sec="{i}" style="{stil[i == 0]}">{s}</button>'
                        for i, s in enumerate(sistemler))
     govde = re.sub(r'<sc-for list="\{\{sistemler\}\}".*?</sc-for>', dugmeler, govde, count=1, flags=re.S)
     for i, ad in enumerate(['windows', 'macos', 'linux']):
-        govde = re.sub(r'<sc-if value="\{\{' + ad + r'\}\}"[^>]*>', f'<div data-sistem="{i}"{"" if i == 0 else " hidden"}>', govde, count=1)
+        govde = re.sub(r'<sc-if value="\{\{' + ad + r'\}\}"[^>]*>', f'<div data-sistem="{i}" role="tabpanel" id="sistem-panel-{i}" aria-labelledby="sistem-sekme-{i}"{"" if i == 0 else " hidden"}>', govde, count=1)
     govde = govde.replace('</sc-if>', '</div>')
     betik = f'''<script>
 (function () {{
@@ -189,6 +197,7 @@ def kurulum_sayfasi(dc):
     document.querySelectorAll('[data-sistem-sec]').forEach(function (x) {{
       var s = x.getAttribute('data-sistem-sec') === String(n);
       x.setAttribute('aria-selected', s ? 'true' : 'false');
+      x.tabIndex = s ? 0 : -1;
       x.setAttribute('style', s ? {stil[True]!r} : {stil[False]!r});
     }});
     document.querySelectorAll('[data-sistem]').forEach(function (x) {{ x.hidden = x.getAttribute('data-sistem') !== String(n); }});
@@ -198,17 +207,34 @@ def kurulum_sayfasi(dc):
   }});
   sec(ilk);
 }})();
+{SEKME_KLAVYE}
 </script>'''
-    return sayfa('Yöntem kurulumu', head_ic, govde, betik)
+    return sayfa('Yöntem kurulumu', head_ic, govde, betik,
+                 'Yöntem derleyicisini Windows, macOS ve Linux üzerinde kurma adımları: npm ile kurulum, Python yorumlayıcısı, '
+                 'ESP32 desteği, doğrulama ve sık karşılaşılan sorunlar.')
 
 
-def sayfa(baslik, head_ic, govde, betik=''):
+# Sekme listelerinde ok, Home ve End tuşlarıyla gezinme (seçilen sekme odağı da alır)
+SEKME_KLAVYE = '''document.querySelectorAll('[role="tablist"]').forEach(function (liste) {
+  liste.addEventListener('keydown', function (e) {
+    var t = [].slice.call(liste.querySelectorAll('[role="tab"]')), i = t.indexOf(document.activeElement);
+    if (i < 0) return;
+    var j = e.key === 'ArrowRight' ? (i + 1) % t.length : e.key === 'ArrowLeft' ? (i - 1 + t.length) % t.length
+          : e.key === 'Home' ? 0 : e.key === 'End' ? t.length - 1 : -1;
+    if (j < 0) return;
+    e.preventDefault(); t[j].focus(); t[j].click();
+  });
+});'''
+
+
+def sayfa(baslik, head_ic, govde, betik='', aciklama=''):
     return f'''<!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(baslik)}</title>
+<meta name="description" content="{html.escape(aciklama)}">
 {head_ic.strip()}
 </head>
 <body>
@@ -337,6 +363,8 @@ Yöntem yazılımı MIT lisanslıdır (LICENSE). Kitap ve kılavuz metinleri: te
 def tek_dosya_yerel(s):
     s = s.replace('href="https://yontem.pro/gizlilik.html"', 'href="../gizlilik.html"')
     s = s.replace('href="https://yontem.pro/kunye.html"', 'href="../kunye.html"')
+    s = s.replace('href="https://yontem.pro/ogren.html"', 'href="../ogren.html"')
+    s = s.replace('href="https://yontem.pro/belgeler.html"', 'href="../belgeler.html"')
     s = s.replace('href="https://yontem.pro/kitaplar/"', 'href="index.html"')
     s = s.replace('href="https://yontem.pro/dene"', 'href="../dene/index.html"')
     s = s.replace('href="https://yontem.pro/"', 'href="../index.html"')
@@ -388,6 +416,23 @@ if __name__ == '__main__':
                 y = fontlari_yerellestir(s, '../' * os.path.relpath(yol, CIKTI).count(os.sep))
                 if y != s:
                     open(yol, 'w', encoding='utf-8').write(y)
+    # oyun alanındaki site bağlantıları bu kopyada göreli olur (tek dosyalı çevrim dışı sürümde tam adres kalır)
+    dene = os.path.join(CIKTI, 'dene', 'index.html')
+    s = open(dene, encoding='utf-8').read()
+    for a, b in (('href="https://yontem.pro/"', 'href="../index.html"'), ('href="https://yontem.pro/ogren.html"', 'href="../ogren.html"'),
+                 ('href="https://yontem.pro/belgeler.html"', 'href="../belgeler.html"')):
+        assert s.count(a) == 1, a
+        s = s.replace(a, b)
+    open(dene, 'w', encoding='utf-8').write(s)
+    # tutarlılık: ana sayfadaki kitap kapsamı, kitaplığın ürettiği tek kaynakla aynı olmalı
+    import json
+    kapsamlar = {k['kisa']: k['kapsam'] for k in json.load(open(os.path.join(SITE, 'kitaplar', 'kitaplar.json'), encoding='utf-8'))}
+    ana = open(os.path.join(CIKTI, 'index.html'), encoding='utf-8').read()
+    beklenen = kapsamlar['programlamaya-giris'].replace(' + ', ' ve ')
+    assert beklenen in ana, f'Ana sayfadaki bölüm sayısı kitaplıkla uyuşmuyor; beklenen: {beklenen}'
+    ornek_sayisi = len(re.findall(r'"kimlik":"', s))
+    assert f'>{ornek_sayisi}</span>' in ana, f'Ana sayfadaki örnek sayısı oyun alanıyla uyuşmuyor; beklenen: {ornek_sayisi}'
+    assert f'>{len(kapsamlar)}</span>' in ana, f'Ana sayfadaki kitap sayısı kitaplıkla uyuşmuyor; beklenen: {len(kapsamlar)}'
     # logo ve sekme simgesi: dosyalar kökte durur, her sayfa kendi derinliğinden bağlanır
     logo = os.path.join(SITE, 'logo')
     shutil.copy(os.path.join(logo, 'favicon.ico'), os.path.join(CIKTI, 'favicon.ico'))
@@ -407,6 +452,35 @@ if __name__ == '__main__':
                      f'<link rel="alternate icon" href="{on}favicon.ico" sizes="any">\n'
                      f'<link rel="apple-touch-icon" href="{on}apple-touch-icon.png">\n')
             open(yol, 'w', encoding='utf-8').write(s.replace('</head>', simge + '</head>', 1))
+    shutil.copy(os.path.join(logo, 'yontem-paylasim.png'), os.path.join(CIKTI, 'paylasim.png'))
+    # arama motorları ve paylaşım: her sayfaya kendi adresi (canonical) ve paylaşım bilgileri; sitemap ve robots
+    adresler = []
+    for kok_, _, dosyalar in os.walk(CIKTI):
+        for d in sorted(dosyalar):
+            if not d.endswith('.html'):
+                continue
+            yol = os.path.join(kok_, d)
+            goreli = os.path.relpath(yol, CIKTI).replace(os.sep, '/')
+            adres = ALAN + (goreli[:-len('index.html')] if goreli.endswith('index.html') else goreli)
+            s = open(yol, encoding='utf-8').read()
+            if 'rel="canonical"' in s or '</head>' not in s:
+                continue
+            baslik = html.unescape(re.search(r'<title>(.*?)</title>', s, flags=re.S).group(1).strip())
+            m = re.search(r'<meta name="description" content="([^"]*)"', s)
+            assert m and m.group(1).strip(), f'Açıklaması olmayan sayfa: {goreli}'
+            ek = (f'<link rel="canonical" href="{adres}">\n'
+                  f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="Yöntem">\n<meta property="og:locale" content="tr_TR">\n'
+                  f'<meta property="og:title" content="{html.escape(baslik)}">\n<meta property="og:description" content="{m.group(1)}">\n'
+                  f'<meta property="og:url" content="{adres}">\n<meta property="og:image" content="{ALAN}paylasim.png">\n'
+                  f'<meta name="twitter:card" content="summary_large_image">\n')
+            open(yol, 'w', encoding='utf-8').write(s.replace('</head>', ek + '</head>', 1))
+            adresler.append(adres)
+    adresler.sort(key=lambda a: (a.count('/'), a))
+    open(os.path.join(CIKTI, 'sitemap.xml'), 'w', encoding='utf-8').write(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + ''.join(f'  <url><loc>{html.escape(a)}</loc></url>\n' for a in adresler) + '</urlset>\n')
+    open(os.path.join(CIKTI, 'robots.txt'), 'w', encoding='utf-8').write(f'User-agent: *\nAllow: /\n\nSitemap: {ALAN}sitemap.xml\n')
+    shutil.copy(os.path.join(KAYNAK, 'htaccess.txt'), os.path.join(CIKTI, '.htaccess'))
     zip_yolu = os.path.join(SITE, 'yerel', 'yontem-site.zip')
     with zipfile.ZipFile(zip_yolu, 'w', zipfile.ZIP_DEFLATED) as z:
         for kok, _, dosyalar in os.walk(CIKTI):

@@ -143,8 +143,10 @@ def sayfa(baslik, aciklama, govde, kok, sinif=''):
     </a>
     <div class="menu">
       <a href="/ogren">Öğren</a>
+      <a href="/belgeler">Belgeler</a>
       <a href="{kok}index.html" aria-current="{'page' if sinif == 'kitaplik' else 'true'}">Kitaplar</a>
-      <a href="{kok}kurulum/index.html">Kurulum</a>
+      <a href="/kurulum">Kurulum</a>
+      <a href="/ogretmen">Öğretmenler</a>
       <a class="dugme" href="/dene">Oyun alanı</a>
     </div>
   </nav>
@@ -171,6 +173,15 @@ document.querySelectorAll('.kopyala').forEach(function (d) {{
 </body>
 </html>
 '''
+
+
+def kapsam(k):
+    """Kitabın kapsamı: numaralı bölümler ve ekler ayrı sayılır; önsöz ve giriş bölümleri sayılmaz.
+    Kitaplık, kitap sayfası ve tek sayfalık sürüm bu tek kaynaktan beslenir (site/kitaplar/kitaplar.json)."""
+    basliklar = re.findall(r'^## (.+)$', open(os.path.join(KAYNAK, k['md']), encoding='utf-8').read(), flags=re.M)
+    bolum = sum(1 for b in basliklar if re.match(r'(Bölüm )?\d+[\s.—-]', b))
+    ek = sum(1 for b in basliklar if re.match(r'Ek\b', b))
+    return f'{bolum} bölüm' + (f' + {ek} ek' if ek else '')
 
 
 def kapak(k, buyuk=False):
@@ -203,6 +214,7 @@ def kitap_uret(k):
         if k['md'] == 'llm.md':
             shutil.copy(os.path.join(KAYNAK, f'sekil{i}.png'), hedef)
     k['bolum_sayisi'] = len(bolumler)
+    k['kapsam'] = kapsam(k)
 
     # İçindekiler (kitap ana sayfası)
     satirlar = []
@@ -214,7 +226,7 @@ def kitap_uret(k):
   <div class="kitap-ust">
     {kapak(k, True)}
     <div class="kitap-bilgi">
-      <span class="tur">{k["tur"]} · {len(bolumler)} bölüm</span>
+      <span class="tur">{k["tur"]} · {k["kapsam"]}</span>
       <h1>{e(k["baslik"])}</h1>
       <p class="ozet">{e(k["alt"])}</p>
       <p class="yazar">Önder Örnek</p>
@@ -254,14 +266,14 @@ def kitap_uret(k):
     </details>
   </aside>
   <main id="icerik" class="metin">
-    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">{e(k["baslik"])}</a> / Bölüm {i + 1} / {len(bolumler)}</p>
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">{e(k["baslik"])}</a> / {e(b["baslik"])}</p>
     {b["html"]}
     {gezinti}
   </main>
   <aside class="bu-bolumde" aria-label="Bu bölümde">{('<span>Bu bölümde</span><ol>' + bu + '</ol>') if bu else ''}</aside>
 </div>'''
         open(os.path.join(hedef, b['dosya']), 'w', encoding='utf-8').write(
-            sayfa(f'{b["baslik"]} · {k["baslik"]}', k['alt'], govde, '../', 'bolum-sayfa'))
+            sayfa(f'{b["baslik"]} · {k["baslik"]}', f'{b["baslik"]} — {k["baslik"]}. {k["alt"]}', govde, '../', 'bolum-sayfa'))
     return bolumler
 
 
@@ -383,7 +395,9 @@ def tek_dosya(k, bolumler):
       <span>yöntem</span>
     </a>
     <div class="menu">
-      <a href="https://yontem.pro/kitaplar/">Kitaplar</a>
+      <a href="https://yontem.pro/ogren.html">Öğren</a>
+      <a href="https://yontem.pro/belgeler.html">Belgeler</a>
+      <a href="https://yontem.pro/kitaplar/" aria-current="true">Kitaplar</a>
       <a class="dugme" href="https://yontem.pro/dene">Oyun alanı</a>
     </div>
   </nav>
@@ -400,7 +414,7 @@ def tek_dosya(k, bolumler):
     <div class="tek-kapak">
       {kapak(k)}
       <div>
-        <span class="tur">{k["tur"]} · {len(bolumler)} bölüm · Önder Örnek</span>
+        <span class="tur">{k["tur"]} · {k["kapsam"]} · Önder Örnek</span>
         <h1>{e(k["baslik"])}</h1>
         <p class="ozet">{e(k["alt"])}</p>
       </div>
@@ -430,7 +444,7 @@ def kitaplik():
         kartlar.append(f'''<li class="kart">
       <a class="kart-kapak" href="{k["kisa"]}/index.html" tabindex="-1" aria-hidden="true">{kapak(k)}</a>
       <div>
-        <span class="tur">{k["tur"]} · {k["bolum_sayisi"]} bölüm</span>
+        <span class="tur">{k["tur"]} · {k["kapsam"]}</span>
         <h2><a href="{k["kisa"]}/index.html">{e(k["baslik"])}</a></h2>
         <p>{e(k["alt"])}</p>
         <div class="eylemler">
@@ -465,6 +479,9 @@ if __name__ == '__main__':
         tek = os.path.join(CIKTI, k['kisa'] + '.html')
         open(tek, 'w', encoding='utf-8').write(tek_dosya(k, bl))
         k['tek'] = k['kisa'] + '.html'
-        print(f'{k["baslik"]}: {len(bl)} bölüm' + ('' if k['pdf_var'] else ' (PDF yok)'))
+        print(f'{k["baslik"]}: {k["kapsam"]}' + ('' if k['pdf_var'] else ' (PDF yok)'))
     kitaplik()
+    import json
+    json.dump([{'kisa': k['kisa'], 'baslik': k['baslik'], 'tur': k['tur'], 'kapsam': k['kapsam'], 'ozet': k['alt']} for k in KITAPLAR],
+              open(os.path.join(CIKTI, 'kitaplar.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('yazıldı:', os.path.normpath(CIKTI))

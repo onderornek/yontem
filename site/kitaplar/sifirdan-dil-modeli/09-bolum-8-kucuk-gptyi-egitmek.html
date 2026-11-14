@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bölüm 8 — Küçük GPT’yi eğitmek · Yöntem ile Sıfırdan Dil Modeli</title>
-<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<meta name="description" content="Bölüm 8 — Küçük GPT’yi eğitmek — Yöntem ile Sıfırdan Dil Modeli. Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
@@ -20,8 +20,10 @@
     </a>
     <div class="menu">
       <a href="/ogren">Öğren</a>
+      <a href="/belgeler">Belgeler</a>
       <a href="../index.html" aria-current="true">Kitaplar</a>
-      <a href="../kurulum/index.html">Kurulum</a>
+      <a href="/kurulum">Kurulum</a>
+      <a href="/ogretmen">Öğretmenler</a>
       <a class="dugme" href="/dene">Oyun alanı</a>
     </div>
   </nav>
@@ -35,7 +37,7 @@
     </details>
   </aside>
   <main id="icerik" class="metin">
-    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 9 / 14</p>
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 8 — Küçük GPT’yi eğitmek</p>
     <h2 id="bölüm-8-küçük-gptyi-eğitmek">Bölüm 8 — Küçük GPT’yi eğitmek</h2>
 <p>Artık tüm parçalar hazırdır. Bu bölümde küçük GPT’yi atasözleriyle eğitiyoruz. Program 5. bölümdeki eğitim döngüsüne dört yenilik ekliyor.</p>
 <p><strong>Akış ve pencereler.</strong> Eğitim atasözleri, aralarına nokta konularak tek uzun bir metne (akış) dönüştürülür. Her adımda bu metinden rastgele 8 pencere alınır; her pencere 16 karakterdir. Hedef, pencerenin bir karakter kaydırılmışıdır. Model bir pencerede 16 konumun hepsi için aynı anda tahmin yapar; maske sayesinde her konum yalnızca kendinden öncekileri görür. Böylece tek bir yığından 128 eğitim örneği çıkar.</p>

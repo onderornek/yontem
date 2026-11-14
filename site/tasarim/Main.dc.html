@@ -15,10 +15,24 @@
 body{margin:0;background:#FFFFFF;color:#0F1B2D;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#0B6E69}a:hover{color:#07514D}
 h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
+.atla{position:absolute;left:-9999px;top:8px;z-index:20;background:#0F1B2D;color:#FFFFFF;padding:12px 16px;border-radius:8px;font-weight:600;text-decoration:none}
+.atla:focus{left:12px;color:#FFFFFF}
+.destek{width:100%;border-collapse:collapse;font-size:15px;line-height:1.5;background:#FFFFFF}
+.destek th,.destek td{text-align:left;vertical-align:top;padding:12px 16px;border-top:1px solid #E3E8EF}
+.destek thead th{border-top:none;font-family:'Space Grotesk','Inter',sans-serif;font-size:16px}
+.destek tbody th{font-weight:600;color:#0F1B2D;white-space:nowrap}
+.destek td{color:#334155}
+@media (max-width:640px){
+.ust-menu{gap:0 16px !important;font-size:14px !important}
+.ust-menu a{padding:8px 0 !important}
+.ust-menu a.dugme{padding:8px 14px !important}
+.destek{font-size:14px;min-width:600px}.destek th,.destek td{padding:10px 12px}.destek tbody th{white-space:normal}
+}
 </style>
 </helmet>
 
 <div style="width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: #FFFFFF">
+  <a class="atla" href="#icerik">İçeriğe geç</a>
 
   <!-- Üst menü -->
   <header style="width: 100%; border-bottom: 1px solid #E3E8EF; display: flex; justify-content: center; background: #FFFFFF">
@@ -27,32 +41,33 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
         <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="{{accent}}"></rect><path d="M8.5 11.5L16 19.5l7.5-8M16 19.5V25.5" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="13.1" cy="8.3" r="1.75" fill="#FFFFFF"></circle><circle cx="18.9" cy="8.3" r="1.75" fill="#FFFFFF"></circle></svg>
         <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em">yöntem</span>
       </a>
-      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; font-size: 15px; font-weight: 500">
+      <div class="ust-menu" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; font-size: 15px; font-weight: 500">
         <a href="/ogren" style="color: #334155; text-decoration: none; padding: 12px 0">Öğren</a>
         <a href="/belgeler" style="color: #334155; text-decoration: none; padding: 12px 0">Belgeler</a>
         <a href="/kitaplar/" style="color: #334155; text-decoration: none; padding: 12px 0">Kitaplar</a>
         <a href="Kurulum.dc.html" style="color: #334155; text-decoration: none; padding: 12px 0">Kurulum</a>
         <a href="/ogretmen" style="color: #334155; text-decoration: none; padding: 12px 0">Öğretmenler</a>
         <a href="https://github.com/onderornek/yontem" style="color: #334155; text-decoration: none; padding: 12px 0">GitHub</a>
-        <a href="/dene" style="background: #0F1B2D; color: #FFFFFF; text-decoration: none; padding: 12px 18px; border-radius: 10px; font-weight: 600">Oyun alanı</a>
+        <a class="dugme" href="/dene" style="background: #0F1B2D; color: #FFFFFF; text-decoration: none; padding: 12px 18px; border-radius: 10px; font-weight: 600">Oyun alanı</a>
       </div>
     </nav>
   </header>
 
+  <main id="icerik" tabindex="-1" style="width: 100%; display: flex; flex-direction: column; align-items: center; outline: none">
   <!-- Hero -->
-  <section style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 88px 24px 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
-    <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+  <section style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: clamp(28px, 7vw, 88px) 24px clamp(40px, 6vw, 72px); display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 5vw, 56px)">
+    <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: clamp(14px, 3vw, 24px)">
       <div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #E7F4F3; color: #07514D; font-size: 14px; font-weight: 600">Sürüm 0.6.0 · Açık kaynak, MIT lisansı</div>
-      <h1 style="margin: 0; font-size: 64px; line-height: 1.04; letter-spacing: -0.035em; font-weight: 700; color: #0F1B2D">Türkçe düşünen,<br>her yerde çalışan dil.</h1>
-      <p style="margin: 0; font-size: 20px; line-height: 1.55; color: #475569; max-width: 540px">Yöntem, Türkçe anahtar sözcüklerle yazılan, okunaklı ve yapısal bir programlama dili. Aynı kod tarayıcıda, bilgisayarınızda ve ESP32 kartında çalışır; derin öğrenme kütüphanesi ve kitaplarıyla birlikte gelir.</p>
-      <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px">
+      <h1 style="margin: 0; font-size: clamp(36px, 9.6vw, 64px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 700; color: #0F1B2D">Türkçe düşünen,<br>her yerde çalışan dil.</h1>
+      <p style="margin: 0; font-size: clamp(17px, 4.4vw, 20px); line-height: 1.55; color: #475569; max-width: 540px">Yöntem, Türkçe anahtar sözcüklerle yazılan, okunaklı ve yapısal bir programlama dili. Tarayıcıda ve bilgisayarınızda çalışır; tipli bir alt kümesi ESP32 kartlarına da derlenir.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px">
         <a href="/dene" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; padding: 16px 24px; border-radius: 12px; font-weight: 600; font-size: 17px">Tarayıcıda deneme — kurulum yok</a>
         <a href="/ogren" style="background: #FFFFFF; color: #0F1B2D; text-decoration: none; padding: 15px 23px; border-radius: 12px; font-weight: 600; font-size: 17px; border: 1px solid #CBD5E1">Öğrenme yol haritası</a>
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 32px; padding-top: 16px">
-        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700">109</span><span style="font-size: 14px; color: #475569">hazır örnek</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700">110</span><span style="font-size: 14px; color: #475569">hazır örnek</span></div>
         <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700">3</span><span style="font-size: 14px; color: #475569">çalışma ortamı</span></div>
-        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700">5</span><span style="font-size: 14px; color: #475569">kitap ve kılavuz</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700">6</span><span style="font-size: 14px; color: #475569">kitap ve kılavuz</span></div>
       </div>
     </div>
 
@@ -76,9 +91,9 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
     <div style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 72px 24px; display: flex; flex-direction: column; gap: 40px">
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
         <h2 style="margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em">Bir dil, üç ortam.</h2>
-        <p style="margin: 0; font-size: 18px; line-height: 1.6; color: #475569">Ekranda öğrendiğiniz programı değiştirmeden bir mikrodenetleyiciye taşıyabilirsiniz. Yöntem derleyicisi kodu ortama göre çevirir.</p>
+        <p style="margin: 0; font-size: 18px; line-height: 1.6; color: #475569">Aynı dili tarayıcıda, bilgisayarda ve ESP32 kartında kullanabilirsiniz. Tarayıcı ve bilgisayar dilin tamamını çalıştırır; ESP32 ise tipleri baştan belli olan bir alt kümesini kabul eder.</p>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px">
         <div style="background: #FFFFFF; border: 1px solid #E3E8EF; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
           <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="8" width="32" height="24" rx="4" fill="none" stroke="{{accent}}" stroke-width="2"></rect><path d="M4 14h32" stroke="{{accent}}" stroke-width="2"></path><circle cx="9" cy="11" r="1.2" fill="{{accent}}"></circle><circle cx="13" cy="11" r="1.2" fill="{{accent}}"></circle></svg>
           <h3 style="margin: 0; font-size: 22px; letter-spacing: -0.01em">Tarayıcı</h3>
@@ -94,10 +109,22 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
         <div style="background: #FFFFFF; border: 1px solid #E3E8EF; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
           <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="10" width="20" height="20" rx="3" fill="none" stroke="{{accent}}" stroke-width="2"></rect><path d="M15 6v4M20 6v4M25 6v4M15 30v4M20 30v4M25 30v4M6 15h4M6 20h4M6 25h4M30 15h4M30 20h4M30 25h4" stroke="{{accent}}" stroke-width="2" stroke-linecap="round"></path></svg>
           <h3 style="margin: 0; font-size: 22px; letter-spacing: -0.01em">ESP32 kartları</h3>
-          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #475569">C++'a derlenir ve karta yüklenir. Ölçümlerde elle yazılmış C++'tan ortalama yalnızca 1,9 kat yavaş.</p>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #475569">C++'a derlenir ve karta yüklenir. Dilin tipli bir alt kümesi desteklenir; model eğitimi ve otomatik türev kartta çalışmaz. <a href="/gomulu#sinirlar">Sınırların tamamı</a></p>
           <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #07514D">yontem gomulu led.y</span>
         </div>
       </div>
+      <div style="overflow-x: auto; border: 1px solid #E3E8EF; border-radius: 16px; background: #FFFFFF" tabindex="0" role="region" aria-label="Ortamlara göre destek tablosu">
+        <table class="destek">
+          <thead><tr><th scope="col"><span style="position: absolute; left: -9999px">Özellik</span></th><th scope="col">Tarayıcı</th><th scope="col">Bilgisayar</th><th scope="col">ESP32</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Dil</th><td>Tamamı</td><td>Tamamı</td><td>Tipleri derleme sırasında belli olan alt küme</td></tr>
+            <tr><th scope="row">Yerleşik birimler</th><td>Yüklenir; ağ istekleri tarayıcının izin verdiği adreslerle sınırlıdır</td><td>Tümü</td><td>Matematik, YZ (yalnızca eğitilmiş modelle tahmin) ve Donanım</td></tr>
+            <tr><th scope="row">Otomatik türev ve model eğitimi</th><td>Var</td><td>Var</td><td>Yok; model bilgisayarda eğitilip karta taşınır</td></tr>
+            <tr><th scope="row">Kurulum</th><td>Gerekmez</td><td>Node.js 18+ ya da Python 3.8+</td><td>Arduino ya da PlatformIO</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #475569; max-width: 760px">Hız: bilgisayarda yapılan dokuz testlik ölçümde, Yöntem'in ürettiği C++ elle yazılmış C++'tan ortalama 1,9 kat yavaş çalıştı (Yöntem 0.5.0, g++ -O2, Linux x86-64). Bu ölçüm ESP32 kartında yapılmadı. <a href="/olcumler">Ölçüm yöntemi ve sonuçların tamamı</a></p>
     </div>
   </section>
 
@@ -107,7 +134,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
       <h2 style="margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em">Öğrenmek için tasarlandı, gerçek işler için yeterli.</h2>
       <p style="margin: 0; font-size: 18px; line-height: 1.6; color: #475569">Turbo Pascal'ın okunaklı yapısını modern nesneler, birimler ve yapay zekâ araçlarıyla birleştirir.</p>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px 32px">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px 32px">
       <div style="display: flex; flex-direction: column; gap: 8px">
         <h3 style="margin: 0; font-size: 19px">Türkçe anahtar sözcükler</h3>
         <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #475569"><code style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #07514D">eğer … ise</code>, <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #07514D">iken</code>, <code style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #07514D">tekrarla</code>. Büyük/küçük harf ve ş/s, ç/c farkları ad eşleştirmede sorun çıkarmaz.</p>
@@ -161,7 +188,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
   <!-- Kimler için -->
   <section id="kimler" style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 88px 24px; display: flex; flex-direction: column; gap: 40px">
     <h2 style="margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em; max-width: 680px">Sınıfta, atölyede, evde.</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 20px">
       <a href="/ogretmen" style="text-decoration: none; color: #0F1B2D; border: 1px solid #E3E8EF; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 10px; background: #FFFFFF">
         <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #07514D">Öğretmenler</span>
         <span style="font-family: 'Space Grotesk', sans-serif; font-size: 21px; font-weight: 600; line-height: 1.3">Dersinize hazır: plan, alıştırma, kurulumsuz ortam.</span>
@@ -192,10 +219,10 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
         <h2 style="margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.03em">Kitaplarıyla gelir.</h2>
         <p style="margin: 0; font-size: 18px; line-height: 1.6; color: #475569">Hepsini tarayıcıda, ücretsiz okuyabilirsiniz. Basılı düzen isterseniz her kitabın basımevi düzenindeki PDF'ini de indirebilirsiniz. Kitaplar CC BY 4.0 lisanslıdır: derslerinizde kullanabilir, çoğaltabilir ve uyarlayabilirsiniz.</p>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 24px">
         <div style="display: flex; gap: 20px; align-items: flex-start">
           <div aria-hidden="true" style="flex: 0 0 96px; height: 136px; border-radius: 6px; background: #0F1B2D; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; box-sizing: border-box; box-shadow: 0 10px 20px -12px rgba(15,27,45,0.5)"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #FFFFFF; line-height: 1.2">Yöntem ile Programlamaya Giriş</span><span style="height: 4px; width: 32px; background: #5EEAD4; border-radius: 2px"></span></div>
-          <div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 19px">Yöntem ile Programlamaya Giriş</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #475569">İlk programdan sınıflara, birimlere ve sinir ağlarına dilin tamamı. 15 bölüm ve üç ek.</p><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; padding-top: 4px"><a href="https://claude.ai/artifact/TWa36NMVWcS6m8eQh6Fg6E" style="font-size: 15px; font-weight: 600; padding: 8px 0">Çevrim içi sürüm →</a><a href="/kitaplar/programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" style="font-size: 14px; color: #475569; padding: 8px 0">PDF sürümü (isteğe bağlı)</a></div></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 19px">Yöntem ile Programlamaya Giriş</h3><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #475569">İlk programdan sınıflara, birimlere ve sinir ağlarına dilin tamamı. 15 bölüm ve 3 ek.</p><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; padding-top: 4px"><a href="https://claude.ai/artifact/TWa36NMVWcS6m8eQh6Fg6E" style="font-size: 15px; font-weight: 600; padding: 8px 0">Çevrim içi sürüm →</a><a href="/kitaplar/programlamaya-giris/Yontem_ile_Programlamaya_Giris.pdf" style="font-size: 14px; color: #475569; padding: 8px 0">PDF sürümü (isteğe bağlı)</a></div></div>
         </div>
         <div style="display: flex; gap: 20px; align-items: flex-start">
           <div aria-hidden="true" style="flex: 0 0 96px; height: 136px; border-radius: 6px; background: {{accent}}; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; box-sizing: border-box; box-shadow: 0 10px 20px -12px rgba(15,27,45,0.5)"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #FFFFFF; line-height: 1.2">Yöntem ile Makine Öğrenmesi</span><span style="height: 4px; width: 32px; background: #FFFFFF; border-radius: 2px"></span></div>
@@ -228,6 +255,7 @@ h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif}
   </section>
 
   <!-- Alt bilgi -->
+  </main>
   <footer style="width: 100%; border-top: 1px solid #E3E8EF; display: flex; justify-content: center">
     <div style="width: 100%; max-width: 1200px; box-sizing: border-box; padding: 40px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 14px; color: #475569">
       <span>Telif hakkı © 2026 Önder Örnek · Açık kaynak, MIT lisansı · yontem.pro</span>

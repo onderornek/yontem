@@ -1,0 +1,120 @@
+<!--
+dosya: olcumler.html
+menu: belgeler
+baslik: Hız ölçümleri · Yöntem
+ustyazi: Belgeler · Ölçümler
+h1: Yöntem ne kadar hızlı?
+ozet: Yöntem'in üç çalışma biçiminin elle yazılmış C++, JavaScript ve Python ile karşılaştırıldığı ölçümün yöntemi, kapsamı ve sonuçları.
+-->
+<main id="icerik">
+  <section id="ozet">
+    <h2>Özet</h2>
+    <p>Aynı algoritmalar dört dilde yazıldı ve aynı bilgisayarda ölçüldü. Açılış süresi çıkarıldığında, sekiz hesaplama testinin geometrik ortalamasına göre Yöntem'in ürettiği C++ kodu elle yazılmış C++'tan 1,9 kat, JavaScript'e derlenen Yöntem 29 kat yavaş çalıştı. Python yorumlayıcısı öğrenme ve başvuru amaçlıdır; hız için tasarlanmamıştır.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Ortamlara göre geometrik ortalama">
+      <table>
+        <thead><tr><th>Ortam</th><th>Kat</th></tr></thead>
+        <tbody>
+          <tr><td>C++ (g++ -O2)</td><td>1,0×</td></tr>
+          <tr><td>Yöntem → C++</td><td>1,9×</td></tr>
+          <tr><td>Node.js</td><td>4,0×</td></tr>
+          <tr><td>Python 3</td><td>23,6×</td></tr>
+          <tr><td>Yöntem → JavaScript</td><td>29,0×</td></tr>
+          <tr><td>Yöntem, Python yorumlayıcısı</td><td>1673×</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="kapsam">
+    <h2>Ölçümün kapsamı ve sınırları</h2>
+    <ul>
+      <li>Ölçüm 2026-11-09 tarihinde, <strong>Yöntem 0.5.0</strong> ile tek bir Linux bilgisayarında (x86-64) yapıldı. Başka donanımda oranlar değişebilir.</li>
+      <li>"Yöntem → C++" satırı, gömülü arka ucun ürettiği C++ kodunun <strong>bilgisayarda</strong> g++ -O2 ile derlenmiş hâlidir. <strong>ESP32 kartında ölçüm yapılmadı</strong>; bu sayılar kart üzerindeki hızı göstermez.</li>
+      <li>Dokuz testten biri (<code>bos</code>) yalnızca açılış süresini ölçer ve oranlardan çıkarılır; oranlar kalan sekiz testten hesaplanır.</li>
+      <li>Her test ısınmadan sonra 7 kez çalıştırıldı ve ortanca süre alındı. Çıktısı beklenenle birebir aynı olmayan ölçüm geçersiz sayılır.</li>
+      <li>Testler küçük hesaplama çekirdekleridir; dosya, ağ ya da arayüz ağırlıklı programlar için bir şey söylemez.</li>
+    </ul>
+    <div class="tablo" tabindex="0" role="region" aria-label="Ölçüm ortamı">
+      <table>
+        <thead><tr><th>Ortam</th><th>Sürüm</th></tr></thead>
+        <tbody>
+          <tr><td>Node.js</td><td>v22.23.4</td></tr>
+          <tr><td>Python</td><td>3.13.18</td></tr>
+          <tr><td>C++ derleyicisi</td><td>g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0</td></tr>
+          <tr><td>Yöntem</td><td>Yöntem 0.5.0 (JavaScript)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="testler">
+    <h2>Testler</h2>
+    <div class="tablo" tabindex="0" role="region" aria-label="Testler">
+      <table>
+        <thead><tr><th>Test</th><th>Ne ölçer?</th></tr></thead>
+        <tbody>
+          <tr><td><code>bos</code></td><td>açılış süresi (boş program)</td></tr>
+          <tr><td><code>fannkuch</code></td><td>fannkuch (N=8): tamsayı dizileri</td></tr>
+          <tr><td><code>fib</code></td><td>özyinelemeli Fibonacci(27): fonksiyon çağrısı</td></tr>
+          <tr><td><code>ikili_agac</code></td><td>tam ikili ağaçlar (derinlik 14): nesne oluşturma</td></tr>
+          <tr><td><code>matris</code></td><td>100×100 matris çarpımı: ondalık aritmetik, dizi erişimi</td></tr>
+          <tr><td><code>nbody</code></td><td>beş cisim, 20000 adım: ondalık aritmetik</td></tr>
+          <tr><td><code>siralama</code></td><td>30000 sayıyı hızlı sıralama: karşılaştırma, takas</td></tr>
+          <tr><td><code>sozcuk_sayma</code></td><td>40000 sözcüğü sayma: metin ve sözlük</td></tr>
+          <tr><td><code>spektral</code></td><td>spektral norm (N=120): fonksiyon çağrısı, ondalık</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="oranlar">
+    <h2>C++'a göre kaç kat yavaş?</h2>
+    <p>Açılış süresi çıkarılmış oranlar; 1,0× elle yazılmış C++'tır.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Testlere göre C++'a oranla yavaşlama">
+      <table>
+        <thead><tr><th>Test</th><th>Yöntem → C++</th><th>Yöntem → JavaScript</th><th>Yöntem, Python yorumlayıcısı</th><th>C++ (g++ -O2)</th><th>Node.js</th><th>Python 3</th></tr></thead>
+        <tbody>
+          <tr><td>fannkuch</td><td>1,5×</td><td>32,2×</td><td>2859×</td><td>1,0×</td><td>3,0×</td><td>42,6×</td></tr>
+          <tr><td>fib</td><td>1,5×</td><td>17,9×</td><td>3399×</td><td>1,0×</td><td>3,9×</td><td>23,1×</td></tr>
+          <tr><td>ikili_agac</td><td>1,5×</td><td>20,0×</td><td>473×</td><td>1,0×</td><td>2,8×</td><td>6,3×</td></tr>
+          <tr><td>matris</td><td>2,3×</td><td>59,4×</td><td>4709×</td><td>1,0×</td><td>6,2×</td><td>99,5×</td></tr>
+          <tr><td>nbody</td><td>5,8×</td><td>100×</td><td>6783×</td><td>1,0×</td><td>4,5×</td><td>95,1×</td></tr>
+          <tr><td>siralama</td><td>1,4×</td><td>21,5×</td><td>1047×</td><td>1,0×</td><td>4,3×</td><td>11,6×</td></tr>
+          <tr><td>sozcuk_sayma</td><td>1,2×</td><td>7,5×</td><td>89,4×</td><td>1,0×</td><td>3,2×</td><td>3,2×</td></tr>
+          <tr><td>spektral</td><td>2,6×</td><td>46,0×</td><td>4456×</td><td>1,0×</td><td>5,7×</td><td>43,9×</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="sureler">
+    <h2>Ortanca süreler</h2>
+    <p>Açılış süresi dahil, olduğu gibi ölçülen süreler.</p>
+    <div class="tablo" tabindex="0" role="region" aria-label="Ortanca süreler">
+      <table>
+        <thead><tr><th>Test</th><th>Yöntem → C++</th><th>Yöntem → JavaScript</th><th>Yöntem, Python yorumlayıcısı</th><th>C++ (g++ -O2)</th><th>Node.js</th><th>Python 3</th></tr></thead>
+        <tbody>
+          <tr><td>bos</td><td>1,6 ms</td><td>63,2 ms</td><td>32,8 ms</td><td>1,0 ms</td><td>32,6 ms</td><td>13,7 ms</td></tr>
+          <tr><td>fannkuch</td><td>6,2 ms</td><td>0,159 sn</td><td>8,579 sn</td><td>4,0 ms</td><td>41,6 ms</td><td>0,141 sn</td></tr>
+          <tr><td>fib</td><td>3,1 ms</td><td>81,1 ms</td><td>3,432 sn</td><td>1,4 ms</td><td>36,5 ms</td><td>36,8 ms</td></tr>
+          <tr><td>ikili_agac</td><td>11,4 ms</td><td>0,195 sn</td><td>3,146 sn</td><td>7,5 ms</td><td>50,8 ms</td><td>55,3 ms</td></tr>
+          <tr><td>matris</td><td>5,1 ms</td><td>0,153 sn</td><td>7,181 sn</td><td>2,5 ms</td><td>42,0 ms</td><td>0,165 sn</td></tr>
+          <tr><td>nbody</td><td>13,6 ms</td><td>0,269 sn</td><td>13,991 sn</td><td>3,0 ms</td><td>41,8 ms</td><td>0,209 sn</td></tr>
+          <tr><td>siralama</td><td>7,6 ms</td><td>0,154 sn</td><td>4,484 sn</td><td>5,2 ms</td><td>51,0 ms</td><td>63,1 ms</td></tr>
+          <tr><td>sozcuk_sayma</td><td>10,7 ms</td><td>0,119 sn</td><td>0,699 sn</td><td>8,4 ms</td><td>56,4 ms</td><td>37,7 ms</td></tr>
+          <tr><td>spektral</td><td>6,2 ms</td><td>0,142 sn</td><td>7,703 sn</td><td>2,7 ms</td><td>42,5 ms</td><td>89,3 ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="yineleme">
+    <h2>Ölçümü kendiniz yinelemek</h2>
+    <p>Test programları, beklenen çıktılar ve ölçüm betiği Yöntem deposunun <code>benchmark/</code> klasöründedir. Node.js, Python 3 ve g++ (ya da clang++) kurulu bir bilgisayarda:</p>
+<kabuk>
+cd js && npm install && npm run build && cd ..
+python3 benchmark/calistir.py
+</kabuk>
+    <p>Sonuçlar <code>benchmark/sonuclar/</code> klasörüne yazılır: <code>rapor.md</code> (bu sayfadaki tablolar), <code>rapor.json</code> (ham ölçümler) ve <code>rapor.svg</code> (grafik). Kendi ölçümünüzde farklı bir sonuç görürseniz <a href="/topluluk">topluluk sayfasındaki</a> yoldan bildirebilirsiniz.</p>
+  </section>
+</main>

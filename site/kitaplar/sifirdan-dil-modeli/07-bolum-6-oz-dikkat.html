@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bölüm 6 — Öz-dikkat · Yöntem ile Sıfırdan Dil Modeli</title>
-<meta name="description" content="Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
+<meta name="description" content="Bölüm 6 — Öz-dikkat — Yöntem ile Sıfırdan Dil Modeli. Tensörlerden Transformer&#x27;a, küçük bir GPT&#x27;yi baştan sona kurmak">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
@@ -20,8 +20,10 @@
     </a>
     <div class="menu">
       <a href="/ogren">Öğren</a>
+      <a href="/belgeler">Belgeler</a>
       <a href="../index.html" aria-current="true">Kitaplar</a>
-      <a href="../kurulum/index.html">Kurulum</a>
+      <a href="/kurulum">Kurulum</a>
+      <a href="/ogretmen">Öğretmenler</a>
       <a class="dugme" href="/dene">Oyun alanı</a>
     </div>
   </nav>
@@ -35,7 +37,7 @@
     </details>
   </aside>
   <main id="icerik" class="metin">
-    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 7 / 14</p>
+    <p class="iz"><a href="../index.html">Kitaplar</a> / <a href="index.html">Yöntem ile Sıfırdan Dil Modeli</a> / Bölüm 6 — Öz-dikkat</p>
     <h2 id="bölüm-6-öz-dikkat">Bölüm 6 — Öz-dikkat</h2>
 <p>Bir önceki bölümdeki model son üç karaktere bakıyordu. Bağlamı 30 karaktere çıkarmak istesek ne olur? Her konum için ayrı bir ağırlık matrisi gerekir. Parametre sayısı bağlamla birlikte büyür. Daha kötüsü, model “8 karakter önceki harf” ile “9 karakter önceki harf” için ayrı ayrı kurallar öğrenmek zorunda kalır.</p>
 <p>2017’de yayımlanan “Attention Is All You Need” makalesi farklı bir yol önerdi: her karakter geçmişteki <em>tüm</em> karakterlere baksın, ama hangisine ne kadar bakacağına kendisi karar versin. Bu düzeneğe <strong>öz-dikkat</strong> (self-attention) denir. Bugünkü tüm büyük dil modellerinin kalbi budur.</p>

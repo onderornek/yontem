@@ -1,0 +1,44 @@
+[
+ {
+  "kisa": "programlamaya-giris",
+  "baslik": "Yöntem ile Programlamaya Giriş",
+  "tur": "Kitap",
+  "kapsam": "15 bölüm + 3 ek",
+  "ozet": "Dilin tamamı, ilk programdan sınıflara, birimlere ve sinir ağlarına"
+ },
+ {
+  "kisa": "makine-ogrenmesi",
+  "baslik": "Yöntem ile Makine Öğrenmesi",
+  "tur": "Kılavuz",
+  "kapsam": "4 bölüm + 1 ek",
+  "ozet": "20 algoritma, her biri baştan sona okunabilen bir programla"
+ },
+ {
+  "kisa": "sifirdan-dil-modeli",
+  "baslik": "Yöntem ile Sıfırdan Dil Modeli",
+  "tur": "Kitap",
+  "kapsam": "10 bölüm + 3 ek",
+  "ozet": "Tensörlerden Transformer'a, küçük bir GPT'yi baştan sona kurmak"
+ },
+ {
+  "kisa": "kurulum",
+  "baslik": "Yöntem Kurulum Kılavuzu",
+  "tur": "Kılavuz",
+  "kapsam": "5 bölüm",
+  "ozet": "Windows, macOS ve Linux'ta kurulum, ESP32 desteği ve sık karşılaşılan sorunlar"
+ },
+ {
+  "kisa": "birimler",
+  "baslik": "Yöntem Birimler ve Araçlar Kılavuzu",
+  "tur": "Kılavuz",
+  "kapsam": "11 bölüm",
+  "ozet": "Arayüz, mobil, güvenlik, takvim, düzenli ifadeler ve ağ birimleri; test, biçimlendirme ve paketleme araçları"
+ },
+ {
+  "kisa": "dil-basvurusu",
+  "baslik": "Yöntem Dil Başvurusu",
+  "tur": "Başvuru",
+  "kapsam": "12 bölüm + 2 ek",
+  "ozet": "Sözcük yapısı, tipler, ifadeler, deyimler, sınıflar ve birimler; dilbilgisinin tamamı"
+ }
+]
