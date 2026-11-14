@@ -47,13 +47,13 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
   justify-content: space-between; box-shadow: 0 10px 22px -12px rgba(15, 27, 45, 0.55); flex: none; }
 .kapak span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; line-height: 1.2; color: #fff; hyphens: auto; overflow-wrap: anywhere; }
 .kart-kapak { text-decoration: none; }
-.kapak i { display: block; width: 32px; height: 4px; border-radius: 2px; background: #5EEAD4; }
+.kapak svg { display: block; width: 22px; height: 22px; color: #5EEAD4; }
 .kapak.acik { border: 1px solid #CBD5E1; }
 .kapak.acik span { color: #0F1B2D; }
-.kapak.acik i { background: #0B7A75; }
+.kapak.acik svg { color: #0B7A75; }
 .kapak.buyuk { width: 180px; height: 256px; padding: 20px; border-radius: 8px; }
 .kapak.buyuk span { font-size: 22px; }
-.kapak.buyuk i { width: 48px; height: 6px; }
+.kapak.buyuk svg { width: 40px; height: 40px; }
 
 /* kitaplık */
 .kitaplik-ana { max-width: 1080px; margin: 0 auto; padding: 64px 24px 88px; }

@@ -4,6 +4,7 @@
   "description": "Yöntem programlama dili: sözdizimi renklendirme, hata gösterimi, tamamlama, tanıma git, biçimlendirme, çalıştırma ve hata ayıklama",
   "version": "0.6.0",
   "publisher": "yontem",
+  "icon": "icon.png",
   "license": "MIT",
   "author": "Önder Örnek",
   "homepage": "https://yontem.pro",

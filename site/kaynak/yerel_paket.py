@@ -221,8 +221,7 @@ def sayfa(baslik, head_ic, govde, betik=''):
 
 # ------------------------------------------------------------------ içerik sayfaları (site/sayfalar)
 LOGO = ('<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/>'
-        '<path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
-        '<path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>')
+        '<path d="M8.5 11.5L16 19.5l7.5-8M16 19.5V25.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.1" cy="8.3" r="1.75" fill="#fff"/><circle cx="18.9" cy="8.3" r="1.75" fill="#fff"/></svg>')
 MENU = [('ogren', '/ogren', 'Öğren'), ('belgeler', '/belgeler', 'Belgeler'), ('kitaplar', '/kitaplar/', 'Kitaplar'),
         ('kurulum', '/kurulum', 'Kurulum'), ('ogretmen', '/ogretmen', 'Öğretmenler'),
         ('github', 'https://github.com/onderornek/yontem', 'GitHub')]
@@ -389,6 +388,25 @@ if __name__ == '__main__':
                 y = fontlari_yerellestir(s, '../' * os.path.relpath(yol, CIKTI).count(os.sep))
                 if y != s:
                     open(yol, 'w', encoding='utf-8').write(y)
+    # logo ve sekme simgesi: dosyalar kökte durur, her sayfa kendi derinliğinden bağlanır
+    logo = os.path.join(SITE, 'logo')
+    shutil.copy(os.path.join(logo, 'favicon.ico'), os.path.join(CIKTI, 'favicon.ico'))
+    shutil.copy(os.path.join(logo, 'yontem-isaret.svg'), os.path.join(CIKTI, 'favicon.svg'))
+    shutil.copy(os.path.join(logo, 'yontem-isaret-180.png'), os.path.join(CIKTI, 'apple-touch-icon.png'))
+    shutil.copytree(logo, os.path.join(CIKTI, 'logo'))
+    for kok_, _, dosyalar in os.walk(CIKTI):
+        for d in dosyalar:
+            if not d.endswith('.html'):
+                continue
+            yol = os.path.join(kok_, d)
+            s = open(yol, encoding='utf-8').read()
+            if 'rel="icon"' in s or '</head>' not in s:
+                continue
+            on = '../' * os.path.relpath(yol, CIKTI).count(os.sep)
+            simge = (f'<link rel="icon" href="{on}favicon.svg" type="image/svg+xml">\n'
+                     f'<link rel="alternate icon" href="{on}favicon.ico" sizes="any">\n'
+                     f'<link rel="apple-touch-icon" href="{on}apple-touch-icon.png">\n')
+            open(yol, 'w', encoding='utf-8').write(s.replace('</head>', simge + '</head>', 1))
     zip_yolu = os.path.join(SITE, 'yerel', 'yontem-site.zip')
     with zipfile.ZipFile(zip_yolu, 'w', zipfile.ZIP_DEFLATED) as z:
         for kok, _, dosyalar in os.walk(CIKTI):

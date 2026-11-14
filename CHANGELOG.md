@@ -27,6 +27,8 @@ uyumsuz değişiklik içerebilir.
 
 ### Eklenenler
 
+- **Logo:** iki noktalı Y işareti ve "Yöntem" yazısı (`site/logo/`: SVG, PNG, favicon); site, kitap sayfaları,
+  VS Code eklentisi ve README yeni logoyu kullanır.
 - **Dilbilgisi dosyası ve dil başvurusu:** `yontem.gram` dilin sözdizimini PEG gösterimiyle tanımlar;
   *Yöntem Dil Başvurusu* (`basim/basvuru.md`, sitede Belgeler → Dil Başvurusu) sözcük yapısını, tipleri,
   ifadeleri, deyimleri, sınıfları ve birimleri kural kural anlatır.

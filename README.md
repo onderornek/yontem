@@ -1,3 +1,5 @@
+<p><img src="site/logo/yontem-logo.svg" alt="Yöntem" width="260"></p>
+
 # Yöntem Programlama Dili
 
 Açık kaynak · Yazılım MIT, kitaplar CC BY 4.0 · Sürüm 0.6.0 · [yontem.pro](https://yontem.pro)

@@ -58,13 +58,13 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
   justify-content: space-between; box-shadow: 0 10px 22px -12px rgba(15, 27, 45, 0.55); flex: none; }
 .kapak span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; line-height: 1.2; color: #fff; hyphens: auto; overflow-wrap: anywhere; }
 .kart-kapak { text-decoration: none; }
-.kapak i { display: block; width: 32px; height: 4px; border-radius: 2px; background: #5EEAD4; }
+.kapak svg { display: block; width: 22px; height: 22px; color: #5EEAD4; }
 .kapak.acik { border: 1px solid #CBD5E1; }
 .kapak.acik span { color: #0F1B2D; }
-.kapak.acik i { background: #0B7A75; }
+.kapak.acik svg { color: #0B7A75; }
 .kapak.buyuk { width: 180px; height: 256px; padding: 20px; border-radius: 8px; }
 .kapak.buyuk span { font-size: 22px; }
-.kapak.buyuk i { width: 48px; height: 6px; }
+.kapak.buyuk svg { width: 40px; height: 40px; }
 
 /* kitaplık */
 .kitaplik-ana { max-width: 1080px; margin: 0 auto; padding: 64px 24px 88px; }
@@ -210,7 +210,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <header class="ust">
   <nav aria-label="Ana menü">
     <a class="logo" href="https://yontem.pro/">
-      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M9 11l6 5-6 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B7A75"/><path d="M8.5 11.5L16 19.5l7.5-8M16 19.5V25.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.1" cy="8.3" r="1.75" fill="#fff"/><circle cx="18.9" cy="8.3" r="1.75" fill="#fff"/></svg>
       <span>yöntem</span>
     </a>
     <div class="menu">
@@ -229,7 +229,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
   </aside>
   <main id="icerik" class="metin">
     <div class="tek-kapak">
-      <div class="kapak" style="background:#0B7A75" aria-hidden="true"><span>Yöntem ile Makine Öğrenmesi</span><i></i></div>
+      <div class="kapak" style="background:#0B7A75" aria-hidden="true"><span>Yöntem ile Makine Öğrenmesi</span><svg viewBox="5 5 22 22"><path d="M8.5 11.5L16 19.5l7.5-8M16 19.5V25.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.1" cy="8.3" r="1.75" fill="currentColor"/><circle cx="18.9" cy="8.3" r="1.75" fill="currentColor"/></svg></div>
       <div>
         <span class="tur">Kılavuz · 7 bölüm · Önder Örnek</span>
         <h1>Yöntem ile Makine Öğrenmesi</h1>
