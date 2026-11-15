@@ -1009,9 +1009,9 @@ export class Uretici {
         if (s.tur === 'sabit') return `$.hata(${J(`Sabite atama yapılamaz: '${h.ad}'`)});`;
         if (s.tur === 'tip') return '';
         if (s.tur === 'fonk' && s.fonk.hizli) return `${s.js} = ${v}; ${s.js}$h = (...$a) => ${s.js}(...$a);`;
-        return `${s.js} = ${this.uyT(s.tip ?? null, v, vTip, J(h.ad), h.ham ?? h.ad)};`;
+        return `${s.js} = ${this.uyT(s.tip ?? null, v, vTip, J(h.ham ?? h.ad), h.ham ?? h.ad)};`;
       }
-      if (r && r.tur === 'alan') return `this.f_${h.ad} = ${this.uyT(r.tip, v, vTip, J(h.ad), h.ham ?? h.ad)};`;
+      if (r && r.tur === 'alan') return `this.f_${h.ad} = ${this.uyT(r.tip, v, vTip, J(h.ham ?? h.ad), h.ham ?? h.ad)};`;
       return `$.hata(${J(`Tanımsız değişken: '${h.ham || h.ad}' (önce 'değişken' ile tanımlayın)`)});`;
     }
     if (h.tur === 'alan') return `$.alanAta(${this.ifade(h.nesne, k)}, ${J(h.ad)}, ${v});`;

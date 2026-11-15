@@ -4,6 +4,12 @@ Bu dosya Yöntem'in sürümler arasındaki önemli değişikliklerini listeler. 
 [anlamsal sürümleme](https://semver.org/lang/tr/) kurallarını izler; 1.0 öncesinde küçük sürümler
 uyumsuz değişiklik içerebilir.
 
+## Yayımlanmamış
+
+### Düzeltmeler
+
+- Atamadaki tip uyuşmazlığı iletisi, değişkenin adını yazıldığı biçimiyle gösterir (`'yaş'`; önceden `'yas'`).
+
 ## 0.6.1 — 2026-11-15
 
 Dilde ve derleyicide değişiklik yoktur; bu sürüm yayımlama düzenini devreye alır.

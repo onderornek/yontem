@@ -495,6 +495,7 @@ class Yorumlayici:
 
     def ad_ata(self, k, ad, v, dugum=None):
         s = k
+        ham = getattr(dugum, 'ham', None) or ad      # hata iletisinde adın yazıldığı biçim
         while s is not None:
             if type(s) is Kapsam:
                 if ad in s.d:
@@ -502,7 +503,7 @@ class Yorumlayici:
                         raise YontemHatasi(f"Sabite atama yapılamaz: '{ad}'")
                     t = s.tip.get(ad)
                     if t is not None:
-                        v = self.uyumla(t, v, ad)
+                        v = self.uyumla(t, v, ham)
                     s.d[ad] = v
                     return
             else:
@@ -510,7 +511,7 @@ class Yorumlayici:
                 if ad in n.alanlar:
                     t = n.sinif.alan_tipi(ad)
                     if t is not None:
-                        v = self.uyumla(t, v, ad)
+                        v = self.uyumla(t, v, ham)
                     n.alanlar[ad] = v
                     return
             s = s.ust
