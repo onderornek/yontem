@@ -1,0 +1,81 @@
+name: Sürüm yayımla
+
+# js/package.json içindeki sürüm numarası değiştiğinde (ya da elle başlatıldığında) çalışır:
+#   1. O sürüm npm'de yoksa testleri çalıştırır ve paketi yayımlar.
+#   2. GitHub'da "v<sürüm>" etiketi ve sürüm kaydı yoksa CHANGELOG'daki bölümle oluşturur.
+# İkisi de varsa hiçbir şey yapmaz; aynı sürüm iki kez yayımlanmaz.
+#
+# npm'e giriş için saklanan bir belirteç kullanılmaz. Bir kez yapılacak ayar (npmjs.com):
+#   yontem paketi → Settings → Trusted Publisher → GitHub Actions
+#   Organization or user: onderornek · Repository: yontem · Workflow filename: yayimla.yml
+# Bu ayar yapılana kadar yayım adımı hata verir; depo ve npm'deki sürüm değişmez.
+
+on:
+  push:
+    branches: [main]
+    paths: ['js/package.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write      # etiket ve sürüm kaydı oluşturmak için
+  id-token: write      # npm'e güvenilir yayımcı (OIDC) olarak giriş için
+
+concurrency:
+  group: yayimla
+  cancel-in-progress: false
+
+jobs:
+  yayimla:
+    name: npm ve GitHub sürümü
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Durumu belirle
+        id: durum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          surum=$(node -p "require('./js/package.json').version")
+          py=$(python3 -c "import re; print(re.search(r'version = \"([^\"]+)\"', open('pyproject.toml').read()).group(1))")
+          echo "surum=$surum" >> "$GITHUB_OUTPUT"
+          if [ "$surum" != "$py" ]; then echo "::error::js/package.json ($surum) ile pyproject.toml ($py) sürümleri farklı"; exit 1; fi
+          if ! grep -q "^## $surum " CHANGELOG.md; then echo "::error::CHANGELOG.md içinde $surum bölümü yok"; exit 1; fi
+          if npm view "yontem@$surum" version >/dev/null 2>&1; then echo "npm=var" >> "$GITHUB_OUTPUT"; else echo "npm=yok" >> "$GITHUB_OUTPUT"; fi
+          if gh release view "v$surum" >/dev/null 2>&1; then echo "etiket=var" >> "$GITHUB_OUTPUT"; else echo "etiket=yok" >> "$GITHUB_OUTPUT"; fi
+          echo "Sürüm $surum · npm: $(grep '^npm=' "$GITHUB_OUTPUT" | cut -d= -f2) · GitHub sürümü: $(grep '^etiket=' "$GITHUB_OUTPUT" | cut -d= -f2)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Kur, derle ve sına
+        if: steps.durum.outputs.npm == 'yok'
+        working-directory: js
+        run: |
+          npm ci
+          npm run build
+          npm test
+          npm run test:dil
+          npm run test:kati
+          npm run test:paket
+          python3 ../testler/calistir.py
+
+      - name: npm'de yayımla
+        if: steps.durum.outputs.npm == 'yok'
+        working-directory: js
+        run: |
+          npm install -g npm@latest      # güvenilir yayımcı girişi npm 11.5.1 ve üstünü ister
+          npm publish --access public
+
+      - name: GitHub sürümünü oluştur
+        if: steps.durum.outputs.etiket == 'yok'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          surum=${{ steps.durum.outputs.surum }}
+          awk -v s="$surum" '/^## /{yaz = ($2 == s)} yaz && !/^## /' CHANGELOG.md > notlar.md
+          gh release create "v$surum" --target "$GITHUB_SHA" --title "Yöntem $surum" --notes-file notlar.md
