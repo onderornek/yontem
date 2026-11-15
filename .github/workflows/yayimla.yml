@@ -1,19 +1,23 @@
 name: Sürüm yayımla
 
-# js/package.json içindeki sürüm numarası değiştiğinde (ya da elle başlatıldığında) çalışır:
-#   1. O sürüm npm'de yoksa testleri çalıştırır ve paketi yayımlar.
-#   2. GitHub'da "v<sürüm>" etiketi ve sürüm kaydı yoksa CHANGELOG'daki bölümle oluşturur.
-# İkisi de varsa hiçbir şey yapmaz; aynı sürüm iki kez yayımlanmaz.
+# js/package.json içindeki sürüm numarası değiştiğinde (ya da elle başlatıldığında):
+#   1. O sürüm npm'de yoksa testleri çalıştırır ve paketi npm'e ONAY BEKLEYEN sürüm olarak gönderir
+#      (npm stage publish). Sürüm, bakımcı npmjs.com'da iki adımlı doğrulamayla onaylayınca yayımlanır.
+# Her gün bir kez (ve yukarıdaki durumlarda):
+#   2. Sürüm npm'de yayımlanmışsa ve GitHub'da "v<sürüm>" kaydı yoksa, CHANGELOG'daki bölümle oluşturur.
+# Aynı sürüm iki kez gönderilmez; yapılacak bir şey yoksa iş akışı hiçbir şey değiştirmez.
 #
-# npm'e giriş için saklanan bir belirteç kullanılmaz. Bir kez yapılacak ayar (npmjs.com):
+# npm'e giriş için saklanan bir belirteç kullanılmaz. npmjs.com'daki ayar (bir kez):
 #   yontem paketi → Settings → Trusted Publisher → GitHub Actions
 #   Organization or user: onderornek · Repository: yontem · Workflow filename: yayimla.yml
-# Bu ayar yapılana kadar yayım adımı hata verir; depo ve npm'deki sürüm değişmez.
+#   İzin: npm stage publish
 
 on:
   push:
     branches: [main]
     paths: ['js/package.json']
+  schedule:
+    - cron: '23 5 * * *'      # onaylanan sürümün GitHub kaydını oluşturmak için günlük denetim (UTC)
   workflow_dispatch:
 
 permissions:
@@ -30,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -53,7 +59,7 @@ jobs:
           echo "Sürüm $surum · npm: $(grep '^npm=' "$GITHUB_OUTPUT" | cut -d= -f2) · GitHub sürümü: $(grep '^etiket=' "$GITHUB_OUTPUT" | cut -d= -f2)" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Kur, derle ve sına
-        if: steps.durum.outputs.npm == 'yok'
+        if: steps.durum.outputs.npm == 'yok' && github.event_name != 'schedule'
         working-directory: js
         run: |
           npm ci
@@ -64,18 +70,21 @@ jobs:
           npm run test:paket
           python3 ../testler/calistir.py
 
-      - name: npm'de yayımla
-        if: steps.durum.outputs.npm == 'yok'
+      - name: npm'e onay bekleyen sürüm olarak gönder
+        if: steps.durum.outputs.npm == 'yok' && github.event_name != 'schedule'
         working-directory: js
         run: |
-          npm install -g npm@latest      # güvenilir yayımcı girişi npm 11.5.1 ve üstünü ister
-          npm publish --access public
+          npm install -g npm@latest      # güvenilir yayımcı girişi ve 'npm stage' güncel npm ister
+          npm stage publish
+          echo "Sürüm npm'e gönderildi ve onay bekliyor: npmjs.com → yontem → onay bekleyen sürümler." >> "$GITHUB_STEP_SUMMARY"
 
       - name: GitHub sürümünü oluştur
-        if: steps.durum.outputs.etiket == 'yok'
+        if: steps.durum.outputs.npm == 'var' && steps.durum.outputs.etiket == 'yok'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           surum=${{ steps.durum.outputs.surum }}
+          # etiket, sürüm numarasını bu değere getiren değişikliği gösterir
+          hedef=$(git log -1 --format=%H -S"\"version\": \"$surum\"" -- js/package.json)
           awk -v s="$surum" '/^## /{yaz = ($2 == s)} yaz && !/^## /' CHANGELOG.md > notlar.md
-          gh release create "v$surum" --target "$GITHUB_SHA" --title "Yöntem $surum" --notes-file notlar.md
+          gh release create "v$surum" --target "${hedef:-$GITHUB_SHA}" --title "Yöntem $surum" --notes-file notlar.md

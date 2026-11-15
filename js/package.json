@@ -1,6 +1,6 @@
 {
   "name": "yontem",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Yöntem programlama dili — JavaScript'e derleyen derleyici ve çalışma zamanı",
   "license": "MIT",
   "author": "Önder Örnek",

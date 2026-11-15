@@ -4,6 +4,16 @@ Bu dosya Yöntem'in sürümler arasındaki önemli değişikliklerini listeler. 
 [anlamsal sürümleme](https://semver.org/lang/tr/) kurallarını izler; 1.0 öncesinde küçük sürümler
 uyumsuz değişiklik içerebilir.
 
+## 0.6.1 — 2026-11-15
+
+Dilde ve derleyicide değişiklik yoktur; bu sürüm yayımlama düzenini devreye alır.
+
+### Değişenler
+
+- Sürümler artık GitHub'daki "Sürüm yayımla" iş akışıyla hazırlanır: sürüm numarası değişince testler çalışır ve paket npm'e
+  onay bekleyen sürüm olarak gönderilir (`npm stage publish`); bakımcı npmjs.com'da onayladığında yayımlanır. npm'e giriş
+  için depoda saklanan bir belirteç yoktur (Trusted Publisher). GitHub sürümü, paket npm'de göründükten sonra oluşturulur.
+
 ## 0.6.0 — 2026-11-12
 
 ### Uyumsuz değişiklikler

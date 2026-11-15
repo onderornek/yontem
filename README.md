@@ -2,7 +2,7 @@
 
 # Yöntem Programlama Dili
 
-Açık kaynak · Yazılım MIT, kitaplar CC BY 4.0 · Sürüm 0.6.0 · [yontem.pro](https://yontem.pro)
+Açık kaynak · Yazılım MIT, kitaplar CC BY 4.0 · Sürüm 0.6.1 · [yontem.pro](https://yontem.pro)
 
 **Yöntem**, Türkçe anahtar sözcükleri olan, Turbo Pascal soyundan gelen, nesne tabanlı ve
 modüler bir programlama dilidir. Dilin çekirdeğinde **otomatik türevli tensörler**

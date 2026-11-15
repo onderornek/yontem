@@ -65,17 +65,19 @@ Dilin sözdizimini ya da var olan programların davranışını değiştiren ön
 
 ## Sürüm yayımlama
 
-Yeni bir sürüm, sürüm numarası değiştirilip `main` dalına gönderildiğinde kendiliğinden yayımlanır:
+Yeni bir sürüm, sürüm numarası değiştirilip `main` dalına gönderildiğinde hazırlanır:
 
 1. Sürüm numarası şu dosyalarda birlikte değiştirilir: `js/package.json`, `js/package-lock.json`, `pyproject.toml`,
-   `yontem_dil/__init__.py`, `js/src/cli.ts`, `js/src/tarayici.ts`, `araclar/vscode/package.json`.
+   `yontem_dil/__init__.py`, `js/src/cli.ts`, `js/src/tarayici.ts`; ayrıca `README.md` ve ana sayfadaki sürüm satırı.
 2. `CHANGELOG.md` dosyasına `## <sürüm> — <tarih>` başlıklı bölüm eklenir.
-3. Değişiklik `main` dalına gönderilir. "Sürüm yayımla" iş akışı (`.github/workflows/yayimla.yml`) testleri çalıştırır,
-   paketi npm'de yayımlar ve `v<sürüm>` etiketiyle GitHub sürümünü, notları `CHANGELOG.md`'den alarak oluşturur.
+3. Değişiklik `main` dalına gönderilir. "Sürüm yayımla" iş akışı (`.github/workflows/yayimla.yml`) testleri çalıştırır ve
+   paketi npm'e onay bekleyen sürüm olarak gönderir (`npm stage publish`).
+4. Bakımcı sürümü npmjs.com'da iki adımlı doğrulamayla onaylar; sürüm o anda yayımlanır.
+5. İş akışı günde bir kez (ya da elle başlatıldığında) npm'e bakar; sürüm yayımlanmışsa `v<sürüm>` etiketiyle GitHub
+   sürümünü, notları `CHANGELOG.md`'den alarak oluşturur.
 
 npm'e giriş için depoda saklanan bir belirteç yoktur; npmjs.com'da `yontem` paketinin ayarlarında bu depo ve
-`yayimla.yml` dosyası "Trusted Publisher" olarak tanımlıdır. Aynı sürüm iki kez yayımlanmaz: npm'de ve GitHub'da zaten
-varsa iş akışı hiçbir şey yapmaz. İş akışı GitHub'daki Actions sekmesinden elle de başlatılabilir.
+`yayimla.yml` dosyası "Trusted Publisher" olarak tanımlıdır. Aynı sürüm iki kez gönderilmez.
 
 ## Lisans
 
