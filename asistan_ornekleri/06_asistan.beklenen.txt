@@ -1,0 +1,12 @@
+belgeler/izin.md: 2 parça eklendi
+belgeler/kargo.md: 2 parça eklendi
+belgeler/iade.md: 2 parça eklendi
+Hafızada 6 parça var. Sorunuzu yazın (çıkmak için boş satır).
+> Merhaba! İyiyim, size nasıl yardımcı olabilirim?
+> 500 lira ve üzerindeki siparişlerde kargo ücretsiz, daha küçük siparişlerde 60 liradır [1].
+  Bakılan belgeler: belgeler/kargo.md, belgeler/iade.md
+> Teslim gününden başlayarak 14 gün içinde iade edebilirsiniz [1].
+  Bakılan belgeler: belgeler/iade.md
+> Belgelerde bulamadım.
+  Bakılan belgeler: belgeler/iade.md
+> Görüşmek üzere.

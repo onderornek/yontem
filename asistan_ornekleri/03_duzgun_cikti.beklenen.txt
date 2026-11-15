@@ -1,0 +1,7 @@
+Ayşe Demir, 34, İzmir
+  hobi: satranç
+  hobi: yüzme
+Beş yıl sonra: 39
+karışık: Teslimat gecikmiş ama ürün beğenilmiş.
+['ad': 'Mehmet', 'yaş': 34]
+KalıpHatası: Model 2 denemede kalıba uyan yanıt vermedi (yanıt geçerli bir JSON değil)

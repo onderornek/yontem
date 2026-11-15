@@ -67,8 +67,14 @@ def basvuru(md: str) -> str:
     return g
 
 
+def asistan(md: str) -> str:
+    g = temizle(md)
+    g = g.replace('## Bu kılavuz ne anlatır?', RAW('\\mainmatter') + '\n## Bu kılavuz ne anlatır?', 1)
+    return g
+
+
 if __name__ == '__main__':
     tur, giris, cikis = sys.argv[1:4]
     md = open(giris, encoding='utf-8').read()
-    out = {'kitap': kitap, 'kilavuz': kilavuz, 'llm': llm, 'kurulum': kurulum, 'birimler': birimler, 'basvuru': basvuru}[tur](md)
+    out = {'kitap': kitap, 'kilavuz': kilavuz, 'llm': llm, 'kurulum': kurulum, 'birimler': birimler, 'basvuru': basvuru, 'asistan': asistan}[tur](md)
     open(cikis, 'w', encoding='utf-8').write(out)

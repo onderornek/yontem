@@ -20,7 +20,10 @@ pandoc birimler_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-fi
 python3 hazirla.py basvuru basvuru.md basvuru_h.md
 pandoc basvuru_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-filter=kitap.lua --template=sablon.tex \
   -M title="Yöntem Dil Başvurusu" -M author="Önder Örnek" -M kisa="Yöntem Dil Başvurusu" -o basvuru.tex
-for f in ${@:-kitap kilavuz llm kurulum birimler basvuru}; do
+python3 hazirla.py asistan asistan.md asistan_h.md         # asistan.md, asistan_uret.py ile üretilir
+pandoc asistan_h.md -f markdown-auto_identifiers -t latex --columns=60 --lua-filter=kitap.lua --template=sablon.tex \
+  -M title="Yöntem ile Yerel Yapay Zekâ Asistanı" -M author="Önder Örnek" -M kisa="Yöntem ile Yerel Yapay Zekâ Asistanı" -o asistan.tex
+for f in ${@:-kitap kilavuz llm kurulum birimler basvuru asistan}; do
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1 || { tail -40 $f.log1; exit 1; }
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1
   xelatex -interaction=nonstopmode -halt-on-error $f.tex > $f.log1 2>&1

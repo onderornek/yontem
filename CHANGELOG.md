@@ -6,6 +6,14 @@ uyumsuz değişiklik içerebilir.
 
 ## Yayımlanmamış
 
+### Eklenenler
+
+- **Yerel yapay zekâ asistanı kılavuzu ve örnekleri** (`asistan_ornekleri/`, `basim/asistan.md`): Ollama ile konuşan
+  `Model`, tipli çıktı alan `Kalıp`, SQLite üzerinde anlam araması yapan `Hafıza` ve adımları çizge olarak tanımlayan
+  `Akış` birimleri; altı örnek program. Dilde ve derleyicide değişiklik yoktur; birimler `Ağ`, `Veri` ve `Veritabanı`
+  üzerine yazılmıştır. Örnekler gerçek bir modelle değil, Ollama arayüzünü taklit eden sınama servisiyle
+  (`js/betikler/sahte_ollama.js`) sınanmıştır.
+
 ### Düzeltmeler
 
 - Atamadaki tip uyuşmazlığı iletisi, değişkenin adını yazıldığı biçimiyle gösterir (`'yaş'`; önceden `'yas'`).

@@ -48,6 +48,10 @@ jobs:
       - name: Ağ birimi (yerel sınama sunucusuyla, JavaScript ve Python)
         working-directory: js
         run: npm run test:ag
+      - name: Yerel asistan örnekleri (sahte model servisiyle, JavaScript ve Python)
+        if: matrix.node >= 22
+        working-directory: js
+        run: node betikler/asistan_testi.js
       - name: Gömülü arka uç (C++ masaüstü benzetimi)
         if: matrix.node == 20
         working-directory: js

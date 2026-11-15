@@ -127,6 +127,7 @@ Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları i
 | `kutuphane/` | Yöntem dilinde yazılmış standart birimler (`Sinir` dahil) |
 | `mesale_ornekleri/` | `Meşale` ve `Sinir` örnekleri ve beklenen çıktıları |
 | `arayuz_ornekleri/` | `Pencere` ve `Mobil` örnekleri (benzetim çıktılarıyla) |
+| `asistan_ornekleri/` | *Yerel Yapay Zekâ Asistanı* kılavuzundaki dört birim (`Model`, `Kalıp`, `Hafıza`, `Akış`) ve altı program; `node js/betikler/asistan_testi.js` sahte bir model servisiyle sınar, kılavuz `basim/asistan_uret.py` ile bunlardan üretilir |
 | `birim_kilavuzu/` | *Birimler ve Araçlar Kılavuzu*'ndaki programlar ve beklenen çıktıları; kılavuz `basim/birimler_uret.py` ile bunlardan üretilir |
 | `vt_testleri/` | `Veritabanı` biriminin gerçek sunucularla testi; `npm run test:vt` (SQLite her zaman; PostgreSQL ve MySQL `YONTEM_TEST_PG` / `YONTEM_TEST_MYSQL` adresleri verilirse) |
 | `ag_testleri/` | `Ağ` biriminin testi; yerel sunucuyla `npm run test:ag` çalıştırır |

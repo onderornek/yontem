@@ -1,0 +1,2 @@
+Yöntem, anahtar sözcükleri Türkçe olan bir programlama dilidir.
+Adınız Deniz.

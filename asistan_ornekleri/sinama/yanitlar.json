@@ -1,0 +1,17 @@
+[
+  {"içerir": "Yöntem nedir?", "yanıt": "Yöntem, anahtar sözcükleri Türkçe olan bir programlama dilidir."},
+  {"içerir": "Adım neydi?", "yanıt": "Adınız Deniz."},
+  {"içerir": "başkenti neresi", "yanıt": "Ankara"},
+  {"içerir": "Ayşe Demir", "yanıt": {"ad": "Ayşe Demir", "yaş": 34, "şehir": "İzmir", "hobiler": ["satranç", "yüzme"]}},
+  {"içerir": "Kargo geç geldi", "yanıt": {"duygu": "karışık", "özet": "Teslimat gecikmiş ama ürün beğenilmiş."}},
+  {"içerir": "Mehmet otuz dört", "yanıtlar": [{"ad": "Mehmet", "yaş": "otuz dört"}, {"ad": "Mehmet", "yaş": 34}]},
+  {"içerir": "hep bozuk yanıt", "yanıt": "Elbette! Sayı: kırk iki"},
+  {"içerir": "duyuru yaz", "yanıtlar": ["Ofis taşınıyor.", "Cuma günü ofisimiz yeni adresine taşınıyor. Eşyalarınızı perşembe akşamına kadar kutulamanızı rica ederiz."]},
+  {"içerir": "puanla", "yanıtlar": [{"puan": 4, "öneri": "Günü ve çalışanlardan ne beklendiğini ekle."}, {"puan": 9, "öneri": "Yeterli."}]},
+  {"içerir": "İleti: Merhaba", "yanıt": {"tür": "sohbet"}},
+  {"içerir": "İleti: ", "şemalı": true, "yanıt": {"tür": "belge"}},
+  {"içerir": "Soru: Kargo ücreti ne kadar?", "yanıt": "500 lira ve üzerindeki siparişlerde kargo ücretsiz, daha küçük siparişlerde 60 liradır [1]."},
+  {"içerir": "Soru: Kaç gün içinde iade edebilirim?", "yanıt": "Teslim gününden başlayarak 14 gün içinde iade edebilirsiniz [1]."},
+  {"içerir": "Soru: Ofiste kahve makinesi var mı?", "yanıt": "Belgelerde bulamadım."},
+  {"içerir": "Merhaba, nasılsın?", "yanıt": "Merhaba! İyiyim, size nasıl yardımcı olabilirim?"}
+]

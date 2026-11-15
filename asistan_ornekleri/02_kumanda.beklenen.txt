@@ -1,0 +1,3 @@
+ollama → Ankara
+openai → Ankara
+ModelHatası: Model servisi 404 döndürdü: {"error":"model \"yok\" not found, try pulling it first"}
