@@ -227,21 +227,27 @@ export function bicimle(sablon: string, ...args: any[]) {
       let ozel = sablon.slice(i + 1, j);
       if (ai >= args.length) hata('Biçimle: yetersiz argüman');
       const v = args[ai++];
-      let gen = 0, hassas: number | null = null;
+      let gen = 0, hassas: number | null = null, hiza = '>';
       if (ozel.startsWith(':')) {
-        ozel = ozel.slice(1);
-        if (ozel.includes('.')) {
-          const k = ozel.indexOf('.');
-          gen = parseInt(ozel.slice(0, k) || '0', 10); hassas = parseInt(ozel.slice(k + 1), 10);
-        } else if (ozel) gen = parseInt(ozel, 10);
+        // {:[<>^][genişlik][.basamak]}
+        const e = /^([<>^]?)(\d*)(?:\.(\d+))?$/.exec(ozel.slice(1));
+        if (!e) hata(`Biçimle: '{${ozel}}' tanınmıyor; {}, {:8}, {:<8}, {:^8}, {:.2}, {:8.2} kullanılabilir`);
+        hiza = e[1] || '>'; gen = e[2] ? parseInt(e[2], 10) : 0; hassas = e[3] !== undefined ? parseInt(e[3], 10) : null;
       }
       const m = (hassas !== null && (typeof v === 'bigint' || typeof v === 'number')) ? sabitNokta(Number(v), hassas) : metne(v);
-      out += rjust(m, gen);
+      const bosluk = Math.max(0, gen - [...m].length);
+      out += hiza === '<' ? m + ' '.repeat(bosluk) : hiza === '^' ? ' '.repeat(Math.floor(bosluk / 2)) + m + ' '.repeat(bosluk - Math.floor(bosluk / 2)) : rjust(m, gen);
       i = j + 1;
     } else { out += c; i++; }
   }
   return out;
 }
+/** $'...{ifade:biçim}...': düz parçalar olduğu gibi, ifadeler metne çevrilerek (biçim varsa Biçimle kurallarıyla) */
+$.bicimliMetin = (parcalar: any[]) => {
+  let out = '';
+  for (const p of parcalar) out += typeof p === 'string' ? p : p[1] === null ? metne(p[0]) : bicimle(`{:${p[1]}}`, p[0]);
+  return out;
+};
 export function splitlines(s: string) {
   const r = s.split(/\r\n|[\n\r\x0b\x0c\x1c\x1d\x1e\x85\u2028\u2029]/);
   if (r.length && r[r.length - 1] === '') r.pop();

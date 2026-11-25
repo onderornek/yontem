@@ -4,6 +4,8 @@ Pascal geleneğine uygun olarak dil büyük/küçük harf duyarsızdır. Ayrıca
 karakterler katlanır: `Başla`, `BASLA`, `basla` aynı sözcüktür. Böylece Türkçe
 klavyesi olmayan biri de program yazabilir.
 """
+import re
+
 from .hatalar import SozdizimHatasi
 
 _TR = str.maketrans({'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
@@ -50,6 +52,90 @@ class Sozcuk:
 
     def __repr__(self):
         return f"Sozcuk({self.tip},{self.deger!r},{self.satir}:{self.sutun})"
+
+
+def cok_satirli_icerik(ham):
+    """Çok satırlı metnin içeriği: açılıştan hemen sonraki ve kapanıştan hemen önceki boş satır atılır,
+    satırların ortak girintisi silinir."""
+    satirlar = ham.replace('\r\n', '\n').replace('\r', '\n').split('\n')
+
+    def bos(s):
+        return s.strip(' \t') == ''
+    if len(satirlar) > 1 and bos(satirlar[0]):
+        satirlar.pop(0)
+    if len(satirlar) > 1 and bos(satirlar[-1]):
+        satirlar.pop()
+    girintiler = [len(s) - len(s.lstrip(' \t')) for s in satirlar if not bos(s)]
+    ortak = min(girintiler) if girintiler else 0
+    return '\n'.join('' if bos(s) else s[ortak:] for s in satirlar)
+
+
+def _cok_satirli(kaynak, bas, hata, sutun):
+    e = kaynak.find('"""', bas + 3)
+    if e < 0:
+        hata('Kapanmamış çok satırlı metin; \'"""\' ile kapatın', sutun)
+    return cok_satirli_icerik(kaynak[bas + 3:e]), e + 3
+
+
+_BICIM_OZEL = re.compile(r'(?=.)[<>^]?\d*(?:\.\d+)?\Z', re.S)
+
+
+def bicimli_parcala(icerik, hata, satir, sutun):
+    """Biçimli metnin içeriğini parçalara ayırır: {{ ve }} tek ayraç, {ifade} ya da {ifade:biçim} yerleştirme.
+    Düz parçalar str, yerleştirmeler (kaynak, biçim, satır, sütun) olur."""
+    parcalar, buf, i, n = [], [], 0, len(icerik)
+    while i < n:
+        c = icerik[i]
+        if c == '{' and icerik[i + 1:i + 2] == '{':
+            buf.append('{')
+            i += 2
+            continue
+        if c == '}' and icerik[i + 1:i + 2] == '}':
+            buf.append('}')
+            i += 2
+            continue
+        if c == '}':
+            hata("Biçimli metinde tek '}' var; ayracın kendisi için '}}' yazın")
+        if c != '{':
+            buf.append(c)
+            i += 1
+            continue
+        j, derinlik, iki_nokta = i + 1, 0, -1
+        while True:
+            if j >= n:
+                hata("Biçimli metinde kapanmamış '{'; ayracın kendisi için '{{' yazın")
+            d = icerik[j]
+            if d in "'\"":
+                k = icerik.find(d, j + 1)
+                if k < 0:
+                    hata("Biçimli metindeki ifadede kapanmamış metin")
+                j = k + 1
+                continue
+            if d in '{([':
+                derinlik += 1
+            elif d in ')]':
+                derinlik -= 1
+            elif d == '}':
+                if derinlik == 0:
+                    break
+                derinlik -= 1
+            elif d == ':' and derinlik == 0:
+                iki_nokta = j
+            j += 1
+        kaynak, ozel = icerik[i + 1:j], None
+        if iki_nokta >= 0 and _BICIM_OZEL.match(icerik[iki_nokta + 1:j]):
+            ozel = icerik[iki_nokta + 1:j]
+            kaynak = icerik[i + 1:iki_nokta]
+        if kaynak.strip(' \t\n') == '':
+            hata("Biçimli metinde boş '{}'; yerleştirilecek ifadeyi yazın")
+        if buf:
+            parcalar.append(''.join(buf))
+            buf = []
+        parcalar.append((kaynak, ozel, satir, sutun))
+        i = j + 1
+    if buf or not parcalar:
+        parcalar.append(''.join(buf))
+    return parcalar
 
 
 def sozcukle(kaynak, dosya='<girdi>'):
@@ -136,10 +222,63 @@ def sozcukle(kaynak, dosya='<girdi>'):
             out.append(Sozcuk('SAYI', float(ham) if ondalik else int(ham), ham, satir, sutun))
             i = j
             continue
+        # Biçimli metin: $'Merhaba {ad}', $"...", $"""..."""
+        if c == '$' and i + 1 < n and kaynak[i + 1] in "'\"":
+            bas, bas_satir = i, satir
+            if kaynak.startswith('"""', i + 1):
+                icerik, e = _cok_satirli(kaynak, i + 1, hata, sutun)
+                for k in range(i, e):
+                    if kaynak[k] == '\n':
+                        satir += 1
+                        sat_bas = k + 1
+                i = e
+            elif kaynak[i + 1] == "'":
+                j, buf = i + 2, []
+                while True:
+                    if j >= n or kaynak[j] == '\n':
+                        hata("Kapanmamış metin", sutun)
+                    if kaynak[j] == "'":
+                        if j + 1 < n and kaynak[j + 1] == "'":
+                            buf.append("'")
+                            j += 2
+                            continue
+                        break
+                    buf.append(kaynak[j])
+                    j += 1
+                icerik, i = ''.join(buf), j + 1
+            else:
+                j, buf = i + 2, []
+                while True:
+                    if j >= n or kaynak[j] == '\n':
+                        hata("Kapanmamış metin", sutun)
+                    ch = kaynak[j]
+                    if ch == '\\' and j + 1 < n:
+                        buf.append(_KACIS.get(kaynak[j + 1], kaynak[j + 1]))
+                        j += 2
+                        continue
+                    if ch == '"':
+                        break
+                    buf.append(ch)
+                    j += 1
+                icerik, i = ''.join(buf), j + 1
+            parcalar = bicimli_parcala(icerik, lambda m: hata(m, sutun), bas_satir, sutun)
+            out.append(Sozcuk('BMETIN', parcalar, kaynak[bas:i], bas_satir, sutun))
+            continue
+        # Çok satırlı metin: """ ... """ (kaçış yok; ortak girinti silinir)
+        if c == '"' and kaynak.startswith('"""', i):
+            bas_satir = satir
+            icerik, e = _cok_satirli(kaynak, i, hata, sutun)
+            for k in range(i, e):
+                if kaynak[k] == '\n':
+                    satir += 1
+                    sat_bas = k + 1
+            i = e
+            out.append(Sozcuk('METIN', icerik, '', bas_satir, sutun))
+            continue
         # Metinler: 'Pascal ''tarzı''' #10 ve "kaçışlı\n"
         if c in "'#\"":
             parcalar = []
-            while i < n and kaynak[i] in "'#\"":
+            while i < n and kaynak[i] in "'#\"" and not kaynak.startswith('"""', i):
                 if kaynak[i] == "'":
                     j = i + 1
                     buf = []

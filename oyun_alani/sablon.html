@@ -257,7 +257,7 @@ const katla = (s) => [...s.replace(/İ/g, 'i').replace(/I/g, 'ı').toLowerCase()
 const ANAHTAR = new Set('program birim kullan arayuz uygulama degisken sabit tip prosedur fonksiyon kurucu basla bitir eger ise degilse iken icin kadar azalarak adimda artan azalan her icinde icindeki tekrarla dene yakala sonunda firlat don cik kir devam sinif kayit miras kendi ve veya yada degil mod bol dizi dizisi listesi sozlugu kez olana dek degerine gore adim'.split(' '));
 const DEGER = new Set(['dogru', 'yanlis', 'bos']);
 const TIP = new Set('tamsayi ondalik metin karakter mantiksal liste sozluk tensor herhangi sonuc'.split(' '));
-const DESEN = /(\/\/[^\n]*|\{[^}]*\}?|\(\*[\s\S]*?(?:\*\)|$))|((?<=[\p{L}\p{N}_)\]])'\p{L}+)|('(?:[^'\n]|'')*'?|"(?:[^"\\\n]|\\.)*"?)|(\$[0-9A-Fa-f]+|#\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|([\p{L}_][\p{L}\p{N}_]*)/gu;
+const DESEN = /(\/\/[^\n]*|\{[^}]*\}?|\(\*[\s\S]*?(?:\*\)|$))|((?<=[\p{L}\p{N}_)\]])'\p{L}+)|(\$?"""[\s\S]*?(?:"""|$)|\$?'(?:[^'\n]|'')*'?|\$?"(?:[^"\\\n]|\\.)*"?)|(\$[0-9A-Fa-f]+|#\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|([\p{L}_][\p{L}\p{N}_]*)/gu;
 const kacir = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 function renklendir(metin) {
   let out = '', son = 0;

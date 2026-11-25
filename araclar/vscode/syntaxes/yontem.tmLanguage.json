@@ -55,6 +55,49 @@
      }
     },
     {
+     "name": "string.quoted.triple.interpolated.yontem",
+     "begin": "\\$\"\"\"",
+     "end": "\"\"\"",
+     "patterns": [
+      {
+       "include": "#yerlestirme"
+      }
+     ]
+    },
+    {
+     "name": "string.quoted.single.interpolated.yontem",
+     "begin": "\\$'",
+     "end": "'(?!')",
+     "patterns": [
+      {
+       "name": "constant.character.escape.yontem",
+       "match": "''"
+      },
+      {
+       "include": "#yerlestirme"
+      }
+     ]
+    },
+    {
+     "name": "string.quoted.double.interpolated.yontem",
+     "begin": "\\$\"",
+     "end": "\"",
+     "patterns": [
+      {
+       "name": "constant.character.escape.yontem",
+       "match": "\\\\."
+      },
+      {
+       "include": "#yerlestirme"
+      }
+     ]
+    },
+    {
+     "name": "string.quoted.triple.yontem",
+     "begin": "\"\"\"",
+     "end": "\"\"\""
+    },
+    {
      "name": "string.quoted.single.yontem",
      "begin": "'",
      "end": "'(?!')",
@@ -79,6 +122,46 @@
     {
      "name": "constant.character.yontem",
      "match": "#\\d+"
+    }
+   ]
+  },
+  "yerlestirme": {
+   "patterns": [
+    {
+     "name": "constant.character.escape.yontem",
+     "match": "\\{\\{|\\}\\}"
+    },
+    {
+     "name": "meta.embedded.expression.yontem",
+     "begin": "\\{",
+     "end": "\\}",
+     "beginCaptures": {
+      "0": {
+       "name": "punctuation.section.embedded.begin.yontem"
+      }
+     },
+     "endCaptures": {
+      "0": {
+       "name": "punctuation.section.embedded.end.yontem"
+      }
+     },
+     "patterns": [
+      {
+       "include": "#metin"
+      },
+      {
+       "include": "#sayi"
+      },
+      {
+       "include": "#sozcukler"
+      },
+      {
+       "include": "#islec"
+      },
+      {
+       "include": "#cagri"
+      }
+     ]
     }
    ]
   },

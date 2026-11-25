@@ -69,11 +69,27 @@ dilbilgisi = {
             # Ek: 1'den 10'a, n'e, (n - 1)'e — metin başlangıcı değildir
             {'match': r"(?<=[\p{L}\p{N}_\)\]])(['’](?:[nN]?[dD][eEaA][nN]|[tT][eEaA][nN]|[yYnN]?[eEaA]))(?![\p{L}])",
              'captures': {'1': {'name': 'keyword.other.ek.yontem'}}},
+            # Biçimli metin: $'Merhaba {ad}', $"...", $"""..."""
+            {'name': 'string.quoted.triple.interpolated.yontem', 'begin': r'\$"""', 'end': '"""',
+             'patterns': [{'include': '#yerlestirme'}]},
+            {'name': 'string.quoted.single.interpolated.yontem', 'begin': r"\$'", 'end': "'(?!')",
+             'patterns': [{'name': 'constant.character.escape.yontem', 'match': "''"}, {'include': '#yerlestirme'}]},
+            {'name': 'string.quoted.double.interpolated.yontem', 'begin': r'\$"', 'end': '"',
+             'patterns': [{'name': 'constant.character.escape.yontem', 'match': r'\\.'}, {'include': '#yerlestirme'}]},
+            # Çok satırlı metin: """ ... """ (kaçış yok)
+            {'name': 'string.quoted.triple.yontem', 'begin': '"""', 'end': '"""'},
             {'name': 'string.quoted.single.yontem', 'begin': "'", 'end': "'(?!')",
              'patterns': [{'name': 'constant.character.escape.yontem', 'match': "''"}]},
             {'name': 'string.quoted.double.yontem', 'begin': '"', 'end': '"',
              'patterns': [{'name': 'constant.character.escape.yontem', 'match': r'\\.'}]},
             {'name': 'constant.character.yontem', 'match': r'#\d+'},
+        ]},
+        'yerlestirme': {'patterns': [
+            {'name': 'constant.character.escape.yontem', 'match': r'\{\{|\}\}'},
+            {'name': 'meta.embedded.expression.yontem', 'begin': r'\{', 'end': r'\}',
+             'beginCaptures': {'0': {'name': 'punctuation.section.embedded.begin.yontem'}},
+             'endCaptures': {'0': {'name': 'punctuation.section.embedded.end.yontem'}},
+             'patterns': [{'include': '#metin'}, {'include': '#sayi'}, {'include': '#sozcukler'}, {'include': '#islec'}, {'include': '#cagri'}]},
         ]},
         'sayi': {'patterns': [
             {'name': 'constant.numeric.hex.yontem', 'match': r'\$[0-9a-fA-F]+'},

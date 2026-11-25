@@ -129,6 +129,7 @@ class Yorumlayici:
             'miras': self.i_miras, 'lambda': self.i_lambda, 'liste': self.i_liste,
             'sozluk': self.i_sozluk, 'aralik_liste': self.i_aralik, 'boru': self.i_boru,
             'bicim': self.i_bicim, 'ref': self.i_ref, 'kosullu': self.i_kosullu,
+            'bicimli_metin': self.i_bicimli_metin,
         }
         self._deyim = {
             'blok': self.d_blok, 'atama': self.d_atama, 'cagri_deyim': self.d_cagri,
@@ -911,6 +912,17 @@ class Yorumlayici:
             f = self.cagrilan(sag.cagrilan, k)
             return self.cagir(f, [v] + [self.deg(a, k) for a in sag.argumanlar], n.satir)
         return self.cagir(self.cagrilan(sag, k), [v], n.satir)
+
+    def i_bicimli_metin(self, n, k):
+        """$'...{ifade:biçim}...': düz parçalar olduğu gibi, ifadeler metne çevrilerek (biçim varsa Biçimle kurallarıyla)."""
+        out = []
+        for p in n.parcalar:
+            if type(p) is str:
+                out.append(p)
+                continue
+            v = self.deg(p[0], k)
+            out.append(self.metne(v) if p[1] is None else self.kok.d['bicimle'].fn(self, ['{:' + p[1] + '}', v]))
+        return ''.join(out)
 
     def i_bicim(self, n, k):
         v = self.deg(n.ifade, k)

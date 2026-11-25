@@ -1085,6 +1085,7 @@ export class Uretici {
   ifadeTipi(n: Dugum, k: Kapsam): string | null {
     switch (n.tur) {
       case 'sabitdeger': return this.sabitTipi(n);
+      case 'bicimli_metin': return 'metin';
       case 'ad': {
         const r = this.bul(k, n.ad);
         if (!r) return null;
@@ -1274,6 +1275,7 @@ export class Uretici {
   ifade(n: Dugum, k: Kapsam): string {
     switch (n.tur) {
       case 'sabitdeger': return this.sabit(n.deger);
+      case 'bicimli_metin': return `$.bicimliMetin([${n.parcalar.map((p: any) => typeof p === 'string' ? J(p) : `[${this.ifade(p.ifade, k)}, ${J(p.ozel)}]`).join(', ')}])`;
       case 'ad': return this.adDeger(n, k);
       case 'alan':
         if (this.konumSilMi(n, k)) return this.konumSil(n, k);

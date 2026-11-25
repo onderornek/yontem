@@ -752,12 +752,44 @@ class Cozumleyici:
             else:
                 return e
 
+    def bicimli_metin(self, tok):
+        """$'... {ifade:biçim} ...': her yerleştirilen ifade kendi başına sözcüklenip çözümlenir."""
+        import re
+        from .sozcuk import sozcukle
+        parcalar = []
+        for p in tok.deger:
+            if type(p) is str:
+                parcalar.append(p)
+                continue
+            kaynak, ozel, satir, sutun = p
+            try:
+                sozcukler = sozcukle(kaynak, self.dosya)
+            except SozdizimHatasi as e:
+                ic = re.sub(r' \(sütun \d+\)$', '', e.mesaj)
+                raise SozdizimHatasi(f"Biçimli metindeki '{{{kaynak}}}': {ic} (sütun {sutun})", satir, self.dosya)
+            for t in sozcukler:
+                t.satir, t.sutun = satir, sutun
+            c = Cozumleyici(sozcukler, self.dosya)
+            try:
+                ifade = c.ifade()
+            except SozdizimHatasi as e:
+                e.mesaj = f"Biçimli metindeki '{{{kaynak}}}': " + e.mesaj.replace("'<dosya sonu>'", 'ifadenin sonu')
+                e.args = (e.mesaj,)
+                raise
+            if c.t.tip != 'SON':
+                c.hata(f"Biçimli metindeki '{{{kaynak}}}' tek bir ifade olmalı")
+            parcalar.append((ifade, ozel))
+        return N('bicimli_metin', tok.satir, parcalar=parcalar)
+
     def birincil_coz(self):
         tok = self.t
         s = tok.satir
         if tok.tip in ('SAYI', 'METIN'):
             self.ilerle()
             return N('sabitdeger', s, deger=tok.deger)
+        if tok.tip == 'BMETIN':
+            self.ilerle()
+            return self.bicimli_metin(tok)
         if tok.tip == 'AD':
             self.ilerle()
             return N('ad', s, ad=tok.deger, ham=tok.ham)

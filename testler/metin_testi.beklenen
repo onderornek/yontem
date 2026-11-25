@@ -1,0 +1,18 @@
+Merhaba Ayşe, 3 mesajın var
+Toplam: 37.50 TL
+[Ayşe  ] [  Ayşe] [  3  ] [  12.500]
+{ayraç} ve 4 harf; Xy
+Sekme:	[1, 'iki', 3.0]
+doğru boş [3, 6]
+
+8
+Sen yardımsever bir asistansın.
+  - Kısa yanıt ver.
+
+Kullanıcı: {ad} \n
+4
+tek satır
+Sevgili Ayşe,
+  3 yeni mesaj.
+[ab    |    çğ|   x   |    3.14|2.000   ]
+Biçimle: '{:>3x}' tanınmıyor; {}, {:8}, {:<8}, {:^8}, {:.2}, {:8.2} kullanılabilir

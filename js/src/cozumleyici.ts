@@ -663,10 +663,28 @@ export class Cozumleyici {
       } else return e;
     }
   }
+  /** $'... {ifade:biçim} ...': her yerleştirilen ifade kendi başına sözcüklenip çözümlenir */
+  bicimliMetin(tok: Sozcuk): Dugum {
+    const parcalar = (tok.deger as any[]).map((p) => {
+      if (typeof p === 'string') return p;
+      let sozcukler: Sozcuk[];
+      try { sozcukler = sozcukle(p.kaynak, this.dosya); }
+      catch (e: any) { throw new SozdizimHatasi(`Biçimli metindeki '{${p.kaynak}}': ${String(e.mesaj ?? e.message).replace(/ \(sütun \d+\)$/, '')} (sütun ${p.sutun})`, p.satir, this.dosya); }
+      for (const t of sozcukler) { t.satir = p.satir; t.sutun = p.sutun; }
+      const c = new Cozumleyici(sozcukler, this.dosya);
+      let ifade: Dugum;
+      try { ifade = c.ifade(); }
+      catch (e: any) { if (e instanceof SozdizimHatasi) e.mesaj = e.message = `Biçimli metindeki '{${p.kaynak}}': ${e.mesaj.replace("'<dosya sonu>'", 'ifadenin sonu')}`; throw e; }
+      if (c.t.tip !== 'SON') c.hata(`Biçimli metindeki '{${p.kaynak}}' tek bir ifade olmalı`);
+      return { ifade, ozel: p.ozel };
+    });
+    return N('bicimli_metin', tok.satir, { parcalar });
+  }
   birincilCoz(): Dugum {
     const tok = this.t;
     const s = tok.satir;
     if (tok.tip === 'SAYI' || tok.tip === 'METIN') { this.ilerle(); return N('sabitdeger', s, { deger: tok.deger }); }
+    if (tok.tip === 'BMETIN') { this.ilerle(); return this.bicimliMetin(tok); }
     if (tok.tip === 'AD') { this.ilerle(); return N('ad', s, { ad: tok.deger, ham: tok.ham }); }
     if (tok.tip === 'AS') {
       const k = tok.deger;

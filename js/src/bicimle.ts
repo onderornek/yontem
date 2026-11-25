@@ -16,27 +16,20 @@ function genislik(bosluk: string): number {
 }
 
 /** Her satır için: satır başı bir yorumun içinde mi? (sözcük konumlarıyla, sözcükleyicinin kurallarını izleyerek) */
-function yorumIcindeBaslayanSatirlar(kaynak: string, sozcukler: Sozcuk[], satirBaslari: number[]): Set<number> {
-  const metinBaslari = new Set<number>();
-  for (const t of sozcukler) if (t.tip === 'METIN') metinBaslari.add(satirBaslari[t.satir - 1] + t.sutun - 1);
+function yorumIcindeBaslayanSatirlar(kaynak: string, sozcukler: Sozcuk[], satirBaslari: number[], metinIci: Set<number>): Set<number> {
+  const metinBitisleri = new Map<number, number>();
+  for (const t of sozcukler) if ((t.tip === 'METIN' || t.tip === 'BMETIN') && t.bitis !== undefined) metinBitisleri.set(satirBaslari[t.satir - 1] + t.sutun - 1, t.bitis);
   const ic = new Set<number>();
   const n = kaynak.length;
   let i = 0, satir = 1;
   while (i < n) {
     const c = kaynak[i];
     if (c === '\n') { satir++; i++; continue; }
-    if (metinBaslari.has(i)) {
-      while (i < n && (kaynak[i] === "'" || kaynak[i] === '#' || kaynak[i] === '"')) {
-        if (kaynak[i] === "'") {
-          let j = i + 1;
-          for (;;) { if (kaynak[j] === "'") { if (kaynak[j + 1] === "'") { j += 2; continue; } break; } j++; }
-          i = j + 1;
-        } else if (kaynak[i] === '"') {
-          let j = i + 1;
-          for (;;) { if (kaynak[j] === '\\') { j += 2; continue; } if (kaynak[j] === '"') break; j++; }
-          i = j + 1;
-        } else { i++; while (i < n && kaynak[i] >= '0' && kaynak[i] <= '9') i++; }
-      }
+    const bitis = metinBitisleri.get(i);
+    if (bitis !== undefined) {
+      // çok satırlı metnin iç satırları olduğu gibi kalır
+      for (let k = i; k < bitis; k++) if (kaynak[k] === '\n') { satir++; metinIci.add(satir); }
+      i = bitis;
       continue;
     }
     if (c === '{' || (c === '(' && kaynak[i + 1] === '*')) {
@@ -66,7 +59,8 @@ export function bicimle(kaynakHam: string, dosya = '<girdi>'): string {
   for (const s of satirlar) satirBaslari.push(satirBaslari[satirBaslari.length - 1] + s.length + 1);
   const ilkSozcuk = new Map<number, Sozcuk>();
   for (const t of sozcukler) if (t.tip !== 'SON' && !ilkSozcuk.has(t.satir)) ilkSozcuk.set(t.satir, t);
-  const yorumIci = yorumIcindeBaslayanSatirlar(kaynak, sozcukler, satirBaslari);
+  const metinIci = new Set<number>();
+  const yorumIci = yorumIcindeBaslayanSatirlar(kaynak, sozcukler, satirBaslari, metinIci);
 
   // Bir yorum satırının hizalanacağı sonraki kod satırı
   const sonrakiKod = (no: number): number | null => {
@@ -77,8 +71,10 @@ export function bicimle(kaynakHam: string, dosya = '<girdi>'): string {
   const cikti: string[] = [];
   let capaFarki = 0;          // son deyim satırının (yeni girinti - eski girinti) farkı: devam satırları onunla kayar
   let yorumFarki = 0;         // çok satırlı yorumun ilk satırının farkı: iç satırları onunla kayar
+  const korunan = new Set<number>();   // çıktıdaki sıra: çok satırlı metnin iç satırı (boşluklarına dokunulmaz)
   for (let no = 1; no <= satirlar.length; no++) {
     const ham = satirlar[no - 1];
+    if (metinIci.has(no)) { korunan.add(cikti.length); cikti.push(ham); continue; }
     const icerik = ham.replace(/^[ \t]+/, '').replace(/[ \t]+$/, '');
     if (!icerik) { cikti.push(''); continue; }
     const eski = eskiGirinti(no);
@@ -105,10 +101,11 @@ export function bicimle(kaynakHam: string, dosya = '<girdi>'): string {
   // Boş satırlar: başta yok, art arda en çok iki, sonda tek satır sonu
   const son: string[] = [];
   let bos = 0;
-  for (const s of cikti) {
-    if (s === '') { bos++; if (bos > 2 || !son.length) continue; } else bos = 0;
+  cikti.forEach((s, k) => {
+    if (korunan.has(k)) { bos = 0; son.push(s); return; }
+    if (s === '') { bos++; if (bos > 2 || !son.length) return; } else bos = 0;
     son.push(s);
-  }
+  });
   while (son.length && son[son.length - 1] === '') son.pop();
   const sonuc = bom + son.join('\n') + '\n';
 
@@ -116,7 +113,7 @@ export function bicimle(kaynakHam: string, dosya = '<girdi>'): string {
   const yeniSozcukler = sozcukle(sonuc.slice(bom.length), dosya);
   const ayni = yeniSozcukler.length === sozcukler.length && yeniSozcukler.every((t, k) => {
     const o = sozcukler[k];
-    return t.tip === o.tip && typeof t.deger === typeof o.deger && String(t.deger) === String(o.deger) && t.ham === o.ham;
+    return t.tip === o.tip && typeof t.deger === typeof o.deger && (t.tip === 'BMETIN' ? JSON.stringify(t.deger.map((p: any) => typeof p === 'string' ? p : [p.kaynak, p.ozel])) === JSON.stringify(o.deger.map((p: any) => typeof p === 'string' ? p : [p.kaynak, p.ozel])) : String(t.deger) === String(o.deger)) && t.ham === o.ham;
   });
   if (!ayni) throw new Error(`Biçimlendirici iç hatası: '${dosya}' biçimlendirilince sözcükler değişti; dosyaya dokunulmadı`);
   return sonuc;
