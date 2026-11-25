@@ -4,12 +4,12 @@ Nov 9, 2026 · @Önder Örnek
 
 ## Hangi kurulum size uygun?
 
-Çoğu kullanıcı için yalnızca **JavaScript derleyicisi** yeterlidir: Node.js 18 veya üstünü kurduktan sonra tek bir komutla (`npm install -g yontem`) kurabilir, programlarınızı `yontem program.y` ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.
+Çoğu kullanıcı için yalnızca **JavaScript derleyicisi** yeterlidir: Node.js 22 veya üstünü kurduktan sonra tek bir komutla (`npm install -g yontem`) kurabilir, programlarınızı `yontem program.y` ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.
 
 | Bileşen | Ne işe yarar | Gereken | Ne zaman kurulur |
 | --- | --- | --- | --- |
-| JavaScript derleyicisi (önerilen) | `.y` programlarını derleyip çalıştırır; en hızlı yol | Node.js 18+ (npm ile birlikte gelir) | Her zaman |
-| Python yorumlayıcısı | Başvuru uygulaması ve etkileşimli kabuk (REPL) | Python 3.8+ ve Yöntem'in kaynak klasörü | Kabuk isterseniz ya da Node.js kuramıyorsanız |
+| JavaScript derleyicisi (önerilen) | `.y` programlarını derleyip çalıştırır; en hızlı yol | Node.js 22+ (npm ile birlikte gelir) | Her zaman |
+| Python yorumlayıcısı | Başvuru uygulaması ve etkileşimli kabuk (REPL) | Python 3.11+ ve Yöntem'in kaynak klasörü | Kabuk isterseniz ya da Node.js kuramıyorsanız |
 | Gömülü arka uç: masaüstü benzetimi | Programı C++'a derleyip bilgisayarda çalıştırır | JavaScript derleyicisi + C++17 derleyicisi (g++ ya da clang++) | ESP32 programı yazacaksanız |
 | Gömülü arka uç: ESP32'ye yükleme | Üretilen projeyi karta yükler | Arduino IDE, `arduino-cli` ya da PlatformIO; ESP32 Arduino çekirdeği 3.x | Kartınız varsa |
 
@@ -17,12 +17,12 @@ Kaynak dosyaların uzantısı `.y`'dir. Bu kılavuz Yöntem 0.6.0 içindir.
 
 ## 1. Hazırlık: Node.js ve Python
 
-Node.js 18 veya üstü gerekir; Python yalnızca yorumlayıcıyı kullanacaksanız gerekir. Önce bunların zaten kurulu olup olmadığına bakabilirsiniz:
+Node.js 22 veya üstü gerekir; Python yalnızca yorumlayıcıyı kullanacaksanız gerekir. Önce bunların zaten kurulu olup olmadığına bakabilirsiniz:
 
 ```bash
 node --version     # v18.0.0 veya üstü olmalı
 npm --version
-python3 --version  # Windows'ta: py --version (3.8 veya üstü)
+python3 --version  # Windows'ta: py --version (3.11 veya üstü)
 ```
 
 **Windows**
@@ -44,7 +44,7 @@ sudo apt install nodejs npm python3
 node --version
 ```
 
-Dağıtımınızın paket deposundaki Node.js 18'den eskiyse (örneğin Ubuntu 22.04), Node.js'i [nvm](https://github.com/nvm-sh/nvm) ile kurabilirsiniz: `nvm install --lts`.
+Dağıtımınızın paket deposundaki Node.js 22'den eskiyse (örneğin Ubuntu 24.04), Node.js'i [nvm](https://github.com/nvm-sh/nvm) ile kurabilirsiniz: `nvm install --lts`.
 
 ## 2. JavaScript derleyicisini kurma
 
@@ -93,7 +93,7 @@ Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere
 
 ## 3. Python yorumlayıcısı
 
-Python yorumlayıcısı npm paketinde yer almaz; Yöntem'in kaynak klasörüyle gelir (2. adımdaki "Kaynaktan kurma" bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki `yontem.py` dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.
+Python yorumlayıcısı npm paketinde yer almaz; Yöntem'in kaynak klasörüyle gelir (2. adımdaki "Kaynaktan kurma" bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki `yontem.py` dosyasını Python 3.11+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.
 
 ```bash
 cd yontem
@@ -157,7 +157,7 @@ node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)
 | `node`, `npm` ya da `python3` komutu bulunamadı | Kurulumdan sonra terminal yeniden açılmadı; Windows'ta PATH seçeneği işaretlenmedi | Terminali yeniden açabilirsiniz; Windows'ta `py` komutunu deneyebilir ya da Python'u PATH seçeneğiyle yeniden kurabilirsiniz |
 | `yontem` komutu bulunamadı | Kurulum tamamlanmadı ya da npm'in genel klasörü PATH'te değil | Terminali yeniden açıp `npm install -g yontem` komutunu yineleyebilirsiniz; olmazsa `npx yontem program.y` ile çalıştırabilirsiniz |
 | Kaynaktan kurarken `npm run build` sırasında `tsc` ya da `esbuild` bulunamadı | `npm install` atlandı | Önce `npm install`, sonra `npm run build` çalıştırılır |
-| Derleyici beklenmedik sözdizimi hatasıyla çöküyor | Node.js 18'den eski | `node --version` ile sürüme bakıp Node.js'i güncelleyebilirsiniz |
+| Derleyici beklenmedik sözdizimi hatasıyla çöküyor | Node.js 22'den eski | `node --version` ile sürüme bakıp Node.js'i güncelleyebilirsiniz |
 | `npm install -g` "EACCES" veriyor (Linux, macOS) | Genel klasöre yazma izni yok | Node.js'i nvm ile kurabilir ya da `npx yontem` kullanabilirsiniz |
 | Türkçe karakterler bozuk görünüyor (Windows) | Komut istemi UTF-8 değil | `chcp 65001` yazabilir ya da Windows Terminal kullanabilirsiniz |
 | `kullan` ile açılan birim bulunamadı | Birim dosyası aranan klasörlerde değil | Dosyayı programın yanına ya da `kutuphane` alt klasörüne koyabilir veya `YONTEM_YOL`'a ekleyebilirsiniz |

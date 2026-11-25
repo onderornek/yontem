@@ -18,6 +18,13 @@ uyumsuz değişiklik içerebilir.
 
 - Atamadaki tip uyuşmazlığı iletisi, değişkenin adını yazıldığı biçimiyle gösterir (`'yaş'`; önceden `'yas'`).
 
+### Uyumsuz değişiklikler
+
+- **Desteği biten sürümler bırakıldı.** En düşük sürümler: Python 3.11 (önceden 3.8) ve Node.js 22 (önceden 18).
+  Python 3.8, 3.9 ve 3.10 ile Node.js 18 ve 20 artık güvenlik güncellemesi almıyor. CI, Python 3.11 ve 3.15 ile
+  Node.js 22, 24 ve 26 üzerinde sınar; GitHub eylemleri güncel ana sürümlere (`checkout`, `setup-node`, `setup-python`
+  v7) taşındı.
+
 ## 0.6.1 — 2026-11-15
 
 Dilde ve derleyicide değişiklik yoktur; bu sürüm yayımlama düzenini devreye alır.
