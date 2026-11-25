@@ -3,7 +3,7 @@
 // LSP sunucusu (dil_sunucusu.ts) bu işlevleri JSON-RPC üzerinden sunar.
 import { sozcukle, Sozcuk, katla } from './sozcuk';
 import { Cozumleyici, Dugum } from './cozumleyici';
-import { YontemHatasi, TipHatalari } from './hatalar';
+import { YontemHatasi, TipHatalari, Tani as TaniD } from './hatalar';
 import { derle, yerelBirim } from './calistir';
 import { Y } from './calisma/yerlesik';
 
@@ -163,11 +163,17 @@ export function cozumle(kaynak: string, yol: string, birimBul: BirimBul, kati?: 
   } catch (e) { bos.tanilar.push(hataTanisi(e, yol, satirlar)); return bos; }
   const tanilar: Tani[] = [];
   if (agac.tur !== 'birim') {
-    try { derle(kaynak, yol, birimBul, undefined, kati); }
+    const uyarilar: TaniD[] = [];
+    try { derle(kaynak, yol, birimBul, undefined, kati, uyarilar); }
     catch (e) {
       // Katı kip: tip hatalarının hepsi gösterilir
       if (e instanceof TipHatalari) for (const t of e.tanilar) tanilar.push(hataTanisi(new YontemHatasi(t.mesaj, t.satir, t.dosya), yol, satirlar));
       else tanilar.push(hataTanisi(e, yol, satirlar));
+    }
+    // Derleyici uyarıları (gölgelenen adlar, argüman sayısı); tanımsız adları aşağıdaki tarama zaten gösterir
+    for (const u of uyarilar) {
+      if (u.dosya !== yol || /^Tanımsız /.test(u.mesaj)) continue;
+      tanilar.push({ ...hataTanisi(new YontemHatasi(u.mesaj, u.satir, u.dosya), yol, satirlar), uyari: true });
     }
   }
   const { simgeler, adlar } = simgeleriTopla(agac, sozcukler, undefined);
@@ -186,7 +192,7 @@ export function cozumle(kaynak: string, yol: string, birimBul: BirimBul, kati?: 
   const bilinen = new Set<string>(adlar);
   for (const b of birimler) { bilinen.add(b.ad); for (const k of b.uyeler.keys()) bilinen.add(k); }
   const tumBirimlerBilinir = birimler.every(b => b.yerel || b.uyeler.size > 0);
-  if (!tanilar.length && tumBirimlerBilinir) {
+  if (!tanilar.some(t => !t.uyari) && tumBirimlerBilinir) {
     const gorulen = new Set<string>();
     sozcukler.forEach((t, i) => {
       if (t.tip !== 'AD' || BILINEN.has(t.deger) || bilinen.has(t.deger) || t.deger in Y) return;

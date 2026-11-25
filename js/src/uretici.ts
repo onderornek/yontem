@@ -42,6 +42,8 @@ interface Sembol {
   deger?: any;          // yerleşik birim üyesinin değeri (derleme anı bilgisi)
   ydonus?: string;      // yerleşik birim işlevinin dönüş tipi (yalnızca katı kip tanıları için)
   ithal?: boolean;
+  /** Bu veri adının gölgelediği çağrılabilir adın tarifi (aynı kapsamdaki birim üyesinin yerini aldığında) */
+  golge?: string | null;
   birimSembolleri?: Map<string, Sembol>;
 }
 interface FonkBaglam {
@@ -100,6 +102,45 @@ export class Uretici {
   deyimSatiri: number | null = null;
   katiMi(kaynak: string, dosya: string): boolean {
     return /\{\$\s*kat[ıi]\s*\}/i.test(kaynak) || !!(this.sec.kati && this.sec.kati(dosya));
+  }
+  /** Katı kipten bağımsız uyarılar: 'yontem denetle' bildirir, program çalıştırılırken gösterilmez. */
+  uyarilar: Tani[] = [];
+  uyar(mesaj: string, satir: number | null = this.deyimSatiri) {
+    if (this.uyarilar.some(t => t.mesaj === mesaj && t.satir === satir && t.dosya === this.dosya)) return;
+    this.uyarilar.push({ mesaj, satir, dosya: this.dosya });
+  }
+  /** Katı kipte tip hatası, değilse uyarı (çalışırken kesin hata verecek durumlar için) */
+  taniYaDaUyari(mesaj: string, satir: number | null = this.deyimSatiri) {
+    if (this.kati) this.tani(mesaj, satir); else this.uyar(mesaj, satir);
+  }
+  /** Yeni tanıtılan bir veri adı (değişken, sabit, parametre) çağrılabilir bir adı gölgeliyorsa, gölgelenenin tarifi */
+  golgeTarifi(k: Kapsam, ad: string, ayniKapsam = true): string | null {
+    const tarif = (s: Sembol): string | null => {
+      if (s.tur === 'fonk') return `'${s.ham}' fonksiyonunu`;
+      if (s.tur === 'sinif') return `'${s.ham}' sınıfını`;
+      if (s.tur === 'yerel' && typeof s.deger === 'function') return s.deger.$sinif ? `'${s.ham}' sınıfını` : `'${s.ham}' fonksiyonunu`;
+      return null;
+    };
+    if (ayniKapsam) {
+      const s = k.s.get(ad);
+      if (s && s.ithal) return tarif(s);
+      if (s && s.golge) return s.golge;
+      if (s) return null;
+    }
+    for (let c: Kapsam | null = k.ust; c; c = c.ust) {
+      if (c.sinif) continue;
+      const s = c.s.get(ad);
+      if (s) return s.golge ?? tarif(s);
+    }
+    const v = this.sec.yerlesikler[ad];
+    if (typeof v === 'function') return v.$sinif ? `yerleşik '${v.$ad || ad}' sınıfını` : `yerleşik '${v.$ad || ad}' fonksiyonunu`;
+    return null;
+  }
+  /** Gölgeleme uyarısı; gölgelenen ad yoksa null döner. Tarif, aynı kapsamdaki birim üyesinin yerini alan sembole yazılır. */
+  golgeDenetle(k: Kapsam, ad: string, ham: string, satir: number | null, ne = 'değişkeni'): string | null {
+    const t = this.golgeTarifi(k, ad);
+    if (t) this.uyar(`'${ham}' adı ${t} gölgeliyor; bu kapsamda o ad bu ${ne} gösterir, çağrılamaz (Yöntem büyük/küçük harf ayırt etmez)`, satir);
+    return t;
   }
   tani(mesaj: string, satir: number | null = this.deyimSatiri) {
     if (!this.kati) return;
@@ -224,9 +265,11 @@ export class Uretici {
   };
   /** Yerleşik işlev ya da yerleşik birim işlevi çağrısında argüman sayısı (işlevin kendi bildirdiği sınırlarla) */
   yerelArgDenetle(f: any, ad: string, args: Dugum[], satir: number) {
-    if (!this.kati || typeof f !== 'function') return;
-    if (typeof f.$n === 'number' && args.length > f.$n) this.tani(`'${f.$ad || ad}' en çok ${f.$n} argüman alır, ${args.length} verildi`, satir);
-    else if (typeof f.$min === 'number' && args.length < f.$min) this.tani(`'${f.$ad || ad}' en az ${f.$min} argüman ister, ${args.length} verildi`, satir);
+    if (typeof f !== 'function') return;
+    const n = f.$n, m = f.$min, a = args.length;
+    if (typeof n !== 'number' || typeof m !== 'number' || (a <= n && a >= m)) return;
+    const beklenen = a > n ? `en çok ${n} argüman alır` : `en az ${m} argüman ister`;
+    this.taniYaDaUyari(`'${f.$ad || ad}' ${beklenen}, ${a} verildi`, satir);
   }
   static YERLESIK_DONUS: Record<string, string> = {
     uzunluk: 'tamsayi', sira: 'tamsayi', tamsayi: 'tamsayi', tamsayiya: 'tamsayi', ondalik: 'ondalik', ondaliga: 'ondalik', kok: 'ondalik',
@@ -287,10 +330,11 @@ export class Uretici {
   }
   /** Tipleri bildirilmiş bir alt programa yapılan çağrıda argüman sayısı ve tipleri */
   argDenetle(s: Sembol, args: Dugum[], k: Kapsam, satir: number) {
-    if (!this.kati || !s.fonk || s.fonk.pt === undefined) return;
+    if (!s.fonk || s.fonk.pt === undefined) return;
     const f = s.fonk, np = f.pt!.length;
-    if (args.length > np) this.tani(`'${s.ham}' en çok ${np} argüman alır, ${args.length} verildi`, satir);
-    else if (args.length < (f.pmin ?? 0)) this.tani(`'${s.ham}' en az ${f.pmin} argüman ister, ${args.length} verildi`, satir);
+    if (args.length > np) this.taniYaDaUyari(`'${s.ham}' en çok ${np} argüman alır, ${args.length} verildi`, satir);
+    else if (args.length < (f.pmin ?? 0)) this.taniYaDaUyari(`'${s.ham}' en az ${f.pmin} argüman ister, ${args.length} verildi`, satir);
+    if (!this.kati) return;
     args.slice(0, np).forEach((a, i) => {
       const t = f.pt![i], v = this.tipK(a, k);
       if (t === null || v === null || f.refs.includes(i)) return;
@@ -523,7 +567,7 @@ export class Uretici {
   }
   tanimsiz(n: Dugum) {
     const ipucu = ({ yazsatir: ' — yeni satır için yaz(değer, 1) kullanın', okusatir: ' — satır okumak için oku(değişken, 1) kullanın' } as any)[n.ad] ?? '';
-    this.tani(`Tanımsız tanımlayıcı: '${n.ham || n.ad}'${ipucu}`, n.satir ?? this.deyimSatiri);
+    this.taniYaDaUyari(`Tanımsız tanımlayıcı: '${n.ham || n.ad}'${ipucu}`, n.satir ?? this.deyimSatiri);
     return `$.hata(${J(`Tanımsız tanımlayıcı: '${n.ham || n.ad}'${ipucu}`)})`;
   }
 
@@ -596,7 +640,7 @@ export class Uretici {
     for (const b of lst) {
       if (b.tur === 'sabit') {
         if (!b.tip) this.tani(`'${b.ham}' sabitinin tipi belirtilmeli (katı kip): sabit ${b.ham}: tip = değer`, b.satir);
-        if (!this.yerelVar(k, b.ad)) k.s.set(b.ad, { tur: 'sabit', js: this.jsAd(k, b.ad), ham: b.ham, tip: b.tip ? this.tipCoz(b.tip, k) : null, cTip: b.tip ? null : this.sabitTipi(b.ifade) });
+        if (!this.yerelVar(k, b.ad)) k.s.set(b.ad, { golge: this.golgeDenetle(k, b.ad, b.ham, b.satir, 'sabiti'), tur: 'sabit', js: this.jsAd(k, b.ad), ham: b.ham, tip: b.tip ? this.tipCoz(b.tip, k) : null, cTip: b.tip ? null : this.sabitTipi(b.ifade) });
       } else if (b.tur === 'degisken') {
         let tip = b.tip ? this.tipCoz(b.tip, k) : null;
         if (this.kati && !b.tip) {
@@ -606,7 +650,7 @@ export class Uretici {
           if (t) tip = { k: 'temel', ad: t };
         }
         b.adlar.forEach((ad: string, i: number) => {
-          if (!this.yerelVar(k, ad)) k.s.set(ad, { tur: 'degisken', js: this.jsAd(k, ad), ham: b.hamlar[i], tip });
+          if (!this.yerelVar(k, ad)) k.s.set(ad, { golge: this.golgeDenetle(k, ad, b.hamlar[i], b.satir), tur: 'degisken', js: this.jsAd(k, ad), ham: b.hamlar[i], tip });
         });
       } else if (b.tur === 'altprogram') {
         if (b.sinif_adi) {
@@ -750,7 +794,7 @@ export class Uretici {
         const u = `${js} = ${this.uy(tip, js, J(p.ham))};`;
         govde.push(u); sarmal.push(u); hizliDenetim.push(u);
       }
-      k.s.set(p.ad, { tur: 'degisken', js, ham: p.ham, tip });
+      k.s.set(p.ad, { golge: this.golgeDenetle(k, p.ad, p.ham, n.satir, 'parametreyi'), tur: 'degisken', js, ham: p.ham, tip });
     });
     const bagSon = govde.length;
     if (n.donus) {
@@ -951,7 +995,7 @@ export class Uretici {
           if (d.yakala_ad !== null) {
             let s = k.s.get(d.yakala_ad);
             if (!s || s.ithal) {
-              s = { tur: 'degisken', js: this.yeniAd('v_' + d.yakala_ad), ham: d.yakala_ad, tip: null };
+              s = { golge: this.golgeDenetle(k, d.yakala_ad, d.yakala_ad, d.satir), tur: 'degisken', js: this.yeniAd('v_' + d.yakala_ad), ham: d.yakala_ad, tip: null };
               k.s.set(d.yakala_ad, s);
               fk.hoist.push(s.js);
             }
@@ -984,7 +1028,7 @@ export class Uretici {
           if (var_ && !var_.ithal) { out.push(this.tanimliHata(ham)); return; }
           const js = this.yeniAd('v_' + ad);
           fk.hoist.push(js);
-          k.s.set(ad, { tur: 'degisken', js, ham, tip });
+          k.s.set(ad, { golge: this.golgeDenetle(k, ad, ham, d.satir), tur: 'degisken', js, ham, tip });
           out.push(`${js} = ${v};`);
         });
         return out.join(' ');
@@ -1012,6 +1056,7 @@ export class Uretici {
         return `${s.js} = ${this.uyT(s.tip ?? null, v, vTip, J(h.ham ?? h.ad), h.ham ?? h.ad)};`;
       }
       if (r && r.tur === 'alan') return `this.f_${h.ad} = ${this.uyT(r.tip, v, vTip, J(h.ham ?? h.ad), h.ham ?? h.ad)};`;
+      this.taniYaDaUyari(`Tanımsız değişken: '${h.ham || h.ad}' (önce 'değişken' ile tanımlayın)`, h.satir ?? this.deyimSatiri);
       return `$.hata(${J(`Tanımsız değişken: '${h.ham || h.ad}' (önce 'değişken' ile tanımlayın)`)});`;
     }
     if (h.tur === 'alan') return `$.alanAta(${this.ifade(h.nesne, k)}, ${J(h.ad)}, ${v});`;
@@ -1461,6 +1506,12 @@ export class Uretici {
         return `${r.s.js}(${this.argumanlar(args, r.s.deger.$ref || [], k)})`;
       const f = this.cagrilan(c, k);
       if (this.refAdlari.has(c.ad) && args.some(a => this.atanabilir(a))) return `$.cagirR(${f}, [${this.dinamikArgumanlar(args, k)}])`;
+      if (r && r.tur === 'sembol' && (r.s.tur === 'degisken' || r.s.tur === 'sabit')) {
+        // değişken çağrılıyor: çağrılabilir bir adı gölgeliyorsa hata iletisi nedenini söyler
+        const g = r.s.golge ?? this.golgeTarifi(r.kapsam, c.ad, false);
+        const [ne, nee] = r.s.tur === 'sabit' ? ['sabit', 'sabite'] : ['değişken', 'değişkene'];
+        if (g) return `$.cagirG(${f}, [${this.argumanlar(args, [], k)}], ${J(`'${c.ham || c.ad}' burada bir ${ne}; aynı adlı ${g} gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; ${nee} başka bir ad verin)`)})`;
+      }
       return `$.cagir(${f}, [${this.argumanlar(args, [], k)}])`;
     }
     if (c.tur === 'alan') {

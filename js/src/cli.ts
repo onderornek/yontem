@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { katla } from './sozcuk';
 import { derle, kodCalistir, hataIsle } from './calistir';
+import { Tani, YontemHatasi } from './hatalar';
 import { projeYaz, masaustuDerle } from './gomulu/proje';
 import { uygulamaYaz } from './paket_uygulama';
 import { bicimle } from './bicimle';
@@ -75,10 +76,10 @@ export function katiSecici(programYolu: string, zorla = false): ((dosya: string)
   };
 }
 
-function derleDosya(yol: string, kati = false): string {
+function derleDosya(yol: string, kati = false, uyarilar?: Tani[]): string {
   const kaynak = fs.readFileSync(yol, 'utf-8');
   const { bul, dizinler } = birimBulucu(yol);
-  return derle(kaynak, yol, (ad) => bul(ad), dizinler, katiSecici(yol, kati));
+  return derle(kaynak, yol, (ad) => bul(ad), dizinler, katiSecici(yol, kati), uyarilar);
 }
 
 function main(argv: string[]): number {
@@ -236,21 +237,34 @@ function bicimleKomutu(argv: string[], hataYaz: (m: string) => void): number {
 }
 
 // ---------------------------------------------------------------- yontem denetle
+function uyariSirala(t: Tani[]): Tani[] {
+  return [...t].sort((a, b) => (a.dosya ?? '') < (b.dosya ?? '') ? -1 : (a.dosya ?? '') > (b.dosya ?? '') ? 1 : (a.satir ?? 0) - (b.satir ?? 0));
+}
 // Programları çalıştırmadan derler: sözdizimi hataları, bulunamayan birimler ve katı kipteki tip hataları.
 function denetle(argv: string[], hataYaz: (m: string) => void): number {
   const kati = argv.includes('--kati') || argv.includes('--katı');
   const hedefler = argv.filter(a => !a.startsWith('--'));
   for (const h of hedefler) if (!fs.existsSync(h)) { hataYaz(`Bulunamadı: ${h}`); return 1; }
   const dosyalar = testDosyalari(hedefler.length ? hedefler : ['.']).filter(d => !/(^|[\\/])paketler[\\/]/.test(d));
-  let temiz = 0, hatali = 0, birim = 0;
+  let temiz = 0, hatali = 0, uyarili = 0, birim = 0, uyariSayisi = 0;
+  const gorulen = new Set<string>();   // aynı birim birden çok programda kullanılınca uyarısı bir kez yazılır
   for (const yol of dosyalar) {
     const kaynak = fs.readFileSync(yol, 'utf-8');
     if (/^\s*(?:(?:\{[^}]*\}|\(\*[\s\S]*?\*\)|\/\/[^\n]*)\s*)*(birim|unit)\b/i.test(kaynak)) { birim++; continue; }   // birimler, kullanan programla denetlenir
-    try { derleDosya(yol, kati); temiz++; }
+    const uyarilar: Tani[] = [];
+    let basarili = false;
+    try { derleDosya(yol, kati, uyarilar); basarili = true; }
     catch (e) { hatali++; hataIsle(e, { hata: (m) => hataYaz(m.replace(/^Çalışma hatası/, 'Derleme hatası').replace(/; program çalıştırılmadı\.$/, '.')) }); }
+    const yeni = uyariSirala(uyarilar).filter(t => { const a = `${t.dosya}|${t.satir}|${t.mesaj}`; if (gorulen.has(a)) return false; gorulen.add(a); return true; });
+    for (const t of yeni) hataYaz(`Uyarı ${new YontemHatasi(t.mesaj, t.satir, t.dosya).metin()}`);
+    uyariSayisi += yeni.length;
+    if (basarili) { if (uyarilar.length) uyarili++; else temiz++; }
   }
-  if (!temiz && !hatali) { hataYaz('Denetlenecek program bulunamadı'); return 1; }
-  console.log(`${temiz} program temiz${hatali ? `, ${hatali} programda hata` : ''}${birim ? ` (${birim} birim dosyası, onu kullanan programla denetlenir)` : ''}.`);
+  if (!temiz && !hatali && !uyarili) { hataYaz('Denetlenecek program bulunamadı'); return 1; }
+  const parcalar = [`${temiz} program temiz`];
+  if (uyarili) parcalar.push(`${uyarili} programda uyarı`);
+  if (hatali) parcalar.push(`${hatali} programda hata`);
+  console.log(`${parcalar.join(', ')}${uyariSayisi ? ` (${uyariSayisi} uyarı)` : ''}${birim ? ` (${birim} birim dosyası, onu kullanan programla denetlenir)` : ''}.`);
   return hatali ? 2 : 0;
 }
 
