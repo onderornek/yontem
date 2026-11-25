@@ -96,6 +96,8 @@ dilbilgisi = {
             {'name': 'constant.numeric.yontem', 'match': r'(?<![\p{L}_])\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?'},
         ]},
         'bildirim': {'patterns': [
+            # sına 'ad' — adlandırılmış test bloğu (bağlama duyarlı: yalnızca ardından metin gelince)
+            {'match': r'^\s*(' + sozcuk(['sına']) + r')(?=\s+[\'"#])', 'captures': {'1': {'name': 'keyword.control.test.yontem'}}},
             {'match': '(' + sozcuk(['program', 'birim']) + r')\s+(' + AD + ')',
              'captures': {'1': {'name': 'keyword.other.yontem'}, '2': {'name': 'entity.name.namespace.yontem'}}},
             {'match': '(' + sozcuk(['prosedür', 'fonksiyon', 'kurucu']) + r')\s+(' + AD + r'(?:\.' + AD + ')?)',

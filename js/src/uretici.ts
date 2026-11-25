@@ -419,7 +419,10 @@ export class Uretici {
     this.kati = katiBu;
     this.kaydet(agac.bildirimler, k);
     const bild = agac.bildirimler.map((b: Dugum) => this.bildirim(b, k)).join('\n');
-    const deyimler = this.deyimler(agac.govde.deyimler, k);
+    let deyimler = this.deyimler(agac.govde.deyimler, k);
+    // sına blokları: konak bir blok seçtiyse ana blok yerine yalnızca o çalışır
+    if (agac.sinamalar && agac.sinamalar.length)
+      deyimler = `if ($.konak.sinaSec == null) {\n${deyimler}\n} else [${agac.sinamalar.map((t: any) => k.s.get(t.ad)!.js).join(', ')}][$.konak.sinaSec]();`;
     govde.push(this.hoistKod(fk), bild, deyimler);
     if (this.tanilar.length) throw new TipHatalari(this.tanilar);
     const ic = this.sec.ayikla ? this.ayiklaSar(this.ayiklaKaydet(k, agac.ham ?? agac.ad ?? 'program', 'program'), govde.join('\n')) : govde.join('\n');

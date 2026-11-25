@@ -88,7 +88,8 @@ export class Cozumleyici {
     if (this.opMu('.')) this.ilerle();
     else if (this.t.tip !== 'SON') this.hata("Program sonunda 'bitir.' bekleniyordu");
     if (this.t.tip !== 'SON') this.hata("'bitir.' sonrasında beklenmeyen kod");
-    return N('program', satir, { ad, kullan, bildirimler, govde });
+    const sinamalar = bildirimler.filter(b => b.sina !== undefined).map(b => ({ ad: b.ad, baslik: b.sina, satir: b.satir }));
+    return N('program', satir, { ad, kullan, bildirimler, govde, sinamalar });
   }
 
   birimCoz(): Dugum {
@@ -180,6 +181,8 @@ export class Cozumleyici {
         }
       } else if (this.asMi('prosedur', 'fonksiyon', 'kurucu')) {
         lst.push(this.altprogramCoz(baglam));
+      } else if (baglam === 'normal' && this.t.tip === 'AD' && this.t.deger === 'sina' && this.bak().tip === 'METIN') {
+        lst.push(this.sinaCoz());
       } else return lst;
     }
   }
@@ -300,6 +303,21 @@ export class Cozumleyici {
 
   direktifMi() {
     return this.t.tip === 'AD' && DIREKTIFLER.has(this.t.deger) && !(this.bak().tip === 'OP' && (this.bak().deger === ':' || this.bak().deger === ','));
+  }
+
+  /** sına 'ad' [yerel bildirimler] başla … bitir — adlandırılmış test bloğu ('yontem sına' ve 'yontem test' çalıştırır).
+   *  Gizli adlı, parametresiz bir prosedür olarak temsil edilir; programın normal çalışmasında çağrılmaz. */
+  sinaSayaci = 0;
+  sinaCoz(): Dugum {
+    this.im();
+    const tok = this.ilerle();
+    const baslik = this.ilerle().deger as string;
+    this.ayirici();
+    const yerel = this.bildirimlerCoz('yerel');
+    const govde = this.birlesikCoz();
+    this.ayirici();
+    const ad = `$sina${++this.sinaSayaci}`;
+    return N('altprogram', tok.satir, { cesit: 'prosedur', ad, ham: `sına '${baslik}'`, sinif_adi: null, params: [], donus: null, direktifler: [], yerel, govde, sina: baslik });
   }
 
   altprogramCoz(baglam: string): Dugum {

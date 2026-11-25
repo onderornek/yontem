@@ -29,6 +29,13 @@ for (const dz of ['testler', 'ornekler', 'kitap_ornekleri', 'gomulu_ornekler', '
     if (fs.existsSync(bek) && fs.readFileSync(bek, 'utf-8') !== p.stdout) {
       basarisiz++; console.log(`BAŞARISIZ  ${ad}  (çıktı beklenenden farklı)`); continue;
     }
+    // 'sına' blokları: yanında .sina.beklenen varsa 'yontem sına' raporu da karşılaştırılır
+    const sbek = yol.slice(0, -2) + '.sina.beklenen';
+    if (fs.existsSync(sbek)) {
+      const s = spawnSync(process.execPath, [CLI, 'sina', f], { cwd: dizin, encoding: 'utf-8', timeout: 300000 });
+      if (process.argv.includes('--guncelle')) fs.writeFileSync(sbek, s.stdout);
+      if (fs.readFileSync(sbek, 'utf-8') !== s.stdout || s.status > 1) { basarisiz++; console.log(`BAŞARISIZ  ${ad}  ('yontem sına' raporu beklenenden farklı)\n${s.stdout}${s.stderr}`); continue; }
+    }
     console.log(`geçti      ${ad}  ${sure} sn`);
   }
 }

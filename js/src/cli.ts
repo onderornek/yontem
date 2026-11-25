@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { katla } from './sozcuk';
 import { derle, kodCalistir, hataIsle } from './calistir';
+import { coz } from './cozumleyici';
 import { Tani, YontemHatasi } from './hatalar';
 import { projeYaz, masaustuDerle } from './gomulu/proje';
 import { uygulamaYaz } from './paket_uygulama';
@@ -91,6 +92,7 @@ function main(argv: string[]): number {
                                         Pencere/Mobil programını web uygulamasına (--mobil: telefona kurulabilen PWA) çevirir
   yontem test [klasör ya da dosyalar] [--guncelle]
                                         .y dosyalarını çalıştırır, çıktıyı yanındaki .beklenen dosyasıyla karşılaştırır
+  yontem sina program.y                 programdaki 'sına' bloklarını ayrı ayrı çalıştırıp geçen ve kalanları raporlar
   yontem bicimle <dosya ya da klasör>… [--denetle]
                                         girintiyi ve boşlukları düzenler (--denetle: değiştirmeden yalnızca bildirir)
   yontem yeni <ad>                      yeni proje klasörü oluşturur (program, test, BENIOKU)
@@ -108,6 +110,7 @@ function main(argv: string[]): number {
   if (argv[0] === 'gomulu' || argv[0] === 'gömülü') return gomulu(argv.slice(1), hataYaz);
   if (argv[0] === 'paketle') return paketle(argv.slice(1), hataYaz);
   if (argv[0] === 'test') return test(argv.slice(1), hataYaz);
+  if (argv[0] === 'sina' || argv[0] === 'sına') return sinaKomutu(argv.slice(1), hataYaz);
   if (argv[0] === 'yeni') return yeni(argv.slice(1), hataYaz);
   if (argv[0] === 'bicimle' || argv[0] === 'biçimle') return bicimleKomutu(argv.slice(1), hataYaz);
   if (argv[0] === 'dil-sunucusu' || argv[0] === 'lsp') {
@@ -182,6 +185,20 @@ function test(argv: string[], hataYaz: (m: string) => void): number {
     if (!/^\s*(?:\{[^}]*\}\s*|\/\/[^\n]*\n\s*)*program(?![\p{L}\p{N}_])/iu.test(kaynak)) { atlanan++; continue; }
     const kok = yol.replace(/\.y$/i, '');
     const girdi = kok + '.girdi', bek = kok + '.beklenen';
+    // 'sına' blokları: rapor .sina.beklenen ile karşılaştırılır; o yoksa bütün bloklar geçmelidir
+    if (SINA_DESENI.test(kaynak) && !guncelle) {
+      const s = spawnSync(process.execPath, [__filename, 'sina', path.resolve(yol)], { cwd: path.dirname(path.resolve(yol)), encoding: 'utf-8', timeout: 300000, maxBuffer: 1 << 28 });
+      const rapor = s.stdout ?? '', sbek = kok + '.sina.beklenen';
+      const ozet = /^(\d+) geçti, (\d+) kaldı\.$/m.exec(rapor);
+      const tamam = fs.existsSync(sbek) ? rapor === fs.readFileSync(sbek, 'utf-8') && (s.status === 0 || s.status === 1) : s.status === 0;
+      if (!tamam) {
+        console.log(`BAŞARISIZ  ${yol}  (${ozet ? `${ozet[2]} sına bloğu kaldı` : `çıkış kodu ${s.status}`}${fs.existsSync(sbek) ? '; rapor .sina.beklenen ile aynı değil' : ''})`);
+        const ic = (rapor + (s.stderr ?? '')).trimEnd();
+        if (ic) console.log('  ' + ic.split('\n').filter(x => !x.startsWith('geçti  ')).join('\n  '));
+        kalan++; continue;
+      }
+      if (!fs.existsSync(bek)) { console.log(`geçti      ${yol}  (${ozet ? ozet[1] : 0} sına bloğu)`); gecen++; continue; }
+    }
     const p = spawnSync(process.execPath, [__filename, path.resolve(yol)], {
       cwd: path.dirname(path.resolve(yol)), encoding: 'utf-8', timeout: 300000, maxBuffer: 1 << 28,
       input: fs.existsSync(girdi) ? fs.readFileSync(girdi, 'utf-8') : '',
@@ -207,6 +224,42 @@ function test(argv: string[], hataYaz: (m: string) => void): number {
   const toplam = gecen + kalan;
   if (!toplam) { hataYaz('Çalıştırılacak program bulunamadı (.y uzantılı, \'program\' ile başlayan dosyalar aranır)'); return 1; }
   console.log(`\n${gecen}/${toplam} test geçti${atlanan ? `, ${atlanan} birim dosyası atlandı` : ''} (${((Date.now() - t0) / 1000).toFixed(1)} sn).`);
+  return kalan ? 1 : 0;
+}
+
+// ---------------------------------------------------------------- yontem sına
+/** Kaynakta 'sına' bloğu var mı? (test komutu için hızlı ön bakış; asıl karar çözümleyicinindir) */
+export const SINA_DESENI = /^[ \t]*[sS][ıiIİ][nN][aA][ \t]+['"#]/mu;
+/** Her 'sına' bloğunu taze bir çalışmada ayrı ayrı yürütür; Python yorumlayıcısı da aynı raporu verir. */
+function sinaKomutu(argv: string[], hataYaz: (m: string) => void): number {
+  const yol = argv.find(a => !a.startsWith('--'));
+  if (!yol) { hataYaz('Kullanım: yontem sına program.y'); return 1; }
+  if (!fs.existsSync(yol)) { hataYaz(`Bulunamadı: ${yol}`); return 1; }
+  let kod: string, sinamalar: { baslik: string }[];
+  try {
+    sinamalar = (coz(fs.readFileSync(yol, 'utf-8'), yol) as any).sinamalar ?? [];
+    kod = derleDosya(yol);
+  } catch (e) { return hataIsle(e, { hata: hataYaz }); }
+  if (!sinamalar.length) { hataYaz(`'${yol}' içinde 'sına' bloğu yok`); return 1; }
+  let gecen = 0, kalan = 0;
+  sinamalar.forEach((t, i) => {
+    let cikti = '', hata: string | null = null;
+    const k = kodCalistir(kod, {
+      yaz: (m) => { cikti += m; }, okuSatir: () => null, argumanlar: [],
+      dosyaOku: (y) => fs.readFileSync(y, 'utf-8'), dosyaYaz: (y, c, e) => e ? fs.appendFileSync(y, c) : fs.writeFileSync(y, c),
+      dosyaVarMi: (y) => fs.existsSync(y), ortam: (a) => process.env[a], http: dugumHttp,
+      veritabani: require('./vt_dugum').dugumVeritabani(),
+      hata: (m) => { hata = m.replace(/^Çalışma hatası /, '').split(`[${yol}, `).join('['); },
+      sinaSec: i,
+    } as any);
+    if (hata === null && k !== 0) hata = `Durdur(${k}) ile bitti`;
+    if (hata === null) { gecen++; console.log(`geçti  ${t.baslik}`); return; }
+    kalan++;
+    console.log(`KALDI  ${t.baslik}\n       ${hata}`);
+    const satirlar = cikti.replace(/\n$/, '').split('\n');
+    if (cikti) for (const s of satirlar) console.log(`       | ${s}`);
+  });
+  console.log(`${gecen} geçti, ${kalan} kaldı.`);
   return kalan ? 1 : 0;
 }
 

@@ -50,6 +50,15 @@ def main():
                         basarisiz += 1
                         print(f"BAŞARISIZ  {ad}  (çıktı beklenenden farklı)")
                         continue
+            # 'sına' blokları: yanında .sina.beklenen varsa 'yontem sına' raporu da karşılaştırılır
+            sina_yol = yol[:-2] + '.sina.beklenen'
+            if os.path.exists(sina_yol):
+                s = subprocess.run([sys.executable, YONTEM, 'sina', f], capture_output=True, text=True, cwd=dz, timeout=900)
+                with open(sina_yol, encoding='utf-8') as fh:
+                    if fh.read() != s.stdout or s.returncode > 1:
+                        basarisiz += 1
+                        print(f"BAŞARISIZ  {ad}  ('yontem sına' raporu beklenenden farklı)\n{s.stdout}{s.stderr}")
+                        continue
             print(f"geçti      {ad}")
     print(f"\n{toplam - basarisiz}/{toplam} dosya geçti.")
     return 1 if basarisiz else 0

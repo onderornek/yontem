@@ -131,7 +131,8 @@ class Cozumleyici:
             self.hata("Program sonunda 'bitir.' bekleniyordu")
         if self.t.tip != 'SON':
             self.hata("'bitir.' sonrasında beklenmeyen kod")
-        return N('program', satir, ad=ad, kullan=kullan, bildirimler=bildirimler, govde=govde)
+        sinamalar = [(b.ad, b.sina, b.satir) for b in bildirimler if getattr(b, 'sina', None) is not None]
+        return N('program', satir, ad=ad, kullan=kullan, bildirimler=bildirimler, govde=govde, sinamalar=sinamalar)
 
     def birim_coz(self):
         satir = self.t.satir
@@ -204,8 +205,23 @@ class Cozumleyici:
                     lst.append(N('tipdef', tok.satir, ad=tok.deger, ham=tok.ham, tanim=tanim))
             elif self.as_mi('prosedur', 'fonksiyon', 'kurucu'):
                 lst.append(self.altprogram_coz(baglam))
+            elif baglam == 'normal' and self.t.tip == 'AD' and self.t.deger == 'sina' and self.bak().tip == 'METIN':
+                lst.append(self.sina_coz())
             else:
                 return lst
+
+    def sina_coz(self):
+        """sına 'ad' [yerel bildirimler] başla … bitir — adlandırılmış test bloğu. Gizli adlı, parametresiz
+        bir prosedür olarak temsil edilir; programın normal çalışmasında çağrılmaz."""
+        tok = self.ilerle()
+        baslik = self.ilerle().deger
+        self.ayirici()
+        yerel = self.bildirimler_coz('yerel')
+        govde = self.birlesik_coz()
+        self.ayirici()
+        self.sina_sayaci = getattr(self, 'sina_sayaci', 0) + 1
+        return N('altprogram', tok.satir, cesit='prosedur', ad=f'$sina{self.sina_sayaci}', ham=f"sına '{baslik}'",
+                 sinif_adi=None, params=[], donus=None, direktifler=[], yerel=yerel, govde=govde, sina=baslik)
 
     def degisken_grubu(self):
         satir = self.t.satir

@@ -12,6 +12,8 @@ export interface Konak {
   dosyaVarMi?(yol: string): boolean;
   ortam?(ad: string): string | undefined;
   iz?(m: string): void;
+  /** 'yontem sına': çalıştırılacak sına bloğunun sırası (verilmezse ana blok çalışır) */
+  sinaSec?: number;
   /** Pencere/Mobil işlemleri (canlı arayüz); verilmezse benzetim kipi */
   arayuz?(op: any): void;
   /** Mobil birimi için cihaz bilgisi ve kalıcı depo */

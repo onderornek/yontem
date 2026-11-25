@@ -147,7 +147,8 @@ class Yorumlayici:
             kaynak = f.read()
         return self.calistir(kaynak, yol)
 
-    def calistir(self, kaynak, dosya='<girdi>'):
+    def calistir(self, kaynak, dosya='<girdi>', sina=None):
+        """sina: verilirse ana blok yerine o sıradaki 'sına' bloğu çalışır."""
         agac = Cozumleyici(sozcukle(kaynak, dosya), dosya).dosya_coz()
         if agac.tur == 'birim':
             raise YontemHatasi("Birim dosyaları doğrudan çalıştırılamaz; 'kullan' ile yükleyin", 1, dosya)
@@ -166,6 +167,9 @@ class Yorumlayici:
         for ad, satir in agac.kullan:
             self.kullan(k, ad, satir, dosya)
         self.bildirimleri_isle(agac.bildirimler, k, dosya)
+        if sina is not None:
+            self.cagir(k.d[agac.sinamalar[sina][0]], [])
+            return 0
         try:
             self.yurut_blok(agac.govde.deyimler, k)
         except DonSinyali:

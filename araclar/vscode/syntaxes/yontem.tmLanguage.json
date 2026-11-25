@@ -180,6 +180,14 @@
   "bildirim": {
    "patterns": [
     {
+     "match": "^\\s*((?<![\\p{L}\\p{N}_])(?:[sSşŞ][iİıI][nN][aA])(?![\\p{L}\\p{N}_]))(?=\\s+[\\'\"#])",
+     "captures": {
+      "1": {
+       "name": "keyword.control.test.yontem"
+      }
+     }
+    },
+    {
      "match": "((?<![\\p{L}\\p{N}_])(?:[pP][rR][oOöÖ][gGğĞ][rR][aA][mM]|[bB][iİıI][rR][iİıI][mM])(?![\\p{L}\\p{N}_]))\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
      "captures": {
       "1": {
