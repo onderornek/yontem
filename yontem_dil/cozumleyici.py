@@ -173,12 +173,16 @@ class Cozumleyici:
         return lst
 
     # ---------------------------------------------------------- bildirimler
+    def sina_mi(self):
+        """'sına' yalnızca ardından metin gelince test bloğu başlatır."""
+        return self.t.tip == 'AD' and self.t.deger == 'sina' and self.bak().tip == 'METIN'
+
     def bildirimler_coz(self, baglam='normal'):
         lst = []
         while True:
             if self.as_mi('sabit'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     tok = self.ilerle()
                     tip = None
                     if self.op_mu(':'):
@@ -192,12 +196,12 @@ class Cozumleyici:
                     lst.append(N('sabit', tok.satir, ad=tok.deger, ham=tok.ham, tip=tip, ifade=ifade))
             elif self.as_mi('degisken'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     lst.append(self.degisken_grubu())
                     self.ayirici()
             elif self.as_mi('tip'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     tok = self.ilerle()
                     self.bekle_op('=')
                     tanim = self.tip_tanimi_coz()
@@ -205,10 +209,13 @@ class Cozumleyici:
                     lst.append(N('tipdef', tok.satir, ad=tok.deger, ham=tok.ham, tanim=tanim))
             elif self.as_mi('prosedur', 'fonksiyon', 'kurucu'):
                 lst.append(self.altprogram_coz(baglam))
-            elif baglam == 'normal' and self.t.tip == 'AD' and self.t.deger == 'sina' and self.bak().tip == 'METIN':
+            elif baglam == 'normal' and self.sina_mi():
                 lst.append(self.sina_coz())
             else:
                 return lst
+            # bölümün sonunda ad yerine anahtar sözcük ('kayıt: metin' gibi): açık bir ileti ver
+            if self.t.tip == 'AS' and self.bak().tip == 'OP' and self.bak().deger in (':', ',', '=', ':='):
+                self.bekle_ad()
 
     def sina_coz(self):
         """sına 'ad' [yerel bildirimler] başla … bitir — adlandırılmış test bloğu. Gizli adlı, parametresiz

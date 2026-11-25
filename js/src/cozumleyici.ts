@@ -142,6 +142,8 @@ export class Cozumleyici {
   }
 
   // ---------------------------------------------------------- bildirimler
+  /** 'sına' yalnızca ardından metin gelince test bloğu başlatır */
+  sinaMi(): boolean { return this.t.tip === 'AD' && this.t.deger === 'sina' && this.bak().tip === 'METIN'; }
   bildirimlerCoz(baglam = 'normal'): Dugum[] {
     const lst: Dugum[] = [];
     for (;;) {
@@ -149,7 +151,7 @@ export class Cozumleyici {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') {
+        while (this.t.tip === 'AD' && !this.sinaMi()) {
           if (alt) this.im(1);
           const tok = this.ilerle();
           let tip = null;
@@ -164,12 +166,12 @@ export class Cozumleyici {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') { if (alt) this.im(1); lst.push(this.degiskenGrubu()); this.ayirici(); }
+        while (this.t.tip === 'AD' && !this.sinaMi()) { if (alt) this.im(1); lst.push(this.degiskenGrubu()); this.ayirici(); }
       } else if (this.asMi('tip')) {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') {
+        while (this.t.tip === 'AD' && !this.sinaMi()) {
           if (alt) this.im(1);
           const tok = this.ilerle();
           this.bekleOp('=');
@@ -181,9 +183,11 @@ export class Cozumleyici {
         }
       } else if (this.asMi('prosedur', 'fonksiyon', 'kurucu')) {
         lst.push(this.altprogramCoz(baglam));
-      } else if (baglam === 'normal' && this.t.tip === 'AD' && this.t.deger === 'sina' && this.bak().tip === 'METIN') {
+      } else if (baglam === 'normal' && this.sinaMi()) {
         lst.push(this.sinaCoz());
       } else return lst;
+      // bölümün sonunda ad yerine anahtar sözcük ('kayıt: metin' gibi): açık bir ileti ver
+      if (this.t.tip === 'AS' && this.bak().tip === 'OP' && [':', ',', '=', ':='].includes(this.bak().deger)) this.bekleAd();
     }
   }
 

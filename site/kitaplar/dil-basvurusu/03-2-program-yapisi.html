@@ -99,7 +99,7 @@ blok:    'başla' deyimler 'bitir'</code></pre></div>
 <p>Sabite atama yapılamaz; denenirse program “Sabite atama yapılamaz” hatasıyla durur.</p>
 <h3 id="kapsam">Kapsam</h3>
 <p>Bir ad, bildirildiği yerden itibaren o kapsamda ve içteki kapsamlarda görünür. Kapsamlar şunlardır: program (ya da birim), her alt program, her sınıf (alanlar ve metodlar, metod gövdelerinde doğrudan görünür). Bir blok içinde <code>değişken</code> ile bildirilen ad, içinde bulunduğu alt programın (ya da ana gövdenin) kapsamına girer.</p>
-<p>İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir.</p>
+<p>İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir. Harf duyarsızlığı yüzünden bu kolayca istemeden olur: <code>toplam: ondalık</code> bildirilen kapsamda <code>Toplam(L)</code> yerleşik fonksiyonu değil değişkeni çağırır. <code>yontem denetle</code>, bir değişkenin, sabitin ya da parametrenin yerleşik bir fonksiyonu ya da birim üyesini gölgelediği her yeri uyarı olarak bildirir; böyle bir çağrının çalışma hatası da nedenini söyler.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="02-1-sozcuk-yapisi.html"><small>Önceki</small>1. Sözcük yapısı</a><a class="sonraki" href="04-3-tipler-ve-degerler.html"><small>Sonraki</small>3. Tipler ve değerler</a></nav>
   </main>

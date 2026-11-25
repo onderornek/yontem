@@ -412,7 +412,18 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 </tbody>
 </table>
 </div>
-<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bir metin satır sonunu aşamaz.</p>
+<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bu biçimlerdeki bir metin satır sonunu aşamaz.</p>
+<p><strong>Çok satırlı metin</strong> <code>"""</code> ile açılıp kapanır ve satır sonlarını içerebilir. İçinde kaçış yoktur: <code>\n</code>, <code>{</code> ve tırnaklar olduğu gibi kalır. Açılıştan hemen sonraki ve kapanıştan hemen önceki satır boşsa atılır; satırların ortak girintisi silinir. Böylece metin programın girintisine uyarak yazılabilir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>istem := &quot;&quot;&quot;
+  Sen yardımsever bir asistansın.
+    - Kısa yanıt ver.
+  &quot;&quot;&quot;</code></pre></div>
+<p>Bu metin iki satırdır; ikinci satır iki boşlukla başlar.</p>
+<p><strong>Biçimli metin</strong>, önüne <code>$</code> konan bir metindir: <code>$'…'</code>, <code>$"…"</code> ya da <code>$"""…"""</code>. İçindeki <code>{ifade}</code> çalışırken ifadenin değeriyle yer değiştirir; değer <code>yaz</code> ile yazılacağı biçimde metne çevrilir. İfadeden sonra iki nokta ile <code>Biçimle</code> biçimi yazılabilir: <code>{x:8}</code> genişlik (sağa yaslı), <code>{x:&lt;8}</code> sola, <code>{x:^8}</code> ortaya yaslı, <code>{x:.2}</code> ondalık basamak, <code>{x:8.2}</code> ikisi. Ayracın kendisi <code>{{</code> ve <code>}}</code> ile yazılır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz($<span class="ym">'Merhaba {ad}, {n} mesajın var'</span>, <span class="ys">1</span>)
+yaz($<span class="ym">'Toplam: {fiyat * adet:.2} TL'</span>, <span class="ys">1</span>)
+yaz($<span class="ym">'[{ad:&lt;6}] {{ayraç}}'</span>, <span class="ys">1</span>)</code></pre></div>
+<p><code>{}</code> içine tek bir ifade yazılır. Tek tırnaklı biçimli metnin içinde metin gerekiyorsa tırnak yine iki kez yazılır (<code>$'{BüyükHarf(''x'')}'</code>) ya da çift tırnak kullanılır (<code>$'{BüyükHarf("x")}'</code>). Biçimli metinler gömülü arka uçta henüz desteklenmez.</p>
 <h3 id="ekler">Ekler</h3>
 <p>Türkçede olduğu gibi sayılara, adlara ve ayraçlı ifadelere kesme işaretiyle ek getirilebilir. Dil iki eki tanır ve yalnızca sayan döngüde kullanır:</p>
 <div class="tablo">
@@ -509,7 +520,7 @@ blok:    'başla' deyimler 'bitir'</code></pre></div>
 <p>Sabite atama yapılamaz; denenirse program “Sabite atama yapılamaz” hatasıyla durur.</p>
 <h3 id="kapsam">Kapsam</h3>
 <p>Bir ad, bildirildiği yerden itibaren o kapsamda ve içteki kapsamlarda görünür. Kapsamlar şunlardır: program (ya da birim), her alt program, her sınıf (alanlar ve metodlar, metod gövdelerinde doğrudan görünür). Bir blok içinde <code>değişken</code> ile bildirilen ad, içinde bulunduğu alt programın (ya da ana gövdenin) kapsamına girer.</p>
-<p>İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir.</p>
+<p>İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir. Harf duyarsızlığı yüzünden bu kolayca istemeden olur: <code>toplam: ondalık</code> bildirilen kapsamda <code>Toplam(L)</code> yerleşik fonksiyonu değil değişkeni çağırır. <code>yontem denetle</code>, bir değişkenin, sabitin ya da parametrenin yerleşik bir fonksiyonu ya da birim üyesini gölgelediği her yeri uyarı olarak bildirir; böyle bir çağrının çalışma hatası da nedenini söyler.</p>
 </section><section class="bolum-blok" id="b04" data-baslik="3. Tipler ve değerler"><h2>3. Tipler ve değerler</h2>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>tip:        tip_tabani tip_eki*
 tip_tabani: 'dizi' | [AD '.'] AD
@@ -829,7 +840,7 @@ sonek:   birincil ('(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' AD)*</code>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz([<span class="ys">3</span>, <span class="ys">1</span>, <span class="ys">2</span>] |&gt; Sırala |&gt; Ters, <span class="ys">1</span>)</code></pre></div>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[3, 2, 1]</code></pre></div>
 <h3 id="birincil-ifadeler">Birincil ifadeler</h3>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | adsiz_altprogram
@@ -1149,6 +1160,14 @@ alan:  ','.AD+ [':' tip] ['=' ifade]</code></pre></div>
 bitti</code></pre></div>
 <p><code>fırlat ifade</code> bir hata başlatır. <code>Hata(mesaj)</code> ya da <code>Hata(mesaj, tür)</code> bir hata nesnesi oluşturur; nesnenin <code>mesaj</code> ve <code>tür</code> alanları vardır. Kendi sınıflarınızın nesneleri de fırlatılabilir. Çalışma zamanı hataları (sıfıra bölme, sınır aşımı, tip uyuşmazlığı, tanımsız ad) aynı yolla yakalanır; türleri <code>Hata</code>’dır. <code>İddia(koşul, mesaj)</code> koşul yanlışsa hata fırlatır.</p>
 <p>Sözdizimi hataları program çalışmadan önce bildirilir ve yakalanamaz.</p>
+<h3 id="sınama-blokları">Sınama blokları</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici</code></pre></div>
+<p><code>sına</code> bloğu, bildirim bölümüne yazılan adlandırılmış bir testtir. <code>sına</code> bağlamsal bir sözcüktür: yalnızca bildirim bölümünde ve ardından bir metin geldiğinde blok başlatır; başka her yerde sıradan bir addır. Blok, yerel bildirimleri olabilen parametresiz bir prosedür gibidir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sına <span class="ym">'boş liste toplamı sıfırdır'</span>
+<span class="ya">başla</span>
+  İddia(Toplam([]) = <span class="ys">0</span>)
+<span class="ya">bitir</span></code></pre></div>
+<p>Program normal çalıştırıldığında bloklar çalışmaz. <code>yontem sına program.y</code> her bloğu ayrı bir çalışmada yürütür: programın bildirimleri baştan kurulur, ana blok yerine yalnızca o blok çalışır. Hatasız biten blok geçmiş, yakalanmayan bir hatayla (başarısız bir <code>İddia</code> dahil) ya da sıfır olmayan bir <code>Durdur</code> koduyla biten blok kalmış sayılır. Rapor her blok için bir satır ve sonunda <code>n geçti, m kaldı.</code> satırıdır; kalan bloğun hata iletisi ve blok içinde yazılanlar altında gösterilir. Bir blok kalırsa çıkış kodu 1’dir.</p>
 </section><section class="bolum-blok" id="b10" data-baslik="9. Birimler"><h2>9. Birimler</h2>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birim: 'birim' AD kullan*
        ['arayüz' kullan* arayuz_bildirimi* 'uygulama' kullan*]
@@ -1220,8 +1239,9 @@ bitti</code></pre></div>
 <li>atamalar, argümanlar, dönüş değerleri ve işleçlerin işlenenleri tiplerine göre denetlenir;</li>
 <li><code>tamsayı listesi</code> gibi eleman tipi bildirilmiş koleksiyonlara uymayan eleman konamaz;</li>
 <li>sınıf ve kayıt tiplerinde olmayan bir alana ya da metoda erişilemez;</li>
-<li>tanımsız adlar derleme sırasında bildirilir.</li>
+<li>tanımsız adlar ve yanlış argüman sayıları derleme sırasında bildirilir.</li>
 </ul>
+<p>Katı kip olmadan da <code>yontem denetle</code> gölgelenen adları, tanımsız adları ve yanlış argüman sayılarını uyarı olarak bildirir (bkz. Kapsam).</p>
 <p><code>herhangi</code> tipli değerler ve eleman tipi yazılmamış <code>liste</code> denetim dışında kalır ve çalışırken denetlenir. Yönerge yalnızca bulunduğu dosyayı etkiler: katı bir program katı olmayan bir birimi kullanabilir. Katı kip JavaScript derleyicisindedir; Python yorumlayıcısı yönergeyi yorum olarak görür ve programı aynı sonuçla çalıştırır.</p>
 </section><section class="bolum-blok" id="b13" data-baslik="12. Uygulama farkları"><h2>12. Uygulama farkları</h2>
 <div class="tablo">
@@ -1297,7 +1317,8 @@ birim:    'birim' AD ayirici kullan*
 kullan:   'kullan' ','.AD+ ayirici
 ayirici:  ';' | satır sonu | SON
 
-bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram
+bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram | sina_blogu
+sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici
 arayuz_bildirimi:
           sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram_basligi
 sabit_bolumu:    'sabit' (AD [':' tip] ('=' | ':=') ifade ayirici)*
@@ -1368,7 +1389,7 @@ sonek:    birincil sonek_eki*
 sonek_eki:
           '(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' (AD | AS)
 arguman:  ifade [':' ifade [':' ifade]]
-birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | ('fonksiyon' | 'prosedür') [parametreler] [':' tip]

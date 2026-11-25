@@ -8,9 +8,11 @@ başla
   sonuç := a bol b
 bitir
 
+sabit BEKLENEN: tamsayı = 3   // bildirim bölümünün hemen ardından gelen 'sına' bloğu
+
 sına 'bölme doğru sonuç verir'
 başla
-  İddia(Bölme(10, 3) = 3, 'tamsayı bölme')
+  İddia(Bölme(10, 3) = BEKLENEN, 'tamsayı bölme')
   sayaç := sayaç + 1
   İddia(sayaç = 1, 'her blok taze başlar')
 bitir
