@@ -7,7 +7,7 @@ name = "yontem"
 version = "0.6.1"
 description = "Yöntem programlama dili — Python yorumlayıcısı (başvuru uygulaması)"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Önder Örnek" }]
 keywords = ["yöntem", "programlama dili", "türkçe", "pascal", "eğitim"]
