@@ -23,7 +23,7 @@
     "test:vt": "node betikler/vt_testi.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

@@ -47,7 +47,7 @@ projeye ayrıca kurulur: `npm install pg` ya da `npm install mysql2`.
 
 ## Gereksinimler
 
-Node.js 18 ya da üstü.
+Node.js 22 ya da üstü.
 
 ## Belgeler
 

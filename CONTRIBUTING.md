@@ -7,8 +7,8 @@ derleyici iyileştirmesi: hepsi değerlidir.
 
 ```bash
 git clone <depo adresi> && cd yontem
-cd js && npm install && npm run build && cd ..   # JavaScript derleyicisi (Node.js 18+)
-python3 yontem.py ornekler/merhaba.y              # Python yorumlayıcısı (Python 3.8+, bağımlılık yok)
+cd js && npm install && npm run build && cd ..   # JavaScript derleyicisi (Node.js 22+)
+python3 yontem.py ornekler/merhaba.y              # Python yorumlayıcısı (Python 3.11+, bağımlılık yok)
 ```
 
 ## Testler

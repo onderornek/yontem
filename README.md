@@ -46,7 +46,7 @@ node js/betikler/test.js                     # testler + örnekler + kitap örne
 js/betikler/karsilastir.sh dosya.y           # Python ve JS çıktısını karşılaştır
 ```
 
-Gereken: **Node.js 18+**. Tamsayılar sınırsız büyüklüktedir (BigInt). Ondalıklar Python ile
+Gereken: **Node.js 22+**. Tamsayılar sınırsız büyüklüktedir (BigInt). Ondalıklar Python ile
 aynı biçimde yazılır, `Tohum` aynı rastgele diziyi üretir. Bu yüzden testler bayt bayt aynı
 sonucu verir. Bilinen tek fark: `sin`, `cos`, `exp`, `log` ve `**` gibi işlemlerin son
 basamağı, platformun matematik kitaplığına bağlı olarak nadiren 1 ulp farklı olabilir.
@@ -55,7 +55,7 @@ basamağı, platformun matematik kitaplığına bağlı olarak nadiren 1 ulp far
 örnekler, girdi kutusu ve üretilen JavaScript'i gösteren sekme içerir. Derleme ve çalıştırma
 tarayıcıda, bir Web Worker içinde yapılır. Sayfayı yeniden üretmek için `npm run build`.
 
-**2. Python yorumlayıcısı (başvuru uygulaması).** Gereken tek şey **Python 3.8+**. Dış bağımlılık yok.
+**2. Python yorumlayıcısı (başvuru uygulaması).** Gereken tek şey **Python 3.11+**. Dış bağımlılık yok.
 
 ```bash
 python3 yontem.py ornekler/merhaba.y      # program çalıştır
@@ -68,7 +68,7 @@ Kaynak dosyaların uzantısı `.y`'dir.
 **Paket olarak kurma.** JavaScript derleyicisi npm'de `yontem` adıyla yayımlanır:
 
 ```bash
-npm install -g yontem     # 'yontem' komutu (Node.js 18+)
+npm install -g yontem     # 'yontem' komutu (Node.js 22+)
 yontem merhaba.y
 ```
 

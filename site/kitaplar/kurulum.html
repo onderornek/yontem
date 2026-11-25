@@ -239,7 +239,7 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
       </div>
     </div>
     <section class="bolum-blok" id="b01" data-baslik="Hangi kurulum size uygun?"><h2>Hangi kurulum size uygun?</h2>
-<p>Çoğu kullanıcı için yalnızca <strong>JavaScript derleyicisi</strong> yeterlidir: Node.js 18 veya üstünü kurduktan sonra tek bir komutla (<code>npm install -g yontem</code>) kurabilir, programlarınızı <code>yontem program.y</code> ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.</p>
+<p>Çoğu kullanıcı için yalnızca <strong>JavaScript derleyicisi</strong> yeterlidir: Node.js 22 veya üstünü kurduktan sonra tek bir komutla (<code>npm install -g yontem</code>) kurabilir, programlarınızı <code>yontem program.y</code> ile çalıştırabilirsiniz. Python yorumlayıcısı ve gömülü arka uç isteğe bağlıdır. Hiçbir şey kurmadan denemek isterseniz tarayıcıdaki oyun alanını kullanabilirsiniz.</p>
 <div class="tablo">
 <table>
 <colgroup>
@@ -260,13 +260,13 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <tr class="odd">
 <td>JavaScript derleyicisi (önerilen)</td>
 <td><code>.y</code> programlarını derleyip çalıştırır; en hızlı yol</td>
-<td>Node.js 18+ (npm ile birlikte gelir)</td>
+<td>Node.js 22+ (npm ile birlikte gelir)</td>
 <td>Her zaman</td>
 </tr>
 <tr class="even">
 <td>Python yorumlayıcısı</td>
 <td>Başvuru uygulaması ve etkileşimli kabuk (REPL)</td>
-<td>Python 3.8+ ve Yöntem’in kaynak klasörü</td>
+<td>Python 3.11+ ve Yöntem’in kaynak klasörü</td>
 <td>Kabuk isterseniz ya da Node.js kuramıyorsanız</td>
 </tr>
 <tr class="odd">
@@ -286,10 +286,10 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 </div>
 <p>Kaynak dosyaların uzantısı <code>.y</code>’dir. Bu kılavuz Yöntem 0.6.0 içindir.</p>
 </section><section class="bolum-blok" id="b02" data-baslik="1. Hazırlık: Node.js ve Python"><h2>1. Hazırlık: Node.js ve Python</h2>
-<p>Node.js 18 veya üstü gerekir; Python yalnızca yorumlayıcıyı kullanacaksanız gerekir. Önce bunların zaten kurulu olup olmadığına bakabilirsiniz:</p>
+<p>Node.js 22 veya üstü gerekir; Python yalnızca yorumlayıcıyı kullanacaksanız gerekir. Önce bunların zaten kurulu olup olmadığına bakabilirsiniz:</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>node --version     # v18.0.0 veya üstü olmalı
 npm --version
-python3 --version  # Windows'ta: py --version (3.8 veya üstü)</code></pre></div>
+python3 --version  # Windows'ta: py --version (3.11 veya üstü)</code></pre></div>
 <p><strong>Windows</strong></p>
 <ul>
 <li>Node.js: <a href="https://nodejs.org">nodejs.org</a> adresinden LTS sürümünü indirip kurabilir ya da PowerShell’de <code>winget install OpenJS.NodeJS.LTS</code> yazabilirsiniz.</li>
@@ -305,7 +305,7 @@ python3 --version  # Windows'ta: py --version (3.8 veya üstü)</code></pre></di
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sudo apt update
 sudo apt install nodejs npm python3
 node --version</code></pre></div>
-<p>Dağıtımınızın paket deposundaki Node.js 18’den eskiyse (örneğin Ubuntu 22.04), Node.js’i <a href="https://github.com/nvm-sh/nvm">nvm</a> ile kurabilirsiniz: <code>nvm install --lts</code>.</p>
+<p>Dağıtımınızın paket deposundaki Node.js 22’den eskiyse (örneğin Ubuntu 24.04), Node.js’i <a href="https://github.com/nvm-sh/nvm">nvm</a> ile kurabilirsiniz: <code>nvm install --lts</code>.</p>
 </section><section class="bolum-blok" id="b03" data-baslik="2. JavaScript derleyicisini kurma"><h2>2. JavaScript derleyicisini kurma</h2>
 <p>Yöntem, npm paket deposunda <code>yontem</code> adıyla yayımlanır. Kurulum tek bir komuttur:</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>npm install -g yontem</code></pre></div>
@@ -334,7 +334,7 @@ npm run build     # derleyiciyi, tarayıcı paketini ve oyun alanını üretir
 npm link          # &quot;yontem&quot; komutunu bu klasöre bağlar</code></pre></div>
 <p>Git kullanmıyorsanız deponun sayfasından ZIP olarak indirip kalıcı bir yere açmanız yeterlidir. Bu yolla kurulan <code>yontem</code> komutu klasöre bağlıdır; klasörü taşırsanız <code>npm link</code> adımını yeni yerde tekrarlamanız gerekir. Oyun alanını çevrim dışı kullanmak için de <code>yontem/oyun_alani/index.html</code> dosyasını tarayıcıda açmanız yeterlidir.</p>
 </section><section class="bolum-blok" id="b04" data-baslik="3. Python yorumlayıcısı"><h2>3. Python yorumlayıcısı</h2>
-<p>Python yorumlayıcısı npm paketinde yer almaz; Yöntem’in kaynak klasörüyle gelir (2. adımdaki “Kaynaktan kurma” bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki <code>yontem.py</code> dosyasını Python 3.8+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.</p>
+<p>Python yorumlayıcısı npm paketinde yer almaz; Yöntem’in kaynak klasörüyle gelir (2. adımdaki “Kaynaktan kurma” bölümüne bakabilirsiniz). Ayrı bir kurulum gerektirmez: klasördeki <code>yontem.py</code> dosyasını Python 3.11+ ile çalıştırmanız yeterlidir. JavaScript derleyicisiyle aynı çıktıyı verir ama çok daha yavaştır; asıl kullanımı etkileşimli kabuktur.</p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>cd yontem
 python3 yontem.py merhaba.y   # programı çalıştırır (Windows'ta: py yontem.py merhaba.y)
 python3 yontem.py             # etkileşimli kabuk; çıkmak için: çıkış
@@ -425,7 +425,7 @@ node js/betikler/gomulu_test.js   # gömülü arka uç (C++ derleyicisi gerekir)
 </tr>
 <tr class="even">
 <td>Derleyici beklenmedik sözdizimi hatasıyla çöküyor</td>
-<td>Node.js 18’den eski</td>
+<td>Node.js 22’den eski</td>
 <td><code>node --version</code> ile sürüme bakıp Node.js’i güncelleyebilirsiniz</td>
 </tr>
 <tr class="odd">
