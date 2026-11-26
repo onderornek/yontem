@@ -11,6 +11,7 @@ dosyasındadır.
 | `Akis.y` | İş akışı çizgesi: `Düğüm`, `Kenar`, `SeçmeliKenar`, `AkışıÇalıştır` |
 | `01_beyin.y` … `05_is_akisi.y` | Her parçayı tek tek gösteren programlar |
 | `06_asistan.y` | Hepsi bir arada: kendi belgelerinizle çalışan asistan |
+| `07_degerlendirme.y` | Modeli bir soru setiyle ölçmek; sorular `aynı anda` döngüsüyle birlikte sorulur |
 | `belgeler/` | Örneklerde kullanılan, uydurma bir şirkete ait üç kısa metin |
 | `sinama/` | Sınama servisinin kayıtlı yanıtları ve asistan oturumunun girdisi |
 

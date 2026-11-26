@@ -18,7 +18,7 @@ Beş parçadan biri yerinde kalır: **Ollama** bir kütüphane değil, dil model
 | chromadb | Hafıza: belgelerde anlam araması | `Hafıza` birimi (SQLite üzerinde) | 5 |
 | langgraph | İş akışı: adımlar ve dallanma | `Akış` birimi | 6 |
 
-7\. bölüm beşini birleştirip asistanı kurar. 8. bölüm bu kurulumun yapamadıklarını anlatır.
+7\. bölüm beşini birleştirip asistanı kurar. 8. bölüm modeli bir soru setiyle ölçer ve soruları `aynı anda` sorar. 9. bölüm bu kurulumun yapamadıklarını anlatır.
 
 **Bu birimler küçük birer karşılıktır, eşdeğer değildir.** Adı geçen kütüphaneler yıllardır geliştirilen, çok daha geniş araçlardır. Buradaki birimler onların en çok kullanılan çekirdeğini verir; her bölümün sonunda neyin eksik olduğu yazılıdır. Karşılığında bütün kod okunabilecek kadar kısadır ve Ek B'de tamamı verilmiştir.
 
@@ -30,7 +30,7 @@ Beş parçadan biri yerinde kalır: **Ollama** bir kütüphane değil, dil model
 
 ## 1. Hazırlık
 
-**Yöntem.** Komut satırı sürümü gerekir; oyun alanı bu iş için uygun değildir (8. bölüm). Hafıza SQLite kullandığı için Node.js 22.5 ya da yenisi gerekir.
+**Yöntem.** Komut satırı sürümü gerekir; oyun alanı bu iş için uygun değildir (9. bölüm). Hafıza SQLite kullandığı için Node.js 22.5 ya da yenisi gerekir.
 
 ```
 npm install -g yontem
@@ -217,7 +217,20 @@ Belgeler `asistan.db` dosyasında saklanır; sonraki çalıştırmalarda dosya a
 
 Asistan her soruyu tek başına ele alır; önceki soruları hatırlamaz. Hatırlamasını isterseniz 2. bölümdeki gibi önceki iletileri bir listede biriktirip `Sor`'a vermeniz gerekir.
 
-## 8. Sınırlar
+## 8. Değerlendirme: aynı anda çok soru
+
+Bir modeli seçerken ya da istemi değiştirirken, onu bir soru setiyle ölçmek gerekir. Sorular birbirinden bağımsızdır; sırayla sormak, toplam süreyi soru sayısıyla çarpar. Yöntem'in `aynı anda` döngüsü gövdeleri birlikte çalıştırır: bir gövde `Sor`'un içindeki isteğe varınca bekler, öteki gövdeler sürer ve bekleyen istekler birlikte gönderilir. `en çok 4` aynı anda en fazla dört soru sorulmasını sağlar; Ollama'nın aynı anda kaç isteğe yanıt verebildiğine göre ayarlanır (`OLLAMA_NUM_PARALLEL`).
+
+<<kod:07_degerlendirme>>
+
+<<cikti:07_degerlendirme>>
+
+İki noktaya dikkat:
+
+- Gövde dışarıdaki bir değişkene atama yapamaz; aynı anda çalışan gövdeler birbirinin değerini ezmesin diye bu bir hatadır. Sonuçlar `Ekle` ile ortak bir listede toplanır, sayım döngüden sonra yapılır. Sonuçların sırası her çalıştırmada aynıdır; yine de numarayla saklamak, sonuçları sorulara bağlamayı açık eder.
+- Buradaki puanlama kabadır: "12 ay" yanıtı doğru olduğu hâlde "on iki" aranırken tutmaz. Gerçek değerlendirmelerde beklenen yanıtın birkaç yazımı kabul edilir ya da yanıtı başka bir model puanlar (4. bölümdeki `Yapılandır` ile, örneğin `['doğru': 'mantıksal']` kalıbıyla).
+
+## 9. Sınırlar
 
 | Konu | Durum |
 | --- | --- |
@@ -235,7 +248,7 @@ Asistan her soruyu tek başına ele alır; önceki soruları hatırlamaz. Hatır
 
 ## Ek A — Sınama
 
-Örneklerin testi, sınama servisini kendisi başlatır ve altı programı iki uygulamada çalıştırır:
+Örneklerin testi, sınama servisini kendisi başlatır ve yedi programı iki uygulamada çalıştırır:
 
 ```
 node js/betikler/asistan_testi.js

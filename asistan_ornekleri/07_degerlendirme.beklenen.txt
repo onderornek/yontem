@@ -1,0 +1,8 @@
+✓ Türkiye'nin başkenti neresi? → Ankara
+✓ Bir haftada kaç gün var? → Bir haftada yedi gün vardır.
+✓ Suyun kimyasal formülü nedir? → Suyun formülü H2O'dur.
+✗ Güneş sistemindeki en büyük gezegen hangisi? → Satürn.
+✓ İstanbul hangi iki kıtadadır? → İstanbul Avrupa ve Asya kıtalarındadır.
+✗ Bir yılda kaç ay var? → Bir yılda 12 ay vardır.
+
+Doğru: 4/6

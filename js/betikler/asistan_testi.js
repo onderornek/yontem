@@ -14,6 +14,7 @@ const BELGELER = ['belgeler/izin.md', 'belgeler/kargo.md', 'belgeler/iade.md'];
 const PROGRAMLAR = [
   { ad: '01_beyin' }, { ad: '02_kumanda' }, { ad: '03_duzgun_cikti' }, { ad: '04_hafiza' }, { ad: '05_is_akisi' },
   { ad: '06_asistan', argumanlar: BELGELER, girdi: fs.readFileSync(path.join(KLASOR, 'sinama', '06_asistan.girdi.txt'), 'utf-8') },
+  { ad: '07_degerlendirme' },
 ];
 
 // Her çalıştırma kendi sunucusunu alır: sırayla verilen kayıtlı yanıtlar baştan başlar.
@@ -50,8 +51,10 @@ function calistir(komut, on, p) {
     if (py === null) console.log(`atlandı    ${p.ad}: Python (python3 bulunamadı)`);
     else if (py.kod !== 0) kaydet(`${p.ad}: Python`, false, py.cikti + py.hata);
     else kaydet(`${p.ad}: Python çıktısı JavaScript ile aynı`, py.cikti === js.cikti, fark(py.cikti, js.cikti));
-    // İki uygulama servise aynı istekleri göndermeli (yol ve gövde)
-    if (py && py.kod === 0) kaydet(`${p.ad}: gönderilen istekler aynı`, JSON.stringify(py.istekler) === JSON.stringify(js.istekler),
+    // İki uygulama servise aynı istekleri göndermeli (yol ve gövde). 'aynı anda' ile birlikte gönderilen istekler
+    // servise herhangi bir sırayla varabilir; bu yüzden istekler sıralanıp karşılaştırılır.
+    const sirali = (l) => l.map(i => JSON.stringify(i)).sort().join('\n');
+    if (py && py.kod === 0) kaydet(`${p.ad}: gönderilen istekler aynı`, sirali(py.istekler) === sirali(js.istekler),
       `  JavaScript ${js.istekler.length} istek, Python ${py.istekler.length} istek`);
   }
   process.exitCode = basarisiz ? 1 : 0;
