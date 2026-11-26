@@ -111,6 +111,8 @@ dilbilgisi = {
             {'name': 'keyword.control.yontem', 'match': sozcuk(['aynı']) + r'\s+' + sozcuk(['anda']) + r'(?:\s+' + sozcuk(['en']) + r'\s+' + sozcuk(['çok']) + ')?'},
             # üret — akışa değer verir (bağlama duyarlı: yalnızca deyim başında, ardından ifade gelince)
             {'match': r'^\s*(' + sozcuk(['üret']) + r')(?=\s+[^\s:=.,;+\-*/<>)\]])', 'captures': {'1': {'name': 'keyword.control.yontem'}}},
+            # yoksa — eksik değer için varsayılan (bağlama duyarlı: yalnızca bir ifadenin ardından işleçtir)
+            {'match': r"(?<=[\])'\"\w])\s+(" + sozcuk(['yoksa']) + r')(?!\s*(?::=|:|,|\)|;|$))', 'captures': {'1': {'name': 'keyword.operator.word.yontem'}}},
             {'name': 'keyword.control.yontem', 'match': sozcuk(DENETIM)},
             {'name': 'storage.type.function.yontem', 'match': sozcuk(['prosedür', 'fonksiyon', 'kurucu'])},
             {'name': 'keyword.other.yontem', 'match': sozcuk(BILDIRIM)},

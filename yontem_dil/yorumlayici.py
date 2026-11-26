@@ -143,7 +143,7 @@ class Yorumlayici:
             'tekli': self.i_tekli, 'mantik': self.i_mantik, 'kendi': self.i_kendi,
             'miras': self.i_miras, 'lambda': self.i_lambda, 'liste': self.i_liste,
             'sozluk': self.i_sozluk, 'aralik_liste': self.i_aralik, 'boru': self.i_boru,
-            'bicim': self.i_bicim, 'ref': self.i_ref, 'kosullu': self.i_kosullu,
+            'bicim': self.i_bicim, 'ref': self.i_ref, 'kosullu': self.i_kosullu, 'yoksa': self.i_yoksa,
             'bicimli_metin': self.i_bicimli_metin,
         }
         self._deyim = {
@@ -1161,6 +1161,32 @@ class Yorumlayici:
     def i_kosullu(self, n, k):
         return self.deg(n.a, k) if self.kosul(n.kosul, k) else self.deg(n.b, k)
 
+    def i_yoksa(self, n, k):
+        v = self._yumusak(n.sol, k)
+        return self.deg(n.sag, k) if v is _YOK or v is None else v
+
+    def _yumusak(self, n, k):
+        """'yoksa'nın sol yanı: dizinleme zincirinde anahtar ya da sıra yoksa (ya da dizinlenen boşsa) hata yerine _YOK"""
+        if n.tur != 'indeks' or len(n.indeksler) != 1:
+            return self.deg(n, k)
+        c = self._yumusak(n.nesne, k)
+        i = self.deg(n.indeksler[0], k)
+        if c is _YOK or c is None:
+            return _YOK
+        t = type(c)
+        if t is list and type(i) is int:
+            return c[i] if -len(c) <= i < len(c) else _YOK
+        if t is dict and type(i) not in (list, dict):
+            try:
+                return c.get(i, _YOK)
+            except TypeError:
+                raise YontemHatasi("Bu değer sözlük anahtarı olamaz")
+        if t is str and type(i) is int:
+            return c[i - 1] if 1 <= i <= len(c) else _YOK
+        if _tensor_mu(c):
+            return self._coklu_al(c, [i])
+        return self.indeks_al(c, i)
+
     def i_ref(self, n, k):
         return self.cagrilan(n.ifade, k)
 
@@ -1810,6 +1836,9 @@ def _tensor_tipi():
         from .yz import Tensor
         _TENSOR = Tensor
     return _TENSOR
+
+
+_YOK = object()      # 'yoksa' işlecinin sol yanında bulunamayan değer
 
 
 def _tensor_mu(c):

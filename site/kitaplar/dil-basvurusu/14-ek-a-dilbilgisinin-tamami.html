@@ -110,7 +110,8 @@ deyim:    blok
 kol:      ','.etiket+ ':' govde ayirici
 etiket:   ifade ['..' ifade]
 
-ifade:    veya ('|&gt;' veya)*
+ifade:    yoksa ('|&gt;' yoksa)*
+yoksa:    veya ['yoksa' yoksa]
 veya:     ve (('veya' | 'yada') ve)*
 ve:       degil ('ve' degil)*
 degil:    'değil' degil | iliski

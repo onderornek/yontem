@@ -530,6 +530,10 @@ biçimleri sayan bir hata verir.
 `Say(L)` bir sıklık sözlüğü döndürür (`Say(['a', 'b', 'a'])` → `['a': 2, 'b': 1]`); tek bir elemanın kaç kez
 geçtiği `Say(L)['a']` ile alınır. `Say(L, x)` gibi iki argümanlı çağrı `yontem denetle` tarafından bildirilir.
 
+`a yoksa b` eksik değer için varsayılan verir: dizinlenen anahtar ya da sıra yoksa ya da değer `boş` ise `b`
+hesaplanır (`ayar['port'] yoksa 8080`, `kişi['adres']['şehir'] yoksa '-'`, `Say(L)['x'] yoksa 0`). Öteki hatalar
+yükselir. `yoksa` yalnızca bir ifadenin ardından aynı satırda gelince işleçtir, başka yerde sıradan addır.
+
 **Eleman ekleme ve silme.** `Ekle(L, v)` sona ekler, `Ekle(L, v, i)` `i` konumuna yerleştirir,
 `Sil(L, i)` `i` konumundaki elemanı çıkarıp döndürür. Listede elemanlar 0'dan numaralanır; eksi konum
 sondan sayar (`Sil(L, -1)` son eleman). Silmenin üç eş anlamlı yazımı vardır:

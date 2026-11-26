@@ -1290,6 +1290,10 @@ export class Uretici {
         const a = this.ifadeTipi(n.a, k), b = this.ifadeTipi(n.b, k);
         return a !== null && a === b ? a : null;
       }
+      case 'yoksa': {
+        const a = this.ifadeTipi(n.sol, k), b = this.ifadeTipi(n.sag, k);
+        return a !== null && a === b ? a : null;
+      }
     }
     return null;
   }
@@ -1444,6 +1448,12 @@ export class Uretici {
       }
       case 'ref': return this.cagrilan(n.ifade, k);
       case 'kosullu': return `(${this.kosulKod(n.kosul, k)} ? ${this.ifade(n.a, k)} : ${this.ifade(n.b, k)})`;
+      case 'yoksa': {
+        // sol yandaki dizinleme zinciri yumuşak çalışır ($.indeksY); değer YOK ya da boşsa sağ yan hesaplanır
+        const yumusak = (d: Dugum): string => d.tur === 'indeks' && d.indeksler.length === 1
+          ? `$.indeksY(${yumusak(d.nesne)}, ${this.ifade(d.indeksler[0], k)})` : this.ifade(d, k);
+        return `((($.Y = ${yumusak(n.sol)}) === $.YOK || $.Y === null) ? ${this.ifade(n.sag, k)} : $.Y)`;
+      }
     }
     this.hata(`Bilinmeyen ifade: ${n.tur}`, n.satir);
   }
