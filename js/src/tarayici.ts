@@ -6,7 +6,7 @@ import { $ } from './calisma/cekirdek';
 import { DurSinyali } from './hatalar';
 export { ArayuzGorunumu, cihazBilgisi } from './tarayici_arayuz';
 
-export const SURUM = '0.6.1';
+export const SURUM = '0.7.0';
 
 export interface Secenekler {
   girdi?: string;

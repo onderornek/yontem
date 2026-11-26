@@ -14,7 +14,7 @@ import { bicimle } from './bicimle';
 import { spawnSync } from 'child_process';
 import * as os from 'os';
 
-const SURUM = '0.6.1';
+const SURUM = '0.7.0';
 
 function kutuphaneDizini(): string {
   // dist/cli.js → ../../kutuphane (depo kökü) ya da ../kutuphane (paket)
