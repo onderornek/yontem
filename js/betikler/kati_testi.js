@@ -106,7 +106,7 @@ if (py.error) console.log('atlandı    Python bulunamadı'); else denetle('Pytho
 // Depodaki programlar --kati ile denetlenince yalnızca bilerek hata veren altı satır işaretlenir (yanlış alarm yok)
 r = y(['denetle', 'ornekler', 'testler', 'kitap_ornekleri', 'birim_kilavuzu', 'guvenlik_ornekleri', 'ml_kilavuz', '--kati'], KOK);
 const bulunan = (r.stderr.match(/Tip hatası \[[^\]]*\]/g) || []).map(s => s.replace(/\\/g, '/')).sort();
-denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 175]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
+denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 175]', 'Tip hatası [testler/takvim_testi.y, satır 57]', 'Tip hatası [testler/uret_testi.y, satır 219]']), bulunan);
 
 // Gölgelenen adlar: denetle her gölgelemeyi uyarı olarak bildirir (katı kipten bağımsız)
 r = y(['denetle', 'testler/golge_testi.y'], KOK);

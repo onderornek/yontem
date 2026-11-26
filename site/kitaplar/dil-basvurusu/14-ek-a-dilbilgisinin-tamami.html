@@ -90,12 +90,15 @@ deyim:    blok
           ['sonunda' deyimler] 'bitir'
         | 'fırlat' ifade
         | 'dön' [ifade]
+        | 'üret' ifade
         | 'çık' | 'kır' | 'devam'
         | 'değişken' degisken_grubu
         | ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
         | ifade AYRILMA ifade YONELME 'adımda' ifade
           ('artan' | 'azalan') 'her' AD 'için' govde
         | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+        | 'aynı' 'anda' ['en' 'çok' (SAYI | AD | '(' ifade ')')]
+          ifade 'içindeki' 'her' AD [',' AD] 'için' govde
         | ifade ('listesindeki' | 'dizisindeki') sonek
           '.' ('elemanı' | 'elemanını') 'Sil'
         | ifade 'iken' govde

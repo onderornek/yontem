@@ -41,7 +41,7 @@ NITELEYICI = ['sanal', 'ezer', 'soyut', 'ileri', 'özel', 'genel', 'korumalı']
 ISLEC = ['ve', 'veya', 'yada', 'değil', 'mod', 'böl']
 SABIT = ['doğru', 'yanlış', 'boş']
 OZEL = ['kendi', 'miras']
-TIPLER = ['tamsayı', 'ondalık', 'gerçek', 'metin', 'karakter', 'mantıksal', 'liste', 'sözlük', 'tensör', 'herhangi',
+TIPLER = ['tamsayı', 'ondalık', 'gerçek', 'metin', 'karakter', 'mantıksal', 'liste', 'sözlük', 'tensör', 'akış', 'herhangi',
           'nesne', 'işlev']
 YERLESIK = ['yaz', 'oku', 'Uzunluk', 'Metin', 'Tamsayı', 'Ondalık', 'Ekle', 'Sil', 'İçerir', 'Sırala', 'Ters',
             'Aralık', 'Toplam', 'Min', 'Maks', 'Mutlak', 'Yuvarla', 'Kök', 'Kare', 'Rastgele', 'Biçimle', 'Ayır',
@@ -109,6 +109,8 @@ dilbilgisi = {
         'sozcukler': {'patterns': [
             # aynı anda [en çok] — paralel döngü (bağlama duyarlı: 'aynı' ve 'anda' sıradan ad olarak da kullanılabilir)
             {'name': 'keyword.control.yontem', 'match': sozcuk(['aynı']) + r'\s+' + sozcuk(['anda']) + r'(?:\s+' + sozcuk(['en']) + r'\s+' + sozcuk(['çok']) + ')?'},
+            # üret — akışa değer verir (bağlama duyarlı: yalnızca deyim başında, ardından ifade gelince)
+            {'match': r'^\s*(' + sozcuk(['üret']) + r')(?=\s+[^\s:=.,;+\-*/<>)\]])', 'captures': {'1': {'name': 'keyword.control.yontem'}}},
             {'name': 'keyword.control.yontem', 'match': sozcuk(DENETIM)},
             {'name': 'storage.type.function.yontem', 'match': sozcuk(['prosedür', 'fonksiyon', 'kurucu'])},
             {'name': 'keyword.other.yontem', 'match': sozcuk(BILDIRIM)},

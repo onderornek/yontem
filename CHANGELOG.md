@@ -10,6 +10,12 @@ uyumsuz değişiklik içerebilir.
 
 Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabının kodları sınanırken çıkan önerilere dayanır.
 
+- **`üret` ve akışlar**: gövdesinde `üret` geçen fonksiyon çağrılınca bir akış (`akış` tipi) döndürür; gövde
+  akış `içindeki her … için` ile yinelendikçe çalışır ve her `üret`te durur. Bırakılan akış kapatılır, gövdedeki
+  `sonunda` blokları çalışır. Liste bekleyen yerleşikler ve `aynı anda` akışı sonuna kadar okur. JavaScript
+  derleyicisi akış gövdelerini JavaScript üreteçlerine çevirir; Python yorumlayıcısı `üret` içeren deyimleri
+  Python üreteci olarak yürütür. `üret` yalnızca fonksiyon gövdesinde anlam taşır; başka yerde
+  sıradan ad olarak kullanılmaya devam eder.
 - **`aynı anda` paralel döngüsü**: `aynı anda [en çok N] liste içindeki her x için …`. Gövdeler birlikte
   çalışır; ağ istekleri (doğrudan ya da çağrılan fonksiyonlar üzerinden) turlar halinde birlikte, paralel
   gönderilir. Sıra programa bağlıdır, zamanlamaya değil; iki uygulama aynı çıktıyı verir. Gövde dışarıdaki

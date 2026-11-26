@@ -123,6 +123,13 @@ function ucbirimTestleri() {
   r = ucbirim(['y yok + 1', 'y 1 +', 'kes 999', 'kes Baska:3', 'zıpla', 'bitir']);
   denetle('yanlış komutlar ayıklayıcıyı düşürmez', r.cikti.includes("Bilinmeyen komut: 'zıpla'") && r.cikti.includes('çalışan bir deyim yok') && r.cikti.includes("'Baska' bu programın dosyalarından biri değil") && (r.cikti.match(/Hata: /g) || []).length === 2 && r.kod === 130, r.cikti);
 
+  // Akış ('üret'): gövdenin çerçevesi yalnızca gövde çalışırken yığındadır
+  const AKIS = "program A\nfonksiyon Say(n: tamsayı): akış\nbaşla\n  1'den n'e kadar her i için\n    üret i * 10\nbitir\ndeğişken t: tamsayı\nbaşla\n  t := 0\n  Say(2) içindeki her x için\n    t := t + x\n  yaz(t, 1)\nbitir.\n";
+  fs.writeFileSync(path.join(dizin, 'akis.y'), AKIS);
+  const ak = spawnSync(process.execPath, [CLI, 'ayikla', path.join(dizin, 'akis.y')], { input: ['kes 5', 'd', 'yğ', 'dğ', 'sil hepsi', 'kes 11', 'd', 'yğ', 'sil hepsi', 'd'].join('\n') + '\n', encoding: 'utf-8', cwd: dizin });
+  denetle('akış gövdesinde yığın ve yerel değişkenler', ak.stdout.includes('→ #0  Say  akis.y:5\n  #1  program A  akis.y:10') && /Say:\n\s+n = 2\n[^]*i = 1/.test(ak.stdout), ak.stdout);
+  denetle('akıştan dönünce çerçeve yığından çıkar', ak.stdout.includes('→ #0  program A  akis.y:11\n(ayıkla)') && ak.stdout.includes('30\n') && ak.status === 0, ak.stdout);
+
   fs.writeFileSync(path.join(dizin, 'bozuk.y'), 'program B\nbaşla\n  yaz(\nbitir.\n');
   const b = spawnSync(process.execPath, [CLI, 'ayikla', path.join(dizin, 'bozuk.y')], { input: '', encoding: 'utf-8' });
   denetle('sözdizimi hatası bildirilir', b.status === 2 && b.stderr.includes('Sözdizimi hatası'), b);

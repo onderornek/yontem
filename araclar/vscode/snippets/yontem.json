@@ -175,6 +175,22 @@
   ],
   "description": "Paralel döngü: gövdeler birlikte çalışır, ağ istekleri birlikte gönderilir"
  },
+ "Üreten fonksiyon": {
+  "prefix": [
+   "üret",
+   "uret",
+   "akış",
+   "akis"
+  ],
+  "body": [
+   "fonksiyon ${1:Ad}(${2:n}: ${3:tamsayı}): akış",
+   "başla",
+   "  ${4:1'den n'e kadar her i için}",
+   "    üret ${5:i}",
+   "bitir"
+  ],
+  "description": "'üret' ile değerleri tek tek veren fonksiyon; içindeki her … için ile yinelenir"
+ },
  "Tekrarla": {
   "prefix": [
    "tekrarla"

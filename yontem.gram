@@ -238,6 +238,7 @@ deyim:
     | dene_deyimi
     | 'fırlat' ifade
     | 'dön' [ifade]
+    | uret_deyimi
     | 'çık'
     | 'kır'
     | 'devam'
@@ -268,6 +269,12 @@ her_dongusu:
 # Sınır, kaynaktan ayrılabilsin diye tek bir sayı, ad ya da parantezli ifadedir (varsayılan 16).
 paralel_dongu:
     | 'aynı' 'anda' ['en' 'çok' (SAYI | AD | '(' ifade ')')] ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+
+# Akışa değer verir. 'üret' yalnızca adlı bir fonksiyonun gövdesinde, deyim başında ve ardından aynı satırda
+# bir ifade gelince anlam taşır; böyle bir fonksiyon çağrılınca bir akış döner (dönüş tipi yazılırsa 'akış').
+# Başka yerde 'üret' sıradan addır. Fonksiyon gövdesinde 'dön' değer almaz ve referans parametre yoktur.
+uret_deyimi:
+    | 'üret' ifade
 
 iken_dongusu:
     | ifade 'iken' govde

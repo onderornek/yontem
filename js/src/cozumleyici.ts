@@ -27,6 +27,8 @@ export class Cozumleyici {
   /** Biçimlendirici için (js/src/bicimle.ts): doluysa her deyim/bildirim satırının girinti derinliği kaydedilir. */
   bicim: { d: number; kapali: number; satir: Map<number, number>; eski(satir: number): number } | null = null;
   constructor(private s: Sozcuk[], private dosya = '<girdi>') {}
+  /** İç içe gövdelerin 'üret' bağlamı (bkz. uretMi) */
+  private uretecBag: { tur: string; var: boolean; donler: Dugum[] }[] = [];
 
   /** Sıradaki sözcük satırının ilk sözcüğüyse satırın derinliğini kaydeder (ilk kayıt geçerlidir). */
   private im(ek = 0, zorla = false) {
@@ -340,9 +342,53 @@ export class Cozumleyici {
     let govdeli = true;
     if (baglam === 'arayuz' || direktifler.includes('ileri') || direktifler.includes('soyut')) govdeli = false;
     else if (baglam === 'sinif') govdeli = this.asMi('basla', 'degisken', 'sabit');
-    let yerel: Dugum[] = [], govde = null;
-    if (govdeli) { yerel = this.bildirimlerCoz('yerel'); govde = this.birlesikCoz(); this.ayirici(); }
-    return N('altprogram', tok.satir, { cesit, ad: adTok.deger, ham: adTok.ham, sinif_adi: sinifAdi, params, donus, direktifler, yerel, govde });
+    let yerel: Dugum[] = [], govde = null, uretec = false;
+    if (govdeli) {
+      yerel = this.bildirimlerCoz('yerel');
+      this.bagGir(cesit);
+      govde = this.birlesikCoz();
+      uretec = this.bagCik(tok.satir, donus, params);
+      this.ayirici();
+    }
+    return N('altprogram', tok.satir, { cesit, ad: adTok.deger, ham: adTok.ham, sinif_adi: sinifAdi, params, donus, direktifler, yerel, govde, uretec });
+  }
+
+  // ---------------------------------------------------------- üret
+  private bagGir(tur: string) { this.uretecBag.push({ tur, var: false, donler: [] }); }
+  /** Gövde bitti: 'üret' kullanıldıysa fonksiyon üreteçtir; kuralları denetlenir. */
+  private bagCik(satir: number, donus: Dugum | null, params: Dugum[]): boolean {
+    const b = this.uretecBag.pop()!;
+    if (!b.var) return false;
+    if (donus !== null && !(donus.tur === 'tip_ad' && donus.modul === null && donus.ad === 'akis' && !donus.eleman))
+      throw new SozdizimHatasi("'üret' kullanan fonksiyonun dönüş tipi 'akış' olmalı", satir, this.dosya);
+    for (const p of params)
+      if (p.ref) throw new SozdizimHatasi(`'üret' kullanan fonksiyon değişken (referans) parametre alamaz: '${p.ham}'`, satir, this.dosya);
+    for (const d of b.donler)
+      throw new SozdizimHatasi("'üret' kullanan fonksiyonda 'dön' değer almaz; akışı bitirmek için yalnızca 'dön' yazın", d.satir, this.dosya);
+    return true;
+  }
+  /** 'üret' bağlamsal bir sözcüktür: deyim başında ve aynı satırda ardından bir ifade geliyorsa üretir. */
+  uretMi(): boolean {
+    const t = this.t;
+    if (t.tip !== 'AD' || t.deger !== 'uret') return false;
+    const n = this.bak();
+    if (n.satir !== t.satir) return false;
+    if (n.tip === 'SAYI' || n.tip === 'METIN' || n.tip === 'BMETIN' || n.tip === 'AD') return true;
+    if (n.tip === 'AS') return ['dogru', 'yanlis', 'bos', 'kendi', 'eger', 'miras', 'degil'].includes(n.deger);
+    return n.tip === 'OP' && ['(', '[', '-', '+', '@'].includes(n.deger);
+  }
+  /** üret ifade — yalnızca fonksiyon gövdesinde; başka yerde 'üret(…)' ve 'üret[…]' sıradan addır. */
+  uretCoz(): Dugum | null {
+    const b = this.uretecBag.length ? this.uretecBag[this.uretecBag.length - 1] : null;
+    if (b && b.tur === 'fonksiyon') {
+      const s = this.ilerle().satir;
+      b.var = true;
+      return N('uret', s, { ifade: this.ifade() });
+    }
+    const n = this.bak();
+    if (n.tip === 'OP' && ['(', '[', '-', '+'].includes(n.deger)) return null;
+    if (b && b.tur === 'es') this.hata("'üret' 'aynı anda' gövdesinde kullanılamaz");
+    this.hata("'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir (ör. fonksiyon Sayılar(n: tamsayı): akış)");
   }
 
   // ---------------------------------------------------------- deyimler
@@ -393,6 +439,7 @@ export class Cozumleyici {
     const tok = this.t;
     const s = tok.satir;
     if (this.ayniAndaMi()) return this.ayniAndaCoz();
+    if (this.uretMi()) { const d = this.uretCoz(); if (d) return d; }
     if (tok.tip === 'AS') {
       const k = tok.deger;
       if (k === 'basla') return this.birlesikCoz();
@@ -418,7 +465,9 @@ export class Cozumleyici {
         let deger = null;
         if (!(this.opMu(';') || this.asMi('bitir', 'degilse', 'yakala', 'sonunda') || this.satirSonuMu() || this.t.tip === 'SON'))
           deger = this.ifade();
-        return N('don', s, { ifade: deger });
+        const d = N('don', s, { ifade: deger });
+        if (deger !== null && this.uretecBag.length) this.uretecBag[this.uretecBag.length - 1].donler.push(d);
+        return d;
       }
       if (k === 'cik') { this.ilerle(); return N('don', s, { ifade: null }); }
       if (k === 'kir') { this.ilerle(); return N('kir', s); }
@@ -461,7 +510,10 @@ export class Cozumleyici {
     let v2 = null;
     if (this.opMu(',')) { this.ilerle(); v2 = this.bekleAd().deger; }
     this.bekleAs('icin');
-    return N('ayni_anda', s, { ad: v.deger, ad2: v2, kaynak, sinir, govde: this.deyimVeyaBos() });
+    this.bagGir('es');
+    const govde = this.deyimVeyaBos();
+    this.uretecBag.pop();
+    return N('ayni_anda', s, { ad: v.deger, ad2: v2, kaynak, sinir, govde });
   }
 
   deyimIfadeden(hedef: Dugum, s: number): Dugum {
@@ -769,7 +821,9 @@ export class Cozumleyici {
         if (this.opMu('=>')) { this.ilerle(); return N('lambda', s, { params, donus, ifade: this.ifade(), yerel: [], govde: null }); }
         if (this.bicim) this.bicim.kapali++;         // çok satırlı adsız altprogram: satırlar çapa satırıyla birlikte kayar
         const yerel = this.bildirimlerCoz('yerel');
+        this.bagGir('lambda');
         const govde = this.birlesikCoz();
+        this.uretecBag.pop();
         if (this.bicim) this.bicim.kapali--;
         return N('lambda', s, { params, donus, ifade: null, yerel, govde });
       }

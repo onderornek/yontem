@@ -709,7 +709,7 @@ function topluHttp(istekler: any[]): any[] {
   return istekler.map(i => k!.http!(i));
 }
 $.ayniAnda = (kaynak: any, cift: boolean, sinir: any, govde: (o: any) => Generator, bu: any) => {
-  const ogeler: any[] = cift ? $.yineleCift(kaynak) : yinele(kaynak);
+  const ogeler: any[] = cift ? [...$.yineleCift(kaynak)] : yinele(kaynak);
   let n = ES_VARSAYILAN_SINIR;
   if (sinir !== null) {
     if (typeof sinir !== 'bigint') hata(`'aynı anda en çok' tamsayı bekler, ${turAdi(sinir)} verildi`);
@@ -737,6 +737,36 @@ $.ayniAnda = (kaynak: any, cift: boolean, sinir: any, govde: (o: any) => Generat
   }
 };
 
+// ================================================================ akış ('üret')
+// 'üret' kullanan fonksiyon çağrılınca parametreler bağlanır ve bir akış döner; gövde (bir JavaScript üreteci)
+// akış yinelenince çalışır ve her 'üret'te durur. Döngü akışı bitmeden bırakırsa for…of akışı kapatır
+// (return): 'sonunda' blokları çalışır. Akışın gövdesi 'aynı anda' içinde bile ağ isteklerinde beklemez.
+// Python yorumlayıcısı aynı anlamı Python üreteçleriyle verir (yontem_dil/akis.py).
+export class Akis {
+  static TUR_ADI = 'akış';
+  private calisiyor = false;
+  constructor(private g: Generator, public ad: string) {}
+  private gir() {
+    if (this.calisiyor) hata(`'${this.ad}' akışı kendi gövdesinde yinelenemez`);
+    this.calisiyor = true;
+  }
+  next(v?: any): IteratorResult<any> { this.gir(); try { return this.g.next(v); } finally { this.calisiyor = false; } }
+  return(v?: any): IteratorResult<any> {
+    if (this.calisiyor) return { done: true, value: undefined };
+    this.calisiyor = true;
+    try { return this.g.return(v); } finally { this.calisiyor = false; }
+  }
+  [Symbol.iterator]() { return this; }
+  $yinele(): any[] { return [...this]; }
+  toString() { return `<akış ${this.ad}>`; }
+}
+$.akis = (g: Generator, ad: string) => new Akis(g, ad);
+$.u_akis = (v: any, ad: string) => (v === null || v instanceof Akis) ? v : tipHata('akış', v, ad);
+function* akisCift(a: Akis): Generator<any[]> {
+  let i = 0n;
+  for (const x of a) { yield [i, x]; i++; }
+}
+
 // ================================================================ yineleme ve döngüler
 export function yinele(v: any): any[] {
   if (Array.isArray(v)) return v.slice();
@@ -748,7 +778,10 @@ export function yinele(v: any): any[] {
   hata(`${turAdi(v)} üzerinde yinelenemez`);
 }
 $.yinele = yinele;
-$.yineleCift = (v: any) => {
+/** 'içindeki her' döngüsünün kaynağı: akış tembel yinelenir, ötekiler kopyalanır */
+$.yineleD = (v: any): Iterable<any> => v instanceof Akis ? v : yinele(v);
+$.yineleCift = (v: any): Iterable<any[]> => {
+  if (v instanceof Akis) return akisCift(v);
   if (v instanceof Map) return [...v.entries()].map(([a, b]) => [a, b]);
   return yinele(v).map((x, i) => [BigInt(i), x]);
 };

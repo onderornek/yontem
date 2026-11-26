@@ -1,0 +1,42 @@
+çağrıldı, henüz çalışmadı
+  (Kareler başladı)
+1
+4
+9
+  (Kareler bitti)
+akış <akış Kareler>
+ikinci kez: []
+0:1
+1:2
+2:3
+3:4
+  (Kareler başladı)
+[1, 4]
+  (Kareler başladı)
+  (Kareler bitti)
+30
+bir
+iki
+  (temizlendi)
+bir
+üç
+  (temizlendi)
+yinelenmedi
+1
+Sıfıra bölme (satır 45)
+  (temizlendi)
+döngüde hata
+döngüde hata
+sonunda bozuldu
+[1, 2, 3, 4, 5]
+5050
+['3!', '2!', '1!']
+'Kendini' akışı kendi gövdesinde yinelenemez
+  (Kareler başladı)
+  (Kareler bitti)
+0→1
+1→4
+2→9
+[1, 2, 't2', 't4', 'k', 'k', 'dört', 'yine dört', 'yakalandı: Sıfıra bölme', 'sonunda', 6]
+42
+'a' için tip uyuşmazlığı: akış bekleniyordu, tamsayı verildi

@@ -20,6 +20,12 @@ aynı anda en çok: 6
 ['x1!', 'x2!']
 ['y1!', 'y2!']
 aynı anda en çok: 1
+-- akışın gövdesi beklemez, döngünün gövdesi bekler
+p1! → p1!!
+q1! → q1!!
+p2! → p2!!
+q2! → q2!!
+aynı anda en çok: 2
 -- devam
 1
 3

@@ -1,0 +1,30 @@
+[
+ {
+  "kaynak": "prosedür P\nbaşla\n  üret 1\nbitir\nbaşla\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 3] 'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir (ör. fonksiyon Sayılar(n: tamsayı): akış) ('üret' bulundu, sütun 3)"
+ },
+ {
+  "kaynak": "fonksiyon F(n: tamsayı): akış\nbaşla\n  dön 5\n  üret n\nbitir\nbaşla\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 3] 'üret' kullanan fonksiyonda 'dön' değer almaz; akışı bitirmek için yalnızca 'dön' yazın"
+ },
+ {
+  "kaynak": "fonksiyon F(n: tamsayı): tamsayı\nbaşla\n  üret n\nbitir\nbaşla\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 1] 'üret' kullanan fonksiyonun dönüş tipi 'akış' olmalı"
+ },
+ {
+  "kaynak": "fonksiyon F(değişken n: tamsayı): akış\nbaşla\n  üret n\nbitir\nbaşla\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 1] 'üret' kullanan fonksiyon değişken (referans) parametre alamaz: 'n'"
+ },
+ {
+  "kaynak": "fonksiyon F(): akış\nbaşla\n  aynı anda [1] içindeki her x için\n    üret x\nbitir\nbaşla\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 4] 'üret' 'aynı anda' gövdesinde kullanılamaz ('üret' bulundu, sütun 5)"
+ },
+ {
+  "kaynak": "değişken f: herhangi\nbaşla\n  f := fonksiyon(): akış\n  başla\n    üret 1\n  bitir\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 5] 'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir (ör. fonksiyon Sayılar(n: tamsayı): akış) ('üret' bulundu, sütun 5)"
+ },
+ {
+  "kaynak": "başla\n  üret 'x'\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 2] 'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir (ör. fonksiyon Sayılar(n: tamsayı): akış) ('üret' bulundu, sütun 3)"
+ }
+]
