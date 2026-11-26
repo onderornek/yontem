@@ -161,6 +161,20 @@
   ],
   "description": "Liste ya da sözlük üzerinde döngü"
  },
+ "Aynı anda": {
+  "prefix": [
+   "aynı anda",
+   "ayni anda",
+   "paralel"
+  ],
+  "body": [
+   "aynı anda en çok ${1:8} ${2:liste} içindeki her ${3:eleman} için",
+   "başla",
+   "  $0",
+   "bitir"
+  ],
+  "description": "Paralel döngü: gövdeler birlikte çalışır, ağ istekleri birlikte gönderilir"
+ },
  "Tekrarla": {
   "prefix": [
    "tekrarla"

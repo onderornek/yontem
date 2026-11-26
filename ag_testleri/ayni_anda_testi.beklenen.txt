@@ -1,0 +1,35 @@
+-- en çok 3: istekler turlar halinde birlikte gider
+başladı a
+başladı b
+başladı c
+bitti a!
+bitti b!
+bitti c!
+başladı d
+başladı e
+başladı f
+bitti d!
+bitti e!
+bitti f!
+['a!', 'b!', 'c!', 'd!', 'e!', 'f!']
+aynı anda en çok: 3
+-- fonksiyon, metod ve iki istek
+['0=m:a?!', '1=m:b?!', '2=m:c?!', '3=m:d?!', '4=m:e?!', '5=m:f?!']
+aynı anda en çok: 6
+-- yerleşiğin çağırdığı fonksiyon beklemez
+['x1!', 'x2!']
+['y1!', 'y2!']
+aynı anda en çok: 1
+-- devam
+1
+3
+-- hata: öteki gövdeler sessizce durur
+a!
+sonra a
+sonunda a
+sonunda yok
+yakalandı: Ağ hatası: http://127.0.0.1:1/ adresine bağlanılamadı
+-- kısıtlar
+'kır' 'aynı anda' gövdesinde kullanılamaz (gövdeler birlikte çalışır); sonraki elemana geçmek için 'devam' kullanın
+'aynı anda' gövdesinde dışarıdaki 'ad' değişkenine atama yapılamaz (gövdeler birlikte çalışır); sonuçları Ekle ile bir listede toplayın ya da gövdede 'değişken ad := …' ile yerel bir değişken tanımlayın
+'aynı anda en çok' en az 1 olmalı (0 verildi)

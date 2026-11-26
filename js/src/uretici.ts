@@ -400,10 +400,75 @@ export class Uretici {
   }
 
   hata(m: string, satir: number | null = null): never { throw new YontemHatasi(m, satir, this.dosya); }
+
+  // ============================================================ aynı anda
+  /** Program 'aynı anda' içeriyor: fonksiyonların üreteç sürümleri de derlenir (bkz. çalışma zamanı, cekirdek.ts) */
+  es = false;
+  /** Derleme sırasında bir 'aynı anda' görüldü (es kapalıysa program es açık olarak yeniden derlenir) */
+  esGerekli = false;
+  /** Şu an üreteç kodu üretiliyor: açık çağrılar 'yield*' ile bekleyebilir */
+  gen = false;
+  /** f(üreteç kipi) ile verilen kodu üretir; önceki kip ve hızlı fonksiyon kodu geri yüklenir */
+  kipte<T>(gen: boolean, f: () => T): T {
+    const eski = this.gen, eskiH = this.hizliKod;
+    this.gen = gen;
+    try { return f(); } finally { this.gen = eski; this.hizliKod = eskiH; }
+  }
+  /** Bir fonksiyonun üreteç sürümü (es kapalıysa null) */
+  fonkGen(n: Dugum, kapanis: Kapsam, tur: string, sinif: SinifBilgi | null, metodAd: string | null, ham: string): string | null {
+    if (!this.es) return null;
+    return this.kipte(true, () => this.fonkKod(n, kapanis, tur, sinif, metodAd, ham, null));
+  }
+  /** Bekleyebilen çağrı: üreteç kipinde 'yield*' ile sarılır */
+  bk(gen: string, normal: string): string { return this.gen ? `(yield* ${gen})` : normal; }
+  static ES_KIR = "'kır' 'aynı anda' gövdesinde kullanılamaz (gövdeler birlikte çalışır); sonraki elemana geçmek için 'devam' kullanın";
+  static ES_DON = "'dön' 'aynı anda' gövdesinde kullanılamaz; gövdeyi bir fonksiyona taşıyın";
+  static esAtama(ham: string) {
+    return `'aynı anda' gövdesinde dışarıdaki '${ham}' değişkenine atama yapılamaz (gövdeler birlikte çalışır); sonuçları Ekle ile bir listede toplayın ya da gövdede 'değişken ${ham} := …' ile yerel bir değişken tanımlayın`;
+  }
+  /** k'dan hedef kapsama çıkarken bir 'aynı anda' gövdesinin sınırı geçiliyor mu */
+  esSiniriGeciliyor(k: Kapsam, hedef: Kapsam): boolean {
+    for (let c: Kapsam | null = k; c && c !== hedef; c = c.ust) if (c.fk.tur === 'eszamanli' && (!c.ust || c.ust.fk !== c.fk)) return true;
+    return false;
+  }
+  ayniAnda(d: Dugum, k: Kapsam): string {
+    this.esGerekli = true;
+    if (!this.es && !this.sec.ayikla) return '';   // program, üreteç sürümleriyle yeniden derlenecek
+    const kaynak = this.ifade(d.kaynak, k);
+    const sinir = d.sinir ? this.ifade(d.sinir, k) : 'null';
+    const fk: FonkBaglam = { ...k.fk, tur: 'eszamanli', hoist: [], dongu: 0 };
+    const kb = new Kapsam(k, fk);
+    const o = this.yeniAd('o');
+    const atamalar: string[] = [];
+    const dongu = (ad: string, v: string) => {
+      const dis = this.bul(k, ad);
+      const tip = dis && dis.tur === 'sembol' && dis.s.tur === 'degisken' ? dis.s.tip ?? null : null;
+      const js = this.yeniAd('v_' + ad);
+      fk.hoist.push(js);
+      kb.s.set(ad, { tur: 'degisken', js, ham: ad, tip });
+      atamalar.push(this.ata({ tur: 'ad', ad, ham: ad, satir: d.satir }, v, kb));
+    };
+    if (d.ad2 !== null) { dongu(d.ad, `${o}[0]`); dongu(d.ad2, `${o}[1]`); }
+    else dongu(d.ad, o);
+    // hata ayıklayıcıda gövdeler beklemeden, sırayla çalışır
+    const govde = this.kipte(!this.sec.ayikla, () => this.deyim(d.govde, kb));
+    return `$.ayniAnda(${kaynak}, ${d.ad2 !== null}, ${sinir}, function* (${o}) {\n${this.hoistKod(fk)}\n${atamalar.join(' ')}\n${govde}\n}, this);`;
+  }
+
   yeniAd(on: string) { return `$${on}${++this.sayac}`; }
 
   // ============================================================ giriş
   programDerle(kaynak: string, dosya: string): string {
+    const kod = this.programDerle0(kaynak, dosya);
+    if (this.es || !this.esGerekli || this.sec.ayikla) return kod;
+    const u = new Uretici(this.sec);
+    u.es = true;
+    const kod2 = u.programDerle0(kaynak, dosya);
+    this.uyarilar = u.uyarilar;
+    this.tanilar = u.tanilar;
+    return kod2;
+  }
+  programDerle0(kaynak: string, dosya: string): string {
     this.dosya = dosya;
     this.kati = this.katiMi(kaynak, dosya);
     const katiBu = this.kati;
@@ -724,9 +789,10 @@ export class Uretici {
         if (b.govde === null) return '';
         const s = k.s.get(b.ad);
         const hizli = s.fonk && s.fonk.hizli ? s.js + '$h' : null;
-        const f = this.fonkKod(b, k, b.cesit, null, null, b.ham, hizli);
-        const hk = hizli ? this.hizliKod : '';
-        return tanimla(b.ad, b.ham, `${hk} let ${s.js} = $.fn(${f}, ${J(b.ham)}, ${b.params.length}, 0, ${J(this.refler(b.params))}, ${b.params.length === 0});`);
+        const [f, hk] = this.kipte(false, () => [this.fonkKod(b, k, b.cesit, null, null, b.ham, hizli), hizli ? this.hizliKod : ''] as const);
+        const g = this.fonkGen(b, k, b.cesit, null, null, b.ham);
+        const fn = `$.fn(${f}, ${J(b.ham)}, ${b.params.length}, 0, ${J(this.refler(b.params))}, ${b.params.length === 0})`;
+        return tanimla(b.ad, b.ham, `${hk} let ${s.js} = ${g ? `$.gen(${fn}, ${g})` : fn};`);
       }
     }
     return '';
@@ -761,8 +827,9 @@ export class Uretici {
   }
 
   metodKod(sinifJs: string, bilgi: SinifBilgi, m: Dugum): string {
-    const f = this.fonkKod(m, bilgi.kapsam, m.cesit, bilgi, m.ad, m.ham);
-    return `$.metod(${sinifJs}, 'm_${m.ad}', ${f}, ${J(m.ham)}, ${m.params.length}, ${J(this.refler(m.params))}, ${m.cesit === 'kurucu'});`;
+    const f = this.kipte(false, () => this.fonkKod(m, bilgi.kapsam, m.cesit, bilgi, m.ad, m.ham));
+    const g = this.fonkGen(m, bilgi.kapsam, m.cesit, bilgi, m.ad, m.ham);
+    return `$.metod(${sinifJs}, 'm_${m.ad}', ${f}, ${J(m.ham)}, ${m.params.length}, ${J(this.refler(m.params))}, ${m.cesit === 'kurucu'});` + (g ? ` $.metodG(${sinifJs}, 'm_${m.ad}', ${g});` : '');
   }
 
   /** Fonksiyon/prosedür/metod/lambda gövdesi → JS fonksiyon ifadesi */
@@ -823,13 +890,18 @@ export class Uretici {
     const hoist = this.hoistKod(fk);
     if (fk.refli) {
       govde.push(hoist);
-      govde.push(`const $s = (() => {\n${this.sec.ayikla ? '$f.g = ($k) => eval($k);' : ''}\n${ic.join('\n')}\n})();`);
+      govde.push(this.gen ? `const $s = yield* (function* () {\n${ic.join('\n')}\n}).call(this);`
+        : `const $s = (() => {\n${this.sec.ayikla ? '$f.g = ($k) => eval($k);' : ''}\n${ic.join('\n')}\n})();`);
       govde.push(geriYaz.join(' '));
       govde.push(`$.L = ${Lv}; return $s;`);
     } else {
       govde.push(hoist);
       // 'return X' → L geri yüklenerek dönülür
       govde.push(ic.join('\n'));
+    }
+    if (this.gen) {
+      // üreteç sürümü: metodlar 'this' ile çağrılır; ötekiler sözcüksel 'this'i korumak için ok fonksiyonuyla sarılır
+      return sinif ? `function* (...${A}) {\n${govde.join('\n')}\n}` : `(...${A}) => (function* () {\n${govde.join('\n')}\n}).call(this)`;
     }
     const ok = sinif ? `function (...${A})` : `(...${A}) =>`;
     if (hizliAd && !fk.refli) {
@@ -923,13 +995,14 @@ export class Uretici {
         const e = d.ifade;
         if (e.tur === 'ad') {
           const r = this.bul(k, e.ad);
-          if (r && r.tur === 'sembol' && r.s.tur === 'fonk') return `${this.fonkJs(r.s, 0)}();`;
-          if (r && r.tur === 'metod') return `this.m_${e.ad}();`;
-          if (r && r.tur === 'yerlesik' && typeof r.v === 'function') return `Y.${e.ad}();`;
-          return `$.cagirDeyim(${this.cagrilan(e, k)});`;
+          if (r && r.tur === 'sembol' && r.s.tur === 'fonk') return this.bk(`$.gC(${r.s.js}, [])`, `${this.fonkJs(r.s, 0)}()`) + ';';
+          if (r && r.tur === 'metod') return this.bk(`$.gM(this, 'm_${e.ad}', [])`, `this.m_${e.ad}()`) + ';';
+          if (r && r.tur === 'yerlesik' && typeof r.v === 'function') return this.bk(`$.gC(Y.${e.ad}, [])`, `Y.${e.ad}()`) + ';';
+          { const f = this.cagrilan(e, k); return this.bk(`$.gCagirDeyim(${f})`, `$.cagirDeyim(${f})`) + ';'; }
         }
         if (e.tur === 'alan' && this.konumSilMi(e, k)) return this.konumSil(e, k) + ';';
-        if (e.tur === 'alan' || e.tur === 'miras') return `$.cagirDeyim(${this.cagrilan(e, k)});`;
+        if (e.tur === 'miras') return `$.cagirDeyim(${this.cagrilan(e, k)});`;
+        if (e.tur === 'alan') { const f = this.cagrilan(e, k); return this.bk(`$.gCagirDeyim(${f})`, `$.cagirDeyim(${f})`) + ';'; }
         return `${this.ifade(e, k)};`;
       }
       case 'eger': {
@@ -1012,10 +1085,12 @@ export class Uretici {
       }
       case 'firlat': return `throw $.firlat(${this.ifade(d.ifade, k)});`;
       case 'don':
+        if (fk.tur === 'eszamanli') return `{ ${d.ifade ? this.ifade(d.ifade, k) + ';' : ''} $.hata(${J(Uretici.ES_DON)}); }`;
         if (this.kati && d.ifade && fk.sonuc) this.uyDenetle(fk.sonucTip, this.tipK(d.ifade, k), "'sonuç'");
         return this.donKod(fk, d.ifade ? this.ifade(d.ifade, k) : null, d.ifade ? this.ifadeTipi(d.ifade, k) : null);
-      case 'kir': return fk.dongu ? 'break;' : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
-      case 'devam': return fk.dongu ? 'continue;' : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
+      case 'kir': return fk.dongu ? 'break;' : fk.tur === 'eszamanli' ? `$.hata(${J(Uretici.ES_KIR)});` : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
+      case 'devam': return fk.dongu ? 'continue;' : fk.tur === 'eszamanli' ? 'return;' : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
+      case 'ayni_anda': return this.ayniAnda(d, k);
       case 'yerel_degisken': {
         let tip = d.tip ? this.tipCoz(d.tip, k) : null;
         if (this.kati && !d.tip) {
@@ -1054,6 +1129,10 @@ export class Uretici {
       if (r && r.tur === 'sembol') {
         const s = r.s;
         if (s.tur === 'sabit') return `$.hata(${J(`Sabite atama yapılamaz: '${h.ad}'`)});`;
+        if ((s.tur === 'degisken' || s.tur === 'fonk') && this.esSiniriGeciliyor(k, r.kapsam)) {
+          this.uyar(Uretici.esAtama(h.ham ?? h.ad), h.satir ?? this.deyimSatiri);
+          return `$.hata(${J(Uretici.esAtama(h.ham ?? h.ad))});`;
+        }
         if (s.tur === 'tip') return '';
         if (s.tur === 'fonk' && s.fonk.hizli) return `${s.js} = ${v}; ${s.js}$h = (...$a) => ${s.js}(...$a);`;
         return `${s.js} = ${this.uyT(s.tip ?? null, v, vTip, J(h.ham ?? h.ad), h.ham ?? h.ad)};`;
@@ -1317,13 +1396,16 @@ export class Uretici {
           if (n.op === 'veya') return `(${a} || ${b})`;
           if (n.op === 'yada') return `(${a} !== ${b})`;
         }
+        if (this.gen) return `(yield* $.gMantik(${J(n.op)}, ${a}, () => (function* () { return ${b}; }).call(this)))`;
         return `$.${n.op}(${a}, () => ${b})`;
       }
       case 'kendi': return k.fk.sinif || this.metodIcinde(k) ? 'this' : `$.hata("'kendi' yalnızca metodlar içinde kullanılabilir")`;
       case 'miras': return this.miras(n, k, 'deger', []);
       case 'lambda': {
-        const f = this.fonkKod(n, k, 'lambda', null, null, '<lambda>');
-        return `$.fn(${f}, '<lambda>', ${n.params.length}, 0, ${J(this.refler(n.params))}, false)`;
+        const f = this.kipte(false, () => this.fonkKod(n, k, 'lambda', null, null, '<lambda>'));
+        const g = this.fonkGen(n, k, 'lambda', null, null, '<lambda>');
+        const fn = `$.fn(${f}, '<lambda>', ${n.params.length}, 0, ${J(this.refler(n.params))}, false)`;
+        return g ? `$.gen(${fn}, ${g})` : fn;
       }
       case 'liste': return `[${n.elemanlar.map((e: Dugum) => this.ifade(e, k)).join(', ')}]`;
       case 'sozluk': return `$.sozluk([${n.ciftler.map(([a, b]: Dugum[]) => `[${this.ifade(a, k)}, ${this.ifade(b, k)}]`).join(', ')}])`;
@@ -1333,9 +1415,10 @@ export class Uretici {
         const sag = n.sag;
         if (sag.tur === 'cagri') {
           const f = this.cagrilan(sag.cagrilan, k);
-          return `$.cagir(${f}, [${[v, ...sag.argumanlar.map((a: Dugum) => this.ifade(a, k))].join(', ')}])`;
+          const a = `${f}, [${[v, ...sag.argumanlar.map((a: Dugum) => this.ifade(a, k))].join(', ')}]`;
+          return this.bk(`$.gCagir(${a})`, `$.cagir(${a})`);
         }
-        return `$.cagir(${this.cagrilan(sag, k)}, [${v}])`;
+        { const a = `${this.cagrilan(sag, k)}, [${v}]`; return this.bk(`$.gCagir(${a})`, `$.cagir(${a})`); }
       }
       case 'bicim': {
         const args = [this.ifade(n.ifade, k), this.ifade(n.genislik, k)];
@@ -1502,22 +1585,28 @@ export class Uretici {
     }
     if (c.tur === 'ad') {
       const r = this.bul(k, c.ad);
-      if (r && r.tur === 'sembol' && r.s.tur === 'fonk') { this.argDenetle(r.s, args, k, n.satir); return `${this.fonkJs(r.s, args.length)}(${this.argumanlar(args, r.s.fonk.refs, k)})`; }
-      if (r && r.tur === 'metod') return `this.m_${c.ad}(${this.argumanlar(args, r.m.refs, k)})`;
+      if (r && r.tur === 'sembol' && r.s.tur === 'fonk') {
+        this.argDenetle(r.s, args, k, n.satir);
+        const a = this.argumanlar(args, r.s.fonk.refs, k);
+        return this.bk(`$.gC(${r.s.js}, [${a}])`, `${this.fonkJs(r.s, args.length)}(${a})`);
+      }
+      if (r && r.tur === 'metod') { const a = this.argumanlar(args, r.m.refs, k); return this.bk(`$.gM(this, 'm_${c.ad}', [${a}])`, `this.m_${c.ad}(${a})`); }
       if (r && r.tur === 'yerlesik' && typeof r.v === 'function') this.yerelArgDenetle(r.v, c.ham ?? c.ad, args, n.satir);
-      if (r && r.tur === 'yerlesik' && typeof r.v === 'function') return `Y.${c.ad}(${this.argumanlar(args, r.v.$ref || [], k)})`;
+      if (r && r.tur === 'yerlesik' && typeof r.v === 'function') { const a = this.argumanlar(args, r.v.$ref || [], k); return this.bk(`$.gC(Y.${c.ad}, [${a}])`, `Y.${c.ad}(${a})`); }
       if (r && r.tur === 'sembol' && r.s.tur === 'yerel' && typeof r.s.deger === 'function') this.yerelArgDenetle(r.s.deger, c.ham ?? c.ad, args, n.satir);
-      if (r && r.tur === 'sembol' && r.s.tur === 'yerel' && typeof r.s.deger === 'function')
-        return `${r.s.js}(${this.argumanlar(args, r.s.deger.$ref || [], k)})`;
+      if (r && r.tur === 'sembol' && r.s.tur === 'yerel' && typeof r.s.deger === 'function') {
+        const a = this.argumanlar(args, r.s.deger.$ref || [], k);
+        return this.bk(`$.gC(${r.s.js}, [${a}])`, `${r.s.js}(${a})`);
+      }
       const f = this.cagrilan(c, k);
-      if (this.refAdlari.has(c.ad) && args.some(a => this.atanabilir(a))) return `$.cagirR(${f}, [${this.dinamikArgumanlar(args, k)}])`;
+      if (this.refAdlari.has(c.ad) && args.some(a => this.atanabilir(a))) { const a = this.dinamikArgumanlar(args, k); return this.bk(`$.gCagirR(${f}, [${a}])`, `$.cagirR(${f}, [${a}])`); }
       if (r && r.tur === 'sembol' && (r.s.tur === 'degisken' || r.s.tur === 'sabit')) {
         // değişken çağrılıyor: çağrılabilir bir adı gölgeliyorsa hata iletisi nedenini söyler
         const g = r.s.golge ?? this.golgeTarifi(r.kapsam, c.ad, false);
         const [ne, nee] = r.s.tur === 'sabit' ? ['sabit', 'sabite'] : ['değişken', 'değişkene'];
-        if (g) return `$.cagirG(${f}, [${this.argumanlar(args, [], k)}], ${J(`'${c.ham || c.ad}' burada bir ${ne}; aynı adlı ${g} gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; ${nee} başka bir ad verin)`)})`;
+        if (g) { const a = `${f}, [${this.argumanlar(args, [], k)}], ${J(`'${c.ham || c.ad}' burada bir ${ne}; aynı adlı ${g} gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; ${nee} başka bir ad verin)`)}`; return this.bk(`$.gCagirG(${a})`, `$.cagirG(${a})`); }
       }
-      return `$.cagir(${f}, [${this.argumanlar(args, [], k)}])`;
+      { const a = `${f}, [${this.argumanlar(args, [], k)}]`; return this.bk(`$.gCagir(${a})`, `$.cagir(${a})`); }
     }
     if (c.tur === 'alan') {
       // Birim üyesi derleme anında biliniyorsa doğrudan çağır
@@ -1526,18 +1615,21 @@ export class Uretici {
         if (r && r.tur === 'sembol' && r.s.tur === 'birim' && r.s.birimSembolleri) {
           const s = r.s.birimSembolleri.get(c.ad);
           if (s && s.tur === 'fonk') this.argDenetle(s, args, k, n.satir);
-          if (s && s.tur === 'fonk') return `${r.s.js}.v_${c.ad}${s.fonk.hizli && s.fonk.np === args.length ? '$h' : ''}(${this.argumanlar(args, s.fonk.refs, k)})`;
+          if (s && s.tur === 'fonk') { const a = this.argumanlar(args, s.fonk.refs, k); return this.bk(`$.gC(${r.s.js}.v_${c.ad}, [${a}])`, `${r.s.js}.v_${c.ad}${s.fonk.hizli && s.fonk.np === args.length ? '$h' : ''}(${a})`); }
           if (s && s.tur === 'yerel' && typeof s.deger === 'function') this.yerelArgDenetle(s.deger, c.ham ?? c.ad, args, n.satir);
-          if (s && s.tur === 'yerel' && typeof s.deger === 'function') return `${r.s.js}.v_${c.ad}(${this.argumanlar(args, s.deger.$ref || [], k)})`;
+          if (s && s.tur === 'yerel' && typeof s.deger === 'function') { const a = this.argumanlar(args, s.deger.$ref || [], k); return this.bk(`$.gC(${r.s.js}.v_${c.ad}, [${a}])`, `${r.s.js}.v_${c.ad}(${a})`); }
         }
       }
       const o = this.ifade(c.nesne, k);
-      if (this.refAdlari.has(c.ad) && args.some(a => this.atanabilir(a)))
-        return `$.cUR(${o}, ${J(c.ad)}, ${J(c.ham)}, [${this.dinamikArgumanlar(args, k)}])`;
-      return `$.cU(${o}, ${J(c.ad)}, ${J(c.ham)}, [${this.argumanlar(args, [], k)}])`;
+      if (this.refAdlari.has(c.ad) && args.some(a => this.atanabilir(a))) {
+        const a = `${o}, ${J(c.ad)}, ${J(c.ham)}, [${this.dinamikArgumanlar(args, k)}]`;
+        return this.bk(`$.gCUR(${a})`, `$.cUR(${a})`);
+      }
+      const a = `${o}, ${J(c.ad)}, ${J(c.ham)}, [${this.argumanlar(args, [], k)}]`;
+      return this.bk(`$.gCU(${a})`, `$.cU(${a})`);
     }
     if (c.tur === 'miras') return this.miras(c, k, 'cagri', args);
-    return `$.cagir(${this.ifade(c, k)}, [${this.argumanlar(args, [], k)}])`;
+    { const a = `${this.ifade(c, k)}, [${this.argumanlar(args, [], k)}]`; return this.bk(`$.gCagir(${a})`, `$.cagir(${a})`); }
   }
 
   /** miras: kip = deger (oto) | cagrilan | cagri */
@@ -1555,7 +1647,7 @@ export class Uretici {
     }
     const m = `${s.ebeveynJs}.prototype.m_${ad}`;
     if (n.ad !== null) {
-      if (kip === 'cagri') return `${m}.call(this, ${argKod})`;
+      if (kip === 'cagri') return this.bk(`$.gUygula(${m}, this, [${argKod}])`, `${m}.call(this, ${argKod})`);
       if (kip === 'cagrilan') return `$.baglaF(this, ${m})`;
       return `$.otoP(this, ${m})`;
     }

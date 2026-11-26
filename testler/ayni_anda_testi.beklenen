@@ -1,0 +1,10 @@
+[1, 4, 9, 16]
+['0a', '1b', '2c']
+bir=1
+iki=2
+7
+dışarıda
+5 ad
+'aynı anda' gövdesinde dışarıdaki 'toplam' değişkenine atama yapılamaz (gövdeler birlikte çalışır); sonuçları Ekle ile bir listede toplayın ya da gövdede 'değişken toplam := …' ile yerel bir değişken tanımlayın
+tamsayı üzerinde yinelenemez
+'aynı anda en çok' tamsayı bekler, metin verildi

@@ -20,6 +20,8 @@ export interface Konak {
   cihaz?: any;
   /** Ağ birimi için eşzamanlı HTTP isteği; verilmezse ağ erişimi yoktur */
   http?(istek: any): any;
+  /** 'aynı anda' döngüsü için birden çok HTTP isteğini birlikte (paralel) gönderir; verilmezse sırayla http kullanılır */
+  httpToplu?(istekler: any[]): any[];
   /** Veritabanı birimi için bağlantı işlemleri; verilmezse veritabanı yoktur */
   veritabani?(istek: any): any;
   /** Sunucu birimi: HTTP isteklerini dinler; verilmezse sunucu yoktur */
@@ -482,16 +484,19 @@ $.cagirDeyim = (v: any) => {
 
 /** o.metod bağlı fonksiyonu */
 export function bagla(o: any, mk: string): any {
-  const m = o[mk];
-  const g = fn((...a: any[]) => m.apply(o, a), m.$ad, m.$n, m.$min, m.$ref, m.$oto);
-  (g as any).$bagli = { sinif: o.constructor.$ad };
-  return g;
+  return $.baglaF(o, o[mk]);
 }
 $.bagla = bagla;
 $.baglaF = (o: any, m: any) => {
   const g = fn((...a: any[]) => m.apply(o, a), m.$ad, m.$n, m.$min, m.$ref, m.$oto);
   (g as any).$bagli = { sinif: o.constructor.$ad };
+  if (m.$g) (g as any).$g = (...a: any[]) => m.$g.apply(o, a);   // 'aynı anda': bağlı metod da bekleyebilir
   return g;
+};
+/** miras.Metod(…): üreteç kipinde ebeveyn metodunun üreteç sürümü kullanılır */
+$.gUygula = function* (m: any, o: any, args: any[]): any {
+  if (m.$g) return yield* m.$g.apply(o, args);
+  return m.apply(o, args);
 };
 $.otoP = (o: any, m: any) => m.$oto ? m.call(o) : $.baglaF(o, m);
 
@@ -634,6 +639,102 @@ $.cU = (o: any, ad: string, ham: string, args: any[]) => {
     hata(`'${(o.constructor as any).$ad}' nesnesinde '${ham}' üyesi yok`);
   }
   return cagir(al(o, ad, ham, false), args);
+};
+
+// ================================================================ aynı anda (paralel döngü)
+// Program 'aynı anda' içeriyorsa her kullanıcı fonksiyonunun ve metodunun bir de üreteç sürümü ($g) derlenir.
+// Döngü gövdeleri üreteçtir; açık çağrılar (f(x), n.m(x), çağrı deyimleri) üreteç sürümlerinden geçer ve
+// bir ağ isteğine varınca gövde isteği verip bekler. Zamanlayıcı turlarla ilerler: her turda bekleyen gövdeler
+// sırayla bir sonraki isteğe ya da sona kadar yürür, ardından o turun istekleri birlikte gönderilir. Sıra
+// zamanlamaya değil yalnızca programa bağlıdır; Python yorumlayıcısı (yontem_dil/eszamanli.py) aynı turları izler.
+// Otomatik çağrılar, kurucular, 'miras' ve yerleşiklerin çağırdığı fonksiyonlar beklemeden (sırayla) çalışır.
+export const ES_VARSAYILAN_SINIR = 16;
+$.gen = (f: any, g: any) => { f.$g = g; return f; };
+$.metodG = (C: any, mk: string, g: any) => { C.prototype[mk].$g = g; };
+function* gC(f: any, args: any[]): any {
+  if (f && f.$g) return yield* f.$g(...args);
+  return f(...args);
+}
+$.gC = gC;
+$.gM = function* (o: any, mk: string, args: any[]): any {
+  const m = o[mk];
+  if (m && m.$g) return yield* m.$g.apply(o, args);
+  return m.apply(o, args);
+};
+function* gCagir(f: any, args: any[]): any {
+  if (typeof f !== 'function') hata(`${turAdi(f)} çağrılamaz`);
+  if (f.$sinif) return yeni(f, varsayilanKurucu(f), args);
+  return yield* gC(f, args);
+}
+$.gCagir = gCagir;
+$.gCagirR = (f: any, args: any[]) => gCagir(f, refCoz(f, args));
+$.gCagirG = function* (f: any, args: any[], neden: string): any {
+  if (typeof f !== 'function') hata(`${turAdi(f)} çağrılamaz: ${neden}`);
+  return yield* gCagir(f, args);
+};
+$.gCagirDeyim = function* (v: any): any {
+  if (typeof v === 'function') return yield* gCagir(v, []);
+  hata('Bu ifade deyim olarak kullanılamaz (çağrılabilir değil)');
+};
+$.gCUR = function* (o: any, ad: string, ham: string, args: any[]): any {
+  if (o instanceof YNesne) {
+    const fk = 'f_' + ad;
+    if (!(fk in o)) {
+      const m = (o as any)['m_' + ad];
+      if (typeof m === 'function') return yield* $.gM(o, 'm_' + ad, refCoz(m, args));
+    }
+  }
+  const f = o instanceof YNesne && ('f_' + ad) in o ? (o as any)['f_' + ad] : al(o, ad, ham, false);
+  return yield* gCagir(f, refCoz(f, args));
+};
+$.gCU = function* (o: any, ad: string, ham: string, args: any[]): any {
+  if (o instanceof YNesne) {
+    const fk = 'f_' + ad;
+    if (fk in o) return yield* gCagir((o as any)[fk], args);
+    const m = (o as any)['m_' + ad];
+    if (typeof m === 'function') return yield* $.gM(o, 'm_' + ad, args);
+    hata(`'${(o.constructor as any).$ad}' nesnesinde '${ham}' üyesi yok`);
+  }
+  return yield* gCagir(al(o, ad, ham, false), args);
+};
+/** ve/veya/yada: ikinci işlenen yalnızca gerektiğinde (üreteç olarak) değerlendirilir */
+$.gMantik = function* (op: string, a: any, bg: () => Generator): any {
+  if (typeof a === 'boolean' && ((op === 've' && !a) || (op === 'veya' && a))) return a;
+  const b = yield* bg();
+  return mantik(op, a, () => b);
+};
+function topluHttp(istekler: any[]): any[] {
+  const k: Konak | null = $.konak;
+  if (k && k.httpToplu && istekler.length > 1) return k.httpToplu(istekler);
+  return istekler.map(i => k!.http!(i));
+}
+$.ayniAnda = (kaynak: any, cift: boolean, sinir: any, govde: (o: any) => Generator, bu: any) => {
+  const ogeler: any[] = cift ? $.yineleCift(kaynak) : yinele(kaynak);
+  let n = ES_VARSAYILAN_SINIR;
+  if (sinir !== null) {
+    if (typeof sinir !== 'bigint') hata(`'aynı anda en çok' tamsayı bekler, ${turAdi(sinir)} verildi`);
+    if (sinir < 1n) hata(`'aynı anda en çok' en az 1 olmalı (${sinir} verildi)`);
+    n = sinir > 100000n ? 100000 : Number(sinir);
+  }
+  type Govde = { g: Generator; yanit: any; istek: any; L: number; bitti: boolean };
+  let aktif: Govde[] = [];
+  let sira = 0;
+  for (;;) {
+    while (aktif.length < n && sira < ogeler.length) aktif.push({ g: govde.call(bu, ogeler[sira++]), yanit: undefined, istek: null, L: $.L, bitti: false });
+    if (!aktif.length) break;
+    for (const b of aktif) {
+      $.L = b.L;
+      const r = b.g.next(b.yanit);
+      b.L = $.L;
+      b.yanit = undefined;
+      if (r.done) b.bitti = true; else b.istek = r.value;
+    }
+    aktif = aktif.filter(b => !b.bitti);
+    if (aktif.length) {
+      const yanitlar = topluHttp(aktif.map(b => b.istek));
+      aktif.forEach((b, i) => { b.yanit = yanitlar[i]; b.istek = null; });
+    }
+  }
 };
 
 // ================================================================ yineleme ve döngüler

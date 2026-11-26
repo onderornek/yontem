@@ -444,6 +444,8 @@ class Cozumleyici:
     def _deyim(self):
         tok = self.t
         s = tok.satir
+        if self.ayni_anda_mi():
+            return self.ayni_anda_coz()
         if tok.tip == 'AS':
             k = tok.deger
             if k == 'basla':
@@ -495,6 +497,54 @@ class Cozumleyici:
                 g.tur = 'yerel_degisken'
                 return g
         return self.deyim_ifadeden(self.ifade(), s)
+
+    def ayni_anda_mi(self):
+        """'aynı anda' bağlamsal bir yazımdır: deyim başında 'aynı' ve ardından 'anda' gelirse paralel döngü başlar."""
+        n = self.bak()
+        return self.ad_mi('ayni') and n.tip == 'AD' and n.deger == 'anda'
+
+    def ayni_anda_siniri(self):
+        """Sınır, kaynaktan ayrılabilsin diye tek bir sayı, ad ya da parantezli ifadedir: en çok 8, en çok n, en çok (n * 2)"""
+        tok = self.t
+        s = tok.satir
+        if tok.tip == 'SAYI':
+            self.ilerle()
+            return N('sabitdeger', s, deger=tok.deger)
+        if tok.tip == 'AD':
+            self.ilerle()
+            return N('ad', s, ad=tok.deger, ham=tok.ham)
+        if self.op_mu('('):
+            self.ilerle()
+            e = self.ifade()
+            self.bekle_op(')')
+            return e
+        self.hata("'en çok' ardından bir sayı, bir ad ya da parantez içinde bir ifade bekleniyordu "
+                  "(ör. aynı anda en çok 8 liste içindeki …)")
+
+    def ayni_anda_coz(self):
+        """aynı anda [en çok N] liste içindeki her eleman için …"""
+        s = self.t.satir
+        self.ilerle()
+        self.ilerle()
+        sinir = None
+        n = self.bak()
+        if self.ad_mi('en') and n.tip == 'AD' and n.deger == 'cok':
+            self.ilerle()
+            self.ilerle()
+            sinir = self.ayni_anda_siniri()
+        kaynak = self.ifade()
+        if not self.as_mi('icindeki'):
+            self.hata("'aynı anda' şöyle yazılır: aynı anda liste içindeki her eleman için "
+                      "(eşzamanlılık sınırı için: aynı anda en çok 8 liste içindeki …)")
+        self.ilerle()
+        self.bekle_as('her')
+        v = self.bekle_ad()
+        v2 = None
+        if self.op_mu(','):
+            self.ilerle()
+            v2 = self.bekle_ad().deger
+        self.bekle_as('icin')
+        return N('ayni_anda', s, ad=v.deger, ad2=v2, kaynak=kaynak, sinir=sinir, govde=self.deyim_veya_bos())
 
     def deyim_ifadeden(self, hedef, s):
         """Başı bir ifade olan deyimler: doğal döngüler, değerine göre, atama, çağrı."""

@@ -331,26 +331,30 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <td><code>n kez tekrarla</code></td>
 </tr>
 <tr class="odd">
+<td><code>aynı anda</code>, <code>en çok</code></td>
+<td>paralel döngü başlığı (deyim başında)</td>
+</tr>
+<tr class="even">
 <td><code>olana dek</code></td>
 <td><code>tekrarla</code> döngüsünün sonu</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>değerine göre</code></td>
 <td>çok seçenekli karar</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>listesindeki</code>, <code>dizisindeki</code>, <code>elemanı</code></td>
 <td>eleman silme cümlesi</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code></td>
 <td>tip ekleri</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code></td>
 <td>alt program direktifleri</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>özel</code>, <code>genel</code>, <code>korumalı</code>, <code>yayınlanmış</code></td>
 <td>sınıf içinde görünürlük bölümleri</td>
 </tr>
@@ -974,6 +978,28 @@ etiket:        ifade ['..' ifade]</code></pre></div>
 <p>Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adlar <span class="ya">içindeki</span> <span class="ya">her</span> ad <span class="ya">için</span> yaz(ad, <span class="ys">1</span>)
 yaşlar <span class="ya">içindeki</span> <span class="ya">her</span> ad, yaş <span class="ya">için</span> yaz(ad + <span class="ym">': '</span> + yaş, <span class="ys">1</span>)</code></pre></div>
+<h3 id="paralel-döngü">Paralel döngü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>paralel_dongu: 'aynı' 'anda' ['en' 'çok' sinir] ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+sinir:         SAYI | AD | '(' ifade ')'</code></pre></div>
+<p>Koleksiyon döngüsü gibi dolaşır, ama gövdeler birlikte çalışır: bir gövde ağ isteği yaptığında (<code>Ağ</code> biriminin <code>HttpAl</code>, <code>HttpGönder</code>, <code>Httpİstek</code> üyeleri, doğrudan ya da çağırdığı fonksiyonlar üzerinden) yanıtı beklerken öteki gövdeler sürer ve bekleyen istekler birlikte gönderilir. Döngü, bütün gövdeler bitince biter. Yapay zekâ değerlendirme setleri gibi çok sayıda model çağrısında süreyi istek sayısına değil en yavaş tura bağlar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sonuçlar := []
+aynı anda vakalar <span class="ya">içindeki</span> <span class="ya">her</span> vaka <span class="ya">için</span>
+  Ekle(sonuçlar, Sor([Mesaj(<span class="ym">'user'</span>, vaka[<span class="ym">'girdi'</span>])]))
+
+aynı anda en çok <span class="ys">4</span> adresler <span class="ya">içindeki</span> <span class="ya">her</span> adres <span class="ya">için</span>
+<span class="ya">başla</span>
+  <span class="ya">değişken</span> y := HttpAl(adres)
+  yaz(adres + <span class="ym">': '</span> + y[<span class="ym">'durum'</span>], <span class="ys">1</span>)
+<span class="ya">bitir</span></code></pre></div>
+<ul>
+<li><code>en çok N</code> aynı anda süren gövde sayısını sınırlar (varsayılan 16). Sınır tamsayı olmalıdır; bir sayı, bir ad ya da parantez içinde bir ifade yazılır.</li>
+<li>Gövdeler turlarla ilerler: her turda bekleyen gövdeler sırayla bir sonraki ağ isteğine ya da sona kadar yürür, ardından o turun istekleri birlikte gönderilir. Sıra zamanlamaya bağlı değildir; program her çalıştırıldığında aynı çıktıyı verir ve iki uygulama aynı sırayı izler.</li>
+<li>Gövde yalnızca açık çağrılar (<code>f(x)</code>, <code>nesne.Metod(x)</code>, çağrı deyimleri) üzerinden vardığı istekte bekler. Yerleşik bir işlevin çağırdığı fonksiyonlar (<code>Eşle</code>, <code>Süz</code>, <code>Sırala</code>…), parantezsiz otomatik çağrılar, kurucular ve <code>miras</code> istekleri beklemeden, sırayla yapar.</li>
+<li>Döngü değişkenleri ve gövdede <code>değişken</code> ile tanımlananlar her gövdeye özeldir. Gövde, dışarıdaki bir değişkene atama yapamaz (çalışma hatası); sonuçlar <code>Ekle</code> gibi işlemlerle ortak bir listede toplanır. Nesnelerin alanlarına ve listelerin elemanlarına atama yapılabilir.</li>
+<li><code>devam</code> gövdeyi bitirip sonraki elemana geçer. <code>kır</code> ve <code>dön</code> gövdede kullanılamaz.</li>
+<li>Bir gövde hata verirse henüz bitmemiş gövdeler bırakılır (<code>sonunda</code> blokları çalışmaz) ve hata döngüden yayılır.</li>
+<li>Hata ayıklayıcıda gövdeler beklemeden, sırayla çalışır. Gömülü arka uçta yoktur. Tarayıcıdaki oyun alanında istekler sırayla gönderilir; sonuç aynıdır.</li>
+</ul>
 <h3 id="koşullu-döngüler">Koşullu döngüler</h3>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>iken_dongusu:    ifade 'iken' govde
 tekrarla_deyimi: 'tekrarla' deyimler ifade 'olana' 'dek'

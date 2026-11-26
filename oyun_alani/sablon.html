@@ -260,13 +260,19 @@ const TIP = new Set('tamsayi ondalik metin karakter mantiksal liste sozluk tenso
 const DESEN = /(\/\/[^\n]*|\{[^}]*\}?|\(\*[\s\S]*?(?:\*\)|$))|((?<=[\p{L}\p{N}_)\]])'\p{L}+)|(\$?"""[\s\S]*?(?:"""|$)|\$?'(?:[^'\n]|'')*'?|\$?"(?:[^"\\\n]|\\.)*"?)|(\$[0-9A-Fa-f]+|#\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|([\p{L}_][\p{L}\p{N}_]*)/gu;
 const kacir = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 function renklendir(metin) {
-  let out = '', son = 0;
+  let out = '', son = 0, o1 = '', o2 = '';   // önceki iki ad: bağlama duyarlı 'aynı anda [en çok]' için
   for (const m of metin.matchAll(DESEN)) {
     out += kacir(metin.slice(son, m.index));
     const t = m[0];
     let s = null;
     if (m[1]) s = 'k-y'; else if (m[2]) s = 'k-e'; else if (m[3]) s = 'k-m'; else if (m[4]) s = 'k-s';
-    else { const k = katla(t); s = ANAHTAR.has(k) ? 'k-a' : DEGER.has(k) ? 'k-s' : TIP.has(k) ? 'k-t' : null; }
+    else {
+      const k = katla(t);
+      const es = (k === 'ayni' && /^\s+and[aA](?![\p{L}\p{N}_])/u.test(metin.slice(m.index + t.length))) || (k === 'anda' && o1 === 'ayni')
+        || (k === 'en' && o1 === 'anda' && o2 === 'ayni') || (k === 'cok' && o1 === 'en' && o2 === 'anda');
+      s = es || ANAHTAR.has(k) ? 'k-a' : DEGER.has(k) ? 'k-s' : TIP.has(k) ? 'k-t' : null;
+      o2 = o1; o1 = k;
+    }
     out += s ? `<span class="${s}">${kacir(t)}</span>` : kacir(t);
     son = m.index + t.length;
   }
