@@ -16,6 +16,11 @@ Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabın�
   derleyicisi akış gövdelerini JavaScript üreteçlerine çevirir; Python yorumlayıcısı `üret` içeren deyimleri
   Python üreteci olarak yürütür. `üret` yalnızca fonksiyon gövdesinde anlam taşır; başka yerde
   sıradan ad olarak kullanılmaya devam eder.
+- **`yoksa` işleci**: `a yoksa b`, `a` hesaplanırken dizinlenen anahtar ya da sıra bulunamazsa ya da değer `boş` ise
+  `b`'yi verir (`ayar['port'] yoksa 8080`, `kişi['adres']['şehir'] yoksa '-'`). İç içe dizinlemenin her adımı bu
+  kurala uyar; öteki hatalar yükselir. Sağ yan yalnızca gerektiğinde hesaplanır. Boru dışındaki işleçlerden sonra
+  bağlar, sağdan birleşir. Bağlama duyarlıdır: `yoksa` sıradan ad olarak kullanılmaya devam eder. Gömülü arka
+  uç henüz desteklemez.
 - **`Ağ.HttpAkış` ve `Sunucu.AkışYanıt`**: `HttpAkış(adres [, gövde, başlıklar, zamanAşımı])` yanıtı parça parça
   geldikçe okuyan bir akış döndürür: SSE (`text/event-stream`) olayları, ndjson satırları (JSON olarak çözülür) ya
   da metin parçaları. Bağlantı yineleme başlayınca kurulur, akış bırakılınca kapanır; zaman aşımı iki parça

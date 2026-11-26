@@ -87,6 +87,7 @@ Bazı sözcükler yalnızca belirli bir yerde özel anlam taşır, başka yerler
 | `kez` | `n kez tekrarla` |
 | `aynı anda`, `en çok` | paralel döngü başlığı (deyim başında) |
 | `üret` | fonksiyon gövdesinde, deyim başında, ardından bir ifade gelince |
+| `yoksa` | bir ifadenin ardından, aynı satırda (eksik değer işleci) |
 | `olana dek` | `tekrarla` döngüsünün sonu |
 | `değerine göre` | çok seçenekli karar |
 | `listesindeki`, `dizisindeki`, `elemanı` | eleman silme cümlesi |
@@ -333,18 +334,20 @@ Metin karakterleri 1'den numaralanır: `s[1]` ilk karakterdir. `Uzunluk(s)` kara
 | Düzey | İşleçler | Birleşme |
 | --- | --- | --- |
 | 1 | boru işleci (bkz. "Boru") | soldan |
-| 2 | `veya`, `yada` | soldan |
-| 3 | `ve` | soldan |
-| 4 | `değil` | tekli |
-| 5 | `=`, `<>`, `<`, `>`, `<=`, `>=`, `içinde` | zincirlenmez |
-| 6 | `+`, `-` | soldan |
-| 7 | `*`, `/`, `böl`, `mod`, `@` | soldan |
-| 8 | tekli `-`, `+` | tekli |
-| 9 | `**` | sağdan |
-| 10 | çağrı `f(x)`, dizin `L[i]`, üye `n.ad` | soldan |
+| 2 | `yoksa` (bkz. "Eksik değer") | sağdan |
+| 3 | `veya`, `yada` | soldan |
+| 4 | `ve` | soldan |
+| 5 | `değil` | tekli |
+| 6 | `=`, `<>`, `<`, `>`, `<=`, `>=`, `içinde` | zincirlenmez |
+| 7 | `+`, `-` | soldan |
+| 8 | `*`, `/`, `böl`, `mod`, `@` | soldan |
+| 9 | tekli `-`, `+` | tekli |
+| 10 | `**` | sağdan |
+| 11 | çağrı `f(x)`, dizin `L[i]`, üye `n.ad` | soldan |
 
 ```
-ifade:   veya ('|>' veya)*
+ifade:   yoksa ('|>' yoksa)*
+yoksa:   veya ['yoksa' yoksa]
 veya:    ve (('veya' | 'yada') ve)*
 ve:      degil ('ve' degil)*
 degil:   'değil' degil | iliski
@@ -391,6 +394,22 @@ yaz([3, 1, 2] |> Sırala |> Ters, 1)
 ```
 [3, 2, 1]
 ```
+
+### Eksik değer
+
+`a yoksa b`, `a`'nın değerini verir; `a` hesaplanırken dizinlenen anahtar ya da sıra bulunamazsa ya da `a`'nın değeri `boş` ise `b`'nin değerini verir. `b` yalnızca gerektiğinde hesaplanır.
+
+```pascal
+port := ayar['port'] yoksa 8080
+şehir := kişi['adres']['şehir'] yoksa 'bilinmiyor'
+son := L[10] yoksa 0
+```
+
+- Sol yandaki dizinleme zincirinin her adımı bu kurala uyar: `kişi['adres']` yoksa da sonuç `'bilinmiyor'` olur. Sözlükte olmayan anahtar, listenin ya da metnin sınırları dışındaki sıra ve `boş` bir değerin dizinlenmesi eksik sayılır.
+- Yalnızca eksiklik yakalanır: liste dizininin tamsayı olmaması, dizinlenemeyen bir değer, tanımsız bir ad ya da sol yanda çağrılan bir fonksiyonun hatası her zamanki gibi yükselir.
+- `yoksa` boru dışındaki bütün işleçlerden sonra bağlar ve sağdan birleşir: `d['a'] yoksa 1 + 2`, `d['a'] yoksa (1 + 2)` demektir; `d['a'] yoksa d['b'] yoksa 0` ilk bulunanı verir. Sonucu başka bir işlemde kullanmak için ayraç yazılır: `(d['n'] yoksa 0) + 1`.
+- `d.Al('k', v)` ile aynı işi görür, ama iç içe yapılarda ve listelerde de çalışır.
+- `yoksa` bağlama duyarlıdır: yalnızca bir ifadenin ardından aynı satırda gelince işleçtir; başka yerde sıradan bir addır. Gömülü (ESP32) sürümde henüz yoktur.
 
 ### Birincil ifadeler
 
@@ -872,6 +891,7 @@ Katı kip olmadan da `yontem denetle` gölgelenen adları, tanımsız adları ve
 | `herhangi` tipi | var | var | yok |
 | Hata ayıklayıcı, paket komutları | var | yok | yok |
 | `üret` ve akışlar | JavaScript üreteçleri | Python üreteçleri | yok |
+| `yoksa` işleci | var | var | yok |
 | Etkileşimli kabuk | yok | var | yok |
 | Birimler | hepsi | hepsi | `Matematik`, `YZ`, `Donanım` |
 
@@ -952,7 +972,8 @@ deyim:    blok
 kol:      ','.etiket+ ':' govde ayirici
 etiket:   ifade ['..' ifade]
 
-ifade:    veya ('|>' veya)*
+ifade:    yoksa ('|>' yoksa)*
+yoksa:    veya ['yoksa' yoksa]
 veya:     ve (('veya' | 'yada') ve)*
 ve:       degil ('ve' degil)*
 degil:    'değil' degil | iliski

@@ -407,6 +407,19 @@ export function indeks(c: any, i: any): any {
   hata(`${turAdi(c)} dizinlenemez`);
 }
 $.indeks = indeks;
+/** 'yoksa' işlecinin sol yanındaki dizinleme: anahtar ya da sıra yoksa (ya da dizinlenen boşsa) hata yerine YOK verir */
+export const YOK = Symbol('yok');
+$.YOK = YOK;
+$.indeksY = (c: any, i: any): any => {
+  if (c === null || c === YOK) return YOK;
+  if (Array.isArray(c) && typeof i === 'bigint') {
+    const j = i < 0n ? i + BigInt(c.length) : i;
+    return j < 0n || j >= BigInt(c.length) ? YOK : c[Number(j)];
+  }
+  if (c instanceof Map && !(Array.isArray(i) || i instanceof Map)) return c.has(i) ? c.get(i) : YOK;
+  if (typeof c === 'string' && typeof i === 'bigint') return i < 1n || i > BigInt(c.length) ? YOK : c[Number(i) - 1];
+  return indeks(c, i);
+};
 $.indeksN = (c: any, idx: any[]) => {
   if (tensorMu(c)) return c.indeksAl(idx);
   for (const i of idx) c = indeks(c, i);

@@ -671,10 +671,20 @@ export class Cozumleyici {
 
   // ---------------------------------------------------------- ifadeler
   ifade(): Dugum {
-    let sol = this.veyaCoz();
+    let sol = this.yoksaCoz();
     while (this.opMu('|>')) {
       const s = this.ilerle().satir;
-      sol = N('boru', s, { sol, sag: this.veyaCoz() });
+      sol = N('boru', s, { sol, sag: this.yoksaCoz() });
+    }
+    return sol;
+  }
+  /** 'a yoksa b': a yoksa (dizinlenen anahtar ya da sıra yok, ya da değer boş) b. 'yoksa' bağlamsal bir yazımdır:
+   * yalnızca bir ifadenin ardından aynı satırda gelirse işleçtir, başka yerde sıradan bir addır. Sağa bağlanır. */
+  yoksaCoz(): Dugum {
+    const sol = this.veyaCoz();
+    if (this.adMi('yoksa') && !this.satirSonuMu()) {
+      const s = this.ilerle().satir;
+      return N('yoksa', s, { sol, sag: this.yoksaCoz() });
     }
     return sol;
   }

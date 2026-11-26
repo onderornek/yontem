@@ -26,5 +26,9 @@
  {
   "kaynak": "başla\n  üret 'x'\nbitir.\n",
   "hata": "Sözdizimi hatası [satır 2] 'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir (ör. fonksiyon Sayılar(n: tamsayı): akış) ('üret' bulundu, sütun 3)"
+ },
+ {
+  "kaynak": "değişken d: sözlük\nbaşla\n  d := [:]\n  yaz(d[1] yoksa)\nbitir.\n",
+  "hata": "Sözdizimi hatası [satır 4] İfade bekleniyordu (')' bulundu, sütun 17)"
  }
 ]

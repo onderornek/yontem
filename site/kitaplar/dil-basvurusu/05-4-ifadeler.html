@@ -57,53 +57,59 @@
 </tr>
 <tr class="even">
 <td>2</td>
-<td><code>veya</code>, <code>yada</code></td>
-<td>soldan</td>
+<td><code>yoksa</code> (bkz. “Eksik değer”)</td>
+<td>sağdan</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td><code>ve</code></td>
+<td><code>veya</code>, <code>yada</code></td>
 <td>soldan</td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td><code>değil</code></td>
-<td>tekli</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>içinde</code></td>
-<td>zincirlenmez</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td><code>+</code>, <code>-</code></td>
+<td><code>ve</code></td>
 <td>soldan</td>
 </tr>
 <tr class="odd">
+<td>5</td>
+<td><code>değil</code></td>
+<td>tekli</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>içinde</code></td>
+<td>zincirlenmez</td>
+</tr>
+<tr class="odd">
 <td>7</td>
-<td><code>*</code>, <code>/</code>, <code>böl</code>, <code>mod</code>, <code>@</code></td>
+<td><code>+</code>, <code>-</code></td>
 <td>soldan</td>
 </tr>
 <tr class="even">
 <td>8</td>
-<td>tekli <code>-</code>, <code>+</code></td>
-<td>tekli</td>
+<td><code>*</code>, <code>/</code>, <code>böl</code>, <code>mod</code>, <code>@</code></td>
+<td>soldan</td>
 </tr>
 <tr class="odd">
 <td>9</td>
-<td><code>**</code></td>
-<td>sağdan</td>
+<td>tekli <code>-</code>, <code>+</code></td>
+<td>tekli</td>
 </tr>
 <tr class="even">
 <td>10</td>
+<td><code>**</code></td>
+<td>sağdan</td>
+</tr>
+<tr class="odd">
+<td>11</td>
 <td>çağrı <code>f(x)</code>, dizin <code>L[i]</code>, üye <code>n.ad</code></td>
 <td>soldan</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ifade:   veya ('|&gt;' veya)*
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>ifade:   yoksa ('|&gt;' yoksa)*
+yoksa:   veya ['yoksa' yoksa]
 veya:    ve (('veya' | 'yada') ve)*
 ve:      degil ('ve' degil)*
 degil:   'değil' degil | iliski
@@ -174,6 +180,18 @@ sonek:   birincil ('(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' AD)*</code>
 <p><code>x |&gt; f</code> ifadesi <code>f(x)</code> ile, <code>x |&gt; f(y)</code> ifadesi <code>f(x, y)</code> ile aynıdır: soldaki değer sağdaki çağrının ilk argümanı olur. Zincirleme soldan sağa okunur:</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz([<span class="ys">3</span>, <span class="ys">1</span>, <span class="ys">2</span>] |&gt; Sırala |&gt; Ters, <span class="ys">1</span>)</code></pre></div>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[3, 2, 1]</code></pre></div>
+<h3 id="eksik-değer">Eksik değer</h3>
+<p><code>a yoksa b</code>, <code>a</code>’nın değerini verir; <code>a</code> hesaplanırken dizinlenen anahtar ya da sıra bulunamazsa ya da <code>a</code>’nın değeri <code>boş</code> ise <code>b</code>’nin değerini verir. <code>b</code> yalnızca gerektiğinde hesaplanır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>port := ayar[<span class="ym">'port'</span>] yoksa <span class="ys">8080</span>
+şehir := kişi[<span class="ym">'adres'</span>][<span class="ym">'şehir'</span>] yoksa <span class="ym">'bilinmiyor'</span>
+son := L[<span class="ys">10</span>] yoksa <span class="ys">0</span></code></pre></div>
+<ul>
+<li>Sol yandaki dizinleme zincirinin her adımı bu kurala uyar: <code>kişi['adres']</code> yoksa da sonuç <code>'bilinmiyor'</code> olur. Sözlükte olmayan anahtar, listenin ya da metnin sınırları dışındaki sıra ve <code>boş</code> bir değerin dizinlenmesi eksik sayılır.</li>
+<li>Yalnızca eksiklik yakalanır: liste dizininin tamsayı olmaması, dizinlenemeyen bir değer, tanımsız bir ad ya da sol yanda çağrılan bir fonksiyonun hatası her zamanki gibi yükselir.</li>
+<li><code>yoksa</code> boru dışındaki bütün işleçlerden sonra bağlar ve sağdan birleşir: <code>d['a'] yoksa 1 + 2</code>, <code>d['a'] yoksa (1 + 2)</code> demektir; <code>d['a'] yoksa d['b'] yoksa 0</code> ilk bulunanı verir. Sonucu başka bir işlemde kullanmak için ayraç yazılır: <code>(d['n'] yoksa 0) + 1</code>.</li>
+<li><code>d.Al('k', v)</code> ile aynı işi görür, ama iç içe yapılarda ve listelerde de çalışır.</li>
+<li><code>yoksa</code> bağlama duyarlıdır: yalnızca bir ifadenin ardından aynı satırda gelince işleçtir; başka yerde sıradan bir addır. Gömülü (ESP32) sürümde henüz yoktur.</li>
+</ul>
 <h3 id="birincil-ifadeler">Birincil ifadeler</h3>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
@@ -233,7 +251,7 @@ artır := <span class="ya">fonksiyon</span>(x: <span class="ya">tamsayı</span>)
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="04-3-tipler-ve-degerler.html"><small>Önceki</small>3. Tipler ve değerler</a><a class="sonraki" href="06-5-deyimler.html"><small>Sonraki</small>5. Deyimler</a></nav>
   </main>
-  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#aritmetik">Aritmetik</a></li><li><a href="#karşılaştırma">Karşılaştırma</a></li><li><a href="#mantık">Mantık</a></li><li><a href="#boru">Boru</a></li><li><a href="#birincil-ifadeler">Birincil ifadeler</a></li><li><a href="#adsız-alt-programlar">Adsız alt programlar</a></li></ol></aside>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#aritmetik">Aritmetik</a></li><li><a href="#karşılaştırma">Karşılaştırma</a></li><li><a href="#mantık">Mantık</a></li><li><a href="#boru">Boru</a></li><li><a href="#eksik-değer">Eksik değer</a></li><li><a href="#birincil-ifadeler">Birincil ifadeler</a></li><li><a href="#adsız-alt-programlar">Adsız alt programlar</a></li></ol></aside>
 </div>
 <footer class="alt">
   <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>

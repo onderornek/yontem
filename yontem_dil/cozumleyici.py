@@ -782,10 +782,19 @@ class Cozumleyici:
 
     # ---------------------------------------------------------- ifadeler
     def ifade(self):
-        sol = self.veya_coz()
+        sol = self.yoksa_coz()
         while self.op_mu('|>'):
             s = self.ilerle().satir
-            sol = N('boru', s, sol=sol, sag=self.veya_coz())
+            sol = N('boru', s, sol=sol, sag=self.yoksa_coz())
+        return sol
+
+    def yoksa_coz(self):
+        """'a yoksa b': a yoksa (dizinlenen anahtar ya da sıra yok, ya da değer boş) b. 'yoksa' bağlamsal bir yazımdır:
+        yalnızca bir ifadenin ardından aynı satırda gelirse işleçtir, başka yerde sıradan bir addır. Sağa bağlanır."""
+        sol = self.veya_coz()
+        if self.ad_mi('yoksa') and not self.satir_sonu_mu():
+            s = self.ilerle().satir
+            return N('yoksa', s, sol=sol, sag=self.yoksa_coz())
         return sol
 
     def veya_coz(self):

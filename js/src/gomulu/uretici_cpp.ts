@@ -789,6 +789,7 @@ export class CppUretici {
     switch (n.tur) {
       case 'sabitdeger': return this.sabit(n, bek);
       case 'bicimli_metin': this.hata("Biçimli metin ($'...{ifade}...') gömülü sürümde henüz desteklenmiyor; metinleri + ile birleştirin", n);
+      case 'yoksa': this.hata("'yoksa' gömülü sürümde desteklenmiyor; Al(anahtar, varsayılan) ya da 'eğer … ise … değilse' kullanın", n);
       case 'ad': return this.adDeger(n, k, deyim);
       case 'kendi': {
         if (!this.metodBaglami(k)) this.hata("'kendi' yalnızca metodlar içinde kullanılabilir", n);
