@@ -87,9 +87,10 @@ Birimlerin ve araçların örneklerle anlatımı *Yöntem Birimler ve Araçlar K
 | Araç | Ne yapar |
 |---|---|
 | `yontem yeni <ad>` | Program, örnek birim ve test içeren yeni proje klasörü oluşturur |
-| `yontem test [klasör]` | `.y` programlarını çalıştırır, çıktıyı yanlarındaki `.beklenen` dosyasıyla karşılaştırır; `--guncelle` beklenen dosyaları yeniler. `.girdi` dosyası varsa klavye girdisi olarak verilir. `python3 yontem.py test` aynı işi Python yorumlayıcısıyla yapar |
+| `yontem test [klasör]` | `.y` programlarını çalıştırır, çıktıyı yanlarındaki `.beklenen` dosyasıyla karşılaştırır; `--guncelle` beklenen dosyaları yeniler. `.girdi` dosyası varsa klavye girdisi olarak verilir. `sına` blokları olan programlar blok blok sınanır. `python3 yontem.py test` aynı işi Python yorumlayıcısıyla yapar |
+| `yontem sına program.y` | Programdaki her `sına` bloğunu taze bir çalışmada ayrı ayrı yürütür; kalan blokların hata iletisini ve yazdıklarını gösterir, sonunda `12 geçti, 1 kaldı.` yazar. Bir blok kalsa da sonrakiler çalışır |
 | `yontem bicimle <dosya ya da klasör>` | Girintiyi programın yapısına göre düzenler (düzey başına 2 boşluk), satır sonu boşluklarını ve fazla boş satırları temizler. Yalnızca boşluklara dokunur; sözcükler, satır bölünmeleri ve yorumlar değişmez. `--denetle` dosyaları değiştirmeden biçimsiz olanları listeler |
-| `yontem denetle <dosya ya da klasör> [--kati]` | Programları çalıştırmadan derler. **Katı kip:** başında `{$katı}` yönergesi olan dosyalarda (ya da `yontem.json` içinde `"kati": true` olan projelerde) tipler derleme zamanında denetlenir; tipsiz parametreler, uyumsuz atamalar ve argümanlar, eleman tipi bildirilmiş listelere (`tamsayı listesi`) uymayan elemanlar, mantıksal olmayan koşullar, tanımsız adlar program çalışmadan, hepsi birden bildirilir |
+| `yontem denetle <dosya ya da klasör> [--kati]` | Programları çalıştırmadan derler. **Katı kip:** başında `{$katı}` yönergesi olan dosyalarda (ya da `yontem.json` içinde `"kati": true` olan projelerde) tipler derleme zamanında denetlenir; tipsiz parametreler, uyumsuz atamalar ve argümanlar, eleman tipi bildirilmiş listelere (`tamsayı listesi`) uymayan elemanlar, mantıksal olmayan koşullar, tanımsız adlar program çalışmadan, hepsi birden bildirilir. **Uyarılar** katı kip olmadan da verilir: yerleşik bir fonksiyonu, `kullan` ile gelen bir birim üyesini ya da sabiti gölgeleyen değişken, sabit ve parametreler; tanımsız adlar; yerleşik ve kendi fonksiyonlarınızda yanlış argüman sayısı. Uyarılar çıkış kodunu değiştirmez; dil sunucusu da düzenleyicide gösterir |
 | `yontem paket ekle\|kur\|kaldir\|guncelle\|liste` | Paket yöneticisi: birimleri GitHub/GitLab deposundan (`github:kullanici/depo@etiket`), bir HTTPS adresindeki arşivden ya da yerel klasörden `paketler/` klasörüne kurar. `yontem.json` bağımlılıkları, `yontem.kilit.json` içerik özetlerini (SHA-256) tutar; kurulumda kod çalışmaz. Kurulan birimleri Python yorumlayıcısı da bulur |
 | `yontem ayikla program.y` | Hata ayıklayıcı: adım adım çalıştırma, (koşullu) kesme noktaları, değişkenleri ve çağrı yığınını inceleme, ifade değerlendirme, çalışma hatasında durma. Uçbirimde komutlarla, VS Code'da `F6` ile (Debug Adapter Protocol: `yontem ayikla --dap`) |
 | `yontem dil-sunucusu` | Dil sunucusu (Language Server Protocol, stdio): yazarken hata gösterimi, tanımlı görünmeyen adlar için yazım hatası uyarısı, tamamlama, imza bilgisi, tanıma git, simge listesi, biçimlendirme. VS Code eklentisi kendiliğinden kullanır; Neovim, Helix, Emacs gibi LSP destekleyen düzenleyicilerde sunucu komutu olarak `yontem lsp` verilir |
@@ -97,8 +98,22 @@ Birimlerin ve araçların örneklerle anlatımı *Yöntem Birimler ve Araçlar K
 | VS Code eklentisi | `araclar/vscode/`: sözdizimi renklendirme, tamamlama, hata gösterimi, tanıma git, kod parçacıkları, biçimlendirme, F5 ile çalıştırma. Kurulum: `code --install-extension araclar/vscode/yontem-dili-0.6.0.vsix` |
 | Oyun alanı | `oyun_alani/index.html`: kurulum gerektirmeyen tarayıcı ortamı |
 
-Testler `iddia(koşul, mesaj)` ile yazılır; koşul yanlışsa program hatayla durur ve test başarısız
-sayılır. `testler/` klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur.
+Testler `İddia(koşul, mesaj)` ile yazılır; koşul yanlışsa program hatayla durur ve test başarısız
+sayılır. Birbirinden bağımsız vakalar adlandırılmış `sına` bloklarına yazılırsa ilk başarısız
+`İddia` bütün dosyayı durdurmaz, her blok ayrı raporlanır:
+
+```pascal
+sına 'başka kiracının konuşması 404 döner'
+başla
+  y := İstekİşle('POST', '/sohbet', istek)
+  İddia(y['durum'] = 404, 'erişim engellenmedi')
+bitir
+```
+
+`sına` bildirim bölümüne yazılır ve yalnızca ardından bir metin geldiğinde anlam taşır; `Sına` adlı
+değişken ya da fonksiyonlar etkilenmez. Program normal çalıştırıldığında bloklar çalışmaz, yalnızca
+ana blok çalışır. `yontem sına` (ya da `yontem test`) her bloğu programın baştan kurulduğu ayrı bir
+çalışmada yürütür; bloklar birbirinin değişkenlerini görmez. `testler/` klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur.
 Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları için
 [`CHANGELOG.md`](CHANGELOG.md), açık bildirimi için [`SECURITY.md`](SECURITY.md).
 
@@ -148,10 +163,19 @@ Katkı kuralları için [`CONTRIBUTING.md`](CONTRIBUTING.md), sürüm notları i
   karşılıklarına katlanır: `Başla`, `BAŞLA` ve `basla` aynı sözcüktür. Türkçe klavyesi
   olmayan biri de program yazabilir.
   Bunun bir sonucu var: `ş`/`s`, `ç`/`c`, `ı`/`i`, `x`/`X` gibi adlar **aynı addır**.
-  Aynı kapsamda bu tür bir çakışma olursa yorumlayıcı hata verir.
+  Aynı kapsamda bu tür bir çakışma olursa yorumlayıcı hata verir. İçteki bir ad dıştakini gölgeler:
+  `toplam: ondalık` bildirilen yerde `Toplam(L)` artık yerleşik fonksiyonu değil değişkeni gösterir.
+  `yontem denetle` bu durumu uyarı olarak bildirir, çalışırken gelen hata da nedenini söyler.
 - Yorumlar: `{ ... }`, `(* ... *)`, `// satır sonuna kadar`
 - Metinler: `'Pascal tarzı, tek tırnak '' kaçışlı'`, `"C tarzı \n \t kaçışlı"`, karakter
   kodu `#10`. Yan yana metinler birleşir: `'a'#10'b'`
+- Çok satırlı metin: `"""` ile açılıp kapanır, kaçış yoktur. Açılıştan sonraki ve kapanıştan önceki
+  boş satır atılır, satırların ortak girintisi silinir; sistem istemleri satır satır `+` ile
+  birleştirilmeden yazılır.
+- Biçimli metin: başına `$` konan metne `{ifade}` ile değer yerleştirilir:
+  `$'Merhaba {ad}, {n} mesajın var'`, `$'Toplam: {fiyat * adet:.2} TL'`. İki noktadan sonra
+  `Biçimle` biçimi gelir (`{x:8}`, `{x:<8}`, `{x:.2}`); `{{` ve `}}` ayracın kendisidir. `$"…"` ve
+  `$"""…"""` da kullanılabilir.
 - Sayılar: `42`, `3.14`, `1e-3`, `1_000_000`, onaltılık `$FF`
 
 ### Anahtar sözcükler
@@ -472,7 +496,12 @@ alt klasörü, Yöntem'in `kutuphane/` klasörü ve `YONTEM_YOL` ortam değişke
 | Denetim | `Hata`, `İddia`, `Durdur`, `Çağır`, `ParametreSayısı`, `Parametre` |
 
 Biçimli çıktı Turbo Pascal'daki gibidir: `yaz(x:8:2, 1)` (genişlik 8, 2 ondalık basamak). Karma metinlerde
-`Biçimle('{} = {:8.2}', ad, x)` kullanılır (`{:.2}` basamak, `{:8}` genişlik).
+`Biçimle('{} = {:8.2}', ad, x)` ya da biçimli metin `$'{ad} = {x:8.2}'` kullanılır (`{:.2}` basamak,
+`{:8}` genişlik ve sağa yaslama, `{:<8}` sola, `{:^8}` ortaya yaslama). Tanınmayan bir biçim kullanılabilecek
+biçimleri sayan bir hata verir.
+
+`Say(L)` bir sıklık sözlüğü döndürür (`Say(['a', 'b', 'a'])` → `['a': 2, 'b': 1]`); tek bir elemanın kaç kez
+geçtiği `Say(L)['a']` ile alınır. `Say(L, x)` gibi iki argümanlı çağrı `yontem denetle` tarafından bildirilir.
 
 **Eleman ekleme ve silme.** `Ekle(L, v)` sona ekler, `Ekle(L, v, i)` `i` konumuna yerleştirir,
 `Sil(L, i)` `i` konumundaki elemanı çıkarıp döndürür. Listede elemanlar 0'dan numaralanır; eksi konum
@@ -628,7 +657,7 @@ bitir.
 | Grup | Üyeler |
 |---|---|
 | Oluşturma | `Tensör(veri, gradGerekli)`, `Sıfırlar(r, c)`, `Birler(r, c)`, `RastgeleTensör(r, c, ölçek)`, `BirSıcak(etiketler, n)`, `Tohum(n)` |
-| Tensör üyeleri | `Şekil`, `Veri`, `Grad`, `T` (devrik), `Boyut`, `Değer`, `GeriYay`, `SıfırlaGrad`, `Ayır`, `Toplam(eksen)`, `Ortalama(eksen)`, `Maks`, `ArgMaks`, `Yeniden(r, c)`, `Satır(i)`, `GradGerekli` |
+| Tensör üyeleri | `Şekil`, `Veri` (1×n tensörde de iç içe liste döner: ilk satır `w.Veri[0]`), `Grad`, `T` (devrik), `Boyut`, `Değer`, `GeriYay`, `SıfırlaGrad`, `Ayır`, `Toplam(eksen)`, `Ortalama(eksen)`, `Maks`, `ArgMaks`, `Yeniden(r, c)`, `Satır(i)`, `GradGerekli` |
 | Etkinleştirme | `ReLU`, `Sigmoid`, `Tanh`, `Softmaks`, `Üstel`, `Log` (işlev ya da metod olarak) |
 | Kayıplar | `OKH` (ortalama kare hata), `OMH`, `İkiliÇaprazEntropi`, `ÇaprazEntropi` (logit + sınıf dizinleri/bir-sıcak) |
 | Katmanlar | `Yoğun(girdi, çıktı, etkinleştirme)`, `Ardışık([katmanlar])` |

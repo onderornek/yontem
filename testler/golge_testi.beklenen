@@ -1,0 +1,7 @@
+değişken: ondalık çağrılamaz: 'Toplam' burada bir değişken; aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; değişkene başka bir ad verin)
+sabit: tamsayı çağrılamaz: 'Kare' burada bir sabit; aynı adlı yerleşik 'Kare' fonksiyonunu gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; sabite başka bir ad verin)
+birim üyesi: mantıksal çağrılamaz: 'Eşleşir' burada bir değişken; aynı adlı 'Eşleşir' fonksiyonunu gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; değişkene başka bir ad verin)
+parametre: tamsayı çağrılamaz: 'Uzunluk' burada bir değişken; aynı adlı yerleşik 'Uzunluk' fonksiyonunu gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; değişkene başka bir ad verin)
+yerel değişken: tamsayı çağrılamaz: 'Sıra' burada bir değişken; aynı adlı yerleşik 'Sıra' fonksiyonunu gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; değişkene başka bir ad verin)
+42
+lambda değişkeni çağrılabilir: hata yok

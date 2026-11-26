@@ -131,7 +131,8 @@ class Cozumleyici:
             self.hata("Program sonunda 'bitir.' bekleniyordu")
         if self.t.tip != 'SON':
             self.hata("'bitir.' sonrasında beklenmeyen kod")
-        return N('program', satir, ad=ad, kullan=kullan, bildirimler=bildirimler, govde=govde)
+        sinamalar = [(b.ad, b.sina, b.satir) for b in bildirimler if getattr(b, 'sina', None) is not None]
+        return N('program', satir, ad=ad, kullan=kullan, bildirimler=bildirimler, govde=govde, sinamalar=sinamalar)
 
     def birim_coz(self):
         satir = self.t.satir
@@ -172,12 +173,16 @@ class Cozumleyici:
         return lst
 
     # ---------------------------------------------------------- bildirimler
+    def sina_mi(self):
+        """'sına' yalnızca ardından metin gelince test bloğu başlatır."""
+        return self.t.tip == 'AD' and self.t.deger == 'sina' and self.bak().tip == 'METIN'
+
     def bildirimler_coz(self, baglam='normal'):
         lst = []
         while True:
             if self.as_mi('sabit'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     tok = self.ilerle()
                     tip = None
                     if self.op_mu(':'):
@@ -191,12 +196,12 @@ class Cozumleyici:
                     lst.append(N('sabit', tok.satir, ad=tok.deger, ham=tok.ham, tip=tip, ifade=ifade))
             elif self.as_mi('degisken'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     lst.append(self.degisken_grubu())
                     self.ayirici()
             elif self.as_mi('tip'):
                 self.ilerle()
-                while self.t.tip == 'AD':
+                while self.t.tip == 'AD' and not self.sina_mi():
                     tok = self.ilerle()
                     self.bekle_op('=')
                     tanim = self.tip_tanimi_coz()
@@ -204,8 +209,26 @@ class Cozumleyici:
                     lst.append(N('tipdef', tok.satir, ad=tok.deger, ham=tok.ham, tanim=tanim))
             elif self.as_mi('prosedur', 'fonksiyon', 'kurucu'):
                 lst.append(self.altprogram_coz(baglam))
+            elif baglam == 'normal' and self.sina_mi():
+                lst.append(self.sina_coz())
             else:
                 return lst
+            # bölümün sonunda ad yerine anahtar sözcük ('kayıt: metin' gibi): açık bir ileti ver
+            if self.t.tip == 'AS' and self.bak().tip == 'OP' and self.bak().deger in (':', ',', '=', ':='):
+                self.bekle_ad()
+
+    def sina_coz(self):
+        """sına 'ad' [yerel bildirimler] başla … bitir — adlandırılmış test bloğu. Gizli adlı, parametresiz
+        bir prosedür olarak temsil edilir; programın normal çalışmasında çağrılmaz."""
+        tok = self.ilerle()
+        baslik = self.ilerle().deger
+        self.ayirici()
+        yerel = self.bildirimler_coz('yerel')
+        govde = self.birlesik_coz()
+        self.ayirici()
+        self.sina_sayaci = getattr(self, 'sina_sayaci', 0) + 1
+        return N('altprogram', tok.satir, cesit='prosedur', ad=f'$sina{self.sina_sayaci}', ham=f"sına '{baslik}'",
+                 sinif_adi=None, params=[], donus=None, direktifler=[], yerel=yerel, govde=govde, sina=baslik)
 
     def degisken_grubu(self):
         satir = self.t.satir
@@ -752,12 +775,44 @@ class Cozumleyici:
             else:
                 return e
 
+    def bicimli_metin(self, tok):
+        """$'... {ifade:biçim} ...': her yerleştirilen ifade kendi başına sözcüklenip çözümlenir."""
+        import re
+        from .sozcuk import sozcukle
+        parcalar = []
+        for p in tok.deger:
+            if type(p) is str:
+                parcalar.append(p)
+                continue
+            kaynak, ozel, satir, sutun = p
+            try:
+                sozcukler = sozcukle(kaynak, self.dosya)
+            except SozdizimHatasi as e:
+                ic = re.sub(r' \(sütun \d+\)$', '', e.mesaj)
+                raise SozdizimHatasi(f"Biçimli metindeki '{{{kaynak}}}': {ic} (sütun {sutun})", satir, self.dosya)
+            for t in sozcukler:
+                t.satir, t.sutun = satir, sutun
+            c = Cozumleyici(sozcukler, self.dosya)
+            try:
+                ifade = c.ifade()
+            except SozdizimHatasi as e:
+                e.mesaj = f"Biçimli metindeki '{{{kaynak}}}': " + e.mesaj.replace("'<dosya sonu>'", 'ifadenin sonu')
+                e.args = (e.mesaj,)
+                raise
+            if c.t.tip != 'SON':
+                c.hata(f"Biçimli metindeki '{{{kaynak}}}' tek bir ifade olmalı")
+            parcalar.append((ifade, ozel))
+        return N('bicimli_metin', tok.satir, parcalar=parcalar)
+
     def birincil_coz(self):
         tok = self.t
         s = tok.satir
         if tok.tip in ('SAYI', 'METIN'):
             self.ilerle()
             return N('sabitdeger', s, deger=tok.deger)
+        if tok.tip == 'BMETIN':
+            self.ilerle()
+            return self.bicimli_metin(tok)
         if tok.tip == 'AD':
             self.ilerle()
             return N('ad', s, ad=tok.deger, ham=tok.ham)

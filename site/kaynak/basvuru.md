@@ -110,7 +110,28 @@ Alt çizgi yalnızca okunaklılık içindir. Noktadan sonra en az bir rakam gelm
 | `"çift tırnak"` | `\n`, `\t`, `\r`, `\\`, `\"`, `\'`, `\0` |
 | `#10` | Onluk karakter kodu |
 
-Yan yana yazılan parçalar tek metin olur: `'a'#10'b'` üç karakterlik bir metindir. Bir metin satır sonunu aşamaz.
+Yan yana yazılan parçalar tek metin olur: `'a'#10'b'` üç karakterlik bir metindir. Bu biçimlerdeki bir metin satır sonunu aşamaz.
+
+**Çok satırlı metin** `"""` ile açılıp kapanır ve satır sonlarını içerebilir. İçinde kaçış yoktur: `\n`, `{` ve tırnaklar olduğu gibi kalır. Açılıştan hemen sonraki ve kapanıştan hemen önceki satır boşsa atılır; satırların ortak girintisi silinir. Böylece metin programın girintisine uyarak yazılabilir:
+
+```pascal
+istem := """
+  Sen yardımsever bir asistansın.
+    - Kısa yanıt ver.
+  """
+```
+
+Bu metin iki satırdır; ikinci satır iki boşlukla başlar.
+
+**Biçimli metin**, önüne `$` konan bir metindir: `$'…'`, `$"…"` ya da `$"""…"""`. İçindeki `{ifade}` çalışırken ifadenin değeriyle yer değiştirir; değer `yaz` ile yazılacağı biçimde metne çevrilir. İfadeden sonra iki nokta ile `Biçimle` biçimi yazılabilir: `{x:8}` genişlik (sağa yaslı), `{x:<8}` sola, `{x:^8}` ortaya yaslı, `{x:.2}` ondalık basamak, `{x:8.2}` ikisi. Ayracın kendisi `{{` ve `}}` ile yazılır.
+
+```pascal
+yaz($'Merhaba {ad}, {n} mesajın var', 1)
+yaz($'Toplam: {fiyat * adet:.2} TL', 1)
+yaz($'[{ad:<6}] {{ayraç}}', 1)
+```
+
+`{}` içine tek bir ifade yazılır. Tek tırnaklı biçimli metnin içinde metin gerekiyorsa tırnak yine iki kez yazılır (`$'{BüyükHarf(''x'')}'`) ya da çift tırnak kullanılır (`$'{BüyükHarf("x")}'`). Biçimli metinler gömülü arka uçta henüz desteklenmez.
 
 ### Ekler
 
@@ -198,7 +219,7 @@ Sabite atama yapılamaz; denenirse program "Sabite atama yapılamaz" hatasıyla 
 
 Bir ad, bildirildiği yerden itibaren o kapsamda ve içteki kapsamlarda görünür. Kapsamlar şunlardır: program (ya da birim), her alt program, her sınıf (alanlar ve metodlar, metod gövdelerinde doğrudan görünür). Bir blok içinde `değişken` ile bildirilen ad, içinde bulunduğu alt programın (ya da ana gövdenin) kapsamına girer.
 
-İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir.
+İçteki bir bildirim dıştaki aynı adı gölgeler. Birimlerden gelen adlar da program içinde yeniden bildirilerek gölgelenebilir. Harf duyarsızlığı yüzünden bu kolayca istemeden olur: `toplam: ondalık` bildirilen kapsamda `Toplam(L)` yerleşik fonksiyonu değil değişkeni çağırır. `yontem denetle`, bir değişkenin, sabitin ya da parametrenin yerleşik bir fonksiyonu ya da birim üyesini gölgelediği her yeri uyarı olarak bildirir; böyle bir çağrının çalışma hatası da nedenini söyler.
 
 ## 3. Tipler ve değerler
 
@@ -371,7 +392,7 @@ yaz([3, 1, 2] |> Sırala |> Ters, 1)
 ### Birincil ifadeler
 
 ```
-birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | adsiz_altprogram
@@ -699,6 +720,23 @@ bitti
 
 Sözdizimi hataları program çalışmadan önce bildirilir ve yakalanamaz.
 
+### Sınama blokları
+
+```
+sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici
+```
+
+`sına` bloğu, bildirim bölümüne yazılan adlandırılmış bir testtir. `sına` bağlamsal bir sözcüktür: yalnızca bildirim bölümünde ve ardından bir metin geldiğinde blok başlatır; başka her yerde sıradan bir addır. Blok, yerel bildirimleri olabilen parametresiz bir prosedür gibidir.
+
+```pascal
+sına 'boş liste toplamı sıfırdır'
+başla
+  İddia(Toplam([]) = 0)
+bitir
+```
+
+Program normal çalıştırıldığında bloklar çalışmaz. `yontem sına program.y` her bloğu ayrı bir çalışmada yürütür: programın bildirimleri baştan kurulur, ana blok yerine yalnızca o blok çalışır. Hatasız biten blok geçmiş, yakalanmayan bir hatayla (başarısız bir `İddia` dahil) ya da sıfır olmayan bir `Durdur` koduyla biten blok kalmış sayılır. Rapor her blok için bir satır ve sonunda `n geçti, m kaldı.` satırıdır; kalan bloğun hata iletisi ve blok içinde yazılanlar altında gösterilir. Bir blok kalırsa çıkış kodu 1'dir.
+
 ## 9. Birimler
 
 ```
@@ -757,7 +795,9 @@ Katı kipte:
 - atamalar, argümanlar, dönüş değerleri ve işleçlerin işlenenleri tiplerine göre denetlenir;
 - `tamsayı listesi` gibi eleman tipi bildirilmiş koleksiyonlara uymayan eleman konamaz;
 - sınıf ve kayıt tiplerinde olmayan bir alana ya da metoda erişilemez;
-- tanımsız adlar derleme sırasında bildirilir.
+- tanımsız adlar ve yanlış argüman sayıları derleme sırasında bildirilir.
+
+Katı kip olmadan da `yontem denetle` gölgelenen adları, tanımsız adları ve yanlış argüman sayılarını uyarı olarak bildirir (bkz. Kapsam).
 
 `herhangi` tipli değerler ve eleman tipi yazılmamış `liste` denetim dışında kalır ve çalışırken denetlenir. Yönerge yalnızca bulunduğu dosyayı etkiler: katı bir program katı olmayan bir birimi kullanabilir. Katı kip JavaScript derleyicisindedir; Python yorumlayıcısı yönergeyi yorum olarak görür ve programı aynı sonuçla çalıştırır.
 
@@ -788,7 +828,8 @@ birim:    'birim' AD ayirici kullan*
 kullan:   'kullan' ','.AD+ ayirici
 ayirici:  ';' | satır sonu | SON
 
-bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram
+bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram | sina_blogu
+sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici
 arayuz_bildirimi:
           sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram_basligi
 sabit_bolumu:    'sabit' (AD [':' tip] ('=' | ':=') ifade ayirici)*
@@ -859,7 +900,7 @@ sonek:    birincil sonek_eki*
 sonek_eki:
           '(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' (AD | AS)
 arguman:  ifade [':' ifade [':' ifade]]
-birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | ('fonksiyon' | 'prosedür') [parametreler] [':' tip]

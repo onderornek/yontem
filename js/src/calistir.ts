@@ -14,7 +14,7 @@ import './calisma/ag';
 import './calisma/veritabani';
 import './calisma/sunucu';
 import { Uretici, DerlemeSecenekleri } from './uretici';
-import { YontemHatasi, SozdizimHatasi, DurSinyali, TipHatalari } from './hatalar';
+import { YontemHatasi, SozdizimHatasi, DurSinyali, TipHatalari, Tani } from './hatalar';
 
 export { YontemHatasi, SozdizimHatasi, DurSinyali, TipHatalari, Konak };
 
@@ -23,9 +23,10 @@ export function yerelBirim(ad: string): Record<string, any> | null {
   return f ? f() : null;
 }
 
-export function derle(kaynak: string, dosya: string, birimBul: DerlemeSecenekleri['birimBul'], aranan?: string[], kati?: DerlemeSecenekleri['kati']): string {
+export function derle(kaynak: string, dosya: string, birimBul: DerlemeSecenekleri['birimBul'], aranan?: string[], kati?: DerlemeSecenekleri['kati'], uyarilar?: Tani[]): string {
   const u = new Uretici({ birimBul, yerelBirim, yerlesikler: Y, aranan, kati });
-  return u.programDerle(kaynak, dosya);
+  try { return u.programDerle(kaynak, dosya); }
+  finally { if (uyarilar) uyarilar.push(...u.uyarilar); }
 }
 
 /** Derlenmiş kodu çalıştırır; çıkış kodunu döndürür. Hata mesajını konak.hata ile bildirir. */

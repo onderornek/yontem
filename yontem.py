@@ -6,6 +6,7 @@ Kullanım:
     python3 yontem.py                              Etkileşimli kabuk (REPL)
     python3 yontem.py test [klasör/dosya] [--guncelle]
                                                    .y dosyalarını çalıştırıp .beklenen ile karşılaştırır
+    python3 yontem.py sına program.y               'sına' bloklarını ayrı ayrı çalıştırıp raporlar
     python3 yontem.py --surum                      Sürüm bilgisi
 """
 import os
@@ -126,6 +127,59 @@ def _test_dosyalari(hedefler):
     return out
 
 
+import re as _re  # noqa: E402
+SINA_DESENI = _re.compile(r"^[ \t]*[sS][ıiIİ][nN][aA][ \t]+['\"#]", _re.M)
+
+
+def sina(args):
+    """'sına' bloklarını taze bir yorumlayıcıda ayrı ayrı yürütür; rapor JavaScript sürümüyle aynıdır."""
+    yol = next((a for a in args if not a.startswith('--')), None)
+    if yol is None:
+        print("Kullanım: yontem sına program.y", file=sys.stderr)
+        return 1
+    if not os.path.exists(yol):
+        print(f"Bulunamadı: {yol}", file=sys.stderr)
+        return 1
+    with open(yol, encoding='utf-8') as f:
+        kaynak = f.read()
+    try:
+        sinamalar = Cozumleyici(sozcukle(kaynak, yol), yol).dosya_coz().sinamalar
+    except SozdizimHatasi as e:
+        print(f"Sözdizimi hatası {e}", file=sys.stderr)
+        return 2
+    if not sinamalar:
+        print(f"'{yol}' içinde 'sına' bloğu yok", file=sys.stderr)
+        return 1
+    gecen = kalan = 0
+    for i, (_, baslik, _) in enumerate(sinamalar):
+        cikti = []
+        y = Yorumlayici(yaz=cikti.append, oku=lambda: '')
+        hata = None
+        try:
+            y.calistir(kaynak, yol, sina=i)
+        except DurSinyali as d:
+            kod = d.kod if isinstance(d.kod, int) else 0
+            if kod != 0:
+                hata = f"Durdur({kod}) ile bitti"
+        except SozdizimHatasi as e:
+            print(f"Sözdizimi hatası {e}", file=sys.stderr)
+            return 2
+        except YontemHatasi as e:
+            hata = str(e).replace(f"[{yol}, ", "[")
+        if hata is None:
+            gecen += 1
+            print(f"geçti  {baslik}")
+            continue
+        kalan += 1
+        print(f"KALDI  {baslik}\n       {hata}")
+        metin = ''.join(cikti)
+        if metin:
+            for satir in (metin[:-1] if metin.endswith('\n') else metin).split('\n'):
+                print(f"       | {satir}")
+    print(f"{gecen} geçti, {kalan} kaldı.")
+    return 1 if kalan else 0
+
+
 def test(args):
     """JavaScript sürümündeki 'yontem test' ile aynı kurallar: her program ayrı süreçte çalışır,
     yanındaki .beklenen ile bayt bayt karşılaştırılır; yoksa hatasız bitmesi yeterlidir."""
@@ -143,10 +197,37 @@ def test(args):
     t0 = time.time()
     for yol in _test_dosyalari(hedefler):
         with open(yol, encoding='utf-8') as f:
-            if not program_mi.match(f.read()):
+            icerik = f.read()
+            if not program_mi.match(icerik):
                 atlanan += 1
                 continue
+        sina_mi = bool(SINA_DESENI.search(icerik))
         kok = yol[:-2]
+        # 'sına' blokları: rapor .sina.beklenen ile karşılaştırılır; o yoksa bütün bloklar geçmelidir
+        if sina_mi and not guncelle:
+            s = subprocess.run([sys.executable, os.path.abspath(__file__), 'sina', os.path.abspath(yol)], capture_output=True,
+                               cwd=os.path.dirname(os.path.abspath(yol)), timeout=600)
+            rapor = s.stdout.decode('utf-8', 'replace')
+            sbek = kok + '.sina.beklenen'
+            ozet = re.search(r'^(\d+) geçti, (\d+) kaldı\.$', rapor, re.M)
+            if os.path.exists(sbek):
+                with open(sbek, encoding='utf-8', newline='') as f:
+                    tamam = rapor == f.read() and s.returncode in (0, 1)
+            else:
+                tamam = s.returncode == 0
+            if not tamam:
+                neden = f"{ozet.group(2)} sına bloğu kaldı" if ozet else f"çıkış kodu {s.returncode}"
+                ek = '; rapor .sina.beklenen ile aynı değil' if os.path.exists(sbek) else ''
+                print(f"BAŞARISIZ  {yol}  ({neden}{ek})")
+                ic = (rapor + s.stderr.decode('utf-8', 'replace')).rstrip()
+                if ic:
+                    print('  ' + '\n  '.join(x for x in ic.split('\n') if not x.startswith('geçti  ')))
+                kalan += 1
+                continue
+            if not os.path.exists(kok + '.beklenen'):
+                print(f"geçti      {yol}  ({ozet.group(1) if ozet else 0} sına bloğu)")
+                gecen += 1
+                continue
         girdi = b''
         if os.path.exists(kok + '.girdi'):
             with open(kok + '.girdi', 'rb') as f:
@@ -215,6 +296,8 @@ def main():
         return 0
     if args[0] == 'test' and not os.path.isfile('test'):
         return test(args[1:])
+    if args[0] in ('sina', 'sına') and len(args) > 1:
+        return sina(args[1:])
     return calistir_dosya(args[0], args[1:])
 
 

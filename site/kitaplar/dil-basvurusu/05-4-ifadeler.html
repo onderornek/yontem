@@ -175,7 +175,7 @@ sonek:   birincil ('(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' AD)*</code>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz([<span class="ys">3</span>, <span class="ys">1</span>, <span class="ys">2</span>] |&gt; Sırala |&gt; Ters, <span class="ys">1</span>)</code></pre></div>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>[3, 2, 1]</code></pre></div>
 <h3 id="birincil-ifadeler">Birincil ifadeler</h3>
-<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | adsiz_altprogram

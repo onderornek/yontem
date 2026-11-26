@@ -12,6 +12,8 @@ export interface Konak {
   dosyaVarMi?(yol: string): boolean;
   ortam?(ad: string): string | undefined;
   iz?(m: string): void;
+  /** 'yontem sına': çalıştırılacak sına bloğunun sırası (verilmezse ana blok çalışır) */
+  sinaSec?: number;
   /** Pencere/Mobil işlemleri (canlı arayüz); verilmezse benzetim kipi */
   arayuz?(op: any): void;
   /** Mobil birimi için cihaz bilgisi ve kalıcı depo */
@@ -468,6 +470,11 @@ export function cagir(f: any, args: any[]): any {
 }
 $.cagirR = (f: any, args: any[]) => cagir(f, refCoz(f, args));
 $.cagir = cagir;
+/** Gölgelenmiş bir adla çağrı: değer çağrılamıyorsa iletiye nedeni eklenir */
+$.cagirG = (f: any, args: any[], neden: string) => {
+  if (typeof f !== 'function') hata(`${turAdi(f)} çağrılamaz: ${neden}`);
+  return cagir(f, args);
+};
 $.cagirDeyim = (v: any) => {
   if (typeof v === 'function') return cagir(v, []);
   hata('Bu ifade deyim olarak kullanılamaz (çağrılabilir değil)');

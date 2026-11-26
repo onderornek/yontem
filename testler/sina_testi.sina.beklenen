@@ -1,0 +1,10 @@
+geçti  bölme doğru sonuç verir
+geçti  sıfıra bölme hata verir
+KALDI  yakalanmamış hata da bloğu düşürür ama sonrakiler çalışır
+       [satır 8] Sıfıra bölme
+KALDI  bilerek kalan blok
+       [satır 42] İddia başarısız: 7 böl 2 dört değil
+       | ara çıktı
+       | sayaç = 0
+geçti  son blok yine çalışır
+3 geçti, 2 kaldı.

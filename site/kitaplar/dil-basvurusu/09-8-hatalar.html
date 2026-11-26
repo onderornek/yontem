@@ -55,10 +55,18 @@
 bitti</code></pre></div>
 <p><code>fırlat ifade</code> bir hata başlatır. <code>Hata(mesaj)</code> ya da <code>Hata(mesaj, tür)</code> bir hata nesnesi oluşturur; nesnenin <code>mesaj</code> ve <code>tür</code> alanları vardır. Kendi sınıflarınızın nesneleri de fırlatılabilir. Çalışma zamanı hataları (sıfıra bölme, sınır aşımı, tip uyuşmazlığı, tanımsız ad) aynı yolla yakalanır; türleri <code>Hata</code>’dır. <code>İddia(koşul, mesaj)</code> koşul yanlışsa hata fırlatır.</p>
 <p>Sözdizimi hataları program çalışmadan önce bildirilir ve yakalanamaz.</p>
+<h3 id="sınama-blokları">Sınama blokları</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici</code></pre></div>
+<p><code>sına</code> bloğu, bildirim bölümüne yazılan adlandırılmış bir testtir. <code>sına</code> bağlamsal bir sözcüktür: yalnızca bildirim bölümünde ve ardından bir metin geldiğinde blok başlatır; başka her yerde sıradan bir addır. Blok, yerel bildirimleri olabilen parametresiz bir prosedür gibidir.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sına <span class="ym">'boş liste toplamı sıfırdır'</span>
+<span class="ya">başla</span>
+  İddia(Toplam([]) = <span class="ys">0</span>)
+<span class="ya">bitir</span></code></pre></div>
+<p>Program normal çalıştırıldığında bloklar çalışmaz. <code>yontem sına program.y</code> her bloğu ayrı bir çalışmada yürütür: programın bildirimleri baştan kurulur, ana blok yerine yalnızca o blok çalışır. Hatasız biten blok geçmiş, yakalanmayan bir hatayla (başarısız bir <code>İddia</code> dahil) ya da sıfır olmayan bir <code>Durdur</code> koduyla biten blok kalmış sayılır. Rapor her blok için bir satır ve sonunda <code>n geçti, m kaldı.</code> satırıdır; kalan bloğun hata iletisi ve blok içinde yazılanlar altında gösterilir. Bir blok kalırsa çıkış kodu 1’dir.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="08-7-siniflar-ve-kayitlar.html"><small>Önceki</small>7. Sınıflar ve kayıtlar</a><a class="sonraki" href="10-9-birimler.html"><small>Sonraki</small>9. Birimler</a></nav>
   </main>
-  <aside class="bu-bolumde" aria-label="Bu bölümde"></aside>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#sınama-blokları">Sınama blokları</a></li></ol></aside>
 </div>
 <footer class="alt">
   <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>

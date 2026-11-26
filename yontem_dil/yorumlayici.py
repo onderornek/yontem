@@ -47,7 +47,7 @@ if not os.path.isdir(KUTUPHANE_DIZINI):   # pip ile kurulduğunda standart birim
 
 
 class Kapsam:
-    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal', 'eleman')
+    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal', 'eleman', 'golge')
 
     def __init__(self, ust=None):
         self.d = {}
@@ -56,6 +56,7 @@ class Kapsam:
         self.sabit = set()
         self.ust = ust
         self.ithal = set()   # birimlerden gelen (gölgelenebilir) adlar
+        self.golge = {}      # birim üyesinin yerini alan ad → gölgelenen çağrılabilir adın tarifi
 
 
 class NesneKapsami:
@@ -128,6 +129,7 @@ class Yorumlayici:
             'miras': self.i_miras, 'lambda': self.i_lambda, 'liste': self.i_liste,
             'sozluk': self.i_sozluk, 'aralik_liste': self.i_aralik, 'boru': self.i_boru,
             'bicim': self.i_bicim, 'ref': self.i_ref, 'kosullu': self.i_kosullu,
+            'bicimli_metin': self.i_bicimli_metin,
         }
         self._deyim = {
             'blok': self.d_blok, 'atama': self.d_atama, 'cagri_deyim': self.d_cagri,
@@ -145,7 +147,8 @@ class Yorumlayici:
             kaynak = f.read()
         return self.calistir(kaynak, yol)
 
-    def calistir(self, kaynak, dosya='<girdi>'):
+    def calistir(self, kaynak, dosya='<girdi>', sina=None):
+        """sina: verilirse ana blok yerine o sıradaki 'sına' bloğu çalışır."""
         agac = Cozumleyici(sozcukle(kaynak, dosya), dosya).dosya_coz()
         if agac.tur == 'birim':
             raise YontemHatasi("Birim dosyaları doğrudan çalıştırılamaz; 'kullan' ile yükleyin", 1, dosya)
@@ -164,6 +167,9 @@ class Yorumlayici:
         for ad, satir in agac.kullan:
             self.kullan(k, ad, satir, dosya)
         self.bildirimleri_isle(agac.bildirimler, k, dosya)
+        if sina is not None:
+            self.cagir(k.d[agac.sinamalar[sina][0]], [])
+            return 0
         try:
             self.yurut_blok(agac.govde.deyimler, k)
         except DonSinyali:
@@ -254,8 +260,48 @@ class Yorumlayici:
         if ad in k.d and ad not in k.ithal and not self.kabuk:
             raise YontemHatasi(f"'{ham or ad}' bu kapsamda zaten tanımlı "
                                f"(Yöntem büyük/küçük harf ve ş/s, ç/c gibi farkları ayırt etmez)")
-        k.ithal.discard(ad)
+        if ad in k.ithal:
+            k.golge[ad] = self.golge_tarif(k.d.get(ad), k)
+            k.ithal.discard(ad)
         k.d[ad] = v
+
+    # ---------------------------------------------------------------- gölgeleme
+    def golge_tarif(self, v, kapsam):
+        """Gölgelenen değer çağrılabilirse tarifi ('yerleşik 'Toplam' fonksiyonunu' gibi); değilse None."""
+        t = type(v)
+        if t is KSinif:
+            return f"'{v.ad}' sınıfını"
+        if t is KFonksiyon:
+            return f"'{v.ad}' fonksiyonunu"
+        if t is YerelFonksiyon:
+            return f"{'yerleşik ' if kapsam is self.kok else ''}'{v.ad}' fonksiyonunu"
+        return None
+
+    def golge_neden(self, k, ad):
+        """Çağrılamayan bir değişken çağrıldığında: aynı adlı çağrılabilir bir adı gölgeliyorsa nedeni anlatan ek."""
+        s = k
+        while s is not None:
+            if type(s) is Kapsam:
+                if ad in s.d:
+                    break
+            elif ad in s.nesne.alanlar or s.nesne.sinif.metod_bul(ad) is not None:
+                return None
+            s = s.ust
+        if s is None:
+            return None
+        bildiren = s
+        tarif = bildiren.golge.get(ad)
+        if tarif is None:
+            u = bildiren.ust
+            while u is not None:
+                if type(u) is Kapsam and ad in u.d:
+                    tarif = u.golge.get(ad) or self.golge_tarif(u.d[ad], u)
+                    break
+                u = u.ust
+        if tarif is None:
+            return None
+        ne, nee = ('sabit', 'sabite') if ad in bildiren.sabit else ('değişken', 'değişkene')
+        return f"burada bir {ne}; aynı adlı {tarif} gölgeliyor (Yöntem büyük/küçük harf ayırt etmez; {nee} başka bir ad verin)"
 
     def bildirim(self, b, k):
         t = b.tur
@@ -871,6 +917,17 @@ class Yorumlayici:
             return self.cagir(f, [v] + [self.deg(a, k) for a in sag.argumanlar], n.satir)
         return self.cagir(self.cagrilan(sag, k), [v], n.satir)
 
+    def i_bicimli_metin(self, n, k):
+        """$'...{ifade:biçim}...': düz parçalar olduğu gibi, ifadeler metne çevrilerek (biçim varsa Biçimle kurallarıyla)."""
+        out = []
+        for p in n.parcalar:
+            if type(p) is str:
+                out.append(p)
+                continue
+            v = self.deg(p[0], k)
+            out.append(self.metne(v) if p[1] is None else self.kok.d['bicimle'].fn(self, ['{:' + p[1] + '}', v]))
+        return ''.join(out)
+
     def i_bicim(self, n, k):
         v = self.deg(n.ifade, k)
         gen = self.deg(n.genislik, k)
@@ -1190,7 +1247,12 @@ class Yorumlayici:
             args = [self.ref_olustur(a, k) if i in f.ref else self.deg(a, k)
                     for i, a in enumerate(n.argumanlar)]
             return f.fn(self, args)
-        return self.cagir(f, [self.deg(a, k) for a in n.argumanlar], n.satir)
+        args = [self.deg(a, k) for a in n.argumanlar]
+        if c.tur == 'ad' and not self.cagrilabilir(f):
+            neden = self.golge_neden(k, c.ad)
+            if neden is not None:
+                raise YontemHatasi(f"{tur_adi(f)} çağrılamaz: '{getattr(c, 'ham', None) or c.ad}' {neden}")
+        return self.cagir(f, args, n.satir)
 
     def cagrilabilir(self, f):
         return type(f) in (KFonksiyon, YerelFonksiyon, BagliMetod, KurucuBagli, KSinif)

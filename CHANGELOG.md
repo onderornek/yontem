@@ -8,6 +8,20 @@ uyumsuz değişiklik içerebilir.
 
 ### Eklenenler
 
+Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabının kodları sınanırken çıkan önerilere dayanır.
+
+- **Çok satırlı metin:** `""" ... """`. Kaçış yoktur; açılıştan sonraki ve kapanıştan önceki boş satır atılır, satırların
+  ortak girintisi silinir. Biçimlendirici bu metinlerin içine dokunmaz.
+- **Biçimli metin:** `$'Merhaba {ad}, {n} mesajın var'`, `$"…"`, `$"""…"""`. `{ifade:biçim}` Biçimle biçimlerini kullanır
+  (`{t:.2}`, `{ad:<8}`); `{{` ve `}}` ayracın kendisidir. Gömülü arka uç henüz desteklemez.
+- **`sına` blokları ve `yontem sına`:** bildirim bölümünde `sına 'ad' başla … bitir`. `yontem sına program.y` her bloğu
+  taze bir çalışmada ayrı ayrı yürütür ve `12 geçti, 1 kaldı.` biçiminde raporlar; kalan bloğun hatasını ve yazdıklarını
+  gösterir. `yontem test` bu programları blok blok sınar (rapor isteğe bağlı olarak `.sina.beklenen` ile karşılaştırılır).
+  `sına` bağlamsal bir sözcüktür: yalnızca ardından metin gelince anlam taşır, `Sına` adlı mevcut adlar bozulmaz.
+- **`Biçimle` hizalaması:** `{:<8}` sola, `{:^8}` ortaya yaslar (`{:8}` eskisi gibi sağa).
+- **`yontem denetle` uyarıları** (katı kip olmadan da): yerleşik bir fonksiyonu, `kullan` ile gelen bir birim üyesini ya
+  da sabiti gölgeleyen değişken, sabit ve parametreler; tanımsız adlar; yerleşik ve kendi fonksiyonlarınızda yanlış
+  argüman sayısı. Uyarılar çıkış kodunu değiştirmez; dil sunucusu da düzenleyicide gösterir.
 - **Yerel yapay zekâ asistanı kılavuzu ve örnekleri** (`asistan_ornekleri/`, `basim/asistan.md`): Ollama ile konuşan
   `Model`, tipli çıktı alan `Kalıp`, SQLite üzerinde anlam araması yapan `Hafıza` ve adımları çizge olarak tanımlayan
   `Akış` birimleri; altı örnek program. Dilde ve derleyicide değişiklik yoktur; birimler `Ağ`, `Veri` ve `Veritabanı`
@@ -16,6 +30,11 @@ uyumsuz değişiklik içerebilir.
 
 ### Düzeltmeler
 
+- Gölgelenmiş bir adla yapılan çağrının hata iletisi nedeni söyler: `ondalık çağrılamaz: 'Toplam' burada bir değişken;
+  aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor` (önceden yalnızca `ondalık çağrılamaz`).
+- `Biçimle` tanınmayan bir biçimde (`{:>3x}`) iç hata yerine kullanılabilecek biçimleri sayan bir ileti verir.
+- Bildirim bölümünde ad yerine anahtar sözcük yazılırsa (`kayıt: metin`) ileti bunu söyler; önceden "'başla'
+  bekleniyordu" deniyordu.
 - Atamadaki tip uyuşmazlığı iletisi, değişkenin adını yazıldığı biçimiyle gösterir (`'yaş'`; önceden `'yas'`).
 
 ### Uyumsuz değişiklikler

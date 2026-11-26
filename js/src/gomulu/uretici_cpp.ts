@@ -786,6 +786,7 @@ export class CppUretici {
   ifadeIc(n: Dugum, k: Kapsam, bek?: Tip, deyim = false): E {
     switch (n.tur) {
       case 'sabitdeger': return this.sabit(n, bek);
+      case 'bicimli_metin': this.hata("Biçimli metin ($'...{ifade}...') gömülü sürümde henüz desteklenmiyor; metinleri + ile birleştirin", n);
       case 'ad': return this.adDeger(n, k, deyim);
       case 'kendi': {
         if (!this.metodBaglami(k)) this.hata("'kendi' yalnızca metodlar içinde kullanılabilir", n);

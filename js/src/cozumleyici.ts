@@ -88,7 +88,8 @@ export class Cozumleyici {
     if (this.opMu('.')) this.ilerle();
     else if (this.t.tip !== 'SON') this.hata("Program sonunda 'bitir.' bekleniyordu");
     if (this.t.tip !== 'SON') this.hata("'bitir.' sonrasında beklenmeyen kod");
-    return N('program', satir, { ad, kullan, bildirimler, govde });
+    const sinamalar = bildirimler.filter(b => b.sina !== undefined).map(b => ({ ad: b.ad, baslik: b.sina, satir: b.satir }));
+    return N('program', satir, { ad, kullan, bildirimler, govde, sinamalar });
   }
 
   birimCoz(): Dugum {
@@ -141,6 +142,8 @@ export class Cozumleyici {
   }
 
   // ---------------------------------------------------------- bildirimler
+  /** 'sına' yalnızca ardından metin gelince test bloğu başlatır */
+  sinaMi(): boolean { return this.t.tip === 'AD' && this.t.deger === 'sina' && this.bak().tip === 'METIN'; }
   bildirimlerCoz(baglam = 'normal'): Dugum[] {
     const lst: Dugum[] = [];
     for (;;) {
@@ -148,7 +151,7 @@ export class Cozumleyici {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') {
+        while (this.t.tip === 'AD' && !this.sinaMi()) {
           if (alt) this.im(1);
           const tok = this.ilerle();
           let tip = null;
@@ -163,12 +166,12 @@ export class Cozumleyici {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') { if (alt) this.im(1); lst.push(this.degiskenGrubu()); this.ayirici(); }
+        while (this.t.tip === 'AD' && !this.sinaMi()) { if (alt) this.im(1); lst.push(this.degiskenGrubu()); this.ayirici(); }
       } else if (this.asMi('tip')) {
         this.im();
         this.ilerle();
         const alt = this.satirSonuMu();
-        while (this.t.tip === 'AD') {
+        while (this.t.tip === 'AD' && !this.sinaMi()) {
           if (alt) this.im(1);
           const tok = this.ilerle();
           this.bekleOp('=');
@@ -180,7 +183,11 @@ export class Cozumleyici {
         }
       } else if (this.asMi('prosedur', 'fonksiyon', 'kurucu')) {
         lst.push(this.altprogramCoz(baglam));
+      } else if (baglam === 'normal' && this.sinaMi()) {
+        lst.push(this.sinaCoz());
       } else return lst;
+      // bölümün sonunda ad yerine anahtar sözcük ('kayıt: metin' gibi): açık bir ileti ver
+      if (this.t.tip === 'AS' && this.bak().tip === 'OP' && [':', ',', '=', ':='].includes(this.bak().deger)) this.bekleAd();
     }
   }
 
@@ -300,6 +307,21 @@ export class Cozumleyici {
 
   direktifMi() {
     return this.t.tip === 'AD' && DIREKTIFLER.has(this.t.deger) && !(this.bak().tip === 'OP' && (this.bak().deger === ':' || this.bak().deger === ','));
+  }
+
+  /** sına 'ad' [yerel bildirimler] başla … bitir — adlandırılmış test bloğu ('yontem sına' ve 'yontem test' çalıştırır).
+   *  Gizli adlı, parametresiz bir prosedür olarak temsil edilir; programın normal çalışmasında çağrılmaz. */
+  sinaSayaci = 0;
+  sinaCoz(): Dugum {
+    this.im();
+    const tok = this.ilerle();
+    const baslik = this.ilerle().deger as string;
+    this.ayirici();
+    const yerel = this.bildirimlerCoz('yerel');
+    const govde = this.birlesikCoz();
+    this.ayirici();
+    const ad = `$sina${++this.sinaSayaci}`;
+    return N('altprogram', tok.satir, { cesit: 'prosedur', ad, ham: `sına '${baslik}'`, sinif_adi: null, params: [], donus: null, direktifler: [], yerel, govde, sina: baslik });
   }
 
   altprogramCoz(baglam: string): Dugum {
@@ -663,10 +685,28 @@ export class Cozumleyici {
       } else return e;
     }
   }
+  /** $'... {ifade:biçim} ...': her yerleştirilen ifade kendi başına sözcüklenip çözümlenir */
+  bicimliMetin(tok: Sozcuk): Dugum {
+    const parcalar = (tok.deger as any[]).map((p) => {
+      if (typeof p === 'string') return p;
+      let sozcukler: Sozcuk[];
+      try { sozcukler = sozcukle(p.kaynak, this.dosya); }
+      catch (e: any) { throw new SozdizimHatasi(`Biçimli metindeki '{${p.kaynak}}': ${String(e.mesaj ?? e.message).replace(/ \(sütun \d+\)$/, '')} (sütun ${p.sutun})`, p.satir, this.dosya); }
+      for (const t of sozcukler) { t.satir = p.satir; t.sutun = p.sutun; }
+      const c = new Cozumleyici(sozcukler, this.dosya);
+      let ifade: Dugum;
+      try { ifade = c.ifade(); }
+      catch (e: any) { if (e instanceof SozdizimHatasi) e.mesaj = e.message = `Biçimli metindeki '{${p.kaynak}}': ${e.mesaj.replace("'<dosya sonu>'", 'ifadenin sonu')}`; throw e; }
+      if (c.t.tip !== 'SON') c.hata(`Biçimli metindeki '{${p.kaynak}}' tek bir ifade olmalı`);
+      return { ifade, ozel: p.ozel };
+    });
+    return N('bicimli_metin', tok.satir, { parcalar });
+  }
   birincilCoz(): Dugum {
     const tok = this.t;
     const s = tok.satir;
     if (tok.tip === 'SAYI' || tok.tip === 'METIN') { this.ilerle(); return N('sabitdeger', s, { deger: tok.deger }); }
+    if (tok.tip === 'BMETIN') { this.ilerle(); return this.bicimliMetin(tok); }
     if (tok.tip === 'AD') { this.ilerle(); return N('ad', s, { ad: tok.deger, ham: tok.ham }); }
     if (tok.tip === 'AS') {
       const k = tok.deger;

@@ -44,6 +44,12 @@
 #             "çift tırnak"     kaçışlar: \n \t \r \\ \" \' \0
 #             #kod              karakter kodu: #10
 #           Örnek: 'a'#10'b'. Metin satır sonunu aşamaz.
+#           Çok satırlı metin: '"""' ... '"""' (kaçış yok, satır sonunu aşar). Açılıştan hemen sonraki
+#           ve kapanıştan hemen önceki boş satır atılır, satırların ortak girintisi silinir.
+# BMETIN    Biçimli metin: '$' ile başlayan tek tırnaklı, çift tırnaklı ya da çok satırlı metin.
+#           İçindeki {ifade} ya da {ifade:biçim} çalışırken değeriyle yer değiştirir; biçim
+#           Biçimle'deki gibidir: [<>^][genişlik][.basamak]. {{ ve }} ayracın kendisidir.
+#             $'Merhaba {ad}'    $"Toplam:\t{t:.2}"    $"""...{x}..."""
 # AYRILMA   Kesme işaretiyle yazılan ayrılma eki:  'den 'dan 'ten 'tan 'nden 'ndan
 # YONELME   Kesme işaretiyle yazılan yönelme eki:  'e 'a 'ye 'ya 'ne 'na
 #           Kesme işareti (' ya da ’) bir SAYI, AD, ')' ya da ']' sözcüğüne bitişikse ve ardından
@@ -93,6 +99,12 @@ bildirim:
     | degisken_bolumu
     | tip_bolumu
     | altprogram
+    | sina_blogu
+
+# Adlandırılmış test bloğu. 'sına' yalnızca ardından METIN geldiğinde anlam taşır (bağlamsal sözcük);
+# programın normal çalışmasında çalışmaz, 'yontem sına' ve 'yontem test' her bloğu ayrı yürütür.
+sina_blogu:
+    | 'sına' METIN ayirici bildirim* blok ayirici
 
 # 'arayüz' bölümünde alt programlar yalnızca başlık olarak yazılır (gövdesiz).
 arayuz_bildirimi:
@@ -339,6 +351,7 @@ arguman:
 birincil:
     | SAYI
     | METIN
+    | BMETIN
     | AD
     | 'doğru'
     | 'yanlış'

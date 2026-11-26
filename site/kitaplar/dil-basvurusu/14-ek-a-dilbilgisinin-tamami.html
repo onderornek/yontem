@@ -48,7 +48,8 @@ birim:    'birim' AD ayirici kullan*
 kullan:   'kullan' ','.AD+ ayirici
 ayirici:  ';' | satır sonu | SON
 
-bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram
+bildirim: sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram | sina_blogu
+sina_blogu: 'sına' METIN ayirici bildirim* blok ayirici
 arayuz_bildirimi:
           sabit_bolumu | degisken_bolumu | tip_bolumu | altprogram_basligi
 sabit_bolumu:    'sabit' (AD [':' tip] ('=' | ':=') ifade ayirici)*
@@ -119,7 +120,7 @@ sonek:    birincil sonek_eki*
 sonek_eki:
           '(' [','.arguman+] ')' | '[' ','.ifade+ ']' | '.' (AD | AS)
 arguman:  ifade [':' ifade [':' ifade]]
-birincil: SAYI | METIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
+birincil: SAYI | METIN | BMETIN | AD | 'doğru' | 'yanlış' | 'boş' | 'kendi'
         | 'eğer' ifade 'ise' ifade 'değilse' ifade
         | 'miras' [AD]
         | ('fonksiyon' | 'prosedür') [parametreler] [':' tip]

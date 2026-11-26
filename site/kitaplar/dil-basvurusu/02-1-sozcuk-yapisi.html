@@ -166,7 +166,18 @@
 </tbody>
 </table>
 </div>
-<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bir metin satır sonunu aşamaz.</p>
+<p>Yan yana yazılan parçalar tek metin olur: <code>'a'#10'b'</code> üç karakterlik bir metindir. Bu biçimlerdeki bir metin satır sonunu aşamaz.</p>
+<p><strong>Çok satırlı metin</strong> <code>"""</code> ile açılıp kapanır ve satır sonlarını içerebilir. İçinde kaçış yoktur: <code>\n</code>, <code>{</code> ve tırnaklar olduğu gibi kalır. Açılıştan hemen sonraki ve kapanıştan hemen önceki satır boşsa atılır; satırların ortak girintisi silinir. Böylece metin programın girintisine uyarak yazılabilir:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>istem := &quot;&quot;&quot;
+  Sen yardımsever bir asistansın.
+    - Kısa yanıt ver.
+  &quot;&quot;&quot;</code></pre></div>
+<p>Bu metin iki satırdır; ikinci satır iki boşlukla başlar.</p>
+<p><strong>Biçimli metin</strong>, önüne <code>$</code> konan bir metindir: <code>$'…'</code>, <code>$"…"</code> ya da <code>$"""…"""</code>. İçindeki <code>{ifade}</code> çalışırken ifadenin değeriyle yer değiştirir; değer <code>yaz</code> ile yazılacağı biçimde metne çevrilir. İfadeden sonra iki nokta ile <code>Biçimle</code> biçimi yazılabilir: <code>{x:8}</code> genişlik (sağa yaslı), <code>{x:&lt;8}</code> sola, <code>{x:^8}</code> ortaya yaslı, <code>{x:.2}</code> ondalık basamak, <code>{x:8.2}</code> ikisi. Ayracın kendisi <code>{{</code> ve <code>}}</code> ile yazılır.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yaz($<span class="ym">'Merhaba {ad}, {n} mesajın var'</span>, <span class="ys">1</span>)
+yaz($<span class="ym">'Toplam: {fiyat * adet:.2} TL'</span>, <span class="ys">1</span>)
+yaz($<span class="ym">'[{ad:&lt;6}] {{ayraç}}'</span>, <span class="ys">1</span>)</code></pre></div>
+<p><code>{}</code> içine tek bir ifade yazılır. Tek tırnaklı biçimli metnin içinde metin gerekiyorsa tırnak yine iki kez yazılır (<code>$'{BüyükHarf(''x'')}'</code>) ya da çift tırnak kullanılır (<code>$'{BüyükHarf("x")}'</code>). Biçimli metinler gömülü arka uçta henüz desteklenmez.</p>
 <h3 id="ekler">Ekler</h3>
 <p>Türkçede olduğu gibi sayılara, adlara ve ayraçlı ifadelere kesme işaretiyle ek getirilebilir. Dil iki eki tanır ve yalnızca sayan döngüde kullanır:</p>
 <div class="tablo">

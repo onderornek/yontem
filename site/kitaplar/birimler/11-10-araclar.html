@@ -56,6 +56,39 @@ yontem test</code></pre></div>
   yaz(Topla(<span class="ys">10</span>, -<span class="ys">4</span>), <span class="ys">1</span>)
 <span class="ya">bitir</span>.</code></pre></div>
 <p><code>iddia(koşul, mesaj)</code> koşul yanlışsa programı hatayla durdurur; test başarısız sayılır. Beklenen çıktıyı elle yazmak yerine <code>yontem test --guncelle</code> ile şimdiki çıktıdan üretebilirsiniz; üretilen dosyayı gözden geçirmenizi öneririz. <code>testler/</code> klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur. Aynı komut Python yorumlayıcısında da vardır: <code>python3 yontem.py test</code>.</p>
+<p><strong>Adlandırılmış test blokları: <code>sına</code> ve <code>yontem sına</code></strong></p>
+<p>İddia zinciriyle yazılan bir testte ilk başarısız <code>İddia</code> programı durdurur ve sonraki vakalar hiç çalışmaz. Birbirinden bağımsız vakaları <code>sına</code> bloklarına yazarsanız her biri ayrı çalışır ve ayrı raporlanır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> BölmeTesti
+
+<span class="ya">fonksiyon</span> Bölme(a, b: <span class="ya">tamsayı</span>): <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  sonuç := a <span class="ya">böl</span> b
+<span class="ya">bitir</span>
+
+sına <span class="ym">'tamsayı bölme aşağı yuvarlar'</span>
+<span class="ya">başla</span>
+  İddia(Bölme(<span class="ys">7</span>, <span class="ys">2</span>) = <span class="ys">3</span>, <span class="ym">'7 böl 2'</span>)
+<span class="ya">bitir</span>
+
+sına <span class="ym">'sıfıra bölme hata verir'</span>
+<span class="ya">değişken</span> hata: <span class="ya">mantıksal</span>
+<span class="ya">başla</span>
+  <span class="ya">dene</span>
+    Bölme(<span class="ys">1</span>, <span class="ys">0</span>)
+  <span class="ya">yakala</span> (h)
+    hata := <span class="ya">doğru</span>
+  <span class="ya">bitir</span>
+  İddia(hata, <span class="ym">'hata bekleniyordu'</span>)
+<span class="ya">bitir</span>
+
+<span class="ya">başla</span>
+  yaz(Bölme(<span class="ys">9</span>, <span class="ys">3</span>), <span class="ys">1</span>)
+<span class="ya">bitir</span>.</code></pre></div>
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem sına bolme_testi.y</code></pre></div>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>geçti  tamsayı bölme aşağı yuvarlar
+geçti  sıfıra bölme hata verir
+2 geçti, 0 kaldı.</code></pre></div>
+<p>Kalan bir blok için hata iletisi ve blok içinde yazılanlar gösterilir; sonraki bloklar yine çalışır. Her blok, programın baştan kurulduğu ayrı bir çalışmada yürür: bir bloğun değiştirdiği değişkeni sonraki blok görmez. Program normal çalıştırıldığında bloklar çalışmaz, yalnızca ana blok çalışır. <code>yontem test</code> bu tür programları blok blok sınar; raporun yanında <code>.sina.beklenen</code> dosyası varsa rapor onunla karşılaştırılır. <code>sına</code> bildirim bölümüne yazılır ve yalnızca ardından bir metin geldiğinde anlam taşır; <code>Sına</code> adını kullanan mevcut programlar etkilenmez. Python yorumlayıcısında: <code>python3 yontem.py sına bolme_testi.y</code>.</p>
 <p><strong>Katı kip: <code>{$katı}</code> ve <code>yontem denetle</code></strong></p>
 <p>Yöntem tipleri olağan durumda program çalışırken denetler: <code>tamsayı</code> bir değişkene metin atayan satır, ancak o satıra gelindiğinde hata verir. Dosyanın başına <code>{$katı}</code> yazarsanız aynı denetim derleme zamanında yapılır: program hiç çalışmadan, bütün tip hataları birden listelenir.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> Sepet
@@ -107,8 +140,17 @@ Tip hatası [sepet.y, satır 18] Tanımsız tanımlayıcı: 'toplm'
 <p>Sınıf ve kayıt tipleri de izlenir. Tipi <code>Daire</code> olan bir değişkende olmayan bir alana ya da metoda erişmek (<code>d.çap</code>), bir alana uymayan değer atamak (<code>d.yarıçap := 'iki'</code>), bir metodu ya da kurucuyu eksik veya yanlış tipte argümanla çağırmak ve bir sınıfın nesnesini ilgisiz bir sınıfın değişkenine atamak derleme hatasıdır. Alt sınıfın nesnesi üst sınıf tipindeki değişkene atanabilir (<code>şekil := daire</code>); ama o değişken üzerinden yalnızca üst sınıfın üyelerine erişilir. Alt sınıfa özgü bir üyeye ulaşmak için değeri alt sınıf tipinde bir değişkene atayabilirsiniz.</p>
 <p>Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildirilmiş değişkenler, parametreler, alanlar ve elemanlar, dönüş tipi bildirilmiş fonksiyonlar ve metodlar, sonucu belli olan yerleşik işlevler (<code>Uzunluk</code>, <code>Metin</code>, <code>Tamsayı</code>, <code>BüyükHarf</code>, <code>Ayır</code>, <code>İçerir</code> gibi), <code>Takvim</code>, <code>Desen</code>, <code>Güvenlik</code> ve <code>Ağ</code> birimlerinin işlevleri (<code>TarihYaz</code> bir metin, <code>GünFarkı</code> bir tamsayı, <code>Eşleşir</code> bir mantıksal değer verir) ve bunlarla kurulan ifadeler. Yerleşik işlevler ve yerleşik birimlerin bütün işlevleri için argüman sayısı da denetlenir: <code>TarihYap(2026, 1)</code> derleme hatasıdır. Sonucu argümana göre değişen işlevler (<code>Maks</code>, <code>Yuvarla</code>, <code>Bul</code>) ile <code>Pencere</code>, <code>Meşale</code> gibi birimlerin döndürdüğü nesneler gibi tipi önceden bilinemeyen değerler eskisi gibi çalışırken denetlenir; katı kip çalışma zamanı denetimlerini kaldırmaz, onların önüne bir denetim daha koyar. Eleman tipi bildirimi yalnızca derleme zamanında denetlenir: çalışırken bir listeye konan elemanların tipine bakılmaz. Bir değişkeni bilerek her tipe açık bırakmak için tipini <code>herhangi</code> yazabilirsiniz.</p>
 <p>Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için <code>yontem.json</code> dosyasına <code>"kati": true</code> eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.</p>
-<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem denetle .            # programları çalıştırmadan derler, hataları listeler
+<div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem denetle .            # programları çalıştırmadan derler, hataları ve uyarıları listeler
 yontem denetle . --kati     # yönergesi olmayan programları da katı kipte denetler</code></pre></div>
+<p><code>yontem denetle</code> katı kip olmadan da üç tür sorunu <strong>uyarı</strong> olarak bildirir, çünkü bunlar program o satıra geldiğinde kesin hata verir ya da yanlış davranır:</p>
+<ul>
+<li><strong>Gölgelenen adlar.</strong> Adlar büyük/küçük harfe duyarsız olduğu için <code>toplam: ondalık</code> bildirimi yerleşik <code>Toplam</code> fonksiyonunu, <code>kaydırıcı := …</code> bildirimi <code>Pencere</code> birimindeki <code>Kaydırıcı</code>’yı gölgeler; o kapsamda <code>Toplam(L)</code> artık değişkeni çağırmaya çalışır. Uyarı bildirimin satırını gösterir; çalışırken gelen hata da nedenini söyler: <code>ondalık çağrılamaz: 'Toplam' burada bir değişken; aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor</code>.</li>
+<li><strong>Tanımsız adlar</strong>, örneğin hiç bildirilmemiş bir <code>BÜTÇE</code>.</li>
+<li><strong>Yanlış argüman sayısı</strong>, yerleşik işlevlerde (<code>Say(L, x)</code>: <code>Say</code> tek argüman alır) ve kendi fonksiyonlarınızda.</li>
+</ul>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>Uyarı [ana.y, satır 6] 'toplam' adı yerleşik 'Toplam' fonksiyonunu gölgeliyor; bu kapsamda o ad bu değişkeni gösterir, çağrılamaz (Yöntem büyük/küçük harf ayırt etmez)
+0 program temiz, 1 programda uyarı (1 uyarı).</code></pre></div>
+<p>Uyarılar çıkış kodunu değiştirmez; katı kipte tanımsız adlar ve argüman sayıları zaten tip hatasıdır. VS Code eklentisi uyarıları da yazarken gösterir.</p>
 <p><code>yontem denetle</code> sürekli tümleştirmede ve bir projeyi katı kipe geçirmeden önce ne kadar iş çıkacağını görmek için kullanışlıdır. VS Code eklentisi katı dosyalardaki tip hatalarını yazarken gösterir.</p>
 <p><strong>Biçimlendirme: <code>yontem bicimle</code></strong></p>
 <div class="kod kabuk"><span class="kod-etiket">Terminal</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yontem bicimle .             # klasördeki tüm .y dosyalarını düzenler

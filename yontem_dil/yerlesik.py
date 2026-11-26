@@ -5,6 +5,7 @@ import csv
 import json
 import math
 import os
+import re
 import random
 import time
 
@@ -85,6 +86,9 @@ def _cagir(y, f, *args):
 
 
 # ======================================================================== genel
+_BICIM_OZEL = re.compile(r"([<>^]?)(\d*)(?:\.(\d+))?\Z")
+
+
 def kur(y):
     d = y.kok.d
     G = {}
@@ -441,7 +445,7 @@ def kur(y):
     @ekle('Biçimle')
     @yf('Biçimle', 1)
     def _bicimle(y, sablon, *args):
-        """Biçimle('{} + {} = {}', 1, 2, 3); {:.2} ondalık basamak, {:8} genişlik, {:8.2} ikisi."""
+        """Biçimle('{} + {} = {}', 1, 2, 3); {:.2} ondalık basamak, {:8} genişlik, {:8.2} ikisi; {:<8} sola, {:^8} ortaya yaslar."""
         out, i, ai = [], 0, 0
         while i < len(sablon):
             c = sablon[i]
@@ -454,19 +458,26 @@ def kur(y):
                     raise YontemHatasi("Biçimle: yetersiz argüman")
                 v = args[ai]
                 ai += 1
-                gen, hassas = 0, None
+                gen, hassas, hiza = 0, None, '>'
                 if ozel.startswith(':'):
-                    ozel = ozel[1:]
-                    if '.' in ozel:
-                        g, h = ozel.split('.', 1)
-                        gen, hassas = int(g or 0), int(h)
-                    elif ozel:
-                        gen = int(ozel)
+                    # {:[<>^][genişlik][.basamak]}
+                    e = _BICIM_OZEL.match(ozel[1:])
+                    if e is None:
+                        raise YontemHatasi(f"Biçimle: '{{{ozel}}}' tanınmıyor; {{}}, {{:8}}, {{:<8}}, {{:^8}}, {{:.2}}, {{:8.2}} kullanılabilir")
+                    hiza = e.group(1) or '>'
+                    gen = int(e.group(2)) if e.group(2) else 0
+                    hassas = int(e.group(3)) if e.group(3) is not None else None
                 if hassas is not None and type(v) in (int, float):
                     metin_ = f"{float(v):.{hassas}f}"
                 else:
                     metin_ = y.metne(v)
-                out.append(metin_.rjust(gen))
+                bosluk = max(0, gen - len(metin_))
+                if hiza == '<':
+                    out.append(metin_ + ' ' * bosluk)
+                elif hiza == '^':
+                    out.append(' ' * (bosluk // 2) + metin_ + ' ' * (bosluk - bosluk // 2))
+                else:
+                    out.append(metin_.rjust(gen))
                 i = j + 1
             else:
                 out.append(c)

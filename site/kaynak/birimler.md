@@ -831,6 +831,51 @@ bitir.
 
 `iddia(koşul, mesaj)` koşul yanlışsa programı hatayla durdurur; test başarısız sayılır. Beklenen çıktıyı elle yazmak yerine `yontem test --guncelle` ile şimdiki çıktıdan üretebilirsiniz; üretilen dosyayı gözden geçirmenizi öneririz. `testler/` klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur. Aynı komut Python yorumlayıcısında da vardır: `python3 yontem.py test`.
 
+**Adlandırılmış test blokları: `sına` ve `yontem sına`**
+
+İddia zinciriyle yazılan bir testte ilk başarısız `İddia` programı durdurur ve sonraki vakalar hiç çalışmaz. Birbirinden bağımsız vakaları `sına` bloklarına yazarsanız her biri ayrı çalışır ve ayrı raporlanır:
+
+```pascal
+program BölmeTesti
+
+fonksiyon Bölme(a, b: tamsayı): tamsayı
+başla
+  sonuç := a böl b
+bitir
+
+sına 'tamsayı bölme aşağı yuvarlar'
+başla
+  İddia(Bölme(7, 2) = 3, '7 böl 2')
+bitir
+
+sına 'sıfıra bölme hata verir'
+değişken hata: mantıksal
+başla
+  dene
+    Bölme(1, 0)
+  yakala (h)
+    hata := doğru
+  bitir
+  İddia(hata, 'hata bekleniyordu')
+bitir
+
+başla
+  yaz(Bölme(9, 3), 1)
+bitir.
+```
+
+```bash
+yontem sına bolme_testi.y
+```
+
+```
+geçti  tamsayı bölme aşağı yuvarlar
+geçti  sıfıra bölme hata verir
+2 geçti, 0 kaldı.
+```
+
+Kalan bir blok için hata iletisi ve blok içinde yazılanlar gösterilir; sonraki bloklar yine çalışır. Her blok, programın baştan kurulduğu ayrı bir çalışmada yürür: bir bloğun değiştirdiği değişkeni sonraki blok görmez. Program normal çalıştırıldığında bloklar çalışmaz, yalnızca ana blok çalışır. `yontem test` bu tür programları blok blok sınar; raporun yanında `.sina.beklenen` dosyası varsa rapor onunla karşılaştırılır. `sına` bildirim bölümüne yazılır ve yalnızca ardından bir metin geldiğinde anlam taşır; `Sına` adını kullanan mevcut programlar etkilenmez. Python yorumlayıcısında: `python3 yontem.py sına bolme_testi.y`.
+
 **Katı kip: `{$katı}` ve `yontem denetle`**
 
 Yöntem tipleri olağan durumda program çalışırken denetler: `tamsayı` bir değişkene metin atayan satır, ancak o satıra gelindiğinde hata verir. Dosyanın başına `{$katı}` yazarsanız aynı denetim derleme zamanında yapılır: program hiç çalışmadan, bütün tip hataları birden listelenir.
@@ -900,9 +945,22 @@ Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildiril
 Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için `yontem.json` dosyasına `"kati": true` eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.
 
 ```bash
-yontem denetle .            # programları çalıştırmadan derler, hataları listeler
+yontem denetle .            # programları çalıştırmadan derler, hataları ve uyarıları listeler
 yontem denetle . --kati     # yönergesi olmayan programları da katı kipte denetler
 ```
+
+`yontem denetle` katı kip olmadan da üç tür sorunu **uyarı** olarak bildirir, çünkü bunlar program o satıra geldiğinde kesin hata verir ya da yanlış davranır:
+
+- **Gölgelenen adlar.** Adlar büyük/küçük harfe duyarsız olduğu için `toplam: ondalık` bildirimi yerleşik `Toplam` fonksiyonunu, `kaydırıcı := …` bildirimi `Pencere` birimindeki `Kaydırıcı`'yı gölgeler; o kapsamda `Toplam(L)` artık değişkeni çağırmaya çalışır. Uyarı bildirimin satırını gösterir; çalışırken gelen hata da nedenini söyler: `ondalık çağrılamaz: 'Toplam' burada bir değişken; aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor`.
+- **Tanımsız adlar**, örneğin hiç bildirilmemiş bir `BÜTÇE`.
+- **Yanlış argüman sayısı**, yerleşik işlevlerde (`Say(L, x)`: `Say` tek argüman alır) ve kendi fonksiyonlarınızda.
+
+```
+Uyarı [ana.y, satır 6] 'toplam' adı yerleşik 'Toplam' fonksiyonunu gölgeliyor; bu kapsamda o ad bu değişkeni gösterir, çağrılamaz (Yöntem büyük/küçük harf ayırt etmez)
+0 program temiz, 1 programda uyarı (1 uyarı).
+```
+
+Uyarılar çıkış kodunu değiştirmez; katı kipte tanımsız adlar ve argüman sayıları zaten tip hatasıdır. VS Code eklentisi uyarıları da yazarken gösterir.
 
 `yontem denetle` sürekli tümleştirmede ve bir projeyi katı kipe geçirmeden önce ne kadar iş çıkacağını görmek için kullanışlıdır. VS Code eklentisi katı dosyalardaki tip hatalarını yazarken gösterir.
 

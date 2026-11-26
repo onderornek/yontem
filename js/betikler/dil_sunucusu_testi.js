@@ -33,7 +33,7 @@ tip
   bitir
 
 değişken
-  toplam: tamsayı
+  tutar: tamsayı
   an: tamsayı
 
 fonksiyon İkiKat(sayı: tamsayı): tamsayı
@@ -44,9 +44,9 @@ başla
 bitir
 
 başla
-  toplam := Topla(2, 3)
+  tutar := Topla(2, 3)
   an := Şimdi
-  yaz(TarihYaz(an) + ' ' + Uzunluk('abc') + ' ' + İkiKat(toplam), 1)
+  yaz(TarihYaz(an) + ' ' + Uzunluk('abc') + ' ' + İkiKat(tutar), 1)
 bitir.
 `;
 fs.writeFileSync(path.join(dizin, 'Hesap.y'), HESAP);
@@ -89,12 +89,12 @@ const degistir = async (metin) => { const t = taniBekle(); bildir('textDocument/
   denetle('doğru programda tanı yok', (await t).length === 0, tanilar.get(uri));
 
   let d = await degistir(ANA.replace('Topla(2, 3)', 'Toplaa(2, 3)'));
-  denetle('yazım hatası uyarısı', d.length === 1 && d[0].severity === 2 && /Toplaa/.test(d[0].message) && d[0].range.start.line === 20 && d[0].range.start.character === 12, d);
-  d = await degistir(ANA.replace('toplam := Topla(2, 3)', 'toplam := Topla(2, 3'));
+  denetle('yazım hatası uyarısı', d.length === 1 && d[0].severity === 2 && /Toplaa/.test(d[0].message) && d[0].range.start.line === 20 && d[0].range.start.character === 11, d);
+  d = await degistir(ANA.replace('tutar := Topla(2, 3)', 'tutar := Topla(2, 3'));
   denetle('sözdizimi hatası: hata olarak, doğru satırda', d.length === 1 && d[0].severity === 1 && d[0].range.start.line === 21, d);
 
   // Sözdizimi bozukken de son geçerli çözümlemeyle çalışır
-  let h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'İkiKat(toplam)') });
+  let h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'İkiKat(tutar)') });
   denetle('bozuk belgede imza (son geçerli çözümleme)', h && /fonksiyon İkiKat\(sayı: tamsayı\): tamsayı/.test(h.contents.value), h);
   d = await degistir(ANA);
   denetle('düzeltince tanılar temizlenir', d.length === 0, d);
@@ -107,7 +107,7 @@ const degistir = async (metin) => { const t = taniBekle(); bildir('textDocument/
   denetle('yerel değişkenin imzası', h && /değişken ara: tamsayı/.test(h.contents.value), h);
   h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'sayı * 2') });
   denetle('parametrenin imzası', h && /parametre sayı: tamsayı/.test(h.contents.value), h);
-  h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'başla\n  toplam') });
+  h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'başla\n  tutar') });
   denetle('anahtar sözcükte imza yok', h === null, h);
 
   h = await istek('textDocument/hover', { textDocument: { uri }, position: konum(ANA, 'Topla(2') });
@@ -118,7 +118,7 @@ const degistir = async (metin) => { const t = taniBekle(); bildir('textDocument/
   denetle('tanıma git: birim adından birim dosyasına', tb && tb.uri === hesapUri && tb.range.start.line === 0, tb);
   let tn = await istek('textDocument/definition', { textDocument: { uri }, position: konum(ANA, 'Topla(2') });
   denetle('tanıma git: birimdeki gövde', tn && tn.uri === hesapUri && tn.range.start.line === 8 && tn.range.start.character === 10, tn);
-  tn = await istek('textDocument/definition', { textDocument: { uri }, position: konum(ANA, 'İkiKat(toplam)') });
+  tn = await istek('textDocument/definition', { textDocument: { uri }, position: konum(ANA, 'İkiKat(tutar)') });
   denetle('tanıma git: aynı dosyadaki fonksiyon', tn && tn.uri === uri && tn.range.start.line === 12, tn);
   tn = await istek('textDocument/definition', { textDocument: { uri }, position: konum(ANA, 'dön ara', 5) });
   denetle('tanıma git: yerel değişken', tn && tn.uri === uri && tn.range.start.line === 13, tn);
@@ -130,7 +130,7 @@ const degistir = async (metin) => { const t = taniBekle(); bildir('textDocument/
   await degistir(ek);
   let tm = await istek('textDocument/completion', { textDocument: { uri }, position: satirSonu(ek, 'an := Tar') });
   const adlar = tm.map(x => x.label);
-  denetle('tamamlama: birim üyeleri, yerleşikler, belge simgeleri ve anahtar sözcükler', ['TarihYaz', 'Topla', 'KDV', 'toplam', 'İkiKat', 'Uzunluk', 'değilse', 'Nokta'].every(a => adlar.includes(a)), adlar.length);
+  denetle('tamamlama: birim üyeleri, yerleşikler, belge simgeleri ve anahtar sözcükler', ['TarihYaz', 'Topla', 'KDV', 'tutar', 'İkiKat', 'Uzunluk', 'değilse', 'Nokta'].every(a => adlar.includes(a)), adlar.length);
   denetle('tamamlama: başka kapsamın yerelleri önerilmez', !adlar.includes('ara') && !adlar.includes('sayı'), adlar.filter(a => a === 'ara' || a === 'sayı'));
   ek = ANA.replace("  an := Şimdi\n", "  an := Şimdi\n  an := Takvim.\n");
   await degistir(ek);
@@ -144,7 +144,7 @@ const degistir = async (metin) => { const t = taniBekle(); bildir('textDocument/
 
   const sm = await istek('textDocument/documentSymbol', { textDocument: { uri } });
   const nokta = sm.find(x => x.name === 'Nokta');
-  denetle('belge simgeleri', sm.map(x => x.name).join(',') === 'Nokta,toplam,an,İkiKat' && nokta.children.map(x => x.name).join(',') === 'x,y' && sm[3].range.end.line > sm[3].range.start.line, sm.map(x => x.name));
+  denetle('belge simgeleri', sm.map(x => x.name).join(',') === 'Nokta,tutar,an,İkiKat' && nokta.children.map(x => x.name).join(',') === 'x,y' && sm[3].range.end.line > sm[3].range.start.line, sm.map(x => x.name));
 
   const dagin = ANA.replace('  ara := sayı * 2', 'ara := sayı * 2   ');
   await degistir(dagin);

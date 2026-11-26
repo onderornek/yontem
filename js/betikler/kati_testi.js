@@ -70,11 +70,12 @@ fs.writeFileSync(path.join(dizin, 'gevsek.y'), HATALI.replace('{$katı}\n', ''))
 r = y(['gevsek.y']);
 denetle('yönerge yoksa derleme zamanı denetimi yapılmaz', r.status === 1 && /^Çalışma hatası/.test(r.stderr) && !/Tip hatası/.test(r.stderr), r.stderr);
 r = y(['denetle', 'gevsek.y']);
-denetle('denetle: yönergesiz program temiz sayılır', r.status === 0 && /1 program temiz/.test(r.stdout), r);
+denetle('denetle: yönergesiz programda tip hatası yok; tanımsız ad ve argüman sayısı uyarı olarak bildirilir', r.status === 0 && /0 program temiz, 1 programda uyarı \(4 uyarı\)/.test(r.stdout)
+  && /Uyarı \[gevsek\.y, satır 41\] Tanımsız tanımlayıcı: 'yokBöyleBirAd'/.test(r.stderr) && /Uyarı \[gevsek\.y, satır 37\] 'Topla' en çok 2 argüman alır, 3 verildi/.test(r.stderr) && !/Tip hatası/.test(r.stderr), r);
 r = y(['denetle', 'gevsek.y', '--kati']);
 denetle('denetle --kati: yönerge olmadan da denetler', r.status === 2 && (r.stderr.match(/Tip hatası/g) || []).length === 21 && /1 programda hata/.test(r.stdout), r.stderr);
 r = y(['denetle', '.']);
-denetle('denetle: klasör, birim dosyaları ayrı sayılır', r.status === 2 && /1 program temiz, 4 programda hata \(1 birim dosyası/.test(r.stdout), r.stdout);
+denetle('denetle: klasör, birim dosyaları ayrı sayılır', r.status === 2 && /0 program temiz, 1 programda uyarı, 4 programda hata \(4 uyarı\) \(1 birim dosyası/.test(r.stdout), r.stdout);
 
 // Birimdeki yönerge yalnızca o birimi katı yapar
 fs.writeFileSync(path.join(dizin, 'Gevsek.y'), "birim Gevşek\n\narayüz\n  fonksiyon F(x)\n\nuygulama\n\nfonksiyon F(x)\nbaşla\n  dön x\nbitir\n\nbitir.\n");
@@ -107,11 +108,21 @@ r = y(['denetle', 'ornekler', 'testler', 'kitap_ornekleri', 'birim_kilavuzu', 'g
 const bulunan = (r.stderr.match(/Tip hatası \[[^\]]*\]/g) || []).map(s => s.replace(/\\/g, '/')).sort();
 denetle('depodaki programlarda yanlış alarm yok', JSON.stringify(bulunan) === JSON.stringify(['Tip hatası [guvenlik_ornekleri/07_hatalar.y, satır 18]', 'Tip hatası [kitap_ornekleri/b3h.y, satır 3]', 'Tip hatası [ml_kilavuz/17_evrisimli_ag.y, satır 38]', 'Tip hatası [testler/desen_testi.y, satır 56]', 'Tip hatası [testler/dil_testi.y, satır 175]', 'Tip hatası [testler/takvim_testi.y, satır 57]']), bulunan);
 
+// Gölgelenen adlar: denetle her gölgelemeyi uyarı olarak bildirir (katı kipten bağımsız)
+r = y(['denetle', 'testler/golge_testi.y'], KOK);
+const golgeler = (r.stderr.match(/^Uyarı \[[^\]]*\] '[^']*' adı .*gölgeliyor/gm) || []).length;
+denetle('denetle: gölgelenen yerleşik, birim üyesi ve sabitler uyarı olarak bildirilir', r.status === 0 && golgeler === 5
+  && /satır 22\] 'uzunluk' adı yerleşik 'Uzunluk' fonksiyonunu gölgeliyor; bu kapsamda o ad bu parametreyi gösterir/.test(r.stderr)
+  && /satır 9\] 'eşleşir' adı 'Eşleşir' fonksiyonunu gölgeliyor/.test(r.stderr) && /0 program temiz, 1 programda uyarı \(5 uyarı\)/.test(r.stdout), r);
+
 // Dil sunucusu ve hata ayıklayıcı
 const { cozumle } = require(path.join(__dirname, '..', 'dist', 'dil_hizmeti.js'));
 const { birimBulucu } = require(CLI);
 const a = cozumle(HATALI, path.join(dizin, 'hatali.y'), (ad) => birimBulucu(path.join(dizin, 'hatali.y')).bul(ad));
 denetle('dil sunucusu tip hatalarının hepsini gösterir', a.tanilar.filter(t => !t.uyari).length === 21 && a.tanilar.some(t => t.satir === 28 && /metin bir değer atanamaz/.test(t.mesaj)), a.tanilar.map(t => t.satir + ':' + t.mesaj));
+const gk = fs.readFileSync(path.join(KOK, 'testler', 'golge_testi.y'), 'utf-8'), gy = path.join(KOK, 'testler', 'golge_testi.y');
+const ga = cozumle(gk, gy, (ad) => birimBulucu(gy).bul(ad));
+denetle('dil sunucusu gölgeleme uyarılarını gösterir', ga.tanilar.filter(t => t.uyari && /gölgeliyor/.test(t.mesaj)).length === 5 && !ga.tanilar.some(t => !t.uyari), ga.tanilar.map(t => t.satir + ':' + t.mesaj));
 r = y(['ayikla', 'hatali.y']);
 denetle('hata ayıklayıcı katı kip hatalarını bildirir', r.status === 2 && /21 tip hatası/.test(r.stderr), r);
 
