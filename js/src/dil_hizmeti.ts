@@ -85,7 +85,7 @@ function simgeleriTopla(agac: Dugum, s: Sozcuk[], dosya?: string): { simgeler: S
     if (!d || typeof d !== 'object') return;
     if (Array.isArray(d)) { for (const x of d) gez(x); return; }
     if (typeof d.tur === 'string') {
-      if (d.tur === 'icin' || d.tur === 'her') { adlar.add(d.ad); if (d.ad2) adlar.add(d.ad2); }
+      if (d.tur === 'icin' || d.tur === 'her' || d.tur === 'ayni_anda') { adlar.add(d.ad); if (d.ad2) adlar.add(d.ad2); }
       else if (d.tur === 'param' || d.tur === 'sabit') adlar.add(d.ad);
       else if (d.tur === 'degisken' || d.tur === 'yerel_degisken') for (const a of d.adlar) adlar.add(a);
       else if (d.tur === 'dene' && d.yakala_ad) adlar.add(d.yakala_ad);

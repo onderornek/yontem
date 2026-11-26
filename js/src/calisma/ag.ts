@@ -61,7 +61,8 @@ function basliklariHazirla(v: any): [string, string][] {
   return out;
 }
 
-function istek(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, sureHam: any): Map<string, any> {
+/** İsteği denetleyip konağa verilecek biçime getirir ('aynı anda' gövdesinde istek bu noktada bekletilir) */
+function istekHazirla(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, sureHam: any): { istek: HttpIstek; sureHam: any } {
   const yontem = metinMi(yontemHam, 'yöntem').toUpperCase();
   if (!YONTEMLER.includes(yontem)) hata(`Bilinmeyen HTTP yöntemi: '${yontemHam}' (GET, POST, PUT, PATCH, DELETE, HEAD)`);
   const adres = metinMi(adresHam, 'adres');
@@ -78,7 +79,10 @@ function istek(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, 
   else hata(`'zaman aşımı' sayı bekler, ${turAdi(sureHam)} verildi`);
   if (!(sure >= 1 && sure <= 300)) hata("'zaman aşımı' 1 ile 300 saniye arasında olmalı");
   if (!$.konak || !$.konak.http) hata('Bu ortamda ağ erişimi yok');
-  const yn: HttpYanit = $.konak.http({ yontem, adres, basliklar, govde, zamanAsimi: sure });
+  return { istek: { yontem, adres, basliklar, govde, zamanAsimi: sure }, sureHam };
+}
+function istekSonuc(h: { istek: HttpIstek; sureHam: any }, yn: HttpYanit): Map<string, any> {
+  const adres = h.istek.adres, sureHam = h.sureHam;
   if (yn.hata === 'zaman') hata(`Ağ hatası: ${adres} zaman aşımına uğradı (${metne(sureHam)} sn)`);
   if (yn.hata === 'boyut') hata('Ağ hatası: yanıt çok büyük (en çok 10 MB)');
   if (yn.hata || typeof yn.durum !== 'number') hata(`Ağ hatası: ${adres} adresine bağlanılamadı`);
@@ -87,12 +91,31 @@ function istek(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, 
   return new Map<string, any>([['durum', BigInt(yn.durum)], ['gövde', yn.govde ?? ''], ['başlıklar', b]]);
 }
 
+function istek(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, sureHam: any): Map<string, any> {
+  const h = istekHazirla(yontemHam, adresHam, govdeHam, basliklarHam, sureHam);
+  return istekSonuc(h, $.konak.http(h.istek));
+}
+function* istekG(yontemHam: any, adresHam: any, govdeHam: any, basliklarHam: any, sureHam: any): Generator<HttpIstek, Map<string, any>, HttpYanit> {
+  const h = istekHazirla(yontemHam, adresHam, govdeHam, basliklarHam, sureHam);
+  return istekSonuc(h, yield h.istek);
+}
+
 function agModulu(): Record<string, any> {
   const U: Record<string, any> = { $ad: 'Ağ' };
   const uye = (ad: string, enAz: number, enCok: number, f: (...a: any[]) => any) => { U[katla(ad)] = y(ad, enAz, enCok, f); };
+  // 'aynı anda' gövdesinde bekleyebilen üyeler: üreteç sürümleri ($g) aynı denetimleri yapar, isteği verip bekler
+  const bekleyen = (ad: string, enAz: number, enCok: number, f: (...a: any[]) => Generator) => {
+    U[katla(ad)].$g = function* (...a: any[]) {
+      if (a.length < enAz || a.length > enCok) hata(`'${ad}' ${enAz === enCok ? enAz : `${enAz}..${enCok}`} argüman bekler, ${a.length} verildi`);
+      return yield* f(...a);
+    };
+  };
   uye('Httpİstek', 2, 5, (yn, adres, govde = null, basliklar = null, sure = 30n) => istek(yn, adres, govde, basliklar, sure));
   uye('HttpAl', 1, 3, (adres, basliklar = null, sure = 30n) => istek('GET', adres, null, basliklar, sure));
   uye('HttpGönder', 2, 4, (adres, govde, basliklar = null, sure = 30n) => istek('POST', adres, govde, basliklar, sure));
+  bekleyen('Httpİstek', 2, 5, (yn, adres, govde = null, basliklar = null, sure = 30n) => istekG(yn, adres, govde, basliklar, sure));
+  bekleyen('HttpAl', 1, 3, (adres, basliklar = null, sure = 30n) => istekG('GET', adres, null, basliklar, sure));
+  bekleyen('HttpGönder', 2, 4, (adres, govde, basliklar = null, sure = 30n) => istekG('POST', adres, govde, basliklar, sure));
   uye('UrlKodla', 1, 1, m => urlKodla(metne(m)));
   uye('UrlÇöz', 1, 1, m => urlCoz(metinMi(m, 'metin')));
   uye('SorguYap', 1, 1, v => {

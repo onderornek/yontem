@@ -6,13 +6,14 @@ YOK = object()   # "bulunamadı" işareti
 
 class YerelFonksiyon:
     """Python ile yazılmış yerleşik fonksiyon. fn(yorumlayici, argumanlar)."""
-    __slots__ = ('ad', 'fn', 'oto', 'ref')
+    __slots__ = ('ad', 'fn', 'oto', 'ref', 'gc')
 
     def __init__(self, ad, fn, oto=False, ref=frozenset()):
         self.ad = ad
         self.fn = fn
         self.oto = oto          # parantezsiz anıldığında otomatik çağrılsın mı
         self.ref = ref          # referansla (değişken) alınan argüman sıraları
+        self.gc = False         # 'aynı anda' gövdesinde ağ isteğinde bekleyebilir (Ağ birimi istekleri)
 
 
 class KFonksiyon:

@@ -107,6 +107,8 @@ dilbilgisi = {
                           '3': {'name': 'storage.type.class.yontem'}}},
         ]},
         'sozcukler': {'patterns': [
+            # aynı anda [en çok] — paralel döngü (bağlama duyarlı: 'aynı' ve 'anda' sıradan ad olarak da kullanılabilir)
+            {'name': 'keyword.control.yontem', 'match': sozcuk(['aynı']) + r'\s+' + sozcuk(['anda']) + r'(?:\s+' + sozcuk(['en']) + r'\s+' + sozcuk(['çok']) + ')?'},
             {'name': 'keyword.control.yontem', 'match': sozcuk(DENETIM)},
             {'name': 'storage.type.function.yontem', 'match': sozcuk(['prosedür', 'fonksiyon', 'kurucu'])},
             {'name': 'keyword.other.yontem', 'match': sozcuk(BILDIRIM)},

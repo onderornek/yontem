@@ -321,6 +321,8 @@ n >= 10 olana dek
 
 liste içindeki her eleman için yaz(eleman, 1)
 sözlük içindeki her anahtar, değer için ...     // listelerde: dizin, eleman
+aynı anda en çok 8 vakalar içindeki her vaka için   // paralel döngü: ağ istekleri birlikte gider
+  Ekle(sonuçlar, Sor([Mesaj('user', vaka)]))
 
 puan değerine göre
   90..100: harf := 'A'
@@ -335,6 +337,12 @@ Sayan döngüde `kadar` birer birer sayar. İki sınır da sabit sayıysa yön s
 başlangıç bitişten büyükse döngü hiç çalışmaz (boş bir listede `0'dan Uzunluk(L) - 1'e kadar`
 güvenle yazılabilsin diye). Adımlı ya da değişken sınırlı geriye sayma `adımda c artan` /
 `adımda c azalan` ile yazılır; adım pozitif bir tamsayı olmalıdır.
+
+`aynı anda` ile başlayan döngüde gövdeler birlikte çalışır: bir gövde ağ isteği yaptığında
+(`HttpAl`, `HttpGönder`, `Httpİstek`; doğrudan ya da çağırdığı fonksiyonlar üzerinden) öteki gövdeler
+sürer ve bekleyen istekler birlikte gönderilir. `en çok N` eşzamanlılığı sınırlar (varsayılan 16).
+Sıra zamanlamaya bağlı değildir, çıktı her çalıştırmada aynıdır. Gövde dışarıdaki değişkenlere
+atama yapamaz; sonuçlar `Ekle` ile toplanır. Ayrıntılar: dil başvurusu, "Paralel döngü".
 
 Döngü ve karar yapılarının gövdesi **tek bir komuttur**. Birden çok komut çalıştırmak
 için gövde `başla … bitir` ile sarılır (Pascal kuralı). `tekrarla … olana dek`,

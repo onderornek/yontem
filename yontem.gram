@@ -244,6 +244,7 @@ deyim:
     | 'değişken' degisken_grubu
     | sayan_dongu
     | her_dongusu
+    | paralel_dongu
     | eleman_silme
     | iken_dongusu
     | kez_dongusu
@@ -262,6 +263,11 @@ sayan_dongu:
 
 her_dongusu:
     | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+
+# Paralel döngü. 'aynı anda' yalnızca deyim başında anlam taşır; ikisi de sıradan ad olarak kullanılabilir.
+# Sınır, kaynaktan ayrılabilsin diye tek bir sayı, ad ya da parantezli ifadedir (varsayılan 16).
+paralel_dongu:
+    | 'aynı' 'anda' ['en' 'çok' (SAYI | AD | '(' ifade ')')] ifade 'içindeki' 'her' AD [',' AD] 'için' govde
 
 iken_dongusu:
     | ifade 'iken' govde

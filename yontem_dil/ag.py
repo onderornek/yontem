@@ -130,7 +130,7 @@ def ag_modulu(y):
             _hata(f"'zaman aşımı' sayı bekler, {_tur_adi(sure_ham)} verildi")
         if not 1 <= sure_ham <= 300:
             _hata("'zaman aşımı' 1 ile 300 saniye arasında olmalı")
-        yn = _gonder(yontem, adres, basliklar, govde, sure_ham)
+        yn = y.ag_gonder((yontem, adres, basliklar, govde, sure_ham))
         if yn == 'zaman':
             _hata(f"Ağ hatası: {adres} zaman aşımına uğradı ({metne(sure_ham)} sn)")
         if yn == 'boyut':
@@ -151,6 +151,9 @@ def ag_modulu(y):
     @uye('HttpGönder', 2, 4)
     def _gonder_(adres, govde, basliklar=None, sure=30):
         return istek('POST', adres, govde, basliklar, sure)
+
+    for ad in ('Httpİstek', 'HttpAl', 'HttpGönder'):
+        U[katla(ad)].gc = True          # 'aynı anda' gövdesinde istek verip bekleyebilir
 
     @uye('UrlKodla', 1, 1)
     def _kodla(m):

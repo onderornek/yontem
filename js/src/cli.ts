@@ -247,7 +247,7 @@ function sinaKomutu(argv: string[], hataYaz: (m: string) => void): number {
     const k = kodCalistir(kod, {
       yaz: (m) => { cikti += m; }, okuSatir: () => null, argumanlar: [],
       dosyaOku: (y) => fs.readFileSync(y, 'utf-8'), dosyaYaz: (y, c, e) => e ? fs.appendFileSync(y, c) : fs.writeFileSync(y, c),
-      dosyaVarMi: (y) => fs.existsSync(y), ortam: (a) => process.env[a], http: dugumHttp,
+      dosyaVarMi: (y) => fs.existsSync(y), ortam: (a) => process.env[a], http: dugumHttp, httpToplu: dugumHttpToplu,
       veritabani: require('./vt_dugum').dugumVeritabani(),
       hata: (m) => { hata = m.replace(/^Çalışma hatası /, '').split(`[${yol}, `).join('['); },
       sinaSec: i,
@@ -418,6 +418,41 @@ export function dugumHttp(istek: any): any {
   try { return JSON.parse(p.stdout); } catch { return { hata: 'baglanti' }; }
 }
 
+/** 'aynı anda' turundaki istekler tek bir alt süreçte paralel gönderilir */
+const HTTP_TOPLU_BETIGI = `
+const tek = (i) => new Promise((yaz) => {
+  const d = new AbortController();
+  const z = setTimeout(() => d.abort(), i.zamanAsimi * 1000);
+  const h = new Headers();
+  if (!i.basliklar.some(b => b[0].toLowerCase() === 'user-agent')) h.set('User-Agent', 'Yontem/' + i.surum);
+  for (const [a, v] of i.basliklar) h.append(a, v);
+  fetch(i.adres, { method: i.yontem, headers: h, body: i.govde === null ? undefined : i.govde, signal: d.signal, redirect: 'follow' })
+    .then(async (r) => {
+      const b = new Uint8Array(await r.arrayBuffer());
+      if (b.length > 10 * 1024 * 1024) return yaz({ hata: 'boyut' });
+      const bs = {};
+      r.headers.forEach((v, a) => { bs[a.toLowerCase()] = v; });
+      yaz({ durum: r.status, basliklar: bs, govde: new TextDecoder('utf-8').decode(b) });
+    })
+    .catch((e) => yaz({ hata: d.signal.aborted ? 'zaman' : 'baglanti' }))
+    .finally(() => clearTimeout(z));
+});
+Promise.all(JSON.parse(require('fs').readFileSync(0, 'utf-8')).map(tek)).then((y) => process.stdout.write(JSON.stringify(y)));
+`;
+export function dugumHttpToplu(istekler: any[]): any[] {
+  const sure = Math.max(...istekler.map(i => i.zamanAsimi));
+  const p = spawnSync(process.execPath, ['-e', HTTP_TOPLU_BETIGI], {
+    input: JSON.stringify(istekler.map(i => ({ ...i, surum: SURUM }))), encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024 * istekler.length, timeout: (sure + 5) * 1000,
+  });
+  let y: any = null;
+  try { y = JSON.parse(p.stdout); } catch { /* aşağıda */ }
+  if (!Array.isArray(y) || y.length !== istekler.length) {
+    const tur = p.error && (p.error as any).code === 'ETIMEDOUT' ? 'zaman' : 'baglanti';
+    return istekler.map(() => ({ hata: tur }));
+  }
+  return y;
+}
+
 export function dugumCalistir(kod: string, argumanlar: string[] = process.argv.slice(2)): number {
   const c = cikisYazici();
   const kodu = kodCalistir(kod, {
@@ -429,6 +464,7 @@ export function dugumCalistir(kod: string, argumanlar: string[] = process.argv.s
     dosyaVarMi: (y) => fs.existsSync(y),
     ortam: (a) => process.env[a],
     http: dugumHttp,
+    httpToplu: dugumHttpToplu,
     veritabani: require('./vt_dugum').dugumVeritabani(),
     sunucu: (ayar: any, isle: (i: any) => any) => require('./sunucu_dugum').dugumSunucu((m: string) => { c.bosalt(); process.stderr.write(m + '\n'); })(ayar, (i: any) => { const r = isle(i); c.bosalt(); return r; }),
     iz: process.env.YONTEM_IZ && process.env.YONTEM_IZ !== '0' ? (m: string) => { c.bosalt(); process.stderr.write(m + '\n'); } : undefined,

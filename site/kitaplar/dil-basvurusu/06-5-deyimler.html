@@ -117,6 +117,28 @@ etiket:        ifade ['..' ifade]</code></pre></div>
 <p>Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adlar <span class="ya">içindeki</span> <span class="ya">her</span> ad <span class="ya">için</span> yaz(ad, <span class="ys">1</span>)
 yaşlar <span class="ya">içindeki</span> <span class="ya">her</span> ad, yaş <span class="ya">için</span> yaz(ad + <span class="ym">': '</span> + yaş, <span class="ys">1</span>)</code></pre></div>
+<h3 id="paralel-döngü">Paralel döngü</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>paralel_dongu: 'aynı' 'anda' ['en' 'çok' sinir] ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+sinir:         SAYI | AD | '(' ifade ')'</code></pre></div>
+<p>Koleksiyon döngüsü gibi dolaşır, ama gövdeler birlikte çalışır: bir gövde ağ isteği yaptığında (<code>Ağ</code> biriminin <code>HttpAl</code>, <code>HttpGönder</code>, <code>Httpİstek</code> üyeleri, doğrudan ya da çağırdığı fonksiyonlar üzerinden) yanıtı beklerken öteki gövdeler sürer ve bekleyen istekler birlikte gönderilir. Döngü, bütün gövdeler bitince biter. Yapay zekâ değerlendirme setleri gibi çok sayıda model çağrısında süreyi istek sayısına değil en yavaş tura bağlar.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>sonuçlar := []
+aynı anda vakalar <span class="ya">içindeki</span> <span class="ya">her</span> vaka <span class="ya">için</span>
+  Ekle(sonuçlar, Sor([Mesaj(<span class="ym">'user'</span>, vaka[<span class="ym">'girdi'</span>])]))
+
+aynı anda en çok <span class="ys">4</span> adresler <span class="ya">içindeki</span> <span class="ya">her</span> adres <span class="ya">için</span>
+<span class="ya">başla</span>
+  <span class="ya">değişken</span> y := HttpAl(adres)
+  yaz(adres + <span class="ym">': '</span> + y[<span class="ym">'durum'</span>], <span class="ys">1</span>)
+<span class="ya">bitir</span></code></pre></div>
+<ul>
+<li><code>en çok N</code> aynı anda süren gövde sayısını sınırlar (varsayılan 16). Sınır tamsayı olmalıdır; bir sayı, bir ad ya da parantez içinde bir ifade yazılır.</li>
+<li>Gövdeler turlarla ilerler: her turda bekleyen gövdeler sırayla bir sonraki ağ isteğine ya da sona kadar yürür, ardından o turun istekleri birlikte gönderilir. Sıra zamanlamaya bağlı değildir; program her çalıştırıldığında aynı çıktıyı verir ve iki uygulama aynı sırayı izler.</li>
+<li>Gövde yalnızca açık çağrılar (<code>f(x)</code>, <code>nesne.Metod(x)</code>, çağrı deyimleri) üzerinden vardığı istekte bekler. Yerleşik bir işlevin çağırdığı fonksiyonlar (<code>Eşle</code>, <code>Süz</code>, <code>Sırala</code>…), parantezsiz otomatik çağrılar, kurucular ve <code>miras</code> istekleri beklemeden, sırayla yapar.</li>
+<li>Döngü değişkenleri ve gövdede <code>değişken</code> ile tanımlananlar her gövdeye özeldir. Gövde, dışarıdaki bir değişkene atama yapamaz (çalışma hatası); sonuçlar <code>Ekle</code> gibi işlemlerle ortak bir listede toplanır. Nesnelerin alanlarına ve listelerin elemanlarına atama yapılabilir.</li>
+<li><code>devam</code> gövdeyi bitirip sonraki elemana geçer. <code>kır</code> ve <code>dön</code> gövdede kullanılamaz.</li>
+<li>Bir gövde hata verirse henüz bitmemiş gövdeler bırakılır (<code>sonunda</code> blokları çalışmaz) ve hata döngüden yayılır.</li>
+<li>Hata ayıklayıcıda gövdeler beklemeden, sırayla çalışır. Gömülü arka uçta yoktur. Tarayıcıdaki oyun alanında istekler sırayla gönderilir; sonuç aynıdır.</li>
+</ul>
 <h3 id="koşullu-döngüler">Koşullu döngüler</h3>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>iken_dongusu:    ifade 'iken' govde
 tekrarla_deyimi: 'tekrarla' deyimler ifade 'olana' 'dek'
@@ -132,7 +154,7 @@ kez_dongusu:     ifade 'kez' 'tekrarla' govde</code></pre></div>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="05-4-ifadeler.html"><small>Önceki</small>4. İfadeler</a><a class="sonraki" href="07-6-alt-programlar.html"><small>Sonraki</small>6. Alt programlar</a></nav>
   </main>
-  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#atama">Atama</a></li><li><a href="#çağrı-deyimi">Çağrı deyimi</a></li><li><a href="#blok-içi-değişken">Blok içi değişken</a></li><li><a href="#koşul">Koşul</a></li><li><a href="#çok-seçenekli-karar">Çok seçenekli karar</a></li><li><a href="#sayan-döngü">Sayan döngü</a></li><li><a href="#koleksiyon-döngüsü">Koleksiyon döngüsü</a></li><li><a href="#koşullu-döngüler">Koşullu döngüler</a></li><li><a href="#döngü-denetimi">Döngü denetimi</a></li><li><a href="#eleman-silme-cümlesi">Eleman silme cümlesi</a></li><li><a href="#dönüş">Dönüş</a></li></ol></aside>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#atama">Atama</a></li><li><a href="#çağrı-deyimi">Çağrı deyimi</a></li><li><a href="#blok-içi-değişken">Blok içi değişken</a></li><li><a href="#koşul">Koşul</a></li><li><a href="#çok-seçenekli-karar">Çok seçenekli karar</a></li><li><a href="#sayan-döngü">Sayan döngü</a></li><li><a href="#koleksiyon-döngüsü">Koleksiyon döngüsü</a></li><li><a href="#paralel-döngü">Paralel döngü</a></li><li><a href="#koşullu-döngüler">Koşullu döngüler</a></li><li><a href="#döngü-denetimi">Döngü denetimi</a></li><li><a href="#eleman-silme-cümlesi">Eleman silme cümlesi</a></li><li><a href="#dönüş">Dönüş</a></li></ol></aside>
 </div>
 <footer class="alt">
   <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>

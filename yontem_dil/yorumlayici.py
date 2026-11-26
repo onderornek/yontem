@@ -1,9 +1,11 @@
 """Yöntem yorumlayıcısı (ağaç dolaşan yorumlayıcı)."""
 import os
 import sys
+import threading
 
 from .hatalar import (YontemHatasi, SozdizimHatasi, DonSinyali, KirSinyali, DevamSinyali,
                       DurSinyali, Sinyal)
+from .eszamanli import IptalSinyali
 from .sozcuk import katla, sozcukle
 from .cozumleyici import Cozumleyici, N
 from .degerler import (YOK, YerelFonksiyon, KFonksiyon, BagliMetod, KurucuBagli, KSinif,
@@ -47,7 +49,7 @@ if not os.path.isdir(KUTUPHANE_DIZINI):   # pip ile kurulduğunda standart birim
 
 
 class Kapsam:
-    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal', 'eleman', 'golge')
+    __slots__ = ('d', 'tip', 'sabit', 'ust', 'ithal', 'eleman', 'golge', 'es')
 
     def __init__(self, ust=None):
         self.d = {}
@@ -57,6 +59,7 @@ class Kapsam:
         self.ust = ust
         self.ithal = set()   # birimlerden gelen (gölgelenebilir) adlar
         self.golge = {}      # birim üyesinin yerini alan ad → gölgelenen çağrılabilir adın tarifi
+        self.es = False      # bir 'aynı anda' gövdesinin kapsamı (dışarıdaki değişkenlere atama yapılamaz)
 
 
 class NesneKapsami:
@@ -66,6 +69,15 @@ class NesneKapsami:
     def __init__(self, nesne, ust):
         self.nesne = nesne
         self.ust = ust
+
+
+ES_KIR = "'kır' 'aynı anda' gövdesinde kullanılamaz (gövdeler birlikte çalışır); sonraki elemana geçmek için 'devam' kullanın"
+ES_DON = "'dön' 'aynı anda' gövdesinde kullanılamaz; gövdeyi bir fonksiyona taşıyın"
+
+
+def es_atama(ham):
+    return (f"'aynı anda' gövdesinde dışarıdaki '{ham}' değişkenine atama yapılamaz (gövdeler birlikte çalışır); "
+            f"sonuçları Ekle ile bir listede toplayın ya da gövdede 'değişken {ham} := …' ile yerel bir değişken tanımlayın")
 
 
 def tur_adi(v):
@@ -122,6 +134,8 @@ class Yorumlayici:
         self.evrensel = None
         self.kabuk = False
         self._girdi_tamponu = None
+        self._es_sayi = 0                 # çalışan 'aynı anda' zamanlayıcısı sayısı
+        self._es = threading.local()      # gövde iş parçacığının Govde nesnesi (eszamanli.py)
         self._ifade = {
             'sabitdeger': self.i_sabit, 'ad': self.i_ad, 'alan': self.i_alan,
             'indeks': self.i_indeks, 'cagri': self.i_cagri, 'ikili': self.i_ikili,
@@ -137,6 +151,7 @@ class Yorumlayici:
             'tekrarla': self.d_tekrarla, 'sec': self.d_sec, 'kez': self.d_kez, 'dene': self.d_dene,
             'firlat': self.d_firlat, 'don': self.d_don, 'kir': self.d_kir,
             'devam': self.d_devam, 'bos': self.d_bos, 'yerel_degisken': self.d_yerel_degisken,
+            'ayni_anda': self.d_ayni_anda,
         }
         from . import yerlesik
         yerlesik.kur(self)
@@ -542,16 +557,21 @@ class Yorumlayici:
     def ad_ata(self, k, ad, v, dugum=None):
         s = k
         ham = getattr(dugum, 'ham', None) or ad      # hata iletisinde adın yazıldığı biçim
+        gecti = False                                # bir 'aynı anda' gövdesinin dışına çıkıldı
         while s is not None:
             if type(s) is Kapsam:
                 if ad in s.d:
                     if ad in s.sabit:
                         raise YontemHatasi(f"Sabite atama yapılamaz: '{ad}'")
+                    if gecti:
+                        raise YontemHatasi(es_atama(ham))
                     t = s.tip.get(ad)
                     if t is not None:
                         v = self.uyumla(t, v, ham)
                     s.d[ad] = v
                     return
+                if s.es:
+                    gecti = True
             else:
                 n = s.nesne
                 if ad in n.alanlar:
@@ -776,9 +796,14 @@ class Yorumlayici:
                         hv = HataNesnesi(e.mesaj, 'Hata', e.satir)
                     k.d[d.yakala_ad] = hv
                 self.yurut_blok(d.yakala, k)
-        finally:
+        except IptalSinyali:
+            raise                            # sonlandırılan 'aynı anda' gövdesi: 'sonunda' çalışmaz
+        except BaseException:
             if d.sonunda is not None:
                 self.yurut_blok(d.sonunda, k)
+            raise
+        if d.sonunda is not None:
+            self.yurut_blok(d.sonunda, k)
 
     def d_firlat(self, d, k):
         v = self.deg(d.ifade, k)
@@ -794,10 +819,87 @@ class Yorumlayici:
         raise YontemHatasi(self.metne(v), deger=v)
 
     def d_don(self, d, k):
-        raise DonSinyali(self.deg(d.ifade, k) if d.ifade is not None else YOK)
+        s = DonSinyali(self.deg(d.ifade, k) if d.ifade is not None else YOK)
+        s.satir = d.satir
+        raise s
 
     def d_kir(self, d, k):
-        raise KirSinyali()
+        s = KirSinyali()
+        s.satir = d.satir
+        raise s
+
+    def d_ayni_anda(self, d, k):
+        from . import eszamanli
+        kaynak = self.deg(d.kaynak, k)
+        n = self.deg(d.sinir, k) if d.sinir is not None else None
+        if d.ad2 is not None:
+            if type(kaynak) is dict:
+                ogeler = list(kaynak.items())
+            else:
+                ogeler = list(enumerate(self.yinelenebilir(kaynak)))
+        else:
+            ogeler = list(self.yinelenebilir(kaynak))
+        sinir = eszamanli.VARSAYILAN_SINIR
+        if d.sinir is not None:
+            if type(n) is not int:
+                raise YontemHatasi(f"'aynı anda en çok' tamsayı bekler, {tur_adi(n)} verildi")
+            if n < 1:
+                raise YontemHatasi(f"'aynı anda en çok' en az 1 olmalı ({n} verildi)")
+            sinir = min(n, 100000)
+        # döngü değişkenleri her gövdede yereldir; dışarıda bildirilmişlerse tipini alırlar
+        tipler = {}
+        for ad in (d.ad, d.ad2):
+            if ad is None:
+                continue
+            s = k
+            while s is not None:
+                if type(s) is Kapsam and ad in s.d:
+                    tipler[ad] = (s.tip.get(ad), s.eleman.get(ad))
+                    break
+                s = s.ust
+        dosya = getattr(d, 'dosya', None)
+
+        def govde(o):
+            kb = Kapsam(k)
+            kb.es = True
+            for ad, deger in ((d.ad, o[0]), (d.ad2, o[1])) if d.ad2 is not None else ((d.ad, o),):
+                kb.d[ad] = None
+                t, e = tipler.get(ad, (None, None))
+                if t is not None:
+                    kb.tip[ad] = t
+                    if e is not None:
+                        kb.eleman[ad] = e
+                self.ad_ata(kb, ad, deger, d)
+            try:
+                self.yurut(d.govde, kb)
+            except DevamSinyali:
+                pass
+            except KirSinyali as s:
+                raise YontemHatasi(ES_KIR, getattr(s, 'satir', None), dosya)
+            except DonSinyali as s:
+                raise YontemHatasi(ES_DON, getattr(s, 'satir', None), dosya)
+
+        eszamanli.calistir(self, ogeler, sinir, govde)
+
+    def ag_gonder(self, istek):
+        """Ağ birimi isteği: bir 'aynı anda' gövdesinde zamanlayıcıya verilir, değilse hemen gönderilir."""
+        if self._es_sayi:
+            g = getattr(self._es, 'g', None)
+            if g is not None and g.ver:
+                return g.bekle(istek)
+        from .ag import _gonder
+        return _gonder(*istek)
+
+    def _beklemeden(self, f, *a):
+        """f'yi, bir 'aynı anda' gövdesindeyse ağ isteklerinde beklemeden (sırayla) çalıştırır."""
+        g = getattr(self._es, 'g', None)
+        if g is not None and g.ver:
+            g.ver = False
+            try:
+                return f(*a)
+            finally:
+                g.ver = True
+        return f(*a)
 
     def d_devam(self, d, k):
         raise DevamSinyali()
@@ -846,6 +948,11 @@ class Yorumlayici:
         return self.cagrilan(n.ifade, k)
 
     def oto(self, v, satir):
+        if self._es_sayi:
+            return self._beklemeden(self._oto, v, satir)
+        return self._oto(v, satir)
+
+    def _oto(self, v, satir):
         t = type(v)
         if t is KFonksiyon:
             if v.oto:
@@ -1246,6 +1353,8 @@ class Yorumlayici:
         if tf is YerelFonksiyon and f.ref:
             args = [self.ref_olustur(a, k) if i in f.ref else self.deg(a, k)
                     for i, a in enumerate(n.argumanlar)]
+            if self._es_sayi and not f.gc:
+                return self._beklemeden(f.fn, self, args)
             return f.fn(self, args)
         args = [self.deg(a, k) for a in n.argumanlar]
         if c.tur == 'ad' and not self.cagrilabilir(f):
@@ -1258,6 +1367,12 @@ class Yorumlayici:
         return type(f) in (KFonksiyon, YerelFonksiyon, BagliMetod, KurucuBagli, KSinif)
 
     def cagir(self, f, args, satir=None, refs=None):
+        t = type(f)
+        if self._es_sayi and (t is KurucuBagli or t is KSinif or (t is YerelFonksiyon and not f.gc)):
+            return self._beklemeden(self._cagir, f, args, satir, refs)
+        return self._cagir(f, args, satir, refs)
+
+    def _cagir(self, f, args, satir=None, refs=None):
         t = type(f)
         if t is YerelFonksiyon:
             return f.fn(self, args)
@@ -1281,6 +1396,8 @@ class Yorumlayici:
         m = nesne.sinif.metod_bul(katla(ad))
         if m is None:
             raise YontemHatasi(f"'{nesne.sinif.ad}' nesnesinde '{ad}' metodu yok")
+        if self._es_sayi:
+            return self._beklemeden(self.kfonk_cagir, m, args, nesne, None)
         return self.kfonk_cagir(m, args, nesne, None)
 
     def kfonk_cagir(self, f, args, nesne, satir, refs=None):

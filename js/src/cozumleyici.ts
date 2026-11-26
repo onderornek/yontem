@@ -392,6 +392,7 @@ export class Cozumleyici {
   _deyim(): Dugum {
     const tok = this.t;
     const s = tok.satir;
+    if (this.ayniAndaMi()) return this.ayniAndaCoz();
     if (tok.tip === 'AS') {
       const k = tok.deger;
       if (k === 'basla') return this.birlesikCoz();
@@ -430,6 +431,37 @@ export class Cozumleyici {
       }
     }
     return this.deyimIfadeden(this.ifade(), s);
+  }
+
+  /** 'aynı anda' bağlamsal bir yazımdır: deyim başında 'aynı' ve ardından 'anda' gelirse paralel döngü başlar. */
+  ayniAndaMi(): boolean {
+    const n = this.bak();
+    return this.adMi('ayni') && n.tip === 'AD' && n.deger === 'anda';
+  }
+  /** Sınır, kaynaktan ayrılabilsin diye tek bir sayı, ad ya da parantezli ifadedir: en çok 8, en çok n, en çok (n * 2) */
+  ayniAndaSiniri(): Dugum {
+    const tok = this.t, s = tok.satir;
+    if (tok.tip === 'SAYI') { this.ilerle(); return N('sabitdeger', s, { deger: tok.deger }); }
+    if (tok.tip === 'AD') { this.ilerle(); return N('ad', s, { ad: tok.deger, ham: tok.ham }); }
+    if (this.opMu('(')) { this.ilerle(); const e = this.ifade(); this.bekleOp(')'); return e; }
+    this.hata("'en çok' ardından bir sayı, bir ad ya da parantez içinde bir ifade bekleniyordu (ör. aynı anda en çok 8 liste içindeki …)");
+  }
+  /** aynı anda [en çok N] liste içindeki her eleman için … */
+  ayniAndaCoz(): Dugum {
+    const s = this.t.satir;
+    this.ilerle(); this.ilerle();
+    let sinir: Dugum | null = null;
+    const n = this.bak();
+    if (this.adMi('en') && n.tip === 'AD' && n.deger === 'cok') { this.ilerle(); this.ilerle(); sinir = this.ayniAndaSiniri(); }
+    const kaynak = this.ifade();
+    if (!this.asMi('icindeki')) this.hata("'aynı anda' şöyle yazılır: aynı anda liste içindeki her eleman için (eşzamanlılık sınırı için: aynı anda en çok 8 liste içindeki …)");
+    this.ilerle();
+    this.bekleAs('her');
+    const v = this.bekleAd();
+    let v2 = null;
+    if (this.opMu(',')) { this.ilerle(); v2 = this.bekleAd().deger; }
+    this.bekleAs('icin');
+    return N('ayni_anda', s, { ad: v.deger, ad2: v2, kaynak, sinir, govde: this.deyimVeyaBos() });
   }
 
   deyimIfadeden(hedef: Dugum, s: number): Dugum {

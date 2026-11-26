@@ -703,6 +703,7 @@ export class CppUretici {
         return out.join(' ');
       }
     }
+    if (d.tur === 'ayni_anda') this.hata("'aynı anda' gömülü sürümde desteklenmiyor; sıradan 'içindeki her … için' döngüsü kullanın", d);
     this.hata(`Bilinmeyen deyim: ${d.tur}`, d);
   }
 

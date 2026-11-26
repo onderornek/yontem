@@ -10,6 +10,12 @@ uyumsuz değişiklik içerebilir.
 
 Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabının kodları sınanırken çıkan önerilere dayanır.
 
+- **`aynı anda` paralel döngüsü**: `aynı anda [en çok N] liste içindeki her x için …`. Gövdeler birlikte
+  çalışır; ağ istekleri (doğrudan ya da çağrılan fonksiyonlar üzerinden) turlar halinde birlikte, paralel
+  gönderilir. Sıra programa bağlıdır, zamanlamaya değil; iki uygulama aynı çıktıyı verir. Gövde dışarıdaki
+  değişkenlere atama yapamaz, `kır` ve `dön` kullanamaz. JavaScript derleyicisi bunun için programda `aynı anda`
+  varsa fonksiyonların üreteç sürümlerini de üretir; Python yorumlayıcısı gövdeleri iş parçacıklarında sırayla
+  yürütür. `aynı` ve `anda` sıradan ad olarak kullanılmaya devam eder.
 - **Çok satırlı metin:** `""" ... """`. Kaçış yoktur; açılıştan sonraki ve kapanıştan önceki boş satır atılır, satırların
   ortak girintisi silinir. Biçimlendirici bu metinlerin içine dokunmaz.
 - **Biçimli metin:** `$'Merhaba {ad}, {n} mesajın var'`, `$"…"`, `$"""…"""`. `{ifade:biçim}` Biçimle biçimlerini kullanır

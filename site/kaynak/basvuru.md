@@ -85,6 +85,7 @@ Bazı sözcükler yalnızca belirli bir yerde özel anlam taşır, başka yerler
 | --- | --- |
 | `adımda`, `artan`, `azalan` | sayan döngü başlığı |
 | `kez` | `n kez tekrarla` |
+| `aynı anda`, `en çok` | paralel döngü başlığı (deyim başında) |
 | `olana dek` | `tekrarla` döngüsünün sonu |
 | `değerine göre` | çok seçenekli karar |
 | `listesindeki`, `dizisindeki`, `elemanı` | eleman silme cümlesi |
@@ -538,6 +539,35 @@ Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanla
 adlar içindeki her ad için yaz(ad, 1)
 yaşlar içindeki her ad, yaş için yaz(ad + ': ' + yaş, 1)
 ```
+
+### Paralel döngü
+
+```
+paralel_dongu: 'aynı' 'anda' ['en' 'çok' sinir] ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+sinir:         SAYI | AD | '(' ifade ')'
+```
+
+Koleksiyon döngüsü gibi dolaşır, ama gövdeler birlikte çalışır: bir gövde ağ isteği yaptığında (`Ağ` biriminin `HttpAl`, `HttpGönder`, `Httpİstek` üyeleri, doğrudan ya da çağırdığı fonksiyonlar üzerinden) yanıtı beklerken öteki gövdeler sürer ve bekleyen istekler birlikte gönderilir. Döngü, bütün gövdeler bitince biter. Yapay zekâ değerlendirme setleri gibi çok sayıda model çağrısında süreyi istek sayısına değil en yavaş tura bağlar.
+
+```pascal
+sonuçlar := []
+aynı anda vakalar içindeki her vaka için
+  Ekle(sonuçlar, Sor([Mesaj('user', vaka['girdi'])]))
+
+aynı anda en çok 4 adresler içindeki her adres için
+başla
+  değişken y := HttpAl(adres)
+  yaz(adres + ': ' + y['durum'], 1)
+bitir
+```
+
+- `en çok N` aynı anda süren gövde sayısını sınırlar (varsayılan 16). Sınır tamsayı olmalıdır; bir sayı, bir ad ya da parantez içinde bir ifade yazılır.
+- Gövdeler turlarla ilerler: her turda bekleyen gövdeler sırayla bir sonraki ağ isteğine ya da sona kadar yürür, ardından o turun istekleri birlikte gönderilir. Sıra zamanlamaya bağlı değildir; program her çalıştırıldığında aynı çıktıyı verir ve iki uygulama aynı sırayı izler.
+- Gövde yalnızca açık çağrılar (`f(x)`, `nesne.Metod(x)`, çağrı deyimleri) üzerinden vardığı istekte bekler. Yerleşik bir işlevin çağırdığı fonksiyonlar (`Eşle`, `Süz`, `Sırala`…), parantezsiz otomatik çağrılar, kurucular ve `miras` istekleri beklemeden, sırayla yapar.
+- Döngü değişkenleri ve gövdede `değişken` ile tanımlananlar her gövdeye özeldir. Gövde, dışarıdaki bir değişkene atama yapamaz (çalışma hatası); sonuçlar `Ekle` gibi işlemlerle ortak bir listede toplanır. Nesnelerin alanlarına ve listelerin elemanlarına atama yapılabilir.
+- `devam` gövdeyi bitirip sonraki elemana geçer. `kır` ve `dön` gövdede kullanılamaz.
+- Bir gövde hata verirse henüz bitmemiş gövdeler bırakılır (`sonunda` blokları çalışmaz) ve hata döngüden yayılır.
+- Hata ayıklayıcıda gövdeler beklemeden, sırayla çalışır. Gömülü arka uçta yoktur. Tarayıcıdaki oyun alanında istekler sırayla gönderilir; sonuç aynıdır.
 
 ### Koşullu döngüler
 
