@@ -19,7 +19,7 @@ interface IsciVerisi { yol: string; argumanlar: string[]; girdi: string | null; 
 
 function isci() {
   const v = workerData as IsciVerisi;
-  const { birimBulucu, dugumHttp } = require('./cli');
+  const { birimBulucu, dugumHttp, dugumHttpAkis } = require('./cli');
   const bayrak = new Int32Array(v.bayrak);
   const gonder = (m: any) => parentPort!.postMessage(m);
   if (v.cwd) { try { process.chdir(v.cwd); } catch { /* işçide chdir desteklenmeyebilir */ } }
@@ -142,6 +142,7 @@ function isci() {
     dosyaVarMi: (y) => fs.existsSync(y),
     ortam: (a) => process.env[a],
     http: dugumHttp,
+    httpAkis: dugumHttpAkis,
     veritabani: require('./vt_dugum').dugumVeritabani(),
     hata: (m) => gonder({ t: 'cikti', tur: 'stderr', s: m + '\n' }),
   });

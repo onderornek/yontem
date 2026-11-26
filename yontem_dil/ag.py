@@ -3,6 +3,8 @@
 JavaScript sürümüyle (js/src/calisma/ag.ts) aynı denetimleri yapar, aynı sonuç sözlüğünü ve hata
 iletilerini üretir. Bağlantı Python'un standart kitaplığıyla (urllib) kurulur; dış bağımlılık yoktur.
 """
+import codecs
+import json
 import re
 import socket
 import urllib.error
@@ -85,6 +87,152 @@ def _gonder(yontem, adres, basliklar, govde, sure):
         return 'baglanti'
 
 
+# ---------------------------------------------------------------- HttpAkış
+# JavaScript sürümüyle (ag.ts, AkisCozucu) aynı kurallar: text/event-stream → her olayın 'data' alanı (JSON nesnesi
+# ya da dizisiyse çözülmüş), ndjson/jsonl → her satır çözülmüş JSON, öteki türler → gelen metin parçaları.
+_OLAY_SINIRI = 10 * 1024 * 1024
+
+
+def _json_coz(s):
+    try:
+        return json.loads(s)
+    except json.JSONDecodeError as e:
+        raise YontemHatasi(f"Geçersiz JSON: {e}")
+
+
+def _olay_degeri(v):
+    if not re.match(r'\s*[\[{]', v):
+        return v
+    try:
+        return json.loads(v)
+    except ValueError:
+        return v
+
+
+class _AkisCozucu:
+    def __init__(self, tur):
+        t = tur.lower()
+        self.kip = 'sse' if 'text/event-stream' in t else 'satir' if re.search(r'ndjson|jsonl|json-seq|x-json-stream', t) else 'ham'
+        self.tampon = ''
+        self.veri = None
+
+    def ekle(self, p):
+        if self.kip == 'ham':
+            return [p] if p else []
+        self.tampon += p
+        out = []
+        while True:
+            i = self.tampon.find('\n')
+            if i < 0:
+                break
+            satir, self.tampon = self.tampon[:i], self.tampon[i + 1:]
+            if satir.endswith('\r'):
+                satir = satir[:-1]
+            self._satir(satir, out)
+        if len(self.tampon) > _OLAY_SINIRI:
+            _hata('Ağ hatası: akıştaki bir olay çok büyük (en çok 10 MB)')
+        return out
+
+    def bitir(self):
+        out = []
+        if self.kip == 'ham':
+            return out
+        if self.tampon != '':
+            self._satir(self.tampon[:-1] if self.tampon.endswith('\r') else self.tampon, out)
+            self.tampon = ''
+        if self.kip == 'sse':
+            self._satir('', out)
+        return out
+
+    def _satir(self, satir, out):
+        if self.kip == 'satir':
+            if satir.strip(' \t\r\n') != '':
+                out.append(_json_coz(satir))
+            return
+        if satir == '':
+            if self.veri is not None:
+                out.append(_olay_degeri('\n'.join(self.veri)))
+                self.veri = None
+            return
+        if satir.startswith(':'):
+            return
+        k = satir.find(':')
+        alan = satir if k < 0 else satir[:k]
+        deger = '' if k < 0 else satir[k + 1:]
+        if deger.startswith(' '):
+            deger = deger[1:]
+        if alan == 'data':
+            if self.veri is None:
+                self.veri = []
+            self.veri.append(deger)
+
+
+def _govde_basi(s):
+    return ''.join(list(re.sub(r'^[ \t\r\n]+|[ \t\r\n]+$', '', s))[:200])
+
+
+def _akis_g(yontem, adres, basliklar, govde, sure, sure_ham, metne):
+    """HttpAkış'ın gövdesi: yanıtı parça parça okuyup değerleri üretir (akış yinelendikçe)."""
+    from . import __version__
+
+    def zaman():
+        _hata(f"Ağ hatası: {adres} zaman aşımına uğradı ({metne(sure_ham)} sn)")
+
+    bs = {}
+    if not any(a.lower() == 'user-agent' for a, _ in basliklar):
+        bs['User-Agent'] = 'Yontem/' + __version__
+    for a, d in basliklar:
+        bs[a] = bs[a] + ', ' + d if a in bs else d
+    veri = None if govde is None else govde.encode('utf-8', 'surrogatepass')
+    istek = urllib.request.Request(adres, data=veri, headers=bs, method=yontem)
+    try:
+        try:
+            yanit = urllib.request.urlopen(istek, timeout=sure)
+        except urllib.error.HTTPError as e:
+            yanit = e
+    except (socket.timeout, TimeoutError):
+        zaman()
+    except urllib.error.URLError as e:
+        if isinstance(e.reason, (socket.timeout, TimeoutError)):
+            zaman()
+        _hata(f"Ağ hatası: {adres} adresine bağlanılamadı")
+    except (OSError, ValueError):
+        _hata(f"Ağ hatası: {adres} adresine bağlanılamadı")
+    try:
+        durum = yanit.status if hasattr(yanit, 'status') else yanit.code
+        cozucu = codecs.getincrementaldecoder('utf-8')('replace')
+
+        def oku():
+            try:
+                return yanit.read1(65536) if hasattr(yanit, 'read1') else yanit.read(65536)
+            except (socket.timeout, TimeoutError):
+                zaman()
+            except (OSError, ValueError):
+                _hata(f"Ağ hatası: {adres} bağlantısı yanıt sürerken koptu")
+
+        if durum >= 400:
+            g = ''
+            while len(g) <= 4096:
+                b = oku()
+                if not b:
+                    break
+                g += cozucu.decode(b)
+            g += cozucu.decode(b'', True)
+            bas = _govde_basi(g)
+            _hata(f"HttpAkış: {adres} {durum} durumuyla yanıt verdi" + (': ' + bas if bas else ''))
+        c = _AkisCozucu(yanit.headers.get('content-type') or '')
+        while True:
+            b = oku()
+            if not b:
+                break
+            for v in c.ekle(cozucu.decode(b)):
+                yield v
+        for v in c.ekle(cozucu.decode(b'', True)) + c.bitir():
+            yield v
+    finally:
+        yanit.close()
+
+
 def ag_modulu(y):
     from .sozcuk import katla
     metne = y.metne
@@ -113,7 +261,7 @@ def ag_modulu(y):
             out.append((a, d))
         return out
 
-    def istek(yontem_ham, adres_ham, govde_ham, basliklar_ham, sure_ham):
+    def istek(yontem_ham, adres_ham, govde_ham, basliklar_ham, sure_ham, akis=False):
         yontem = _metin_mi(yontem_ham, 'yöntem').upper()
         if yontem not in YONTEMLER:
             _hata(f"Bilinmeyen HTTP yöntemi: '{yontem_ham}' (GET, POST, PUT, PATCH, DELETE, HEAD)")
@@ -130,6 +278,9 @@ def ag_modulu(y):
             _hata(f"'zaman aşımı' sayı bekler, {_tur_adi(sure_ham)} verildi")
         if not 1 <= sure_ham <= 300:
             _hata("'zaman aşımı' 1 ile 300 saniye arasında olmalı")
+        if akis:
+            from .akis import Akis
+            return Akis(y, 'HttpAkış', _akis_g(yontem, adres, basliklar, govde, sure_ham, sure_ham, metne))
         yn = y.ag_gonder((yontem, adres, basliklar, govde, sure_ham))
         if yn == 'zaman':
             _hata(f"Ağ hatası: {adres} zaman aşımına uğradı ({metne(sure_ham)} sn)")
@@ -154,6 +305,10 @@ def ag_modulu(y):
 
     for ad in ('Httpİstek', 'HttpAl', 'HttpGönder'):
         U[katla(ad)].gc = True          # 'aynı anda' gövdesinde istek verip bekleyebilir
+
+    @uye('HttpAkış', 1, 4)
+    def _akis(adres, govde=None, basliklar=None, sure=30):
+        return istek('GET' if govde is None else 'POST', adres, govde, basliklar, sure, True)
 
     @uye('UrlKodla', 1, 1)
     def _kodla(m):

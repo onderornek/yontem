@@ -920,7 +920,7 @@ Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 </section><section class="bolum-blok" id="b07" data-baslik="6. Ağ: web servislerine bağlanmak"><h2>6. Ağ: web servislerine bağlanmak</h2>
 <p><code>Ağ</code> birimi HTTP istekleri gönderir. İstek eşzamanlıdır: program yanıt gelene kadar bekler. Yanıt bir sözlüktür: <code>durum</code> (200, 404…), <code>gövde</code> (metin) ve <code>başlıklar</code> (adları küçük harfli bir sözlük).</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> HavaDurumu
-<span class="ya">kullan</span> Ağ, Veri
+<span class="ya">kullan</span> Ağ
 
 <span class="ya">değişken</span>
   yanıt: <span class="ya">sözlük</span>
@@ -966,10 +966,14 @@ Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 <td>GET, POST, PUT, PATCH, DELETE ya da HEAD</td>
 </tr>
 <tr class="even">
+<td><code>HttpAkış(adres [, gövde, başlıklar, zamanAşımı])</code></td>
+<td>Yanıtı parça parça geldikçe okuyan bir akış; gövde verilirse POST</td>
+</tr>
+<tr class="odd">
 <td><code>SorguYap(sözlük)</code></td>
 <td><code>a=1&amp;b=x%20y</code> biçiminde sorgu dizgisi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>UrlKodla(metin)</code>, <code>UrlÇöz(metin)</code></td>
 <td>Adreste güvenle kullanılacak biçime çevirir, geri çözer</td>
 </tr>
@@ -979,7 +983,18 @@ Harf ayrımı: yanlış, &quot;i&quot; ile: doğru</code></pre></div>
 <p>JSON göndermek için gövdeyi <code>Veri.JSONYap</code> ile üretip türünü başlıkta bildirebilirsiniz:</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.de/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
                     [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>, <span class="ym">'Authorization'</span>: <span class="ym">'Bearer '</span> + anahtar])</code></pre></div>
-<p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+<p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+<p><strong>Akış olarak okumak.</strong> Dil modeli servisleri ve canlı veri kaynakları yanıtı bir kerede değil, parça parça gönderir. <code>HttpAkış</code> böyle bir yanıtı bir akış olarak döndürür; <code>içindeki her … için</code> döngüsü her değeri geldiği anda alır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">kullan</span> Ağ, Veri
+
+<span class="ya">değişken</span> olay: <span class="ya">herhangi</span>
+
+<span class="ya">başla</span>
+  HttpAkış(<span class="ym">'https://api.ornek.de/sohbet'</span>, JSONYap([<span class="ym">'soru'</span>: <span class="ym">'Merhaba'</span>]),
+           [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>]) <span class="ya">içindeki</span> <span class="ya">her</span> olay <span class="ya">için</span>
+    yaz(olay)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Değerlerin biçimini yanıtın türü belirler. <code>text/event-stream</code> (SSE) yanıtında her değer bir olayın <code>data</code> satırlarıdır; <code>{</code> ya da <code>[</code> ile başlıyorsa JSON olarak çözülür. <code>application/x-ndjson</code> ya da <code>jsonl</code> yanıtında her satır çözülmüş bir JSON değeridir. Öteki türlerde değerler geldiği gibi metin parçalarıdır; parçaların nereden bölüneceği ağa bağlıdır. Bağlantı akış yinelenmeye başlayınca kurulur ve döngü bitince ya da <code>kır</code> ile bırakılınca kapanır. Zaman aşımı iki parça arasında beklenecek en uzun süredir. 400 ve üstü durumlar, <code>HttpAl</code>’ın tersine, hatadır; iletisi yanıtın başını içerir.</p>
 <p>Komut satırında ve Python’da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.</p>
 </section><section class="bolum-blok" id="b08" data-baslik="7. Veritabanı: SQL veritabanları"><h2>7. Veritabanı: SQL veritabanları</h2>
 <p><code>Veritabanı</code> birimi SQL veritabanlarına tek bir arayüzle bağlanır. Hangi veritabanına bağlanılacağını <code>Bağlan</code>’a verilen adres belirler; programın geri kalanı aynı kalır.</p>
@@ -1196,21 +1211,41 @@ Veritabanı hatası: UNIQUE constraint failed: urun.ad</code></pre></div>
 <td>Başka bir adrese yönlendirir (302)</td>
 </tr>
 <tr class="odd">
+<td><code>AkışYanıt(akış [, tür, durum])</code></td>
+<td>Akışın değerlerini üretildikçe gönderir (başlangıçta SSE: <code>text/event-stream</code>)</td>
+</tr>
+<tr class="even">
 <td><code>İstekİşle(yöntem, yol [, gövde, başlıklar])</code></td>
 <td>İsteği ağ olmadan işler ve yanıtı döndürür; test için</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>SunucuyuDurdur</code></td>
 <td>Bir işleyicinin içinden çağrılır; yanıt gittikten sonra <code>Dinle</code> sona erer</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>GövdeSınırı(bayt)</code></td>
 <td>Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code> ya da <code>Yönlendir</code> kullanılır.</p>
+<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code>, <code>Yönlendir</code> ya da <code>AkışYanıt</code> kullanılır.</p>
+<p><strong>Akış yanıtı.</strong> <code>üret</code> kullanan bir fonksiyonun döndürdüğü akış <code>AkışYanıt</code> ile gönderilirse başlıklar hemen gider, gövde akışın her değeri üretildikçe bir parça olarak gelir. Tarayıcıdaki <code>EventSource</code> ya da başka bir Yöntem programındaki <code>Ağ.HttpAkış</code> her olayı geldiği anda alır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">fonksiyon</span> Sayaç(n: <span class="ya">tamsayı</span>): akış
+<span class="ya">değişken</span> i: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den n'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    üret [<span class="ym">'adım'</span>: i]
+    Bekle(<span class="ys">1000</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Olaylar(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> AkışYanıt(Sayaç(<span class="ys">10</span>))
+<span class="ya">bitir</span></code></pre></div>
+<p>Türü <code>text/event-stream</code> olan yanıtta her değer bir olaydır: metnin her satırı <code>data:</code> ile, öteki değerler JSON olarak yazılır. Tür <code>application/x-ndjson</code> ise her değer bir JSON satırıdır; başka türlerde değerin metni olduğu gibi gönderilir. İstemci bağlantıyı kapatırsa akış kapatılır ve gövdedeki <code>sonunda</code> blokları çalışır. Gövde yarıda hata verirse bağlantı kesilir, hata sunucunun çıktısına yazılır. Akış gönderilirken sunucu başka isteği beklemeye alır; çok uzun süren akışlar öteki istemcileri bekletir. <code>İstekİşle</code> akışı sonuna kadar okuyup gövdeyi tek metin olarak döndürür.</p>
 <p>Sunucunun kendiliğinden yaptıkları şunlardır:</p>
 <ul>
 <li>Tanımlı olmayan yola <code>404</code>, yolu olup yöntemi olmayan isteğe <code>405</code>, bozuk adrese <code>400</code>, sınırdan büyük gövdeye <code>413</code> döner.</li>

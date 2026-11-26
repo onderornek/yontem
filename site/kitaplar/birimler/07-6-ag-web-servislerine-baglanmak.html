@@ -41,7 +41,7 @@
     <h2 id="ağ-web-servislerine-bağlanmak">6. Ağ: web servislerine bağlanmak</h2>
 <p><code>Ağ</code> birimi HTTP istekleri gönderir. İstek eşzamanlıdır: program yanıt gelene kadar bekler. Yanıt bir sözlüktür: <code>durum</code> (200, 404…), <code>gövde</code> (metin) ve <code>başlıklar</code> (adları küçük harfli bir sözlük).</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">program</span> HavaDurumu
-<span class="ya">kullan</span> Ağ, Veri
+<span class="ya">kullan</span> Ağ
 
 <span class="ya">değişken</span>
   yanıt: <span class="ya">sözlük</span>
@@ -87,10 +87,14 @@
 <td>GET, POST, PUT, PATCH, DELETE ya da HEAD</td>
 </tr>
 <tr class="even">
+<td><code>HttpAkış(adres [, gövde, başlıklar, zamanAşımı])</code></td>
+<td>Yanıtı parça parça geldikçe okuyan bir akış; gövde verilirse POST</td>
+</tr>
+<tr class="odd">
 <td><code>SorguYap(sözlük)</code></td>
 <td><code>a=1&amp;b=x%20y</code> biçiminde sorgu dizgisi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>UrlKodla(metin)</code>, <code>UrlÇöz(metin)</code></td>
 <td>Adreste güvenle kullanılacak biçime çevirir, geri çözer</td>
 </tr>
@@ -100,7 +104,18 @@
 <p>JSON göndermek için gövdeyi <code>Veri.JSONYap</code> ile üretip türünü başlıkta bildirebilirsiniz:</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>yanıt := HttpGönder(<span class="ym">'https://api.ornek.de/notlar'</span>, JSONYap([<span class="ym">'metin'</span>: <span class="ym">'süt al'</span>]),
                     [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>, <span class="ym">'Authorization'</span>: <span class="ym">'Bearer '</span> + anahtar])</code></pre></div>
-<p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+<p>Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri <code>UrlKodla</code> ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine <code>Sistem.Ortam('ANAHTAR')</code> ile ortam değişkeninden okumanızı öneririz.</p>
+<p><strong>Akış olarak okumak.</strong> Dil modeli servisleri ve canlı veri kaynakları yanıtı bir kerede değil, parça parça gönderir. <code>HttpAkış</code> böyle bir yanıtı bir akış olarak döndürür; <code>içindeki her … için</code> döngüsü her değeri geldiği anda alır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">kullan</span> Ağ, Veri
+
+<span class="ya">değişken</span> olay: <span class="ya">herhangi</span>
+
+<span class="ya">başla</span>
+  HttpAkış(<span class="ym">'https://api.ornek.de/sohbet'</span>, JSONYap([<span class="ym">'soru'</span>: <span class="ym">'Merhaba'</span>]),
+           [<span class="ym">'Content-Type'</span>: <span class="ym">'application/json'</span>]) <span class="ya">içindeki</span> <span class="ya">her</span> olay <span class="ya">için</span>
+    yaz(olay)
+<span class="ya">bitir</span>.</code></pre></div>
+<p>Değerlerin biçimini yanıtın türü belirler. <code>text/event-stream</code> (SSE) yanıtında her değer bir olayın <code>data</code> satırlarıdır; <code>{</code> ya da <code>[</code> ile başlıyorsa JSON olarak çözülür. <code>application/x-ndjson</code> ya da <code>jsonl</code> yanıtında her satır çözülmüş bir JSON değeridir. Öteki türlerde değerler geldiği gibi metin parçalarıdır; parçaların nereden bölüneceği ağa bağlıdır. Bağlantı akış yinelenmeye başlayınca kurulur ve döngü bitince ya da <code>kır</code> ile bırakılınca kapanır. Zaman aşımı iki parça arasında beklenecek en uzun süredir. 400 ve üstü durumlar, <code>HttpAl</code>’ın tersine, hatadır; iletisi yanıtın başını içerir.</p>
 <p>Komut satırında ve Python’da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="06-5-desen-duzenli-ifadeler.html"><small>Önceki</small>5. Desen: düzenli ifadeler</a><a class="sonraki" href="08-7-veritabani-sql-veritabanlari.html"><small>Sonraki</small>7. Veritabanı: SQL veritabanları</a></nav>

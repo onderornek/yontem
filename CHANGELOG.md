@@ -16,6 +16,12 @@ Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabın�
   derleyicisi akış gövdelerini JavaScript üreteçlerine çevirir; Python yorumlayıcısı `üret` içeren deyimleri
   Python üreteci olarak yürütür. `üret` yalnızca fonksiyon gövdesinde anlam taşır; başka yerde
   sıradan ad olarak kullanılmaya devam eder.
+- **`Ağ.HttpAkış` ve `Sunucu.AkışYanıt`**: `HttpAkış(adres [, gövde, başlıklar, zamanAşımı])` yanıtı parça parça
+  geldikçe okuyan bir akış döndürür: SSE (`text/event-stream`) olayları, ndjson satırları (JSON olarak çözülür) ya
+  da metin parçaları. Bağlantı yineleme başlayınca kurulur, akış bırakılınca kapanır; zaman aşımı iki parça
+  arasındaki en uzun beklemedir. `AkışYanıt(akış [, tür, durum])` bir akışın değerlerini sunucudan üretildikçe
+  gönderir (başlangıçta SSE); istemci koparsa akış kapatılır, `sonunda` blokları çalışır. `İstekİşle` akış
+  yanıtını birleştirip döndürür. Tarayıcıda `HttpAkış` yanıtı bütün olarak alıp parçalar.
 - **`aynı anda` paralel döngüsü**: `aynı anda [en çok N] liste içindeki her x için …`. Gövdeler birlikte
   çalışır; ağ istekleri (doğrudan ya da çağrılan fonksiyonlar üzerinden) turlar halinde birlikte, paralel
   gönderilir. Sıra programa bağlıdır, zamanlamaya değil; iki uygulama aynı çıktıyı verir. Gövde dışarıdaki
@@ -42,6 +48,8 @@ Bu bölümdeki dil eklemeleri, "100 Günde Yapay Zekâ Mühendisliği" kitabın�
 
 ### Düzeltmeler
 
+- Python sunucusu sınırdan büyük bir gövdeye `413` dönerken gövdeyi okumadan bağlantıyı kapattığı için istemci
+  yazarken bağlantı kopabiliyordu (`EPIPE`); gövde artık 64 MB'a kadar okunup atılıyor (JavaScript sunucusu gibi).
 - Gölgelenmiş bir adla yapılan çağrının hata iletisi nedeni söyler: `ondalık çağrılamaz: 'Toplam' burada bir değişken;
   aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor` (önceden yalnızca `ondalık çağrılamaz`).
 - `Biçimle` tanınmayan bir biçimde (`{:>3x}`) iç hata yerine kullanılabilecek biçimleri sayan bir ileti verir.

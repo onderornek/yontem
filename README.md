@@ -581,8 +581,8 @@ Liste, metin ve sözlüklerin metod sözdizimi de vardır: `L.Ekle(5)`, `L.Uzunl
 | `Takvim` (ya da `Calendar`) | Tarih ve saat: `Şimdi`, `YerelFark`, `TarihYap`, `Parçala`, `TarihYaz`, `TarihOku`, `GünEkle`, `AyEkle`, `YılEkle`, `SaniyeEkle`, `GünFarkı`, `GünBaşı`, `HaftaGünü`, `HaftaNo`, `GünAdı`, `AyAdı`, `ArtıkYıl`, `AydakiGünSayısı`, `GeçerliTarih` |
 | `Desen` (ya da `Regex`) | Düzenli ifadeler: `Eşleşir`, `TamEşleşir`, `Bul`, `BulHepsi`, `Gruplar`, `TümGruplar`, `DesenKonumu`, `DesenDeğiştir`, `DesenAyır`, `DesenKaçış`, `DesenGeçerli` |
 | `Veritabanı` (ya da `Vt`, `Database`) | SQL veritabanları tek arayüzle: `Bağlan('sqlite:veri.db')`, `'postgres://…'`, `'mysql://…'`; bağlantının `Çalıştır`, `Sorgula`, `TekSatır`, `TekDeğer`, `SonKimlik`, `İşlemBaşlat`/`Onayla`/`GeriAl`, `Kapat` üyeleri; sorgular `?` yer tutucularıyla parametrelidir. SQLite yerleşiktir (Node.js 22.5+, Python); PostgreSQL için `pg`/`pg8000`, MySQL için `mysql2`/`pymysql` paketi gerekir |
-| `Sunucu` (ya da `Server`, `Web`) | HTTP sunucusu: `Yol(yöntem, yol, işleyici)`, `Statik`, `Dinle(port)`, `Yanıt`, `JsonYanıt`, `Yönlendir`, `İstekİşle` (ağ olmadan test), `SunucuyuDurdur`, `GövdeSınırı` |
-| `Ağ` (ya da `Net`, `Http`) | HTTP istekleri: `HttpAl`, `HttpGönder`, `Httpİstek`, `UrlKodla`, `UrlÇöz`, `SorguYap` |
+| `Sunucu` (ya da `Server`, `Web`) | HTTP sunucusu: `Yol(yöntem, yol, işleyici)`, `Statik`, `Dinle(port)`, `Yanıt`, `JsonYanıt`, `Yönlendir`, `AkışYanıt` (değerleri üretildikçe gönderir, SSE), `İstekİşle` (ağ olmadan test), `SunucuyuDurdur`, `GövdeSınırı` |
+| `Ağ` (ya da `Net`, `Http`) | HTTP istekleri: `HttpAl`, `HttpGönder`, `Httpİstek`, `HttpAkış` (yanıtı parça parça okuyan akış), `UrlKodla`, `UrlÇöz`, `SorguYap` |
 
 **Takvim.** Zaman, 1 Ocak 1970'ten beri geçen saniye (Unix saniyesi) olarak bir tamsayıdır; tarihler
 bu yüzden doğrudan karşılaştırılır ve sıralanır. Hesaplar UTC'de yapılır; yerel saat için
@@ -644,6 +644,8 @@ bitir.
 Zaman aşımı saniyedir (varsayılan 30); yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur.
 Komut satırında ve Python'da her adrese, tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca
 buna izin veren (CORS) sitelere bağlanılır; tarayıcıda zaman aşımı uygulanmaz.
+`HttpAkış(adres [, gövde, başlıklar, zamanAşımı])` yanıtı bir akış olarak döndürür: SSE olayları,
+ndjson satırları ya da metin parçaları geldikçe `içindeki her … için` ile okunur (dil modeli servisleri).
 
 ### Yöntem dilinde yazılmış birimler (`kutuphane/`)
 

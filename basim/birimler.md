@@ -386,7 +386,7 @@ Birim kendi eşleştirme motorunu kullanır, bu yüzden her ortamda aynı sonucu
 
 ```pascal
 program HavaDurumu
-kullan Ağ, Veri
+kullan Ağ
 
 değişken
   yanıt: sözlük
@@ -414,6 +414,7 @@ Bu program örnek bir adrese bağlandığı için çıktısı verilmemiştir; ad
 | `HttpAl(adres [, başlıklar, zamanAşımı])` | GET isteği |
 | `HttpGönder(adres, gövde [, başlıklar, zamanAşımı])` | POST isteği |
 | `Httpİstek(yöntem, adres [, gövde, başlıklar, zamanAşımı])` | GET, POST, PUT, PATCH, DELETE ya da HEAD |
+| `HttpAkış(adres [, gövde, başlıklar, zamanAşımı])` | Yanıtı parça parça geldikçe okuyan bir akış; gövde verilirse POST |
 | `SorguYap(sözlük)` | `a=1&b=x%20y` biçiminde sorgu dizgisi |
 | `UrlKodla(metin)`, `UrlÇöz(metin)` | Adreste güvenle kullanılacak biçime çevirir, geri çözer |
 
@@ -424,7 +425,23 @@ yanıt := HttpGönder('https://api.ornek.de/notlar', JSONYap(['metin': 'süt al'
                     ['Content-Type': 'application/json', 'Authorization': 'Bearer ' + anahtar])
 ```
 
-Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri `UrlKodla` ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine `Sistem.Ortam('ANAHTAR')` ile ortam değişkeninden okumanızı öneririz.
+Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri `UrlKodla` ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine `Sistem.Ortam('ANAHTAR')` ile ortam değişkeninden okumanızı öneririz.
+
+**Akış olarak okumak.** Dil modeli servisleri ve canlı veri kaynakları yanıtı bir kerede değil, parça parça gönderir. `HttpAkış` böyle bir yanıtı bir akış olarak döndürür; `içindeki her … için` döngüsü her değeri geldiği anda alır:
+
+```pascal
+kullan Ağ, Veri
+
+değişken olay: herhangi
+
+başla
+  HttpAkış('https://api.ornek.de/sohbet', JSONYap(['soru': 'Merhaba']),
+           ['Content-Type': 'application/json']) içindeki her olay için
+    yaz(olay)
+bitir.
+```
+
+Değerlerin biçimini yanıtın türü belirler. `text/event-stream` (SSE) yanıtında her değer bir olayın `data` satırlarıdır; `{` ya da `[` ile başlıyorsa JSON olarak çözülür. `application/x-ndjson` ya da `jsonl` yanıtında her satır çözülmüş bir JSON değeridir. Öteki türlerde değerler geldiği gibi metin parçalarıdır; parçaların nereden bölüneceği ağa bağlıdır. Bağlantı akış yinelenmeye başlayınca kurulur ve döngü bitince ya da `kır` ile bırakılınca kapanır. Zaman aşımı iki parça arasında beklenecek en uzun süredir. 400 ve üstü durumlar, `HttpAl`'ın tersine, hatadır; iletisi yanıtın başını içerir.
 
 Komut satırında ve Python'da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.
 
@@ -569,11 +586,33 @@ bitir.
 | `Yanıt(durum, gövde [, tür])` | Durum kodu ve düz metinle yanıt; `tür` içerik tipidir |
 | `JsonYanıt(değer [, durum])` | Sözlük ya da listeyi JSON olarak gönderir |
 | `Yönlendir(adres [, durum])` | Başka bir adrese yönlendirir (302) |
+| `AkışYanıt(akış [, tür, durum])` | Akışın değerlerini üretildikçe gönderir (başlangıçta SSE: `text/event-stream`) |
 | `İstekİşle(yöntem, yol [, gövde, başlıklar])` | İsteği ağ olmadan işler ve yanıtı döndürür; test için |
 | `SunucuyuDurdur` | Bir işleyicinin içinden çağrılır; yanıt gittikten sonra `Dinle` sona erer |
 | `GövdeSınırı(bayt)` | Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB) |
 
-İşleyici isteği bir sözlük olarak alır: `istek['yöntem']`, `istek['yol']`, `istek['sorgu']` (adresteki `?ad=değer` çiftleri), `istek['parametreler']` (yoldaki `:ad` parçaları), `istek['başlıklar']` (adları küçük harfle) ve `istek['gövde']` (metin; JSON ise `Veri.JSONÇöz` ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için `Yanıt`, `JsonYanıt` ya da `Yönlendir` kullanılır.
+İşleyici isteği bir sözlük olarak alır: `istek['yöntem']`, `istek['yol']`, `istek['sorgu']` (adresteki `?ad=değer` çiftleri), `istek['parametreler']` (yoldaki `:ad` parçaları), `istek['başlıklar']` (adları küçük harfle) ve `istek['gövde']` (metin; JSON ise `Veri.JSONÇöz` ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için `Yanıt`, `JsonYanıt`, `Yönlendir` ya da `AkışYanıt` kullanılır.
+
+**Akış yanıtı.** `üret` kullanan bir fonksiyonun döndürdüğü akış `AkışYanıt` ile gönderilirse başlıklar hemen gider, gövde akışın her değeri üretildikçe bir parça olarak gelir. Tarayıcıdaki `EventSource` ya da başka bir Yöntem programındaki `Ağ.HttpAkış` her olayı geldiği anda alır:
+
+```pascal
+fonksiyon Sayaç(n: tamsayı): akış
+değişken i: tamsayı
+başla
+  1'den n'e kadar her i için
+  başla
+    üret ['adım': i]
+    Bekle(1000)
+  bitir
+bitir
+
+fonksiyon Olaylar(istek: sözlük): herhangi
+başla
+  dön AkışYanıt(Sayaç(10))
+bitir
+```
+
+Türü `text/event-stream` olan yanıtta her değer bir olaydır: metnin her satırı `data: ` ile, öteki değerler JSON olarak yazılır. Tür `application/x-ndjson` ise her değer bir JSON satırıdır; başka türlerde değerin metni olduğu gibi gönderilir. İstemci bağlantıyı kapatırsa akış kapatılır ve gövdedeki `sonunda` blokları çalışır. Gövde yarıda hata verirse bağlantı kesilir, hata sunucunun çıktısına yazılır. Akış gönderilirken sunucu başka isteği beklemeye alır; çok uzun süren akışlar öteki istemcileri bekletir. `İstekİşle` akışı sonuna kadar okuyup gövdeyi tek metin olarak döndürür.
 
 Sunucunun kendiliğinden yaptıkları şunlardır:
 
@@ -831,6 +870,51 @@ bitir.
 
 `iddia(koşul, mesaj)` koşul yanlışsa programı hatayla durdurur; test başarısız sayılır. Beklenen çıktıyı elle yazmak yerine `yontem test --guncelle` ile şimdiki çıktıdan üretebilirsiniz; üretilen dosyayı gözden geçirmenizi öneririz. `testler/` klasöründeki programlar bir üst klasördeki birimleri kendiliğinden bulur. Aynı komut Python yorumlayıcısında da vardır: `python3 yontem.py test`.
 
+**Adlandırılmış test blokları: `sına` ve `yontem sına`**
+
+İddia zinciriyle yazılan bir testte ilk başarısız `İddia` programı durdurur ve sonraki vakalar hiç çalışmaz. Birbirinden bağımsız vakaları `sına` bloklarına yazarsanız her biri ayrı çalışır ve ayrı raporlanır:
+
+```pascal
+program BölmeTesti
+
+fonksiyon Bölme(a, b: tamsayı): tamsayı
+başla
+  sonuç := a böl b
+bitir
+
+sına 'tamsayı bölme aşağı yuvarlar'
+başla
+  İddia(Bölme(7, 2) = 3, '7 böl 2')
+bitir
+
+sına 'sıfıra bölme hata verir'
+değişken hata: mantıksal
+başla
+  dene
+    Bölme(1, 0)
+  yakala (h)
+    hata := doğru
+  bitir
+  İddia(hata, 'hata bekleniyordu')
+bitir
+
+başla
+  yaz(Bölme(9, 3), 1)
+bitir.
+```
+
+```bash
+yontem sına bolme_testi.y
+```
+
+```
+geçti  tamsayı bölme aşağı yuvarlar
+geçti  sıfıra bölme hata verir
+2 geçti, 0 kaldı.
+```
+
+Kalan bir blok için hata iletisi ve blok içinde yazılanlar gösterilir; sonraki bloklar yine çalışır. Her blok, programın baştan kurulduğu ayrı bir çalışmada yürür: bir bloğun değiştirdiği değişkeni sonraki blok görmez. Program normal çalıştırıldığında bloklar çalışmaz, yalnızca ana blok çalışır. `yontem test` bu tür programları blok blok sınar; raporun yanında `.sina.beklenen` dosyası varsa rapor onunla karşılaştırılır. `sına` bildirim bölümüne yazılır ve yalnızca ardından bir metin geldiğinde anlam taşır; `Sına` adını kullanan mevcut programlar etkilenmez. Python yorumlayıcısında: `python3 yontem.py sına bolme_testi.y`.
+
 **Katı kip: `{$katı}` ve `yontem denetle`**
 
 Yöntem tipleri olağan durumda program çalışırken denetler: `tamsayı` bir değişkene metin atayan satır, ancak o satıra gelindiğinde hata verir. Dosyanın başına `{$katı}` yazarsanız aynı denetim derleme zamanında yapılır: program hiç çalışmadan, bütün tip hataları birden listelenir.
@@ -900,9 +984,22 @@ Denetim, tipi derleme anında bilinen değerleri kapsar: sabitler, tipi bildiril
 Yönerge dosya başınadır: katı bir program katı olmayan birimleri kullanabilir, katı bir birimdeki hatalar onu kullanan program derlenirken bildirilir. Bütün projeyi katı yapmak için `yontem.json` dosyasına `"kati": true` eklemeniz yeterlidir (kurulan paketler bunun dışında kalır). Yönerge bir yorum olduğu için Python yorumlayıcısı onu görmezden gelir ve programı olağan kipte çalıştırır; derleme zamanı denetimi JavaScript derleyicisindedir.
 
 ```bash
-yontem denetle .            # programları çalıştırmadan derler, hataları listeler
+yontem denetle .            # programları çalıştırmadan derler, hataları ve uyarıları listeler
 yontem denetle . --kati     # yönergesi olmayan programları da katı kipte denetler
 ```
+
+`yontem denetle` katı kip olmadan da üç tür sorunu **uyarı** olarak bildirir, çünkü bunlar program o satıra geldiğinde kesin hata verir ya da yanlış davranır:
+
+- **Gölgelenen adlar.** Adlar büyük/küçük harfe duyarsız olduğu için `toplam: ondalık` bildirimi yerleşik `Toplam` fonksiyonunu, `kaydırıcı := …` bildirimi `Pencere` birimindeki `Kaydırıcı`'yı gölgeler; o kapsamda `Toplam(L)` artık değişkeni çağırmaya çalışır. Uyarı bildirimin satırını gösterir; çalışırken gelen hata da nedenini söyler: `ondalık çağrılamaz: 'Toplam' burada bir değişken; aynı adlı yerleşik 'Toplam' fonksiyonunu gölgeliyor`.
+- **Tanımsız adlar**, örneğin hiç bildirilmemiş bir `BÜTÇE`.
+- **Yanlış argüman sayısı**, yerleşik işlevlerde (`Say(L, x)`: `Say` tek argüman alır) ve kendi fonksiyonlarınızda.
+
+```
+Uyarı [ana.y, satır 6] 'toplam' adı yerleşik 'Toplam' fonksiyonunu gölgeliyor; bu kapsamda o ad bu değişkeni gösterir, çağrılamaz (Yöntem büyük/küçük harf ayırt etmez)
+0 program temiz, 1 programda uyarı (1 uyarı).
+```
+
+Uyarılar çıkış kodunu değiştirmez; katı kipte tanımsız adlar ve argüman sayıları zaten tip hatasıdır. VS Code eklentisi uyarıları da yazarken gösterir.
 
 `yontem denetle` sürekli tümleştirmede ve bir projeyi katı kipe geçirmeden önce ne kadar iş çıkacağını görmek için kullanışlıdır. VS Code eklentisi katı dosyalardaki tip hatalarını yazarken gösterir.
 

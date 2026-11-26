@@ -386,7 +386,7 @@ Birim kendi eşleştirme motorunu kullanır, bu yüzden her ortamda aynı sonucu
 
 ```pascal
 program HavaDurumu
-kullan Ağ, Veri
+kullan Ağ
 
 değişken
   yanıt: sözlük
@@ -414,6 +414,7 @@ Bu program örnek bir adrese bağlandığı için çıktısı verilmemiştir; ad
 | `HttpAl(adres [, başlıklar, zamanAşımı])` | GET isteği |
 | `HttpGönder(adres, gövde [, başlıklar, zamanAşımı])` | POST isteği |
 | `Httpİstek(yöntem, adres [, gövde, başlıklar, zamanAşımı])` | GET, POST, PUT, PATCH, DELETE ya da HEAD |
+| `HttpAkış(adres [, gövde, başlıklar, zamanAşımı])` | Yanıtı parça parça geldikçe okuyan bir akış; gövde verilirse POST |
 | `SorguYap(sözlük)` | `a=1&b=x%20y` biçiminde sorgu dizgisi |
 | `UrlKodla(metin)`, `UrlÇöz(metin)` | Adreste güvenle kullanılacak biçime çevirir, geri çözer |
 
@@ -424,7 +425,23 @@ yanıt := HttpGönder('https://api.ornek.de/notlar', JSONYap(['metin': 'süt al'
                     ['Content-Type': 'application/json', 'Authorization': 'Bearer ' + anahtar])
 ```
 
-Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme, akış ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri `UrlKodla` ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine `Sistem.Ortam('ANAHTAR')` ile ortam değişkeninden okumanızı öneririz.
+Zaman aşımı saniyedir (varsayılan 30). Yanıt en çok 10 MB olabilir ve UTF-8 metin olarak okunur; dosya indirme ve WebSocket yoktur. Başlık değerlerinde yalnızca ASCII karakterler kullanılabilir; Türkçe karakterleri `UrlKodla` ile kodlamanız gerekir. API anahtarlarını programa yazmak yerine `Sistem.Ortam('ANAHTAR')` ile ortam değişkeninden okumanızı öneririz.
+
+**Akış olarak okumak.** Dil modeli servisleri ve canlı veri kaynakları yanıtı bir kerede değil, parça parça gönderir. `HttpAkış` böyle bir yanıtı bir akış olarak döndürür; `içindeki her … için` döngüsü her değeri geldiği anda alır:
+
+```pascal
+kullan Ağ, Veri
+
+değişken olay: herhangi
+
+başla
+  HttpAkış('https://api.ornek.de/sohbet', JSONYap(['soru': 'Merhaba']),
+           ['Content-Type': 'application/json']) içindeki her olay için
+    yaz(olay)
+bitir.
+```
+
+Değerlerin biçimini yanıtın türü belirler. `text/event-stream` (SSE) yanıtında her değer bir olayın `data` satırlarıdır; `{` ya da `[` ile başlıyorsa JSON olarak çözülür. `application/x-ndjson` ya da `jsonl` yanıtında her satır çözülmüş bir JSON değeridir. Öteki türlerde değerler geldiği gibi metin parçalarıdır; parçaların nereden bölüneceği ağa bağlıdır. Bağlantı akış yinelenmeye başlayınca kurulur ve döngü bitince ya da `kır` ile bırakılınca kapanır. Zaman aşımı iki parça arasında beklenecek en uzun süredir. 400 ve üstü durumlar, `HttpAl`'ın tersine, hatadır; iletisi yanıtın başını içerir.
 
 Komut satırında ve Python'da her adrese bağlanılır. Tarayıcıda (oyun alanı, paketlenmiş uygulamalar) yalnızca buna izin veren sitelere (CORS) bağlanılır ve zaman aşımı uygulanmaz.
 
@@ -569,11 +586,33 @@ bitir.
 | `Yanıt(durum, gövde [, tür])` | Durum kodu ve düz metinle yanıt; `tür` içerik tipidir |
 | `JsonYanıt(değer [, durum])` | Sözlük ya da listeyi JSON olarak gönderir |
 | `Yönlendir(adres [, durum])` | Başka bir adrese yönlendirir (302) |
+| `AkışYanıt(akış [, tür, durum])` | Akışın değerlerini üretildikçe gönderir (başlangıçta SSE: `text/event-stream`) |
 | `İstekİşle(yöntem, yol [, gövde, başlıklar])` | İsteği ağ olmadan işler ve yanıtı döndürür; test için |
 | `SunucuyuDurdur` | Bir işleyicinin içinden çağrılır; yanıt gittikten sonra `Dinle` sona erer |
 | `GövdeSınırı(bayt)` | Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB) |
 
-İşleyici isteği bir sözlük olarak alır: `istek['yöntem']`, `istek['yol']`, `istek['sorgu']` (adresteki `?ad=değer` çiftleri), `istek['parametreler']` (yoldaki `:ad` parçaları), `istek['başlıklar']` (adları küçük harfle) ve `istek['gövde']` (metin; JSON ise `Veri.JSONÇöz` ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için `Yanıt`, `JsonYanıt` ya da `Yönlendir` kullanılır.
+İşleyici isteği bir sözlük olarak alır: `istek['yöntem']`, `istek['yol']`, `istek['sorgu']` (adresteki `?ad=değer` çiftleri), `istek['parametreler']` (yoldaki `:ad` parçaları), `istek['başlıklar']` (adları küçük harfle) ve `istek['gövde']` (metin; JSON ise `Veri.JSONÇöz` ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için `Yanıt`, `JsonYanıt`, `Yönlendir` ya da `AkışYanıt` kullanılır.
+
+**Akış yanıtı.** `üret` kullanan bir fonksiyonun döndürdüğü akış `AkışYanıt` ile gönderilirse başlıklar hemen gider, gövde akışın her değeri üretildikçe bir parça olarak gelir. Tarayıcıdaki `EventSource` ya da başka bir Yöntem programındaki `Ağ.HttpAkış` her olayı geldiği anda alır:
+
+```pascal
+fonksiyon Sayaç(n: tamsayı): akış
+değişken i: tamsayı
+başla
+  1'den n'e kadar her i için
+  başla
+    üret ['adım': i]
+    Bekle(1000)
+  bitir
+bitir
+
+fonksiyon Olaylar(istek: sözlük): herhangi
+başla
+  dön AkışYanıt(Sayaç(10))
+bitir
+```
+
+Türü `text/event-stream` olan yanıtta her değer bir olaydır: metnin her satırı `data: ` ile, öteki değerler JSON olarak yazılır. Tür `application/x-ndjson` ise her değer bir JSON satırıdır; başka türlerde değerin metni olduğu gibi gönderilir. İstemci bağlantıyı kapatırsa akış kapatılır ve gövdedeki `sonunda` blokları çalışır. Gövde yarıda hata verirse bağlantı kesilir, hata sunucunun çıktısına yazılır. Akış gönderilirken sunucu başka isteği beklemeye alır; çok uzun süren akışlar öteki istemcileri bekletir. `İstekİşle` akışı sonuna kadar okuyup gövdeyi tek metin olarak döndürür.
 
 Sunucunun kendiliğinden yaptıkları şunlardır:
 

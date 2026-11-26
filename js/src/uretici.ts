@@ -261,8 +261,8 @@ export class Uretici {
       izinlikarakterler: 'mantiksal', maskele: 'metin', belirtecuret: 'metin', gunlukkayitlari: 'liste', zaman: 'ondalik',
     },
     veritabani: { sqladi: 'metin' },
-    sunucu: { yanit: 'sozluk', jsonyanit: 'sozluk', yonlendir: 'sozluk', istekisle: 'sozluk' },
-    ag: { httpal: 'sozluk', httpgonder: 'sozluk', httpistek: 'sozluk', urlkodla: 'metin', urlcoz: 'metin', sorguyap: 'metin' },
+    sunucu: { yanit: 'sozluk', jsonyanit: 'sozluk', yonlendir: 'sozluk', akisyanit: 'sozluk', istekisle: 'sozluk' },
+    ag: { httpal: 'sozluk', httpgonder: 'sozluk', httpistek: 'sozluk', httpakis: 'akis', urlkodla: 'metin', urlcoz: 'metin', sorguyap: 'metin' },
   };
   /** Yerleşik işlev ya da yerleşik birim işlevi çağrısında argüman sayısı (işlevin kendi bildirdiği sınırlarla) */
   yerelArgDenetle(f: any, ad: string, args: Dugum[], satir: number) {
