@@ -4,7 +4,7 @@ Bu dosya Yöntem'in sürümler arasındaki önemli değişikliklerini listeler. 
 [anlamsal sürümleme](https://semver.org/lang/tr/) kurallarını izler; 1.0 öncesinde küçük sürümler
 uyumsuz değişiklik içerebilir.
 
-## Yayımlanmamış
+## 0.7.0 — 2026-11-26
 
 ### Eklenenler
 
