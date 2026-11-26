@@ -247,7 +247,7 @@ function sinaKomutu(argv: string[], hataYaz: (m: string) => void): number {
     const k = kodCalistir(kod, {
       yaz: (m) => { cikti += m; }, okuSatir: () => null, argumanlar: [],
       dosyaOku: (y) => fs.readFileSync(y, 'utf-8'), dosyaYaz: (y, c, e) => e ? fs.appendFileSync(y, c) : fs.writeFileSync(y, c),
-      dosyaVarMi: (y) => fs.existsSync(y), ortam: (a) => process.env[a], http: dugumHttp, httpToplu: dugumHttpToplu,
+      dosyaVarMi: (y) => fs.existsSync(y), ortam: (a) => process.env[a], http: dugumHttp, httpToplu: dugumHttpToplu, httpAkis: dugumHttpAkis,
       veritabani: require('./vt_dugum').dugumVeritabani(),
       hata: (m) => { hata = m.replace(/^Çalışma hatası /, '').split(`[${yol}, `).join('['); },
       sinaSec: i,
@@ -439,6 +439,8 @@ const tek = (i) => new Promise((yaz) => {
 });
 Promise.all(JSON.parse(require('fs').readFileSync(0, 'utf-8')).map(tek)).then((y) => process.stdout.write(JSON.stringify(y)));
 `;
+export function dugumHttpAkis(istek: any): any { return require('./http_akis_dugum').dugumHttpAkis(SURUM)(istek); }
+
 export function dugumHttpToplu(istekler: any[]): any[] {
   const sure = Math.max(...istekler.map(i => i.zamanAsimi));
   const p = spawnSync(process.execPath, ['-e', HTTP_TOPLU_BETIGI], {
@@ -465,8 +467,14 @@ export function dugumCalistir(kod: string, argumanlar: string[] = process.argv.s
     ortam: (a) => process.env[a],
     http: dugumHttp,
     httpToplu: dugumHttpToplu,
+    httpAkis: dugumHttpAkis,
     veritabani: require('./vt_dugum').dugumVeritabani(),
-    sunucu: (ayar: any, isle: (i: any) => any) => require('./sunucu_dugum').dugumSunucu((m: string) => { c.bosalt(); process.stderr.write(m + '\n'); })(ayar, (i: any) => { const r = isle(i); c.bosalt(); return r; }),
+    sunucu: (ayar: any, isle: (i: any) => any) => require('./sunucu_dugum').dugumSunucu((m: string) => { c.bosalt(); process.stderr.write(m + '\n'); })(ayar, (i: any) => {
+      const r = isle(i);
+      c.bosalt();
+      if (r.akis) { const s = r.akis.sonraki; r.akis.sonraki = () => { try { return s(); } finally { c.bosalt(); } }; }
+      return r;
+    }),
     iz: process.env.YONTEM_IZ && process.env.YONTEM_IZ !== '0' ? (m: string) => { c.bosalt(); process.stderr.write(m + '\n'); } : undefined,
     hata: (m) => { c.bosalt(); process.stderr.write(m + '\n'); },
   });

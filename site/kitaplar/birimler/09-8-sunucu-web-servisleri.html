@@ -120,21 +120,41 @@
 <td>Başka bir adrese yönlendirir (302)</td>
 </tr>
 <tr class="odd">
+<td><code>AkışYanıt(akış [, tür, durum])</code></td>
+<td>Akışın değerlerini üretildikçe gönderir (başlangıçta SSE: <code>text/event-stream</code>)</td>
+</tr>
+<tr class="even">
 <td><code>İstekİşle(yöntem, yol [, gövde, başlıklar])</code></td>
 <td>İsteği ağ olmadan işler ve yanıtı döndürür; test için</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>SunucuyuDurdur</code></td>
 <td>Bir işleyicinin içinden çağrılır; yanıt gittikten sonra <code>Dinle</code> sona erer</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>GövdeSınırı(bayt)</code></td>
 <td>Kabul edilen en büyük istek gövdesi (başlangıçta 1 MB)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code> ya da <code>Yönlendir</code> kullanılır.</p>
+<p>İşleyici isteği bir sözlük olarak alır: <code>istek['yöntem']</code>, <code>istek['yol']</code>, <code>istek['sorgu']</code> (adresteki <code>?ad=değer</code> çiftleri), <code>istek['parametreler']</code> (yoldaki <code>:ad</code> parçaları), <code>istek['başlıklar']</code> (adları küçük harfle) ve <code>istek['gövde']</code> (metin; JSON ise <code>Veri.JSONÇöz</code> ile çözülür). Metin döndürürse bu bir HTML sayfası sayılır; başka her şey için <code>Yanıt</code>, <code>JsonYanıt</code>, <code>Yönlendir</code> ya da <code>AkışYanıt</code> kullanılır.</p>
+<p><strong>Akış yanıtı.</strong> <code>üret</code> kullanan bir fonksiyonun döndürdüğü akış <code>AkışYanıt</code> ile gönderilirse başlıklar hemen gider, gövde akışın her değeri üretildikçe bir parça olarak gelir. Tarayıcıdaki <code>EventSource</code> ya da başka bir Yöntem programındaki <code>Ağ.HttpAkış</code> her olayı geldiği anda alır:</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">fonksiyon</span> Sayaç(n: <span class="ya">tamsayı</span>): akış
+<span class="ya">değişken</span> i: <span class="ya">tamsayı</span>
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den n'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+  <span class="ya">başla</span>
+    üret [<span class="ym">'adım'</span>: i]
+    Bekle(<span class="ys">1000</span>)
+  <span class="ya">bitir</span>
+<span class="ya">bitir</span>
+
+<span class="ya">fonksiyon</span> Olaylar(istek: <span class="ya">sözlük</span>): <span class="ya">herhangi</span>
+<span class="ya">başla</span>
+  <span class="ya">dön</span> AkışYanıt(Sayaç(<span class="ys">10</span>))
+<span class="ya">bitir</span></code></pre></div>
+<p>Türü <code>text/event-stream</code> olan yanıtta her değer bir olaydır: metnin her satırı <code>data:</code> ile, öteki değerler JSON olarak yazılır. Tür <code>application/x-ndjson</code> ise her değer bir JSON satırıdır; başka türlerde değerin metni olduğu gibi gönderilir. İstemci bağlantıyı kapatırsa akış kapatılır ve gövdedeki <code>sonunda</code> blokları çalışır. Gövde yarıda hata verirse bağlantı kesilir, hata sunucunun çıktısına yazılır. Akış gönderilirken sunucu başka isteği beklemeye alır; çok uzun süren akışlar öteki istemcileri bekletir. <code>İstekİşle</code> akışı sonuna kadar okuyup gövdeyi tek metin olarak döndürür.</p>
 <p>Sunucunun kendiliğinden yaptıkları şunlardır:</p>
 <ul>
 <li>Tanımlı olmayan yola <code>404</code>, yolu olup yöntemi olmayan isteğe <code>405</code>, bozuk adrese <code>400</code>, sınırdan büyük gövdeye <code>413</code> döner.</li>

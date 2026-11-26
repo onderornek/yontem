@@ -1,10 +1,10 @@
 // Sunucu birimi — HTTP isteklerini karşılayan küçük bir web sunucusu.
 //   Yol('GET', '/urun/:no', işleyici) · Statik('/', 'web') · Dinle(8080)
 // İşleyici isteği bir sözlük olarak alır (yöntem, yol, sorgu, parametreler, başlıklar, gövde) ve metin ya da
-// Yanıt / JsonYanıt / Yönlendir ile kurulmuş bir yanıt döndürür. İstekler sırayla, eşzamanlı işlenir.
+// Yanıt / JsonYanıt / Yönlendir / AkışYanıt ile kurulmuş bir yanıt döndürür. İstekler sırayla, eşzamanlı işlenir.
 // Yönlendirme ve denetimler buradadır; ağı konak dinler (Node.js'te js/src/sunucu_dugum.ts). İstekİşle aynı
 // yolu ağ olmadan çalıştırır (test için). Python sürümü (yontem_dil/sunucu.py) aynı yanıtları üretir.
-import { $, hata, metne, katla, cagir } from './cekirdek';
+import { $, hata, metne, katla, cagir, Akis } from './cekirdek';
 import { fn, turAdi } from './deger';
 import { YontemHatasi, DurSinyali } from '../hatalar';
 import { urlCoz } from './ag';
@@ -26,7 +26,10 @@ const TURLER: Record<string, string> = {
 const METIN = 'text/plain; charset=utf-8', HTML = 'text/html; charset=utf-8', JSON_TURU = 'application/json; charset=utf-8';
 
 export interface HamIstek { yontem: string; hedef: string; basliklar: Record<string, string>; govde: string }
-export interface HamYanit { durum: number; basliklar: [string, string][]; govde: string; dosya?: string; bosGovde?: boolean; durdur?: boolean; gunluk?: string }
+/** Akış yanıtının konağa verilen yüzü: sonraki() bir sonraki gövde parçasını, sona gelince { bitti } verir; hata gövdeden çıkmaz,
+ * { hata: günlük satırı } olarak gelir. kapat() akışı bitmeden bırakır (istemci bağlantıyı kapattı). */
+export interface AkisGovdesi { sonraki(): { parca?: string; bitti?: boolean; durdur?: boolean; hata?: string }; kapat(): void }
+export interface HamYanit { durum: number; basliklar: [string, string][]; govde: string; dosya?: string; bosGovde?: boolean; durdur?: boolean; gunluk?: string; akis?: AkisGovdesi }
 
 interface Kural { yontem: string; parcalar: string[]; isleyici: any }
 interface Durum { kurallar: Kural[]; statik: { onEk: string; klasor: string }[]; durdur: boolean; govdeSiniri: number }
@@ -44,7 +47,7 @@ function durumSayisi(v: any, ad: string): number {
 function parcala(yol: string): string[] { return yol.split('/').filter(p => p !== ''); }
 
 /** İsteği yönlendirir ve yanıt sözlüğünü döndürür (hata durumları dahil) */
-function isle(ham: HamIstek): { yanit: Map<string, any>; dosya?: string; gunluk?: string } {
+function isle(ham: HamIstek): { yanit: Map<string, any>; dosya?: string; gunluk?: string; etiket?: string } {
   const basit = (durum: number) => ({ yanit: yanitSozlugu(durum, DURUM_METNI[durum], METIN) });
   if (ham.govde.length > d.govdeSiniri) return basit(413);
   const si = ham.hedef.indexOf('?');
@@ -79,8 +82,8 @@ function isle(ham: HamIstek): { yanit: Map<string, any>; dosya?: string; gunluk?
       return { yanit: yanitSozlugu(500, DURUM_METNI[500], METIN), gunluk: `${yontem} ${yol}: ${h.mesaj}` };
     }
     if (typeof sonuc === 'string') return { yanit: yanitSozlugu(200, sonuc, HTML) };
-    if (sonuc instanceof Map && typeof sonuc.get('durum') === 'bigint' && typeof sonuc.get('gövde') === 'string' && sonuc.get('başlıklar') instanceof Map) return { yanit: sonuc };
-    return { yanit: yanitSozlugu(500, DURUM_METNI[500], METIN), gunluk: `${yontem} ${yol}: işleyici metin ya da Yanıt/JsonYanıt/Yönlendir sonucu döndürmeli, ${turAdi(sonuc)} döndürdü` };
+    if (sonuc instanceof Map && typeof sonuc.get('durum') === 'bigint' && (typeof sonuc.get('gövde') === 'string' || sonuc.get('gövde') instanceof Akis) && sonuc.get('başlıklar') instanceof Map) return { yanit: sonuc, etiket: `${yontem} ${yol}` };
+    return { yanit: yanitSozlugu(500, DURUM_METNI[500], METIN), gunluk: `${yontem} ${yol}: işleyici metin ya da Yanıt/JsonYanıt/Yönlendir/AkışYanıt sonucu döndürmeli, ${turAdi(sonuc)} döndürdü` };
   }
   if (yolEslesti) return basit(405);
   if (yontem === 'GET' || yontem === 'HEAD') {
@@ -104,6 +107,37 @@ function isle(ham: HamIstek): { yanit: Map<string, any>; dosya?: string; gunluk?
   return basit(404);
 }
 
+/** Akışın bir değerini gövde parçasına çevirir; biçimi yanıtın türü belirler:
+ *   text/event-stream: her değer bir SSE olayı (metnin her satırı 'data: ' ile, öteki değerler JSON olarak)
+ *   ndjson / jsonl: her değer bir JSON satırı · öteki türler: değerin metni olduğu gibi */
+function parcaYap(v: any, tur: string): string {
+  if (/^text\/event-stream\b/i.test(tur)) {
+    const m = typeof v === 'string' ? v : jsonYap(jsonIcin(v), null);
+    return m.split(/\r\n|\r|\n/).map(s => 'data: ' + s + '\n').join('') + '\n';
+  }
+  if (/ndjson|jsonl|json-seq/i.test(tur)) return jsonYap(jsonIcin(v), null) + '\n';
+  return metne(v);
+}
+function akisGovdesi(a: Akis, tur: string, etiket: string, durum: Durum): AkisGovdesi {
+  let bitti = false;
+  return {
+    sonraki() {
+      if (bitti) return { bitti: true, durdur: durum.durdur };
+      d = durum;
+      try {
+        const r = a.next();
+        if (r.done) { bitti = true; return { bitti: true, durdur: durum.durdur }; }
+        return { parca: parcaYap(r.value, tur) };
+      } catch (e: any) {
+        if (e instanceof DurSinyali) throw e;
+        bitti = true;
+        return { hata: `${etiket}: ${$.yontemHatasina(e).mesaj}` };
+      }
+    },
+    kapat() { if (!bitti) { bitti = true; d = durum; a.return(); } },
+  };
+}
+
 /** Yanıt sözlüğünü konağın göndereceği biçime çevirir; başlıkları denetler */
 function hamYanit(r: ReturnType<typeof isle>, yontem: string): HamYanit {
   const durum = Number(r.yanit.get('durum'));
@@ -115,8 +149,18 @@ function hamYanit(r: ReturnType<typeof isle>, yontem: string): HamYanit {
     if (ad !== 'content-length') basliklar.push([ad, deger]);
   });
   if (!basliklar.some(b => b[0] === 'x-content-type-options')) basliklar.push(['x-content-type-options', 'nosniff']);
-  if (durum < 100 || durum > 599 || !Number.isInteger(durum)) return { durum: 500, basliklar: [['content-type', METIN]], govde: DURUM_METNI[500], gunluk: 'geçersiz durum kodu' };
-  return { durum, basliklar, govde: r.yanit.get('gövde'), dosya: r.dosya, bosGovde: yontem.toUpperCase() === 'HEAD', gunluk };
+  const govde = r.yanit.get('gövde'), bos = yontem.toUpperCase() === 'HEAD';
+  if (durum < 100 || durum > 599 || !Number.isInteger(durum)) {
+    if (govde instanceof Akis) govde.return();
+    return { durum: 500, basliklar: [['content-type', METIN]], govde: DURUM_METNI[500], gunluk: 'geçersiz durum kodu' };
+  }
+  if (govde instanceof Akis) {
+    if (!basliklar.some(b => b[0] === 'cache-control')) basliklar.push(['cache-control', 'no-cache']);
+    if (bos) { govde.return(); return { durum, basliklar, govde: '', bosGovde: true, gunluk }; }
+    const tur = basliklar.find(b => b[0] === 'content-type')?.[1] ?? '';
+    return { durum, basliklar, govde: '', gunluk, akis: akisGovdesi(govde, tur, r.etiket ?? yontem, d) };
+  }
+  return { durum, basliklar, govde, dosya: r.dosya, bosGovde: bos, gunluk };
 }
 
 function sunucuModulu(): Record<string, any> {
@@ -157,6 +201,12 @@ function sunucuModulu(): Record<string, any> {
     if (!/^[\x21-\x7e]+$/.test(a)) hata("'Yönlendir': adres yalnızca ASCII karakterler içerebilir (Türkçe karakterler için UrlKodla kullanın)");
     return yanitSozlugu(n, '', METIN, [['location', a]]);
   });
+  uye('AkışYanıt', 1, 3, (akis, tur = null, durum = 200n) => {
+    if (!(akis instanceof Akis)) hata(`'AkışYanıt' bir akış bekler ('üret' kullanan bir fonksiyonun sonucu), ${turAdi(akis)} verildi`);
+    const m = new Map<string, any>(yanitSozlugu(durumSayisi(durum, 'AkışYanıt'), '', tur === null ? 'text/event-stream; charset=utf-8' : metin(tur, 'tür')));
+    m.set('gövde', akis);
+    return m;
+  });
   uye('SunucuyuDurdur', 0, 0, () => { d.durdur = true; return null; }, true);
   uye('İstekİşle', 2, 4, (yn, hedef, govde = null, basliklar = null) => {
     const h: Record<string, string> = {};
@@ -168,8 +218,14 @@ function sunucuModulu(): Record<string, any> {
     const r = isle(ham);
     const sonuc = hamYanit(r, ham.yontem);
     const k = $.konak;
-    // ağ olmadan: dosya yanıtının içeriği metin olarak okunur
-    const g = sonuc.bosGovde ? '' : sonuc.dosya && k && k.dosyaOku ? k.dosyaOku(sonuc.dosya) : sonuc.govde;
+    // ağ olmadan: dosya yanıtının içeriği metin olarak okunur; akış sonuna dek yinelenip birleştirilir (hatası yükselir)
+    let g = sonuc.bosGovde ? '' : sonuc.dosya && k && k.dosyaOku ? k.dosyaOku(sonuc.dosya) : sonuc.govde;
+    if (sonuc.akis) {
+      const tur = sonuc.basliklar.find(b => b[0] === 'content-type')?.[1] ?? '';
+      const p: string[] = [];
+      for (const v of r.yanit.get('gövde') as Akis) p.push(parcaYap(v, tur));
+      g = p.join('');
+    }
     const b = new Map<string, any>();
     for (const [a, v] of sonuc.basliklar) b.set(a, v);
     return new Map<string, any>([['durum', BigInt(sonuc.durum)], ['gövde', g], ['başlıklar', b]]);

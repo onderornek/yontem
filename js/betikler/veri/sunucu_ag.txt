@@ -43,6 +43,39 @@ başla
   dön Yanıt(200, 'kapanıyor')
 bitir
 
+fonksiyon Yavaş(n: tamsayı): akış
+değişken i: tamsayı
+başla
+  1'den n'e kadar her i için
+  başla
+    eğer i > 1 ise Bekle(400)
+    üret ['adım': i, 'ad': 'ğüş']
+  bitir
+bitir
+
+fonksiyon Sonsuz(): akış
+değişken i: tamsayı
+başla
+  i := 0
+  dene
+    doğru iken
+    başla
+      i := i + 1
+      üret 'olay ' + i
+      Bekle(20)
+    bitir
+  sonunda
+    yaz('sonsuz akış kapandı', 1)
+  bitir
+bitir
+
+fonksiyon YarıdaBozulan(): akış
+başla
+  üret 'bir'
+  üret 'iki'
+  üret 1 böl 0
+bitir
+
 prosedür Göster(ad: metin; y: sözlük)
 başla
   yaz(ad + ' → ' + y['durum'] + ' ' + y['başlıklar']['content-type'] + ' | ' + y['gövde'], 1)
@@ -57,6 +90,10 @@ başla
   Yol('GET', '/bozuk', Bozuk)
   Yol('GET', '/git', fonksiyon(i) başla dön Yönlendir('/selam?ad=y%C3%B6n') bitir)
   Yol('POST', '/dur', Dur)
+  Yol('GET', '/akis', fonksiyon(i) başla dön AkışYanıt(Yavaş(3)) bitir)
+  Yol('GET', '/akis-satir', fonksiyon(i) başla dön AkışYanıt(Yavaş(2), 'application/x-ndjson') bitir)
+  Yol('GET', '/sonsuz', fonksiyon(i) başla dön AkışYanıt(Sonsuz(), 'text/plain; charset=utf-8') bitir)
+  Yol('GET', '/yarida', fonksiyon(i) başla dön AkışYanıt(YarıdaBozulan()) bitir)
   Statik('/', 'web')
   Göster('liste', İstekİşle('GET', '/urunler'))
   Göster('ekle', İstekİşle('POST', '/urunler', '{"ad": "kalem", "fiyat": 4}'))

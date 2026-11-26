@@ -1,0 +1,12 @@
+sse → 200 text/event-stream; charset=utf-8 no-cache | data: adım 1⏎⏎data: adım 2⏎⏎
+karışık → 200 text/event-stream; charset=utf-8 no-cache | data: iki⏎data: satır⏎⏎data: {"ad": "Ayşe", "puan": 3}⏎⏎data: [1, 2.5, true, null]⏎⏎
+ndjson → 200 application/x-ndjson no-cache | "iki\nsatır"⏎{"ad": "Ayşe", "puan": 3}⏎[1, 2.5, true, null]⏎
+düz → 202 text/plain; charset=utf-8 no-cache | adım 1adım 2adım 3
+  (akış kapandı)
+temiz → 200 text/event-stream; charset=utf-8 no-cache | data: bir⏎⏎data: iki⏎⏎
+HEAD: akış hiç başlamadan kapatılır
+baş → 200 text/event-stream; charset=utf-8 no-cache | 
+yanlış → 500 text/plain; charset=utf-8 - | Sunucu hatası
+bozuk → hata: Sıfıra bölme
+hata: 'AkışYanıt': durum 100..599 arasında bir tamsayı olmalı
+hata: 'AkışYanıt' bir akış bekler ('üret' kullanan bir fonksiyonun sonucu), metin verildi

@@ -8,6 +8,7 @@ import os
 import re
 import sys
 
+from .akis import Akis
 from .hatalar import YontemHatasi
 from .pencere import _yf
 
@@ -34,6 +35,17 @@ def _tur_adi(v):
 
 def _parcala(yol):
     return [p for p in yol.split('/') if p != '']
+
+
+def _parca_yap(y, v, tur):
+    """Akışın bir değerini gövde parçasına çevirir (JavaScript'teki parcaYap ile aynı biçimler)"""
+    from .yerlesik import _json_icin
+    if re.match(r'text/event-stream\b', tur, re.I):
+        m = v if type(v) is str else json.dumps(_json_icin(y, v), ensure_ascii=False)
+        return ''.join('data: ' + s + '\n' for s in re.split(r'\r\n|\r|\n', m)) + '\n'
+    if re.search(r'ndjson|jsonl|json-seq', tur, re.I):
+        return json.dumps(_json_icin(y, v), ensure_ascii=False) + '\n'
+    return y.metne(v)
 
 
 def sunucu_modulu(y):
@@ -67,7 +79,7 @@ def sunucu_modulu(y):
         return v
 
     def isle(ham):
-        """→ (yanıt sözlüğü, dosya ya da None, günlük ya da None)"""
+        """→ (yanıt sözlüğü, dosya ya da None, günlük ya da None[, etiket])"""
         def basit(durum):
             return yanit_sozlugu(durum, DURUM_METNI[durum], METIN), None, None
         if len(ham['govde']) > d['govde_siniri']:
@@ -115,10 +127,11 @@ def sunucu_modulu(y):
                 return yanit_sozlugu(500, DURUM_METNI[500], METIN), None, f"{yontem} {yol}: Yığın taşması (çok derin özyineleme)"
             if type(sonuc) is str:
                 return yanit_sozlugu(200, sonuc, HTML), None, None
-            if type(sonuc) is dict and type(sonuc.get('durum')) is int and type(sonuc.get('gövde')) is str and type(sonuc.get('başlıklar')) is dict:
-                return sonuc, None, None
+            if (type(sonuc) is dict and type(sonuc.get('durum')) is int and type(sonuc.get('gövde')) in (str, Akis)
+                    and type(sonuc.get('başlıklar')) is dict):
+                return sonuc, None, None, f"{yontem} {yol}"
             return (yanit_sozlugu(500, DURUM_METNI[500], METIN), None,
-                    f"{yontem} {yol}: işleyici metin ya da Yanıt/JsonYanıt/Yönlendir sonucu döndürmeli, {_tur_adi(sonuc)} döndürdü")
+                    f"{yontem} {yol}: işleyici metin ya da Yanıt/JsonYanıt/Yönlendir/AkışYanıt sonucu döndürmeli, {_tur_adi(sonuc)} döndürdü")
         if yol_eslesti:
             return basit(405)
         if yontem in ('GET', 'HEAD'):
@@ -141,8 +154,21 @@ def sunucu_modulu(y):
                     return yanit_sozlugu(200, '', TURLER.get(m.group(1).lower() if m else '', 'application/octet-stream')), dosya, None
         return basit(404)
 
+    def akis_parcalari(a, tur, etiket):
+        """Akış gövdesinin parçaları: ('parca', metin)… ardından ('bitti', None) ya da ('hata', günlük satırı)"""
+        try:
+            for v in a:
+                yield 'parca', _parca_yap(y, v, tur)
+        except YontemHatasi as e:
+            yield 'hata', f"{etiket}: {e.mesaj}"
+            return
+        except RecursionError:
+            yield 'hata', f"{etiket}: Yığın taşması (çok derin özyineleme)"
+            return
+        yield 'bitti', None
+
     def ham_yanit(r, yontem):
-        yanit, dosya, gunluk = r
+        yanit, dosya, gunluk = r[:3]
         durum = yanit['durum']
         basliklar = []
         for a, v in yanit['başlıklar'].items():
@@ -154,10 +180,21 @@ def sunucu_modulu(y):
                 basliklar.append((ad, deger))
         if not any(b[0] == 'x-content-type-options' for b in basliklar):
             basliklar.append(('x-content-type-options', 'nosniff'))
+        govde, bas = yanit['gövde'], yontem.upper() == 'HEAD'
         if durum < 100 or durum > 599:
+            if type(govde) is Akis:
+                govde.kapat()
             return {'durum': 500, 'basliklar': [('content-type', METIN)], 'govde': DURUM_METNI[500], 'dosya': None, 'gunluk': 'geçersiz durum kodu'}
-        bas = yontem.upper() == 'HEAD'
-        return {'durum': durum, 'basliklar': basliklar, 'govde': yanit['gövde'], 'dosya': dosya, 'bos': bas, 'gunluk': gunluk}
+        if type(govde) is Akis:
+            if not any(b[0] == 'cache-control' for b in basliklar):
+                basliklar.append(('cache-control', 'no-cache'))
+            if bas:
+                govde.kapat()
+                return {'durum': durum, 'basliklar': basliklar, 'govde': '', 'dosya': None, 'bos': True, 'gunluk': gunluk}
+            tur = next((b[1] for b in basliklar if b[0] == 'content-type'), '')
+            return {'durum': durum, 'basliklar': basliklar, 'govde': '', 'dosya': None, 'gunluk': gunluk, 'akis': govde,
+                    'parcalar': akis_parcalari(govde, tur, r[3] if len(r) > 3 else yontem)}
+        return {'durum': durum, 'basliklar': basliklar, 'govde': govde, 'dosya': dosya, 'bos': bas, 'gunluk': gunluk}
 
     @uye('Yol', 3, 3)
     def _yol(yn, kalip, isleyici):
@@ -208,6 +245,14 @@ def sunucu_modulu(y):
             _hata("'Yönlendir': adres yalnızca ASCII karakterler içerebilir (Türkçe karakterler için UrlKodla kullanın)")
         return yanit_sozlugu(n, '', METIN, [('location', a)])
 
+    @uye('AkışYanıt', 1, 3)
+    def _akis_yanit(akis, tur=None, durum=200):
+        if type(akis) is not Akis:
+            _hata(f"'AkışYanıt' bir akış bekler ('üret' kullanan bir fonksiyonun sonucu), {_tur_adi(akis)} verildi")
+        s = yanit_sozlugu(durum_sayisi(durum, 'AkışYanıt'), '', 'text/event-stream; charset=utf-8' if tur is None else metin(tur, 'tür'))
+        s['gövde'] = akis
+        return s
+
     @uye('SunucuyuDurdur', 0, 0, True)
     def _durdur():
         d['durdur'] = True
@@ -221,8 +266,12 @@ def sunucu_modulu(y):
             for a, v in basliklar.items():
                 h[metne(a)] = metne(v)
         ham = {'yontem': metin(yn, 'yöntem'), 'hedef': metin(hedef, 'yol'), 'basliklar': h, 'govde': '' if govde is None else metne(govde)}
-        s = ham_yanit(isle(ham), ham['yontem'])
+        r = isle(ham)
+        s = ham_yanit(r, ham['yontem'])
         g = '' if s.get('bos') else s['govde']
+        if s.get('akis'):           # ağ olmadan: akış sonuna dek yinelenip birleştirilir (hatası yükselir)
+            tur = next((b[1] for b in s['basliklar'] if b[0] == 'content-type'), '')
+            g = ''.join(_parca_yap(y, v, tur) for v in s['akis'])
         if s['dosya'] and not s.get('bos'):
             with open(s['dosya'], encoding='utf-8') as f:
                 g = f.read()
@@ -254,10 +303,41 @@ def sunucu_modulu(y):
                 if self.command != 'HEAD':
                     self.wfile.write(govde)
 
+            def _akit(self, s):
+                """Akış yanıtı: başlıklar hemen, her değer üretildikçe bir parça olarak (chunked) gider"""
+                self.send_response_only(s['durum'])
+                for a, v in s['basliklar']:
+                    self.send_header(a, v)
+                self.send_header('transfer-encoding', 'chunked')
+                self.end_headers()
+                parcalar, akis = s['parcalar'], s['akis']
+                try:
+                    self.wfile.flush()
+                    for tur, deger in parcalar:
+                        sys.stdout.flush()
+                        if tur == 'parca':
+                            if deger:
+                                b = deger.encode('utf-8')
+                                self.wfile.write(b'%x\r\n%s\r\n' % (len(b), b))
+                                self.wfile.flush()
+                        elif tur == 'hata':
+                            sys.stderr.write(f"Sunucu: {deger}\n")
+                            self.close_connection = True     # sonlandırma parçası gönderilmeden kesilir
+                        else:
+                            self.wfile.write(b'0\r\n\r\n')
+                            self.wfile.flush()
+                            if d['durdur']:
+                                self.close_connection = True
+                except OSError:                          # istemci bağlantıyı kapattı: akış kapatılır
+                    self.close_connection = True
+                    parcalar.close()
+                    akis.kapat()
+                sys.stdout.flush()
+
             def _isle(self):
                 buyuk = lambda: self._gonder(413, [('content-type', METIN), ('x-content-type-options', 'nosniff')], 'İstek çok büyük'.encode('utf-8'), True)
                 if 'chunked' in (self.headers.get('transfer-encoding') or '').lower():
-                    ham_govde = b''
+                    ham_govde, okunan, asti = b'', 0, False
                     while True:                       # parçalı gövde: her parça onaltılık uzunlukla başlar
                         satir = self.rfile.readline(64).strip()
                         try:
@@ -268,16 +348,30 @@ def sunucu_modulu(y):
                             while self.rfile.readline(1024).strip():
                                 pass
                             break
-                        if len(ham_govde) + k > d['govde_siniri']:
-                            return buyuk()
-                        ham_govde += self.rfile.read(k)
+                        okunan += k
+                        if okunan > d['govde_siniri']:
+                            # sınır aşıldı: gövde (64 MB'a dek) okunup atılır, istemci yazarken bağlantı kapanmasın (EPIPE)
+                            if okunan > 64 * 1024 * 1024:
+                                return buyuk()
+                            asti, ham_govde = True, b''
+                        parca = self.rfile.read(k)
+                        if not asti:
+                            ham_govde += parca
                         self.rfile.readline(8)
+                    if asti:
+                        return buyuk()
                 else:
                     try:
                         n = int(self.headers.get('content-length') or 0)
                     except ValueError:
                         n = 0
                     if n > d['govde_siniri']:
+                        if n <= 64 * 1024 * 1024:     # gövde okunup atılır: istemci yazarken bağlantı kapanmasın (EPIPE)
+                            while n > 0:
+                                k = len(self.rfile.read(min(n, 65536)))
+                                if not k:
+                                    break
+                                n -= k
                         return buyuk()
                     ham_govde = self.rfile.read(n) if n else b''
                 try:
@@ -292,6 +386,8 @@ def sunucu_modulu(y):
                 sys.stdout.flush()
                 if s['gunluk']:
                     sys.stderr.write(f"Sunucu: {s['gunluk']}\n")
+                if s.get('akis'):
+                    return self._akit(s)
                 icerik = s['govde'].encode('utf-8')
                 if s['dosya']:
                     try:

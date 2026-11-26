@@ -22,6 +22,9 @@ export interface Konak {
   http?(istek: any): any;
   /** 'aynı anda' döngüsü için birden çok HTTP isteğini birlikte (paralel) gönderir; verilmezse sırayla http kullanılır */
   httpToplu?(istekler: any[]): any[];
+  /** Ağ.HttpAkış: yanıtı parça parça okur. sonraki() sırayla {durum, basliklar}, {parca}..., {son} ya da {hata}
+   *  döndürür; kapat() bağlantıyı bırakır. Verilmezse yanıt http ile bütün olarak alınıp parçalanır. */
+  httpAkis?(istek: any): { sonraki(): any; kapat(): void };
   /** Veritabanı birimi için bağlantı işlemleri; verilmezse veritabanı yoktur */
   veritabani?(istek: any): any;
   /** Sunucu birimi: HTTP isteklerini dinler; verilmezse sunucu yoktur */

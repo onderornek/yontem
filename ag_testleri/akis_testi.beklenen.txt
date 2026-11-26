@@ -1,0 +1,35 @@
+-- text/event-stream
+sözlük ['type': 'başla', 'no': 1]
+sözlük ['type': 'delta', 'metin': 'Merhaba']
+metin birinci satır
+ikinci satır
+metin çğ
+metin [DONE]
+metin son, boş satırsız
+['Merhaba']
+-- ndjson
+0 ['a': 1]
+1 ['a': 2.5]
+2 ['b': [doğru, boş]]
+-- düz metin: parçalar birleşince
+bir iki üç
+-- gövdeli istek POST olarak gider
+['yöntem': 'POST', 'gövde': 'soru', 'x': 'evet']
+['yöntem': 'GET', 'gövde': '', 'x': '']
+-- bırakılan akış bağlantıyı kapatır
+1
+2
+3
+kapanan bağlantı: 1
+-- ilk değer, yanıt bitmeden gelir
+ilk
+ikinci
+ilk değer 0,5 sn içinde: doğru, bütünü 0,7 sn sonra: doğru
+-- yinelenmeyen akış bağlanmaz
+akış
+-- hatalar
+Ağ hatası: http://127.0.0.1:1/ adresine bağlanılamadı
+HttpAkış: <sunucu>/durum/404 404 durumuyla yanıt verdi: durum 404
+ilk
+Ağ hatası: <sunucu>/takilan zaman aşımına uğradı (1 sn)
+Geçersiz adres: 'ftp://x' (http:// ya da https:// ile başlamalı, boşluk içermemeli)
