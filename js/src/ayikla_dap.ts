@@ -178,6 +178,7 @@ export function dapBaslat(giris: NodeJS.ReadableStream, cikis: NodeJS.WritableSt
     isciye({ ...m, no });
   });
   const baslat = () => { if (hazir && yapilandi && !basladi) { basladi = true; isciye({ t: 'basla' }); } };
+  let sonlandir = false;
   const bitir = (kod: number) => {
     if (bitti) return;
     bitti = true;
@@ -230,7 +231,7 @@ export function dapBaslat(giris: NodeJS.ReadableStream, cikis: NodeJS.WritableSt
           }
         });
         isciSureci.on('error', (e) => { olay('output', { category: 'stderr', output: `Hata ayıklayıcı iç hatası: ${e && (e as any).stack || e}\n` }); bitir(1); });
-        isciSureci.on('exit', () => bitir(0));
+        isciSureci.on('exit', () => bitir(sonlandir ? 130 : 0));   // 'bitir'e yetişemeyip zorla durdurulan program da 130 ile biter
         kanal = mc.port1;
         for (const k of kuyruk.splice(0)) isciye(k);
         yanit(m);
@@ -270,7 +271,7 @@ export function dapBaslat(giris: NodeJS.ReadableStream, cikis: NodeJS.WritableSt
       case 'pause': isciye({ t: 'duraklat' }); yanit(m); return;
       case 'terminate': case 'disconnect':
         yanit(m);
-        if (isciSureci && !bitti) { isciye({ t: 'bitir' }); const w = isciSureci; setTimeout(() => { w.terminate(); }, 300).unref(); }
+        if (isciSureci && !bitti) { sonlandir = true; isciye({ t: 'bitir' }); const w = isciSureci; setTimeout(() => { w.terminate(); }, 300).unref(); }
         if (m.command === 'disconnect') setTimeout(() => process.exit(0), 400);
         return;
       default: hataYanit(m, `Desteklenmeyen istek: ${m.command}`);
