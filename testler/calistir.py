@@ -60,6 +60,23 @@ def main():
                         print(f"BAŞARISIZ  {ad}  ('yontem sına' raporu beklenenden farklı)\n{s.stdout}{s.stderr}")
                         continue
             print(f"geçti      {ad}")
+    # Sözdizimi hatası iletileri (JavaScript derleyicisi aynı dosyayı js/betikler/test.js ile sınar)
+    import json
+    import tempfile
+    with open(os.path.join(KOK, 'testler', 'sozdizimi_hatalari.json'), encoding='utf-8') as fh:
+        vakalar = json.load(fh)
+    with tempfile.TemporaryDirectory() as td:
+        for v in vakalar:
+            toplam += 1
+            with open(os.path.join(td, 'h.y'), 'w', encoding='utf-8') as fh:
+                fh.write(v['kaynak'])
+            p = subprocess.run([sys.executable, YONTEM, 'h.y'], capture_output=True, text=True, cwd=td, timeout=60)
+            beklenen = v['hata'].replace('[satır', '[h.y, satır', 1)
+            if p.stderr.strip() != beklenen:
+                basarisiz += 1
+                print(f"BAŞARISIZ  sözdizimi hatası\n  beklenen: {beklenen}\n  çıkan:    {p.stderr.strip()}")
+            else:
+                print(f"geçti      sözdizimi hatası: {v['hata'][:70]}")
     print(f"\n{toplam - basarisiz}/{toplam} dosya geçti.")
     return 1 if basarisiz else 0
 

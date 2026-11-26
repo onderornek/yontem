@@ -58,6 +58,7 @@ interface FonkBaglam {
   refli: boolean;
   dongu: number;
   kapsam?: Kapsam;
+  uretec?: boolean;       // gövdesi bir akışın üretecidir ('üret' içerir)
 }
 class Kapsam {
   s = new Map<string, Sembol>();
@@ -66,7 +67,7 @@ class Kapsam {
 
 const TEMEL: Record<string, string | null> = {
   tamsayi: 'tamsayi', ondalik: 'ondalik', gercek: 'ondalik', metin: 'metin', karakter: 'karakter',
-  mantiksal: 'mantiksal', liste: 'liste', sozluk: 'sozluk', tensor: 'tensor', herhangi: null, nesne: null, islev: null,
+  mantiksal: 'mantiksal', liste: 'liste', sozluk: 'sozluk', tensor: 'tensor', akis: 'akis', herhangi: null, nesne: null, islev: null,
 };
 const OPS: Record<string, string> = {
   '+': 'top', '-': 'cik', '*': 'carp', '/': 'bol', bol: 'tbol', mod: 'mod', '**': 'us', '@': 'mat',
@@ -285,7 +286,7 @@ export class Uretici {
     const u = this.uyumsuz(this.adTip(a.eleman), v);
     if (u) this.tani(`${ne} ${this.tipYazi(kap!)}; ${this.tipYazi(v!)} bir eleman konamaz`, satir);
   }
-  static TIP_ADI: Record<string, string> = { tamsayi: 'tamsayı', ondalik: 'ondalık', metin: 'metin', karakter: 'karakter', mantiksal: 'mantıksal', liste: 'liste', sozluk: 'sözlük', tensor: 'tensör' };
+  static TIP_ADI: Record<string, string> = { tamsayi: 'tamsayı', ondalik: 'ondalık', metin: 'metin', karakter: 'karakter', mantiksal: 'mantıksal', liste: 'liste', sozluk: 'sözlük', tensor: 'tensör', akis: 'akış' };
   tipYazi(t: string): string {
     const s = this.sinifCoz(t);
     if (s) return s.ham;
@@ -416,7 +417,7 @@ export class Uretici {
   }
   /** Bir fonksiyonun üreteç sürümü (es kapalıysa null) */
   fonkGen(n: Dugum, kapanis: Kapsam, tur: string, sinif: SinifBilgi | null, metodAd: string | null, ham: string): string | null {
-    if (!this.es) return null;
+    if (!this.es || n.uretec) return null;   // akış gövdesi beklemeden çalışır (bkz. calisma/cekirdek.ts, Akis)
     return this.kipte(true, () => this.fonkKod(n, kapanis, tur, sinif, metodAd, ham, null));
   }
   /** Bekleyebilen çağrı: üreteç kipinde 'yield*' ile sarılır */
@@ -674,7 +675,7 @@ export class Uretici {
   }
   varsayilan(tip: Tip): string {
     if (!tip) return 'null';
-    if (tip.k === 'temel') return ({ tamsayi: '0n', ondalik: '0', metin: "''", karakter: "''", mantiksal: 'false', liste: '[]', sozluk: 'new Map()', tensor: 'null' } as any)[tip.ad];
+    if (tip.k === 'temel') return ({ tamsayi: '0n', ondalik: '0', metin: "''", karakter: "''", mantiksal: 'false', liste: '[]', sozluk: 'new Map()', tensor: 'null', akis: 'null' } as any)[tip.ad];
     if (tip.k === 'sinif') return tip.s.kayit ? `$.vsSinif(${tip.js})` : 'null';
     return `$.vsDizi(${tip.alt}, ${tip.ust}, () => ${this.varsayilan(tip.eleman)})`;
   }
@@ -881,6 +882,16 @@ export class Uretici {
     const ic: string[] = [];
     if (n.ifade) {
       ic.push(`const $v = ${this.uyI(fk.sonucTip, n.ifade, k, "'sonuç'")}; ${fk.refli ? '' : `$.L = ${Lv};`} return $v;`);
+    } else if (n.uretec) {
+      // 'üret' kullanan fonksiyon: çağrı parametreleri bağlar ve bir akış döndürür; gövde akış yinelenince çalışır
+      fk.uretec = true;
+      this.kaydet(n.yerel, k);
+      const g: string[] = [];
+      for (const b of n.yerel) g.push(this.bildirim(b, k));
+      g.push(this.deyimler(n.govde.deyimler, k));
+      let gk = g.join('\n');
+      if (this.sec.ayikla) gk = this.ayiklaSar(this.ayiklaKaydet(k, sinif && metodAd ? `${sinif.ham}.${ham}` : ham, tur, !!sinif), gk);
+      ic.push(`$.L = ${Lv}; return $.akis((function* () {\n${gk}\n}).call(this), ${J(ham)});`);
     } else {
       this.kaydet(n.yerel, k);
       for (const b of n.yerel) ic.push(this.bildirim(b, k));
@@ -911,7 +922,7 @@ export class Uretici {
       return `${ok} {\n${govde[1]}\n${sarmal.join('\n')}\nreturn ${hizliAd}(${params.map(p => 'v_' + p.ad).join(', ')});\n}`;
     }
     this.hizliKod = '';
-    if (this.sec.ayikla) {
+    if (this.sec.ayikla && !n.uretec) {
       const id = this.ayiklaKaydet(k, sinif && metodAd ? `${sinif.ham}.${ham}` : ham, tur, !!sinif);
       return `${ok} {\n${govde[0]}\n${this.ayiklaSar(id, govde.slice(1).join('\n'))}\n}`;
     }
@@ -1038,7 +1049,7 @@ export class Uretici {
           const x = this.yeniAd('x'), y = this.yeniAd('y');
           const a1 = this.ata({ tur: 'ad', ad: d.ad, ham: d.ad, satir: d.satir }, x, k);
           const a2 = this.ata({ tur: 'ad', ad: d.ad2, ham: d.ad2, satir: d.satir }, y, k);
-          return `for (const [${x}, ${y}] of $.yineleCift(${kaynak})) {\n${a1} ${a2}\n${this.donguGovde(d.govde, k)}\n}`;
+          return `for (const [${x}, ${y}] of $.yineleCift(${kaynak})) {\n$.L = ${this.Lk(d.satir)}; ${a1} ${a2}\n${this.donguGovde(d.govde, k)}\n}`;
         }
         if (this.kati) {
           // döngü değişkeninin tipi, kaynağın eleman tipiyle uyuşmalı
@@ -1048,7 +1059,7 @@ export class Uretici {
         }
         const o = this.yeniAd('o');
         const a = this.ata({ tur: 'ad', ad: d.ad, ham: d.ad, satir: d.satir }, o, k);
-        return `for (const ${o} of $.yinele(${kaynak})) {\n${a}\n${this.donguGovde(d.govde, k)}\n}`;
+        return `for (const ${o} of $.yineleD(${kaynak})) {\n$.L = ${this.Lk(d.satir)}; ${a}\n${this.donguGovde(d.govde, k)}\n}`;
       }
       case 'sec': {
         const v = this.yeniAd('v');
@@ -1091,6 +1102,12 @@ export class Uretici {
       case 'kir': return fk.dongu ? 'break;' : fk.tur === 'eszamanli' ? `$.hata(${J(Uretici.ES_KIR)});` : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
       case 'devam': return fk.dongu ? 'continue;' : fk.tur === 'eszamanli' ? 'return;' : `$.hata("'kır'/'devam' döngü dışında kullanıldı");`;
       case 'ayni_anda': return this.ayniAnda(d, k);
+      case 'uret': {
+        if (!fk.uretec) this.hata("'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir", d.satir);
+        // hata ayıklayıcıda akışın çerçevesi yalnızca gövde çalışırken yığındadır
+        if (this.sec.ayikla) return `{ const $v = ${this.ifade(d.ifade, k)}; $.aCik($f); try { yield $v; } finally { $.ayk.yigin.push($f); } }`;
+        return `yield (${this.ifade(d.ifade, k)});`;
+      }
       case 'yerel_degisken': {
         let tip = d.tip ? this.tipCoz(d.tip, k) : null;
         if (this.kati && !d.tip) {

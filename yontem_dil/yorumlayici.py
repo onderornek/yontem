@@ -6,6 +6,7 @@ import threading
 from .hatalar import (YontemHatasi, SozdizimHatasi, DonSinyali, KirSinyali, DevamSinyali,
                       DurSinyali, Sinyal)
 from .eszamanli import IptalSinyali
+from .akis import Akis
 from .sozcuk import katla, sozcukle
 from .cozumleyici import Cozumleyici, N
 from .degerler import (YOK, YerelFonksiyon, KFonksiyon, BagliMetod, KurucuBagli, KSinif,
@@ -14,11 +15,11 @@ from .degerler import (YOK, YerelFonksiyon, KFonksiyon, BagliMetod, KurucuBagli,
 TEMEL_TIPLER = {
     'tamsayi': 'tamsayi', 'ondalik': 'ondalik', 'gercek': 'ondalik', 'metin': 'metin',
     'karakter': 'karakter', 'mantiksal': 'mantiksal', 'liste': 'liste', 'sozluk': 'sozluk',
-    'tensor': 'tensor', 'herhangi': None, 'nesne': None, 'islev': None,
+    'tensor': 'tensor', 'akis': 'akis', 'herhangi': None, 'nesne': None, 'islev': None,
 }
 TIP_ADLARI = {'tamsayi': 'tamsayı', 'ondalik': 'ondalık', 'metin': 'metin',
               'karakter': 'karakter', 'mantiksal': 'mantıksal', 'liste': 'liste',
-              'sozluk': 'sözlük', 'tensor': 'tensör'}
+              'sozluk': 'sözlük', 'tensor': 'tensör', 'akis': 'akış'}
 
 def paket_dizinleri(dizin):
     """'yontem paket' ile kurulan paketlerin birim dizinleri (JavaScript derleyicisiyle aynı kural):
@@ -151,7 +152,13 @@ class Yorumlayici:
             'tekrarla': self.d_tekrarla, 'sec': self.d_sec, 'kez': self.d_kez, 'dene': self.d_dene,
             'firlat': self.d_firlat, 'don': self.d_don, 'kir': self.d_kir,
             'devam': self.d_devam, 'bos': self.d_bos, 'yerel_degisken': self.d_yerel_degisken,
-            'ayni_anda': self.d_ayni_anda,
+            'ayni_anda': self.d_ayni_anda, 'uret': self.d_uret,
+        }
+        # 'üret' içeren deyimlerin üreteç sürümleri (akış gövdeleri, bkz. akis.py)
+        self._deyim_g = {
+            'blok': self.g_blok, 'uret': self.g_uret, 'eger': self.g_eger, 'iken': self.g_iken,
+            'icin': self.g_icin, 'her': self.g_her, 'tekrarla': self.g_tekrarla, 'kez': self.g_kez,
+            'sec': self.g_sec, 'dene': self.g_dene,
         }
         from . import yerlesik
         yerlesik.kur(self)
@@ -357,8 +364,13 @@ class Yorumlayici:
                     k.eleman[ad] = (b.tip, k)
 
     def altprogram_fonk(self, b, k, sinif):
-        return KFonksiyon(b.ham, b.cesit, b.params, b.donus, b.yerel, b.govde, None, k, sinif,
-                          oto=True, direktifler=b.direktifler)
+        f = KFonksiyon(b.ham, b.cesit, b.params, b.donus, b.yerel, b.govde, None, k, sinif,
+                       oto=True, direktifler=b.direktifler)
+        if getattr(b, 'uretec', False):
+            f.uretec = True
+            if not hasattr(b.govde, 'uretli'):
+                _uretli_isaretle(b.govde)
+        return f
 
     def tip_tanimla(self, b, k):
         t = b.tanim
@@ -463,7 +475,7 @@ class Yorumlayici:
             return None
         if type(tip) is str:
             return {'tamsayi': 0, 'ondalik': 0.0, 'metin': '', 'karakter': '',
-                    'mantiksal': False, 'liste': [], 'sozluk': {}, 'tensor': None}[tip] \
+                    'mantiksal': False, 'liste': [], 'sozluk': {}, 'tensor': None, 'akis': None}[tip] \
                 if tip not in ('liste', 'sozluk') else ([] if tip == 'liste' else {})
         if type(tip) is KSinif:
             if tip.kayit:
@@ -505,6 +517,9 @@ class Yorumlayici:
                 from .yz import Tensor
                 from .mesale import MTensor
                 if tv is Tensor or tv is MTensor or v is None:
+                    return v
+            elif tip == 'akis':
+                if tv is Akis or v is None:
                     return v
             beklenen = TIP_ADLARI.get(tip, tip)
         elif type(tip) is KSinif:
@@ -727,6 +742,8 @@ class Yorumlayici:
 
     def d_her(self, d, k):
         kaynak = self.deg(d.kaynak, k)
+        if type(kaynak) is Akis:
+            return self._her_akis(d, k, kaynak)
         if d.ad2 is not None:
             if type(kaynak) is dict:
                 ogeler = list(kaynak.items())
@@ -749,6 +766,202 @@ class Yorumlayici:
                 break
             except DevamSinyali:
                 continue
+
+    def _her_akis(self, d, k, a):
+        """Akış üzerinde döngü: değerler tek tek alınır; döngü akışı bitmeden bırakırsa akış kapatılır
+        (JavaScript'teki for…of ile aynı: hata ile çıkılırken kapatmanın hatası yutulur)."""
+        self._dongu_degiskeni(k, d.ad)
+        if d.ad2 is not None:
+            self._dongu_degiskeni(k, d.ad2)
+        i = 0
+        try:
+            for o in a:
+                if d.ad2 is not None:
+                    self.ad_ata(k, d.ad, i, d)
+                    self.ad_ata(k, d.ad2, o, d)
+                    i += 1
+                else:
+                    self.ad_ata(k, d.ad, o, d)
+                try:
+                    self.yurut(d.govde, k)
+                except KirSinyali:
+                    a.kapat()
+                    return
+                except DevamSinyali:
+                    continue
+        except (DonSinyali, IptalSinyali) as s:
+            if type(s) is DonSinyali:
+                a.kapat()
+            raise                           # sonlandırılan 'aynı anda' gövdesi: akış kapatılmaz
+        except BaseException:
+            try:
+                a.kapat()
+            except BaseException:          # noqa: B902
+                pass
+            raise
+
+    def d_uret(self, d, k):
+        raise YontemHatasi("'üret' yalnızca bir akışın gövdesinde çalışır")
+
+    # ---------------------------------------------------------------- akış gövdeleri (üreteç sürümleri)
+    # Yalnızca 'üret' içeren deyimler (d.uretli) burada yürür; ötekiler yurut ile her zamanki gibi çalışır.
+    def yurut_g(self, d, k):
+        if not getattr(d, 'uretli', False):
+            self.yurut(d, k)
+            return
+        try:
+            yield from self._deyim_g[d.tur](d, k)
+        except YontemHatasi as e:
+            if e.satir is None:
+                e.satir = d.satir
+                e.dosya = getattr(d, 'dosya', None)
+            raise
+        except (Sinyal, GeneratorExit):
+            raise
+        except RecursionError:
+            raise YontemHatasi("Yığın taşması (çok derin özyineleme)", d.satir, getattr(d, 'dosya', None))
+        except ZeroDivisionError:
+            raise YontemHatasi("Sıfıra bölme", d.satir, getattr(d, 'dosya', None))
+        except OverflowError:
+            raise YontemHatasi("Sayısal taşma", d.satir, getattr(d, 'dosya', None))
+        except Exception as e:  # pragma: no cover - beklenmeyen iç hatalar
+            raise YontemHatasi(f"İç hata: {type(e).__name__}: {e}", d.satir, getattr(d, 'dosya', None))
+
+    def yurut_blok_g(self, deyimler, k):
+        for d in deyimler:
+            yield from self.yurut_g(d, k)
+
+    def g_blok(self, d, k):
+        yield from self.yurut_blok_g(d.deyimler, k)
+
+    def g_uret(self, d, k):
+        yield self.deg(d.ifade, k)
+
+    def g_eger(self, d, k):
+        if self.kosul(d.kosul, k):
+            yield from self.yurut_g(d.o, k)
+        elif d.degilse is not None:
+            yield from self.yurut_g(d.degilse, k)
+
+    def g_iken(self, d, k):
+        while self.kosul(d.kosul, k):
+            try:
+                yield from self.yurut_g(d.govde, k)
+            except KirSinyali:
+                break
+            except DevamSinyali:
+                continue
+
+    def g_tekrarla(self, d, k):
+        while True:
+            try:
+                yield from self.yurut_blok_g(d.govde, k)
+            except KirSinyali:
+                break
+            except DevamSinyali:
+                pass
+            if self.kosul(d.kosul, k):
+                break
+
+    def g_kez(self, d, k):
+        n = self.deg(d.sayi, k)
+        if type(n) is not int:
+            raise YontemHatasi(f"'kez tekrarla' tamsayı bekler, {tur_adi(n)} verildi")
+        for _ in range(n):
+            try:
+                yield from self.yurut_g(d.govde, k)
+            except KirSinyali:
+                break
+            except DevamSinyali:
+                continue
+
+    def g_icin(self, d, k):
+        bas, bit = self.deg(d.bas, k), self.deg(d.bit, k)
+        adim = self.deg(d.adim, k) if d.adim is not None else 1
+        if type(bas) is not int or type(bit) is not int or type(adim) is not int:
+            raise YontemHatasi("'için' döngüsünde başlangıç, bitiş ve adım tamsayı olmalı")
+        if adim <= 0:
+            raise YontemHatasi(f"'için' döngüsünde adım pozitif olmalı ({adim} verildi); yön 'artan' ya da 'azalan' ile belirtilir")
+        aralik = range(bas, bit - 1, -adim) if d.yon < 0 else range(bas, bit + 1, adim)
+        self._dongu_degiskeni(k, d.ad)
+        for i in aralik:
+            self.ad_ata(k, d.ad, i, d)
+            try:
+                yield from self.yurut_g(d.govde, k)
+            except KirSinyali:
+                break
+            except DevamSinyali:
+                continue
+
+    def g_her(self, d, k):
+        kaynak = self.deg(d.kaynak, k)
+        akis = type(kaynak) is Akis
+        if akis:
+            ogeler = enumerate(kaynak) if d.ad2 is not None else kaynak
+        elif d.ad2 is not None:
+            ogeler = list(kaynak.items()) if type(kaynak) is dict else list(enumerate(self.yinelenebilir(kaynak)))
+        else:
+            ogeler = self.yinelenebilir(kaynak)
+        self._dongu_degiskeni(k, d.ad)
+        if d.ad2 is not None:
+            self._dongu_degiskeni(k, d.ad2)
+        try:
+            for o in ogeler:
+                if d.ad2 is not None:
+                    self.ad_ata(k, d.ad, o[0], d)
+                    self.ad_ata(k, d.ad2, o[1], d)
+                else:
+                    self.ad_ata(k, d.ad, o, d)
+                try:
+                    yield from self.yurut_g(d.govde, k)
+                except KirSinyali:
+                    if akis:
+                        kaynak.kapat()
+                    return
+                except DevamSinyali:
+                    continue
+        except (DonSinyali, GeneratorExit):
+            if akis:
+                kaynak.kapat()
+            raise
+        except IptalSinyali:
+            raise
+        except BaseException:
+            if akis:
+                try:
+                    kaynak.kapat()
+                except BaseException:      # noqa: B902
+                    pass
+            raise
+
+    def g_sec(self, d, k):
+        v = self.deg(d.secici, k)
+        for etiketler, deyim in d.kollar:
+            for a, b in etiketler:
+                if (v == self.deg(a, k)) if b is None else (self.deg(a, k) <= v <= self.deg(b, k)):
+                    yield from self.yurut_g(deyim, k)
+                    return
+        if d.varsayilan is not None:
+            yield from self.yurut_blok_g(d.varsayilan, k)
+
+    def g_dene(self, d, k):
+        try:
+            try:
+                yield from self.yurut_blok_g(d.govde, k)
+            except YontemHatasi as e:
+                if d.yakala is None:
+                    raise
+                if d.yakala_ad is not None:
+                    k.d[d.yakala_ad] = e.deger if e.deger is not None else HataNesnesi(e.mesaj, 'Hata', e.satir)
+                yield from self.yurut_blok_g(d.yakala, k)
+        except IptalSinyali:
+            raise
+        except BaseException:
+            if d.sonunda is not None:
+                yield from self.yurut_blok_g(d.sonunda, k)
+            raise
+        if d.sonunda is not None:
+            yield from self.yurut_blok_g(d.sonunda, k)
 
     def yinelenebilir(self, v):
         from .yz import Tensor
@@ -826,6 +1039,7 @@ class Yorumlayici:
     def d_kir(self, d, k):
         s = KirSinyali()
         s.satir = d.satir
+        s.dosya = getattr(d, 'dosya', None)
         raise s
 
     def d_ayni_anda(self, d, k):
@@ -902,7 +1116,10 @@ class Yorumlayici:
         return f(*a)
 
     def d_devam(self, d, k):
-        raise DevamSinyali()
+        s = DevamSinyali()
+        s.satir = d.satir
+        s.dosya = getattr(d, 'dosya', None)
+        raise s
 
     # ================================================================ ifadeler
     def deg(self, n, k):
@@ -1439,6 +1656,8 @@ class Yorumlayici:
             d['sonuc'] = None
         if f.ifade is not None:
             return self.uyumla(sonuc_tipi, self.deg(f.ifade, k), 'sonuç')
+        if f.uretec:
+            return Akis(self, f.ad, self._akis_govdesi(f, k))
         if f.yerel:
             self.bildirimleri_isle(f.yerel, k)
         try:
@@ -1454,6 +1673,18 @@ class Yorumlayici:
         if f.tur == 'kurucu':
             return nesne
         return d.get('sonuc')
+
+    def _akis_govdesi(self, f, k):
+        """'üret' kullanan fonksiyonun gövdesi: akış yinelenince çalışan bir Python üreteci."""
+        if f.yerel:
+            self.bildirimleri_isle(f.yerel, k)
+        try:
+            yield from self.yurut_blok_g(f.govde.deyimler, k)
+        except DonSinyali:
+            pass
+        except (KirSinyali, DevamSinyali) as s:
+            raise YontemHatasi("'kır'/'devam' döngü dışında kullanıldı", getattr(s, 'satir', None),
+                               getattr(s, 'dosya', None))
 
     def nesne_olustur(self, sinif, kurucu, args, satir):
         nesne = KNesne(sinif)
@@ -1539,6 +1770,31 @@ class Yorumlayici:
         if t is KurucuBagli:
             return f"<kurucu {v.sinif.ad}>"
         return str(v)
+
+
+def _uretli_isaretle(d):
+    """Akış gövdesindeki deyimlerden 'üret' içerenleri işaretler (d.uretli); bunlar üreteç sürümleriyle yürür."""
+    if d is None:
+        return False
+    if type(d) is list:
+        return any([_uretli_isaretle(x) for x in d])
+    t = d.tur
+    if t == 'uret':
+        var = True
+    elif t == 'blok':
+        var = _uretli_isaretle(d.deyimler)
+    elif t == 'eger':
+        var = any([_uretli_isaretle(d.o), _uretli_isaretle(d.degilse)])
+    elif t in ('iken', 'icin', 'her', 'kez', 'tekrarla'):
+        var = _uretli_isaretle(d.govde)
+    elif t == 'sec':
+        var = any([_uretli_isaretle(x) for _, x in d.kollar] + [_uretli_isaretle(d.varsayilan)])
+    elif t == 'dene':
+        var = any([_uretli_isaretle(d.govde), _uretli_isaretle(d.yakala), _uretli_isaretle(d.sonunda)])
+    else:
+        var = False
+    d.uretli = var
+    return var
 
 
 _OP_METOD = {'+': 'topla', '-': 'cikar', '*': 'carp', '/': 'bolme', '=': 'esit', '<': 'kucuk',

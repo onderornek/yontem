@@ -379,6 +379,25 @@ değişken f := fonksiyon(x: tamsayı): tamsayı
 Lambdalar tanımlandıkları kapsamı yakalar (closure). Fonksiyonlar birinci sınıf
 değerlerdir; `Eşle`, `Süz`, `İndirge`, `Sırala` gibi işlevlere geçirilebilir.
 
+Gövdesinde `üret` geçen fonksiyon değerlerini tek tek verir: çağrı bir **akış** döndürür, gövde
+akış yinelendikçe çalışır ve her `üret`te durur. Değerler bir listede birikmediği için büyük ya da
+sonsuz diziler ve parça parça gelen veriler için uygundur.
+
+```pascal
+fonksiyon Kareler(n: tamsayı): akış
+başla
+  1'den n'e kadar her i için
+    üret i * i
+bitir
+
+Kareler(5) içindeki her k için yaz(k, 1)
+yaz(Toplam(Kareler(5)), 1)                   // liste bekleyen işlevler akışı sonuna kadar okur
+```
+
+Döngü akışı bitmeden bırakırsa (`kır`, `dön`, hata) akış kapatılır ve gövdedeki `sonunda` blokları
+çalışır. `üret` yalnızca adlı bir fonksiyonun gövdesinde anlam taşır, başka yerde sıradan bir addır.
+Ayrıntılar: dil başvurusu, "Üreten fonksiyonlar".
+
 ## 6.1 Giriş ve çıkış: `yaz` ve `oku`
 
 Yöntem'de ayrı bir "satır sonu" komutu yoktur. `yaz` ve `oku` komutlarının ikinci

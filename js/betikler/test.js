@@ -39,6 +39,20 @@ for (const dz of ['testler', 'ornekler', 'kitap_ornekleri', 'gomulu_ornekler', '
     console.log(`geçti      ${ad}  ${sure} sn`);
   }
 }
+// Sözdizimi hatası iletileri (Python yorumlayıcısı aynı dosyayı testler/calistir.py ile sınar)
+{
+  const os = require('os');
+  const td = fs.mkdtempSync(path.join(os.tmpdir(), 'yontem-'));
+  for (const v of JSON.parse(fs.readFileSync(path.join(KOK, 'testler', 'sozdizimi_hatalari.json'), 'utf-8'))) {
+    toplam++;
+    fs.writeFileSync(path.join(td, 'h.y'), v.kaynak);
+    const p = spawnSync(process.execPath, [CLI, 'h.y'], { cwd: td, encoding: 'utf-8', timeout: 60000 });
+    const beklenen = v.hata.replace('[satır', '[h.y, satır');
+    if (p.stderr.trim() !== beklenen) { basarisiz++; console.log(`BAŞARISIZ  sözdizimi hatası\n  beklenen: ${beklenen}\n  çıkan:    ${p.stderr.trim()}`); }
+    else console.log(`geçti      sözdizimi hatası: ${v.hata.slice(0, 70)}`);
+  }
+  fs.rmSync(td, { recursive: true, force: true });
+}
 // Biçimlendirici: dağınık örnek beklenen biçime gelmeli; depodaki her program zaten biçimli ve sonuç kararlı olmalı.
 {
   const { bicimle } = require('../dist/bicimle.js');

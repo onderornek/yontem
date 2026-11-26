@@ -88,12 +88,34 @@ parametre_grubu: ['değişken' | 'sabit'] ','.AD+ [':' tip] ['=' ifade]</code></
 <p>Tipi yazılmayan parametre her tipte değer alır. Parametre grupları <code>;</code> ya da <code>,</code> ile ayrılır. <code>değişken</code> parametreye yalnızca bir değişken, alan ya da dizin verilebilir. Eksik ya da fazla argüman hata verir.</p>
 <h3 id="direktifler">Direktifler</h3>
 <p>Başlığın ardından yazılabilir: <code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code>. <code>ileri</code>, gövdesi daha sonra yazılacak bir alt programı önceden bildirir. <code>soyut</code>, gövdesi olmayan bir metodu bildirir; çağrılırsa hata verir. Diğerleri ayrıştırılır ama davranışı değiştirmez: bütün metodlar zaten sanaldır.</p>
+<h3 id="üreten-fonksiyonlar">Üreten fonksiyonlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>uret_deyimi: 'üret' ifade</code></pre></div>
+<p>Gövdesinde <code>üret</code> geçen fonksiyon, çağrıldığında sonucunu hesaplamaz: parametreleri bağlar ve bir <strong>akış</strong> döndürür. Akış <code>içindeki her … için</code> ile yinelenince gövde çalışmaya başlar, her <code>üret</code>te durup değeri döngüye verir ve döngü sıradaki değeri isteyince kaldığı yerden sürer. Değerlerin hepsi bir listede birikmez; bu yüzden büyük ya da sonsuz diziler, sayfa sayfa gelen veriler ve akışla gelen model yanıtları için uygundur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">fonksiyon</span> Kareler(n: <span class="ya">tamsayı</span>): akış
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den n'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    üret i * i
+<span class="ya">bitir</span>
+
+Kareler(<span class="ys">5</span>) <span class="ya">içindeki</span> <span class="ya">her</span> k <span class="ya">için</span> yaz(k, <span class="ys">1</span>)
+Kareler(<span class="ys">5</span>) <span class="ya">içindeki</span> <span class="ya">her</span> sıra, k <span class="ya">için</span> yaz(Metin(sıra) + <span class="ym">': '</span> + Metin(k), <span class="ys">1</span>)
+yaz(Toplam(Kareler(<span class="ys">5</span>)), <span class="ys">1</span>)        <span class="yy">{ 55 }</span></code></pre></div>
+<ul>
+<li><code>üret</code> yalnızca adlı bir fonksiyonun (metodlar dahil) gövdesinde, deyim başında ve ardından aynı satırda bir ifade gelince özel anlam taşır. Prosedürde, adsız fonksiyonda ve <code>aynı anda</code> gövdesinde kullanılamaz. Başka her yerde <code>üret</code> sıradan bir addır.</li>
+<li>Dönüş tipi yazılırsa <code>akış</code> olmalıdır. Böyle bir fonksiyon <code>değişken</code> (referans) parametre alamaz.</li>
+<li><code>dön</code> (değersiz) akışı bitirir; <code>dön ifade</code> kullanılamaz. Gövde sona varınca da akış biter.</li>
+<li>Akış bir kez yinelenir: biten ya da bırakılan bir akış yeniden yinelenince değer vermez. Değerleri saklamak için <code>liste(akış)</code> ile listeye çevrilir. Liste bekleyen yerleşikler (<code>Toplam</code>, <code>Eşle</code>, <code>Süz</code>, <code>liste</code>…) ve <code>aynı anda</code> akışı önce sonuna kadar okur.</li>
+<li>Döngü akışı bitmeden bırakırsa (<code>kır</code>, <code>dön</code> ya da hata) akış kapatılır: gövde beklediği <code>üret</code>ten sürmez, ama <code>sonunda</code> blokları çalışır. Hiç yinelenmeyen akışın gövdesi hiç çalışmaz.</li>
+<li>Gövdedeki bir hata, sıradaki değeri isteyen döngüye kendi satır numarasıyla ulaşır.</li>
+<li>Akışın gövdesindeki ağ istekleri bir <code>aynı anda</code> gövdesinde bile beklemeden, sırayla gönderilir; akışı yineleyen döngünün gövdesindeki istekler her zamanki gibi bekler.</li>
+<li>Gömülü arka uçta yoktur.</li>
+</ul>
 <h3 id="özyineleme-ve-iç-içe-alt-programlar">Özyineleme ve iç içe alt programlar</h3>
 <p>Alt programlar kendilerini çağırabilir. İçteki bir alt program, dıştakinin değişkenlerini görür ve değiştirebilir.</p>
 
     <nav class="sayfala" aria-label="Bölümler arası"><a class="onceki" href="06-5-deyimler.html"><small>Önceki</small>5. Deyimler</a><a class="sonraki" href="08-7-siniflar-ve-kayitlar.html"><small>Sonraki</small>7. Sınıflar ve kayıtlar</a></nav>
   </main>
-  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#sonuç">Sonuç</a></li><li><a href="#parametreler">Parametreler</a></li><li><a href="#direktifler">Direktifler</a></li><li><a href="#özyineleme-ve-iç-içe-alt-programlar">Özyineleme ve iç içe alt programlar</a></li></ol></aside>
+  <aside class="bu-bolumde" aria-label="Bu bölümde"><span>Bu bölümde</span><ol><li><a href="#sonuç">Sonuç</a></li><li><a href="#parametreler">Parametreler</a></li><li><a href="#direktifler">Direktifler</a></li><li><a href="#üreten-fonksiyonlar">Üreten fonksiyonlar</a></li><li><a href="#özyineleme-ve-iç-içe-alt-programlar">Özyineleme ve iç içe alt programlar</a></li></ol></aside>
 </div>
 <footer class="alt">
   <span>Telif hakkı © 2026 Önder Örnek. Metin <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.tr">CC BY 4.0</a>, örnek programlar MIT lisanslıdır.</span>

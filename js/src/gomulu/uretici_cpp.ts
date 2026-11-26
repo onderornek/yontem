@@ -704,6 +704,7 @@ export class CppUretici {
       }
     }
     if (d.tur === 'ayni_anda') this.hata("'aynı anda' gömülü sürümde desteklenmiyor; sıradan 'içindeki her … için' döngüsü kullanın", d);
+    if (d.tur === 'uret') this.hata("'üret' gömülü sürümde desteklenmiyor; değerleri bir listede toplayıp döndürün", d);
     this.hata(`Bilinmeyen deyim: ${d.tur}`, d);
   }
 

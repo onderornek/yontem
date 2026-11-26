@@ -43,6 +43,7 @@ class Cozumleyici:
         self.s = sozcukler
         self.i = 0
         self.dosya = dosya
+        self.uretec_bag = []    # iç içe gövdelerin 'üret' bağlamı (bkz. uret_mi)
 
     # ---------------------------------------------------------- yardımcılar
     @property
@@ -394,13 +395,66 @@ class Cozumleyici:
         elif baglam == 'sinif':
             govdeli = self.as_mi('basla', 'degisken', 'sabit')
         yerel, govde = [], None
+        uretec = False
         if govdeli:
             yerel = self.bildirimler_coz('yerel')
+            self._bag_gir(tur)
             govde = self.birlesik_coz()
+            uretec = self._bag_cik(tok.satir, donus, params)
             self.ayirici()
         return N('altprogram', tok.satir, cesit=tur, ad=ad_tok.deger, ham=ad_tok.ham,
                  sinif_adi=sinif_adi, params=params, donus=donus, direktifler=direktifler,
-                 yerel=yerel, govde=govde)
+                 yerel=yerel, govde=govde, uretec=uretec)
+
+    # ---------------------------------------------------------- üret
+    def _bag_gir(self, tur):
+        self.uretec_bag.append({'tur': tur, 'var': False, 'donler': []})
+
+    def _bag_cik(self, satir, donus, params):
+        """Gövde bitti: 'üret' kullanıldıysa fonksiyon üreteçtir; kuralları denetlenir."""
+        b = self.uretec_bag.pop()
+        if not b['var']:
+            return False
+        if donus is not None and not (donus.tur == 'tip_ad' and donus.modul is None and donus.ad == 'akis'
+                                      and getattr(donus, 'eleman', None) is None):
+            raise SozdizimHatasi("'üret' kullanan fonksiyonun dönüş tipi 'akış' olmalı", satir, self.dosya)
+        for p in params:
+            if p.ref:
+                raise SozdizimHatasi(f"'üret' kullanan fonksiyon değişken (referans) parametre alamaz: '{p.ham}'",
+                                     satir, self.dosya)
+        for d in b['donler']:
+            raise SozdizimHatasi("'üret' kullanan fonksiyonda 'dön' değer almaz; akışı bitirmek için yalnızca 'dön' yazın",
+                                 d.satir, self.dosya)
+        return True
+
+    def uret_mi(self):
+        """'üret' bağlamsal bir sözcüktür: deyim başında ve aynı satırda ardından bir ifade geliyorsa üretir."""
+        t = self.t
+        if t.tip != 'AD' or t.deger != 'uret':
+            return False
+        n = self.bak()
+        if n.satir != t.satir:
+            return False
+        if n.tip in ('SAYI', 'METIN', 'BMETIN', 'AD'):
+            return True
+        if n.tip == 'AS':
+            return n.deger in ('dogru', 'yanlis', 'bos', 'kendi', 'eger', 'miras', 'degil')
+        return n.tip == 'OP' and n.deger in ('(', '[', '-', '+', '@')
+
+    def uret_coz(self):
+        """üret ifade — yalnızca fonksiyon gövdesinde; başka yerde 'üret(…)' ve 'üret[…]' sıradan addır."""
+        b = self.uretec_bag[-1] if self.uretec_bag else None
+        if b is not None and b['tur'] == 'fonksiyon':
+            s = self.ilerle().satir
+            b['var'] = True
+            return N('uret', s, ifade=self.ifade())
+        n = self.bak()
+        if n.tip == 'OP' and n.deger in ('(', '[', '-', '+'):
+            return None
+        if b is not None and b['tur'] == 'es':
+            self.hata("'üret' 'aynı anda' gövdesinde kullanılamaz")
+        self.hata("'üret' yalnızca adlı bir fonksiyonun gövdesinde kullanılabilir "
+                  "(ör. fonksiyon Sayılar(n: tamsayı): akış)")
 
     def _direktif_mi(self):
         return self.ad_mi(*DIREKTIFLER) and not (self.bak().tip == 'OP' and self.bak().deger in (':', ','))
@@ -446,6 +500,10 @@ class Cozumleyici:
         s = tok.satir
         if self.ayni_anda_mi():
             return self.ayni_anda_coz()
+        if self.uret_mi():
+            d = self.uret_coz()
+            if d is not None:
+                return d
         if tok.tip == 'AS':
             k = tok.deger
             if k == 'basla':
@@ -481,7 +539,10 @@ class Cozumleyici:
                 if not (self.op_mu(';') or self.as_mi('bitir', 'degilse', 'yakala', 'sonunda')
                         or self.satir_sonu_mu() or self.t.tip == 'SON'):
                     deger = self.ifade()
-                return N('don', s, ifade=deger)
+                d = N('don', s, ifade=deger)
+                if deger is not None and self.uretec_bag:
+                    self.uretec_bag[-1]['donler'].append(d)
+                return d
             if k == 'cik':
                 self.ilerle()
                 return N('don', s, ifade=None)
@@ -544,7 +605,10 @@ class Cozumleyici:
             self.ilerle()
             v2 = self.bekle_ad().deger
         self.bekle_as('icin')
-        return N('ayni_anda', s, ad=v.deger, ad2=v2, kaynak=kaynak, sinir=sinir, govde=self.deyim_veya_bos())
+        self._bag_gir('es')
+        govde = self.deyim_veya_bos()
+        self.uretec_bag.pop()
+        return N('ayni_anda', s, ad=v.deger, ad2=v2, kaynak=kaynak, sinir=sinir, govde=govde)
 
     def deyim_ifadeden(self, hedef, s):
         """Başı bir ifade olan deyimler: doğal döngüler, değerine göre, atama, çağrı."""
@@ -899,7 +963,9 @@ class Cozumleyici:
                     return N('lambda', s, params=params, donus=donus, ifade=self.ifade(),
                              yerel=[], govde=None)
                 yerel = self.bildirimler_coz('yerel')
+                self._bag_gir('lambda')
                 govde = self.birlesik_coz()
+                self.uretec_bag.pop()
                 return N('lambda', s, params=params, donus=donus, ifade=None, yerel=yerel,
                          govde=govde)
         if tok.tip == 'OP':

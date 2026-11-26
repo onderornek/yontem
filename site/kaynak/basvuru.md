@@ -86,6 +86,7 @@ Bazı sözcükler yalnızca belirli bir yerde özel anlam taşır, başka yerler
 | `adımda`, `artan`, `azalan` | sayan döngü başlığı |
 | `kez` | `n kez tekrarla` |
 | `aynı anda`, `en çok` | paralel döngü başlığı (deyim başında) |
+| `üret` | fonksiyon gövdesinde, deyim başında, ardından bir ifade gelince |
 | `olana dek` | `tekrarla` döngüsünün sonu |
 | `değerine göre` | çok seçenekli karar |
 | `listesindeki`, `dizisindeki`, `elemanı` | eleman silme cümlesi |
@@ -240,6 +241,7 @@ tip_eki:    'listesi' | 'dizisi' | 'sözlüğü'
 | `liste` | `[1, 2, 3]` | Elemanlar 0'dan numaralanır |
 | `sözlük` | `['a': 1]`, `[:]` | Ekleme sırasını korur |
 | `tensör` | `Tensör([[1, 2]])` | `YZ` ve `Meşale` birimleri |
+| `akış` | `üret` kullanan bir fonksiyonun çağrısı | Değerleri tek tek, istendikçe verir |
 | `herhangi` | her değer | Tip denetimi yapılmaz |
 | sınıf ve kayıt adları | nesneler | |
 
@@ -533,7 +535,7 @@ Kurallar:
 her_dongusu: ifade 'içindeki' 'her' AD [',' AD] 'için' govde
 ```
 
-Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede `numara, eleman`, sözlükte `anahtar, değer` çiftleri gelir.
+Liste, sözlük, metin, aralık ve akış üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede `numara, eleman`, sözlükte `anahtar, değer` çiftleri gelir.
 
 ```pascal
 adlar içindeki her ad için yaz(ad, 1)
@@ -633,6 +635,35 @@ Tipi yazılmayan parametre her tipte değer alır. Parametre grupları `;` ya da
 ### Direktifler
 
 Başlığın ardından yazılabilir: `sanal`, `ezer`, `soyut`, `ileri`, `aşırı`, `statik`. `ileri`, gövdesi daha sonra yazılacak bir alt programı önceden bildirir. `soyut`, gövdesi olmayan bir metodu bildirir; çağrılırsa hata verir. Diğerleri ayrıştırılır ama davranışı değiştirmez: bütün metodlar zaten sanaldır.
+
+### Üreten fonksiyonlar
+
+```
+uret_deyimi: 'üret' ifade
+```
+
+Gövdesinde `üret` geçen fonksiyon, çağrıldığında sonucunu hesaplamaz: parametreleri bağlar ve bir **akış** döndürür. Akış `içindeki her … için` ile yinelenince gövde çalışmaya başlar, her `üret`te durup değeri döngüye verir ve döngü sıradaki değeri isteyince kaldığı yerden sürer. Değerlerin hepsi bir listede birikmez; bu yüzden büyük ya da sonsuz diziler, sayfa sayfa gelen veriler ve akışla gelen model yanıtları için uygundur.
+
+```pascal
+fonksiyon Kareler(n: tamsayı): akış
+başla
+  1'den n'e kadar her i için
+    üret i * i
+bitir
+
+Kareler(5) içindeki her k için yaz(k, 1)
+Kareler(5) içindeki her sıra, k için yaz(Metin(sıra) + ': ' + Metin(k), 1)
+yaz(Toplam(Kareler(5)), 1)        { 55 }
+```
+
+- `üret` yalnızca adlı bir fonksiyonun (metodlar dahil) gövdesinde, deyim başında ve ardından aynı satırda bir ifade gelince özel anlam taşır. Prosedürde, adsız fonksiyonda ve `aynı anda` gövdesinde kullanılamaz. Başka her yerde `üret` sıradan bir addır.
+- Dönüş tipi yazılırsa `akış` olmalıdır. Böyle bir fonksiyon `değişken` (referans) parametre alamaz.
+- `dön` (değersiz) akışı bitirir; `dön ifade` kullanılamaz. Gövde sona varınca da akış biter.
+- Akış bir kez yinelenir: biten ya da bırakılan bir akış yeniden yinelenince değer vermez. Değerleri saklamak için `liste(akış)` ile listeye çevrilir. Liste bekleyen yerleşikler (`Toplam`, `Eşle`, `Süz`, `liste`…) ve `aynı anda` akışı önce sonuna kadar okur.
+- Döngü akışı bitmeden bırakırsa (`kır`, `dön` ya da hata) akış kapatılır: gövde beklediği `üret`ten sürmez, ama `sonunda` blokları çalışır. Hiç yinelenmeyen akışın gövdesi hiç çalışmaz.
+- Gövdedeki bir hata, sıradaki değeri isteyen döngüye kendi satır numarasıyla ulaşır.
+- Akışın gövdesindeki ağ istekleri bir `aynı anda` gövdesinde bile beklemeden, sırayla gönderilir; akışı yineleyen döngünün gövdesindeki istekler her zamanki gibi bekler.
+- Gömülü arka uçta yoktur.
 
 ### Özyineleme ve iç içe alt programlar
 
@@ -840,6 +871,7 @@ Katı kip olmadan da `yontem denetle` gölgelenen adları, tanımsız adları ve
 | Tipsiz değişken | var | var | tipi ilk değerden çıkarılır |
 | `herhangi` tipi | var | var | yok |
 | Hata ayıklayıcı, paket komutları | var | yok | yok |
+| `üret` ve akışlar | JavaScript üreteçleri | Python üreteçleri | yok |
 | Etkileşimli kabuk | yok | var | yok |
 | Birimler | hepsi | hepsi | `Matematik`, `YZ`, `Donanım` |
 
@@ -900,12 +932,15 @@ deyim:    blok
           ['sonunda' deyimler] 'bitir'
         | 'fırlat' ifade
         | 'dön' [ifade]
+        | 'üret' ifade
         | 'çık' | 'kır' | 'devam'
         | 'değişken' degisken_grubu
         | ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
         | ifade AYRILMA ifade YONELME 'adımda' ifade
           ('artan' | 'azalan') 'her' AD 'için' govde
         | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+        | 'aynı' 'anda' ['en' 'çok' (SAYI | AD | '(' ifade ')')]
+          ifade 'içindeki' 'her' AD [',' AD] 'için' govde
         | ifade ('listesindeki' | 'dizisindeki') sonek
           '.' ('elemanı' | 'elemanını') 'Sil'
         | ifade 'iken' govde

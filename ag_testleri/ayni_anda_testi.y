@@ -34,6 +34,12 @@ başla
   dön y['gövde']
 bitir
 
+{ akışın gövdesindeki istekler 'aynı anda' içinde de beklemeden, sırayla gider }
+fonksiyon Sayfalar(ad: metin): akış
+başla
+  1'den 2'ye kadar her n için üret HttpAl(taban + '/gecikme?ad=' + ad + Metin(n))['gövde']
+bitir
+
 başla
   eğer Uzunluk(Argümanlar()) = 0 ise
   başla
@@ -70,6 +76,12 @@ başla
   yaz('-- yerleşiğin çağırdığı fonksiyon beklemez', 1)
   aynı anda ['x', 'y'] içindeki her ad için
     yaz(Eşle([1, 2], fonksiyon(n) => HttpAl(taban + '/gecikme?ad=' + ad + Metin(n))['gövde']), 1)
+  yaz('aynı anda en çok: ' + HttpAl(taban + '/enfazla')['gövde'], 1)
+
+  yaz('-- akışın gövdesi beklemez, döngünün gövdesi bekler', 1)
+  aynı anda ['p', 'q'] içindeki her ad için
+    Sayfalar(ad) içindeki her g için
+      yaz(g + ' → ' + HttpAl(taban + '/gecikme?ad=' + g)['gövde'], 1)
   yaz('aynı anda en çok: ' + HttpAl(taban + '/enfazla')['gövde'], 1)
 
   yaz('-- devam', 1)

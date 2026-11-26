@@ -335,26 +335,30 @@ h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; color: var(-
 <td>paralel döngü başlığı (deyim başında)</td>
 </tr>
 <tr class="even">
+<td><code>üret</code></td>
+<td>fonksiyon gövdesinde, deyim başında, ardından bir ifade gelince</td>
+</tr>
+<tr class="odd">
 <td><code>olana dek</code></td>
 <td><code>tekrarla</code> döngüsünün sonu</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>değerine göre</code></td>
 <td>çok seçenekli karar</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>listesindeki</code>, <code>dizisindeki</code>, <code>elemanı</code></td>
 <td>eleman silme cümlesi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>listesi</code>, <code>dizisi</code>, <code>sözlüğü</code></td>
 <td>tip ekleri</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code></td>
 <td>alt program direktifleri</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>özel</code>, <code>genel</code>, <code>korumalı</code>, <code>yayınlanmış</code></td>
 <td>sınıf içinde görünürlük bölümleri</td>
 </tr>
@@ -585,11 +589,16 @@ tip_eki:    'listesi' | 'dizisi' | 'sözlüğü'</code></pre></div>
 <td><code>YZ</code> ve <code>Meşale</code> birimleri</td>
 </tr>
 <tr class="odd">
+<td><code>akış</code></td>
+<td><code>üret</code> kullanan bir fonksiyonun çağrısı</td>
+<td>Değerleri tek tek, istendikçe verir</td>
+</tr>
+<tr class="even">
 <td><code>herhangi</code></td>
 <td>her değer</td>
 <td>Tip denetimi yapılmaz</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>sınıf ve kayıt adları</td>
 <td>nesneler</td>
 <td></td>
@@ -975,7 +984,7 @@ etiket:        ifade ['..' ifade]</code></pre></div>
 </ul>
 <h3 id="koleksiyon-döngüsü">Koleksiyon döngüsü</h3>
 <div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>her_dongusu: ifade 'içindeki' 'her' AD [',' AD] 'için' govde</code></pre></div>
-<p>Liste, sözlük, metin ve aralık üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
+<p>Liste, sözlük, metin, aralık ve akış üzerinde dolaşır. Tek adla listede elemanlar, sözlükte anahtarlar, metinde karakterler gelir. İki adla listede <code>numara, eleman</code>, sözlükte <code>anahtar, değer</code> çiftleri gelir.</p>
 <div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>adlar <span class="ya">içindeki</span> <span class="ya">her</span> ad <span class="ya">için</span> yaz(ad, <span class="ys">1</span>)
 yaşlar <span class="ya">içindeki</span> <span class="ya">her</span> ad, yaş <span class="ya">için</span> yaz(ad + <span class="ym">': '</span> + yaş, <span class="ys">1</span>)</code></pre></div>
 <h3 id="paralel-döngü">Paralel döngü</h3>
@@ -1062,6 +1071,28 @@ parametre_grubu: ['değişken' | 'sabit'] ','.AD+ [':' tip] ['=' ifade]</code></
 <p>Tipi yazılmayan parametre her tipte değer alır. Parametre grupları <code>;</code> ya da <code>,</code> ile ayrılır. <code>değişken</code> parametreye yalnızca bir değişken, alan ya da dizin verilebilir. Eksik ya da fazla argüman hata verir.</p>
 <h3 id="direktifler">Direktifler</h3>
 <p>Başlığın ardından yazılabilir: <code>sanal</code>, <code>ezer</code>, <code>soyut</code>, <code>ileri</code>, <code>aşırı</code>, <code>statik</code>. <code>ileri</code>, gövdesi daha sonra yazılacak bir alt programı önceden bildirir. <code>soyut</code>, gövdesi olmayan bir metodu bildirir; çağrılırsa hata verir. Diğerleri ayrıştırılır ama davranışı değiştirmez: bütün metodlar zaten sanaldır.</p>
+<h3 id="üreten-fonksiyonlar">Üreten fonksiyonlar</h3>
+<div class="kod cikti"><span class="kod-etiket">Çıktı</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code>uret_deyimi: 'üret' ifade</code></pre></div>
+<p>Gövdesinde <code>üret</code> geçen fonksiyon, çağrıldığında sonucunu hesaplamaz: parametreleri bağlar ve bir <strong>akış</strong> döndürür. Akış <code>içindeki her … için</code> ile yinelenince gövde çalışmaya başlar, her <code>üret</code>te durup değeri döngüye verir ve döngü sıradaki değeri isteyince kaldığı yerden sürer. Değerlerin hepsi bir listede birikmez; bu yüzden büyük ya da sonsuz diziler, sayfa sayfa gelen veriler ve akışla gelen model yanıtları için uygundur.</p>
+<div class="kod program"><span class="kod-etiket">Yöntem</span><button type="button" class="kopyala" aria-label="Kodu kopyala">Kopyala</button><pre><code><span class="ya">fonksiyon</span> Kareler(n: <span class="ya">tamsayı</span>): akış
+<span class="ya">başla</span>
+  <span class="ys">1</span>'den n'e <span class="ya">kadar</span> <span class="ya">her</span> i <span class="ya">için</span>
+    üret i * i
+<span class="ya">bitir</span>
+
+Kareler(<span class="ys">5</span>) <span class="ya">içindeki</span> <span class="ya">her</span> k <span class="ya">için</span> yaz(k, <span class="ys">1</span>)
+Kareler(<span class="ys">5</span>) <span class="ya">içindeki</span> <span class="ya">her</span> sıra, k <span class="ya">için</span> yaz(Metin(sıra) + <span class="ym">': '</span> + Metin(k), <span class="ys">1</span>)
+yaz(Toplam(Kareler(<span class="ys">5</span>)), <span class="ys">1</span>)        <span class="yy">{ 55 }</span></code></pre></div>
+<ul>
+<li><code>üret</code> yalnızca adlı bir fonksiyonun (metodlar dahil) gövdesinde, deyim başında ve ardından aynı satırda bir ifade gelince özel anlam taşır. Prosedürde, adsız fonksiyonda ve <code>aynı anda</code> gövdesinde kullanılamaz. Başka her yerde <code>üret</code> sıradan bir addır.</li>
+<li>Dönüş tipi yazılırsa <code>akış</code> olmalıdır. Böyle bir fonksiyon <code>değişken</code> (referans) parametre alamaz.</li>
+<li><code>dön</code> (değersiz) akışı bitirir; <code>dön ifade</code> kullanılamaz. Gövde sona varınca da akış biter.</li>
+<li>Akış bir kez yinelenir: biten ya da bırakılan bir akış yeniden yinelenince değer vermez. Değerleri saklamak için <code>liste(akış)</code> ile listeye çevrilir. Liste bekleyen yerleşikler (<code>Toplam</code>, <code>Eşle</code>, <code>Süz</code>, <code>liste</code>…) ve <code>aynı anda</code> akışı önce sonuna kadar okur.</li>
+<li>Döngü akışı bitmeden bırakırsa (<code>kır</code>, <code>dön</code> ya da hata) akış kapatılır: gövde beklediği <code>üret</code>ten sürmez, ama <code>sonunda</code> blokları çalışır. Hiç yinelenmeyen akışın gövdesi hiç çalışmaz.</li>
+<li>Gövdedeki bir hata, sıradaki değeri isteyen döngüye kendi satır numarasıyla ulaşır.</li>
+<li>Akışın gövdesindeki ağ istekleri bir <code>aynı anda</code> gövdesinde bile beklemeden, sırayla gönderilir; akışı yineleyen döngünün gövdesindeki istekler her zamanki gibi bekler.</li>
+<li>Gömülü arka uçta yoktur.</li>
+</ul>
 <h3 id="özyineleme-ve-iç-içe-alt-programlar">Özyineleme ve iç içe alt programlar</h3>
 <p>Alt programlar kendilerini çağırabilir. İçteki bir alt program, dıştakinin değişkenlerini görür ve değiştirebilir.</p>
 </section><section class="bolum-blok" id="b08" data-baslik="7. Sınıflar ve kayıtlar"><h2>7. Sınıflar ve kayıtlar</h2>
@@ -1318,12 +1349,18 @@ bitti</code></pre></div>
 <td>yok</td>
 </tr>
 <tr class="even">
+<td><code>üret</code> ve akışlar</td>
+<td>JavaScript üreteçleri</td>
+<td>akış başına bir iş parçacığı</td>
+<td>yok</td>
+</tr>
+<tr class="odd">
 <td>Etkileşimli kabuk</td>
 <td>yok</td>
 <td>var</td>
 <td>yok</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Birimler</td>
 <td>hepsi</td>
 <td>hepsi</td>
@@ -1385,12 +1422,15 @@ deyim:    blok
           ['sonunda' deyimler] 'bitir'
         | 'fırlat' ifade
         | 'dön' [ifade]
+        | 'üret' ifade
         | 'çık' | 'kır' | 'devam'
         | 'değişken' degisken_grubu
         | ifade AYRILMA ifade YONELME 'kadar' 'her' AD 'için' govde
         | ifade AYRILMA ifade YONELME 'adımda' ifade
           ('artan' | 'azalan') 'her' AD 'için' govde
         | ifade 'içindeki' 'her' AD [',' AD] 'için' govde
+        | 'aynı' 'anda' ['en' 'çok' (SAYI | AD | '(' ifade ')')]
+          ifade 'içindeki' 'her' AD [',' AD] 'için' govde
         | ifade ('listesindeki' | 'dizisindeki') sonek
           '.' ('elemanı' | 'elemanını') 'Sil'
         | ifade 'iken' govde

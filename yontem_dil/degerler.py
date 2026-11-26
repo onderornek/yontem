@@ -19,7 +19,7 @@ class YerelFonksiyon:
 class KFonksiyon:
     """Yöntem dilinde tanımlanmış fonksiyon / prosedür / metod / lambda."""
     __slots__ = ('ad', 'tur', 'params', 'donus', 'yerel', 'govde', 'ifade', 'kapanis',
-                 'sinif', 'oto', 'ref_indeksler', 'direktifler')
+                 'sinif', 'oto', 'ref_indeksler', 'direktifler', 'uretec')
 
     def __init__(self, ad, tur, params, donus, yerel, govde, ifade, kapanis, sinif=None,
                  oto=True, direktifler=()):
@@ -35,6 +35,7 @@ class KFonksiyon:
         self.oto = oto and not params
         self.ref_indeksler = frozenset(i for i, p in enumerate(params) if p.ref)
         self.direktifler = direktifler
+        self.uretec = False     # gövdesinde 'üret' var: çağrı bir akış döndürür
 
 
 class BagliMetod:
